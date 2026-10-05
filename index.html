@@ -168,7 +168,7 @@
   .eyebrow-line .bar{width:28px; height:1px; background:var(--teal);}
 
   h1.hero-head{
-    font-size:clamp(2.6rem, 4.6vw, 4.5rem); line-height:1.2; font-weight:500; margin:0 0 26px; letter-spacing:-.01em;
+    font-size:clamp(3.4rem, 4.6vw, 4.5rem); line-height:1.2; font-weight:500; margin:0 0 26px; letter-spacing:-.01em;
   }
   h1.hero-head em{font-style:italic; font-weight:500; color:var(--teal);}
   .hero-line{display:block; overflow:hidden;}
@@ -191,6 +191,11 @@
     box-shadow:var(--shadow-lg); overflow:hidden; transition:transform .2s var(--ease);
   }
 
+  html,
+body {
+  overflow-x: hidden;
+}
+
 @media all and (max-width: 767px) {
 .browser-card {
     width: 100% !important;
@@ -202,6 +207,7 @@
   .hero-ctas {
     gap: 9px !important;
   }
+
 }
 
   .browser-card .bar{height:30px; background:var(--ink-3); display:flex; align-items:center; gap:6px; padding:0 12px;}
@@ -233,14 +239,29 @@
     animation:floaty 5s ease-in-out infinite;
   }
 
-@media all and (max-width: 767px) {
+@media all and (max-width: 860px) {
 .float-badge.b2 {
     top: 47% !important;
     } 
+.float-badge.b1 {
+    display:none;
+    }
+.bc2{
+    display:none;
+    }
+    header#siteHeader {
+    max-width: 100%;
+}
+    .hero-visual {
+    display:none;
+  }
+  .ig-tiles img{
+    height: auto !important;
+  }
 }
 
   .float-badge.b1{bottom:21%; right:38%;}
-  .float-badge.b2{top:26%; right:10.5%; background:var(--ink-2); color:var(--cream); border:1px solid var(--line-dark);}
+  .float-badge.b2{display:none; top:26%; right:10.5%; background:var(--ink-2); color:var(--cream); border:1px solid var(--line-dark);}
   @keyframes floaty{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
   .float-badge .ico{width:26px; height:26px; border-radius:50%; background:var(--grad); display:flex; align-items:center; justify-content:center; color:#06110c;}
 
@@ -386,7 +407,7 @@
     background:var(--ink-2); border:1px solid var(--line-dark); border-radius:24px; padding:52px;
     display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
   }
-  @media (max-width:820px){ .social-panel{grid-template-columns:1fr; padding:34px;} }
+  @media (max-width:820px){ .social-panel{grid-template-columns:1fr; padding: 30px 27px 45px 27px;} }
   .ig-tiles img {
     height: 200px;
     object-fit: cover;
@@ -542,7 +563,7 @@
   .mobile-menu a{font-size:24px; font-family:'Fraunces',serif;}
   @media (max-width:860px){
     .nav-links{display:none;}
-    .burger{display:flex;}
+    .burger{display:none;}
   }
 
   /* ============ THEME SWITCH ============ */
@@ -999,7 +1020,7 @@
   <section id="projects">
     <div class="wrap">
       <div class="section-head reveal">
-        <h2 class="serif">A preview of our portfolio</h2>
+        <h2 class="serif">A preview of my portfolio</h2>
         <p>A curated set of projects, each one a testament to craft, strategy and results.</p>
       </div>
       <div class="filters reveal">
@@ -1384,6 +1405,64 @@ themeSwitch.addEventListener('click', () => {
     setTimeout(() => { form.reset(); }, 300);
   });
 })();
+</script>
+
+<script>
+  function applyZoom() {
+    const page = document.body;
+
+    if (!page) return;
+
+    // Use the actual CSS viewport width.
+    const currentWidth = Math.round(
+      document.documentElement.clientWidth
+    );
+
+    let baseWidth;
+
+    if (currentWidth >= 981) {
+
+      if (currentWidth > 1440) {
+        // No zoom on large desktop screens
+        page.style.zoom = '';
+        page.style.width = '';
+        return;
+      }
+
+      // Desktop: use 1440px as the base layout
+      baseWidth = 1440;
+
+    } else if (currentWidth >= 768) {
+
+      // Tablet: use 768px as the base layout
+      baseWidth = 768;
+
+    } else if (currentWidth >= 479) {
+
+      // Small tablet / large mobile
+      baseWidth = 479;
+
+    } else {
+
+      // Mobile below 479px
+      // Continue using 479px as the base layout
+      baseWidth = 479;
+    }
+
+    const zoomLevel = currentWidth / baseWidth;
+
+    page.style.width = baseWidth + 'px';
+    page.style.zoom = zoomLevel;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyZoom);
+  } else {
+    applyZoom();
+  }
+
+  window.addEventListener('resize', applyZoom);
+  window.addEventListener('DOMContentLoaded', applyZoom);
 </script>
 
 </body>
