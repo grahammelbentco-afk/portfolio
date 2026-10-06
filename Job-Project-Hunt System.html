@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Remote WordPress Job Hunting System</title>
+<style>
+:root{--navy:#102a43;--blue:#1769aa;--teal:#087f8c;--purple:#6c4ab6;--ink:#24384b;--muted:#60758a;--line:#dce5ee}
+*{box-sizing:border-box}body{margin:0;background:#f3f7fb;color:var(--ink);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{max-width:1100px;margin:auto;padding:24px}
+.hero{background:linear-gradient(125deg,#102a43,#1769aa);color:white;padding:34px;border-radius:20px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;color:#8fe2ed;font-size:.8rem;font-weight:800}.hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.08;margin:10px 0}.hero p{color:#e0edf5}.goals,.grid,.three{display:grid;gap:14px}.goals{grid-template-columns:repeat(4,1fr);margin-top:20px}.goals div{padding:12px;background:#ffffff14;border:1px solid #ffffff2a;border-radius:10px}.goals b{display:block}.goals span{font-size:.86rem;color:#d8e8f2}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}nav a,.tag{display:inline-block;padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:white;text-decoration:none;color:var(--ink);font-size:.88rem}
+section{margin:28px 0;scroll-margin-top:12px}.head{display:flex;gap:12px;align-items:center;margin-bottom:14px}.num{background:#e3f3ff;color:#145b94;border-radius:11px;width:38px;height:38px;display:grid;place-items:center;font-weight:850}.head h2{margin:0;font-size:1.4rem}.head p{margin:0;color:var(--muted);font-size:.92rem}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:white;border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 4px 14px #102a4308}.card h3{margin:0 0 8px;font-size:1.05rem}.card ul,.card ol{padding-left:21px;margin:8px 0}.card li{margin:4px 0}.callout{background:#e9f8fa;border-left:4px solid var(--teal);padding:16px;border-radius:0 12px 12px 0;margin:14px 0}.quote{font-weight:800;font-size:1.15rem;color:#16496a}.muted{color:var(--muted);font-size:.9rem}.tag{background:#eaf5ff;color:#145b94;border:0;margin:2px 3px 2px 0;border-radius:7px;font-weight:650}
+.template{white-space:pre-wrap;background:#f7fafc;border:1px solid var(--line);border-radius:10px;padding:16px;font:inherit}.steps{display:grid;gap:10px;counter-reset:s}.step{counter-increment:s;display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:center;padding:13px;background:white;border:1px solid var(--line);border-radius:12px}.step:before{content:counter(s);background:#e3f3ff;color:#1769aa;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:850}.step p{margin:2px 0 0;color:var(--muted);font-size:.9rem}.target{font-size:.82rem;background:#e7f8f3;color:#08766b;padding:5px 8px;border-radius:7px;white-space:nowrap}
+.check label{display:block;padding:7px 0;border-bottom:1px solid #edf1f5}.check input{accent-color:#087f8c}
+table{width:100%;border-collapse:collapse;min-width:680px;background:white}th,td{text-align:left;padding:11px;border-bottom:1px solid #e8eef4}th{background:#edf5fb}.table{overflow:auto;border:1px solid var(--line);border-radius:12px}footer{text-align:center;color:var(--muted);padding:24px;border-top:1px solid var(--line);margin-top:40px}
+@media(max-width:700px){.wrap{padding:13px}.hero{padding:24px}.goals,.grid,.three{grid-template-columns:1fr}.step{grid-template-columns:34px 1fr}.target{grid-column:2;justify-self:start}}
+@media print{body{background:white}.wrap{max-width:none;padding:0}nav{display:none}.card,.step{break-inside:avoid;box-shadow:none}}
+
+/* Personal links */
+.profile-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.profile-links a{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid #ffffff38;border-radius:999px;background:#ffffff12;color:#fff;text-decoration:none;font-size:.86rem;font-weight:700;transition:.2s}
+.profile-links a:hover{background:#ffffff22;transform:translateY(-1px)}
+.profile-links .ico{font-size:.9rem}
+
+/* Daily activity tracker */
+.daily-tracker{margin-top:20px;padding:16px;border:1px solid #ffffff2a;background:#ffffff12;border-radius:14px}
+.daily-tracker-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.daily-tracker-head strong{font-size:1rem}
+.daily-date{font-size:.8rem;color:#d8e8f2}
+.daily-progress{height:9px;background:#ffffff18;border-radius:999px;overflow:hidden;margin:8px 0 14px}
+.daily-progress-bar{height:100%;width:0;background:#8fe2ed;border-radius:999px;transition:width .2s ease}
+.daily-tasks{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.daily-task{border:1px solid #ffffff26;background:#ffffff0d;color:#fff;border-radius:10px;padding:9px 8px;text-align:center;cursor:pointer;user-select:none}
+.daily-task input{display:none}
+.daily-task.active{background:#ffffff25;border-color:#8fe2ed}
+.daily-task .task-count{display:block;font-weight:850;font-size:.95rem}
+.daily-task .task-label{display:block;font-size:.72rem;color:#d8e8f2;margin-top:2px}
+.daily-summary{font-size:.82rem;color:#d8e8f2;margin-top:9px}
+
+/* Copy buttons */
+.template-wrap{position:relative}
+.template{padding-right:92px}
+.copy-btn{position:absolute;top:10px;right:10px;border:1px solid var(--line);background:white;color:var(--ink);border-radius:8px;padding:6px 10px;font:inherit;font-size:.78rem;font-weight:800;cursor:pointer;box-shadow:0 2px 7px #102a4310}
+.copy-btn:hover{background:#f1f7fb}
+.copy-btn.copied{background:#e7f8f3;color:#08766b;border-color:#b7e7dc}
+
+/* Persistent checklist state */
+.check label{cursor:pointer}
+.check input{width:16px;height:16px;vertical-align:-3px;margin-right:5px}
+@media(max-width:700px){
+  .daily-tasks{grid-template-columns:repeat(2,1fr)}
+  .daily-tracker-head{align-items:flex-start;flex-direction:column}
+  .template{padding-right:16px;padding-top:42px}
+  .copy-btn{top:10px;right:10px}
+}
+</style></head><body><main class="wrap">
+<header class="hero" id="top"><div class="eyebrow">Graham's practical playbook</div><h1>Remote WordPress<br>Job Hunting System</h1><p>Find the right clients. Build long-term relationships. Turn your experience into stable remote work.</p><div class="goals"><div><b>$15/hour+</b><span>Target rate</span></div><div><b>20–40 hrs/week</b><span>Ongoing work</span></div><div><b>Australia first</b><span>Timezone-friendly</span></div><div><b>Long-term</b><span>Agency partnership</span></div></div>
+<div class="profile-links" aria-label="My links">
+  <a href="https://www.upwork.com/freelancers/~01a9fa727d39310eaa" target="_blank" rel="noopener"><span class="ico">↗</span> Upwork</a>
+  <a href="https://wa.me/639556229968" target="_blank" rel="noopener"><span class="ico">↗</span> WhatsApp</a>
+  <a href="https://v2.onlinejobs.ph/jobseekers/info/2390171" target="_blank" rel="noopener"><span class="ico">↗</span> OnlineJobs.ph</a>
+  <a href="https://webleta.com/" target="_blank" rel="noopener"><span class="ico">↗</span> Webleta</a>
+</div>
+<div class="daily-tracker" id="dailyTracker">
+  <div class="daily-tracker-head">
+    <strong>Today's Job-Hunting Tracker</strong>
+    <span class="daily-date" id="dailyTrackerDate">Today</span>
+  </div>
+  <div class="daily-progress"><div class="daily-progress-bar" id="dailyProgressBar"></div></div>
+  <div class="daily-tasks">
+    <label class="daily-task"><input type="checkbox" data-daily-task="agencies"><span class="task-count" id="count-agencies">0/5</span><span class="task-label">New agencies</span></label>
+    <label class="daily-task"><input type="checkbox" data-daily-task="contacts"><span class="task-count" id="count-contacts">0/5</span><span class="task-label">Contacts</span></label>
+    <label class="daily-task"><input type="checkbox" data-daily-task="followups"><span class="task-count" id="count-followups">0/5</span><span class="task-label">Follow-ups</span></label>
+    <label class="daily-task"><input type="checkbox" data-daily-task="jobs"><span class="task-count" id="count-jobs">0/5</span><span class="task-label">Quality jobs</span></label>
+    <label class="daily-task"><input type="checkbox" data-daily-task="upwork"><span class="task-count" id="count-upwork">0/5</span><span class="task-label">Upwork proposals</span></label>
+  </div>
+  <div class="daily-summary" id="dailySummary">0/25 activities completed today</div>
+</div>
+</header>
+<nav><a href="#position">Positioning</a><a href="#agency">Ideal agency</a><a href="#outreach">Outreach</a><a href="#platforms">Platforms</a><a href="#routine">Daily routine</a><a href="#tracker">Tracker</a><a href="#review">Weekly review</a></nav>
+
+<section id="position"><div class="head"><div class="num">01</div><div><h2>Your positioning</h2><p>Sell production capacity, not just freelance hours.</p></div></div><div class="callout"><div class="quote">“I help agencies handle their WordPress production workload.”</div>Position yourself as a <b>Senior WordPress Developer / Remote WordPress Production Developer</b>—an experienced extension of an agency's team.</div><div class="grid"><article class="card"><h3>What you can handle</h3><span class="tag">Figma → WordPress</span><span class="tag">Divi</span><span class="tag">Elementor</span><span class="tag">WooCommerce</span><span class="tag">ACF</span><span class="tag">HTML/CSS/JS</span><span class="tag">Responsive fixes</span><span class="tag">Custom functionality</span><span class="tag">Integrations</span><span class="tag">Maintenance</span><span class="tag">Bug fixing</span><span class="tag">Speed / SEO</span><span class="tag">Migrations</span><span class="tag">Content updates</span></article><article class="card"><h3>Your value proposition</h3><p>The agency's designers can design. Account managers can manage clients. <b>You build, fix and maintain the websites.</b></p><p>Lead with experience, reliability, availability and production support. Discuss your $15/hour starting rate when relevant—don't make price your whole pitch.</p></article></div></section>
+
+<section id="agency"><div class="head"><div class="num">02</div><div><h2>Find your ideal agency</h2><p>Look for teams likely to need recurring production support.</p></div></div><div class="three"><article class="card"><h3>Best-fit profile</h3><ul><li>About 10–30 employees</li><li>WordPress-heavy portfolio</li><li>Divi, Elementor or WooCommerce projects</li><li>20–50+ websites/projects</li><li>Active clients and maintenance work</li><li>Designers, account managers and PMs</li></ul></article><article class="card"><h3>Target markets</h3><ul><li>Australia first</li><li>New Zealand second</li><li>US, UK and Canada next</li><li>Web design/development agencies</li></ul></article><article class="card"><h3>Skip / deprioritize</h3><ul><li>Inactive agencies</li><li>No WordPress work</li><li>Mostly branding or social media</li><li>Solo freelancers with little recurring work</li><li>Very large enterprise teams</li></ul></article></div><article class="card" style="margin-top:14px"><h3>Where to find agencies</h3><p><b>Google:</b> “WordPress agency Melbourne”, “Elementor agency Australia”, “WooCommerce agency Sydney”, “web design agency Brisbane”.</p><p><b>LinkedIn:</b> check employee count, services, portfolio and decision-makers.</p><p><b>Directories:</b> Clutch, DesignRush, Sortlist and GoodFirms. Review agency websites directly, too.</p></article></section>
+
+<section id="research"><div class="head"><div class="num">03</div><div><h2>Qualify each agency quickly</h2><p>Spend around 2–4 minutes checking each prospect.</p></div></div><div class="grid"><article class="card check"><h3>Quick checklist</h3><label><input type="checkbox" id="persist-check-1"> They build WordPress websites</label><label><input type="checkbox" id="persist-check-2"> They offer maintenance or support</label><label><input type="checkbox" id="persist-check-3"> Their portfolio has multiple projects</label><label><input type="checkbox" id="persist-check-4"> Divi, Elementor, WooCommerce or Figma is relevant</label><label><input type="checkbox" id="persist-check-5"> The agency appears active</label><label><input type="checkbox" id="persist-check-6"> I found a decision-maker</label></article><article class="card"><h3>Who to contact</h3><p><b>First:</b> Founder, owner, managing director.</p><p><b>Second:</b> Technical director, head of development, development manager.</p><p><b>Third:</b> Project manager, operations manager, digital director.</p><p class="muted">Start with one relevant person per agency.</p></article></div></section>
+
+<section id="outreach"><div class="head"><div class="num">04</div><div><h2>Cold outreach</h2><p>Short, specific and helpful beats a long sales pitch.</p></div></div><article class="card"><h3>Copy-and-edit email</h3><div class="template-wrap">
+<button class="copy-btn" type="button" onclick="copyTemplate(this)">Copy</button>
+<div class="template">Subject: Extra WordPress development support for [Agency Name]
+
+Hi [Name],
+
+I came across [Agency Name] and noticed you work with quite a few WordPress websites.
+
+I'm a senior WordPress developer based in the Philippines, specializing in Divi, Elementor, WooCommerce, ACF and custom HTML/CSS/JS.
+
+I help agencies with the development/production side of their projects — turning Figma designs into WordPress, handling responsive fixes, custom functionality, integrations, maintenance and general WordPress development.
+
+I'm currently looking for a long-term remote agency partnership and can work around 20–40 hours/week.
+
+My portfolio:
+https://webleta.com/
+
+If you ever need an extra WordPress developer to take work off your team's plate, I'd be happy to have a quick chat.
+
+Thanks,
+Graham</div>
+</div><p class="muted">Personalize one sentence based on something real you saw on their website. Don't lead with your rate.</p></article><div class="grid" style="margin-top:14px"><article class="card"><h3>LinkedIn version</h3><div class="template-wrap">
+<button class="copy-btn" type="button" onclick="copyTemplate(this)">Copy</button>
+<div class="template">Hi [Name],
+
+I came across [Agency Name] and noticed you do quite a bit of WordPress work.
+
+I'm a senior WordPress developer based in the Philippines with 7+ years of experience, mainly working with Divi, Elementor, WooCommerce, ACF and custom HTML/CSS/JS.
+
+I help agencies handle their website production workload and I'm looking for a long-term remote partnership, around 20–40 hours/week.
+
+Portfolio: https://webleta.com/
+
+If you ever need another developer on your production team, I'd be happy to chat.
+
+Thanks,
+Graham</div>
+</div></article><article class="card"><h3>Follow-up</h3><div class="template-wrap">
+<button class="copy-btn" type="button" onclick="copyTemplate(this)">Copy</button>
+<div class="template">Hi [Name],
+
+Just wanted to follow up on my previous message.
+
+If your team ever needs additional WordPress development capacity for client projects, I'd be happy to help on an ongoing basis.
+
+Happy to have a quick chat if it could be useful.
+
+Thanks,
+Graham</div>
+</div><p><b>Timing:</b> first follow-up after 5–7 business days; second 7–10 days later; final 2–3 weeks later. Then pause.</p></article></div></section>
+
+<section id="platforms"><div class="head"><div class="num">05</div><div><h2>Where to find jobs</h2><p>Prioritize platforms that hire Filipinos or allow worldwide remote work.</p></div></div><div class="three"><article class="card"><h3>Filipino-friendly</h3><ul><li><a href="https://www.onlinejobs.ph/">OnlineJobs.ph</a></li><li><a href="https://www.virtualstaff.ph/">VirtualStaff.ph</a></li><li><a href="https://ph.jobstreet.com/">JobStreet Philippines</a></li><li><a href="https://ph.indeed.com/">Indeed Philippines</a></li></ul></article><article class="card"><h3>International remote</h3><ul><li><a href="https://himalayas.app/">Himalayas</a></li><li><a href="https://remotive.com/">Remotive</a></li><li><a href="https://weworkremotely.com/">We Work Remotely</a></li><li><a href="https://wellfound.com/">Wellfound</a></li><li><a href="https://arc.dev/">Arc</a></li><li><a href="https://remote.co/">Remote.co</a></li></ul></article><article class="card"><h3>Additional sources</h3><ul><li><a href="https://www.upwork.com/">Upwork</a></li><li><a href="https://www.linkedin.com/jobs/">LinkedIn Jobs</a></li><li><a href="https://remoteok.com/">Remote OK</a></li><li><a href="https://www.workingnomads.com/jobs">Working Nomads</a></li><li><a href="https://dynamitejobs.com/">Dynamite Jobs</a></li><li><a href="https://jobs.wordpress.net/">WordPress Jobs</a></li></ul></article></div><div class="callout"><b>Before applying:</b> verify that the role accepts applicants from the Philippines and fits your timezone and working-hour needs.</div></section>
+
+<section id="keywords"><div class="head"><div class="num">06</div><div><h2>Search keywords</h2><p>Search titles and the actual work—not only “WordPress Developer”.</p></div></div><article class="card"><span class="tag">WordPress Developer</span><span class="tag">Senior WordPress Developer</span><span class="tag">WordPress Specialist</span><span class="tag">Divi Developer</span><span class="tag">Elementor Developer</span><span class="tag">WooCommerce Developer</span><span class="tag">WordPress Front End Developer</span><span class="tag">Website Developer</span><span class="tag">Web Designer / Developer</span><span class="tag">WordPress Maintenance</span><span class="tag">Website Production</span><span class="tag">WordPress Support</span><p>Also search “Web Specialist”, “Website Production Specialist”, “Website Support” and “Front End Developer” if most of the work is WordPress.</p></article></section>
+
+<section id="routine"><div class="head"><div class="num">07</div><div><h2>Daily routine</h2><p>Use the same repeatable workflow each weekday.</p></div></div><div class="steps"><div class="step"><div><b>Find 5 agencies</b><p>Research website, portfolio, services and contact person.</p></div><span class="target">5 new/day</span></div><div class="step"><div><b>Contact 5 agencies</b><p>Personalize the email or LinkedIn message; log each contact.</p></div><span class="target">5 new/day</span></div><div class="step"><div><b>Follow up with 5 old contacts</b><p>Check tracker and follow-up dates.</p></div><span class="target">5/day</span></div><div class="step"><div><b>Apply to 5 quality jobs</b><p>Check Filipino-friendly and international listings.</p></div><span class="target">5/day</span></div><div class="step"><div><b>Send 3–5 Upwork proposals</b><p>Focus on ongoing agency work and 20–40 hours/week.</p></div><span class="target">3–5/day</span></div><div class="step"><div><b>Update your tracker</b><p>Record applications, replies, status and next follow-up.</p></div><span class="target">Daily</span></div></div><p class="muted">Suggested order: outreach → follow-ups → OnlineJobs.ph → JobStreet / Indeed → Himalayas / Remotive → LinkedIn → We Work Remotely / Wellfound → Upwork.</p></section>
+
+<section id="upwork"><div class="head"><div class="num">08</div><div><h2>Upwork strategy</h2><p>Choose long-term opportunities over tiny one-off tasks.</p></div></div><div class="grid"><article class="card"><h3>Prioritize</h3><ul><li>Ongoing WordPress development</li><li>20–40 hours/week</li><li>Divi/Elementor across client sites</li><li>Agency production support</li><li>Maintenance and recurring improvements</li></ul></article><article class="card"><h3>Usually skip</h3><ul><li>Unrealistically low budgets for large builds</li><li>Vague scope and unclear expectations</li><li>Uncredible client history</li><li>Work unrelated to your target positioning</li></ul></article></div><article class="card" style="margin-top:14px"><h3>Proposal opening</h3><div class="template-wrap">
+<button class="copy-btn" type="button" onclick="copyTemplate(this)">Copy</button>
+<div class="template">Hi,
+
+I'm a senior WordPress developer with 7+ years of experience, specializing in Divi, Elementor, WooCommerce and custom WordPress development.
+
+I've worked extensively with Figma-to-WordPress builds, responsive implementation, custom CSS/JS, ACF, integrations, performance optimization and ongoing website maintenance.
+
+I can work as an ongoing extension of your development team rather than just handling a single project.
+
+Portfolio: https://webleta.com/
+
+[Add 2–3 sentences directly addressing the client's project.]</div>
+</div></article></section>
+
+<section id="tracker"><div class="head"><div class="num">09</div><div><h2>Track every opportunity</h2><p>A simple spreadsheet prevents missed follow-ups.</p></div></div><div class="table"><table><thead><tr><th>Date</th><th>Company</th><th>Role / contact</th><th>Country</th><th>Channel</th><th>Rate / hours</th><th>Status</th><th>Follow-up</th><th>Notes / URL</th></tr></thead><tbody><tr><td>YYYY-MM-DD</td><td>Agency</td><td>Name / role</td><td>Australia</td><td>Cold outreach</td><td>—</td><td>Contacted</td><td>YYYY-MM-DD</td><td>Portfolio note / link</td></tr><tr><td>YYYY-MM-DD</td><td>Company</td><td>WordPress Developer</td><td>Remote</td><td>Job board</td><td>$15/hr, 30h</td><td>Applied</td><td>YYYY-MM-DD</td><td>Job link</td></tr></tbody></table></div><div class="grid" style="margin-top:14px"><article class="card"><h3>Status options</h3><p>New → Contacted → Follow-up 1 → Follow-up 2 → Replied → Interview → Test → Negotiation → Hired / Rejected / No response / Future.</p></article><article class="card"><h3>Fields to keep</h3><p>Date, company, position, country, platform, contact, email/LinkedIn, URL, type, rate, hours, status, follow-up date and notes.</p></article></div></section>
+
+<section id="review"><div class="head"><div class="num">10</div><div><h2>Weekly targets and review</h2><p>Measure conversations and progress, not just activity.</p></div></div><div class="three"><article class="card"><h3>25</h3><p>New agency contacts/week</p></article><article class="card"><h3>25</h3><p>Follow-ups/week</p></article><article class="card"><h3>25</h3><p>Quality applications/week</p></article><article class="card"><h3>15–25</h3><p>Upwork proposals/week</p></article><article class="card"><h3>Friday review</h3><p>Count replies, positive replies, calls, interviews, tests and offers.</p></article><article class="card"><h3>Adjust next week</h3><p>Compare countries, platforms and job titles. Spend more time where conversations happen.</p></article></div><article class="card check" style="margin-top:14px"><h3>Friday checklist</h3><label><input type="checkbox" id="persist-check-7"> Count new agencies and applications</label><label><input type="checkbox" id="persist-check-8"> Count replies, calls, interviews and offers</label><label><input type="checkbox" id="persist-check-9"> Compare results by platform and country</label><label><input type="checkbox" id="persist-check-10"> Choose one improvement for next week</label></article></section>
+
+<section id="goal"><div class="head"><div class="num">11</div><div><h2>The outcome you're working toward</h2><p>Build a repeatable pipeline for a stable remote role.</p></div></div><article class="card"><div class="steps"><div class="step"><div><b>Find a relevant agency or employer</b><p>They need WordPress development capacity.</p></div></div><div class="step"><div><b>Start a conversation</b><p>Show relevant experience and how you can help.</p></div></div><div class="step"><div><b>Interview, trial or project</b><p>Demonstrate reliable delivery and communication.</p></div></div><div class="step"><div><b>Secure an ongoing contract</b><p>Target 20–40 hours/week at $15/hour or better.</p></div></div></div><div class="callout"><b>Remember:</b> You are not selling “cheap Filipino labor.” You are selling experienced WordPress development capacity. Your location is simply part of a practical remote arrangement.</div></article></section>
+<footer>Remote WordPress Job Hunting System · Graham Orprecio · <a href="https://webleta.com/">webleta.com</a><br><a href="#top">Back to top ↑</a> · Use browser Print → Save as PDF for a printable version.</footer>
+</main>
+<script>
+(function(){
+  const DAILY_KEY = 'rw-job-system-daily-v1';
+  const CHECK_KEY = 'rw-job-system-checks-v1';
+
+  // Philippine time, with a new "day" beginning at 6:00 AM.
+  function getPHDayKey(){
+    const now = new Date();
+    const phString = now.toLocaleString('en-US', {timeZone:'Asia/Manila'});
+    const ph = new Date(phString);
+    if (ph.getHours() < 6) ph.setDate(ph.getDate() - 1);
+    const y = ph.getFullYear();
+    const m = String(ph.getMonth()+1).padStart(2,'0');
+    const d = String(ph.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function getPHDisplayDate(){
+    const now = new Date();
+    return new Intl.DateTimeFormat('en-PH', {
+      timeZone:'Asia/Manila', weekday:'long', year:'numeric', month:'short', day:'numeric'
+    }).format(now);
+  }
+
+  function loadDaily(){
+    const today = getPHDayKey();
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(DAILY_KEY) || '{}'); } catch(e){}
+    if (data.date !== today) {
+      data = {date: today, counts:{
+        agencies:0, contacts:0, followups:0, jobs:0, upwork:0
+      }};
+      localStorage.setItem(DAILY_KEY, JSON.stringify(data));
+    }
+    return data;
+  }
+
+  function saveDaily(data){
+    localStorage.setItem(DAILY_KEY, JSON.stringify(data));
+  }
+
+  function renderDaily(){
+    const data = loadDaily();
+    const labels = ['agencies','contacts','followups','jobs','upwork'];
+    let total = 0;
+
+    labels.forEach(key => {
+      const value = Math.max(0, Math.min(5, Number(data.counts[key]) || 0));
+      data.counts[key] = value;
+      total += value;
+      const countEl = document.getElementById('count-' + key);
+      if (countEl) countEl.textContent = value + '/5';
+    });
+
+    const pct = (total / 25) * 100;
+    const bar = document.getElementById('dailyProgressBar');
+    const summary = document.getElementById('dailySummary');
+    const date = document.getElementById('dailyTrackerDate');
+
+    if (bar) bar.style.width = pct + '%';
+    if (summary) summary.textContent = total + '/25 activities completed today';
+    if (date) date.textContent = getPHDisplayDate() + ' · resets 6:00 AM PH';
+
+    // The tracker items are clickable and represent increments, not just yes/no.
+    document.querySelectorAll('[data-daily-task]').forEach(el => {
+      const key = el.getAttribute('data-daily-task');
+      const input = el.querySelector('input');
+      const count = data.counts[key] || 0;
+      if (input) input.checked = count >= 5;
+      el.classList.toggle('active', count > 0);
+    });
+    saveDaily(data);
+  }
+
+  document.addEventListener('click', function(e){
+    const task = e.target.closest('[data-daily-task]');
+    if (!task) return;
+    const key = task.getAttribute('data-daily-task');
+    const data = loadDaily();
+    const current = Number(data.counts[key]) || 0;
+    data.counts[key] = current >= 5 ? 0 : current + 1;
+    saveDaily(data);
+    renderDaily();
+  });
+
+  // Persistent checklists. They reset with the same 6:00 AM PH daily boundary.
+  function loadChecks(){
+    const today = getPHDayKey();
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(CHECK_KEY) || '{}'); } catch(e){}
+    if (data.date !== today) data = {date:today, checks:{}};
+    return data;
+  }
+
+  function initChecks(){
+    const data = loadChecks();
+    document.querySelectorAll('.check input[type="checkbox"]').forEach(input => {
+      if (!input.id) return;
+      input.checked = !!data.checks[input.id];
+      input.addEventListener('change', function(){
+        const fresh = loadChecks();
+        fresh.checks[input.id] = input.checked;
+        localStorage.setItem(CHECK_KEY, JSON.stringify(fresh));
+      });
+    });
+    localStorage.setItem(CHECK_KEY, JSON.stringify(data));
+  }
+
+  window.copyTemplate = async function(button){
+    const wrap = button.closest('.template-wrap');
+    const template = wrap && wrap.querySelector('.template');
+    if (!template) return;
+
+    const text = template.innerText.replace(/\n{3,}/g, '\n\n').trim();
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch(e) {
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+
+    const original = button.textContent;
+    button.textContent = 'Copied!';
+    button.classList.add('copied');
+    setTimeout(() => {
+      button.textContent = original;
+      button.classList.remove('copied');
+    }, 1400);
+  };
+
+  function start(){
+    renderDaily();
+    initChecks();
+
+    // Refresh at intervals so crossing 6:00 AM automatically starts a new day
+    // even if the page remains open overnight.
+    setInterval(function(){
+      renderDaily();
+      initChecks();
+    }, 60000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+</body></html>
