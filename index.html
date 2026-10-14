@@ -732,7 +732,7 @@ img.favcon {
 </style>
 <script>
   /* Apply saved theme before first paint to avoid a flash. Default is light. */
-  try{ if(localStorage.getItem('webleta-theme') === 'light') document.documentElement.classList.add('light'); }catch(e){}
+  try{ if(localStorage.getItem('webleta-theme') === 'dark') document.documentElement.classList.add('dark'); }catch(e){}
 </script>
 </head>
 <body>
@@ -1293,7 +1293,7 @@ img.favcon {
   burger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
   document.querySelectorAll('.mnav').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
-  /* THEME SWITCH (light is default; choice persists across visits)*/
+  /* THEME SWITCH (light is default; choice persists across visits)
   const themeSwitch = document.getElementById('themeSwitch');
   const rootEl = document.documentElement;
   themeSwitch.setAttribute('aria-checked', rootEl.classList.contains('dark') ? 'true' : 'false');
@@ -1301,16 +1301,16 @@ img.favcon {
     const dark = rootEl.classList.toggle('dark');
     themeSwitch.setAttribute('aria-checked', dark ? 'true' : 'false');
     try{ localStorage.setItem('webleta-theme', dark ? 'dark' : 'light'); }catch(e){}
-  });
+  });*/
 
 
 
   // THEME SWITCH (dark is default; choice persists across visits)
-//let savedTheme = null;
-//try{ savedTheme = localStorage.getItem('webleta-theme'); }catch(e){}
-//if (savedTheme !== 'light') {
-  //document.documentElement.classList.add('dark');
-//}
+let savedTheme = null;
+try{ savedTheme = localStorage.getItem('webleta-theme'); }catch(e){}
+if (savedTheme !== 'light') {
+  document.documentElement.classList.add('dark');
+}
 
 const themeSwitch = document.getElementById('themeSwitch');
 const rootEl = document.documentElement;
