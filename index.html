@@ -548,6 +548,46 @@ img.favcon {
   .port-card h4{margin:0; font-family:'Fraunces',serif; font-weight:500; font-size:19px;}
   .port-more{text-align:center; margin-top:50px;}
 
+
+  /* ============ COMPANIES (running logos) ============ */
+  .companies{
+    padding:15px 0; background:var(--ink-2); border-bottom:1px solid var(--line-dark);
+  }
+  @media (max-width:760px){ .companies{padding:26px 0;} }
+  .marquee{
+    position:relative; width:100%; overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+            mask-image:linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  }
+  .marquee-track{
+    display:flex; width:max-content; align-items:center;
+    animation:marqueeScroll var(--dur,36s) linear infinite; will-change:transform;
+  }
+  .marquee:hover .marquee-track{animation-play-state:paused;}
+  .marquee-item{
+    flex:0 0 auto; width:183px; height:51px; margin-right:16px; padding:9px 16px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--ink); border:1px solid var(--line-dark); border-radius:14px;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .marquee-item:hover{border-color:rgba(14,143,118,.4); transform:translateY(-3px);}
+  .marquee-item img{
+    height:26px; width:auto; max-width:100%; object-fit:contain;
+    opacity:.6; transition:opacity .3s var(--ease);
+  }
+  .marquee-item:hover img{opacity:1;}
+  @keyframes marqueeScroll{ from{transform:translateX(0);} to{transform:translateX(calc(var(--set-w, 50%) * -1));} }
+  @media (max-width:640px){
+    .marquee-item{width:144px; height:60px; margin-right:12px; padding:0 20px; border-radius:12px;}
+    .marquee-item img{height:20px;}
+  }
+  /* logos are #363636, so lift them to light grey on the dark theme */
+  html.dark .marquee-item img{filter:brightness(0) invert(1); opacity:.5;}
+  html.dark .marquee-item:hover img{opacity:.95;}
+  html.dark .marquee-item:hover{border-color:rgba(23,217,180,.4);}
+  /* keep the logo loop running even when the global reduced-motion rule is active */
+  .marquee-track{animation-duration:var(--dur,36s) !important; animation-iteration-count:infinite !important;}
+
   /* ============ PRICING ============ */
   .price-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:stretch;}
   @media (max-width:900px){ .price-grid{grid-template-columns:1fr; max-width:420px; margin:0 auto;} }
@@ -1139,6 +1179,23 @@ img.favcon {
     </div>
   </section>
 
+
+  <!-- COMPANIES -->
+  <section id="companies" class="companies" aria-label="Companies I have worked with">
+    <div class="marquee">
+      <div class="marquee-track">
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/comp1.png" alt="Company logo 1" height="26" decoding="async"></div>
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/comp2.png" alt="Company logo 2" height="26" decoding="async"></div>
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/comp3.png" alt="Company logo 3" height="26" decoding="async"></div>
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/comp4.png" alt="Company logo 4" height="26" decoding="async"></div>
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/Comp5.png" alt="Company logo 5" height="26" decoding="async"></div>
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/comp6.png" alt="Company logo 6" height="26" decoding="async"></div>
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/comp7.png" alt="Company logo 7" height="26" decoding="async"></div>
+          <div class="marquee-item"><img src="https://raw.githubusercontent.com/grahammelbentco-afk/portfolio/refs/heads/main/media/Companies/Comp8.png" alt="Company logo 8" height="26" decoding="async"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICING -->
   <section id="rate" class="bg-ink2">
     <div class="wrap">
@@ -1548,6 +1605,36 @@ themeSwitch.addEventListener('click', () => {
 
   window.addEventListener('resize', applyZoom);
   window.addEventListener('DOMContentLoaded', applyZoom);
+</script>
+
+<script>
+(function(){
+  const marquee = document.querySelector('.marquee');
+  const track = marquee && marquee.querySelector('.marquee-track');
+  if(!track) return;
+  const originals = Array.from(track.children);
+  function build(){
+    // reset to just the originals
+    Array.from(track.children).forEach(el => { if(!originals.includes(el)) el.remove(); });
+    track.style.removeProperty('--set-w');
+    const setW = originals.reduce((w, el) => w + el.offsetWidth + parseFloat(getComputedStyle(el).marginRight), 0);
+    const viewW = marquee.clientWidth;
+    let total = setW;
+    while(total < viewW + setW){
+      originals.forEach(el => {
+        const c = el.cloneNode(true);
+        c.setAttribute('aria-hidden','true');
+        c.querySelector('img').alt = '';
+        track.appendChild(c);
+      });
+      total += setW;
+    }
+    track.style.setProperty('--set-w', setW + 'px');
+    track.style.setProperty('--dur', Math.round(setW / 55) + 's'); // ~55px per second
+  }
+  build();
+  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 200); });
+})();
 </script>
 
 </body>
