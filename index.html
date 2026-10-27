@@ -1308,16 +1308,22 @@ img.favcon {
         </ul>
       </div>
       <div class="reveal">
-        <form id="contactForm">
-          <div class="field-row">
-            <div class="field"><input type="text" placeholder="First name" required></div>
-            <div class="field"><input type="text" placeholder="Last name" required></div>
-          </div>
-          <div class="field"><input type="email" placeholder="Email address" required></div>
-          <div class="field"><textarea placeholder="Tell me about your agency or project"></textarea></div>
-          <button type="submit" class="btn btn-grad" style="width:100%;">Send message</button>
-          <p class="form-msg" id="formMsg">Thanks — I'll be in touch within one business day.</p>
-        </form>
+<form id="contactForm">
+  <input type="hidden" name="access_key" value="c68d0b77-e6e3-4617-a053-289398837408">
+  <input type="hidden" name="subject" value="New enquiry from webleta.com">
+  <input type="hidden" name="from_name" value="Webleta Website">
+  <!-- spam honeypot -->
+  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+
+  <div class="field-row">
+    <div class="field"><input type="text" name="first_name" placeholder="First name" required></div>
+    <div class="field"><input type="text" name="last_name" placeholder="Last name" required></div>
+  </div>
+  <div class="field"><input type="email" name="email" placeholder="Email address" required></div>
+  <div class="field"><textarea name="message" placeholder="Tell me about your agency or project" required></textarea></div>
+  <button type="submit" class="btn btn-grad" style="width:100%;">Send message</button>
+  <p class="form-msg" id="formMsg"></p>
+</form>
       </div>
     </div>
   </section>
@@ -1537,16 +1543,43 @@ themeSwitch.addEventListener('click', () => {
     btn.addEventListener('mouseleave', () => btn.style.transform = '');
   });
 
-  // CONTACT FORM (front-end only demo)
-  const form = document.getElementById('contactForm');
-  const msg = document.getElementById('formMsg');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+// CONTACT FORM (Web3Forms)
+const form = document.getElementById('contactForm');
+const msg = document.getElementById('formMsg');
+const submitBtn = form.querySelector('button[type="submit"]');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const original = 'Send message';
+  submitBtn.textContent = 'Sending...';
+  submitBtn.disabled = true;
+  msg.classList.remove('show');
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      msg.textContent = "Thanks — I'll be in touch within one business day.";
+      msg.classList.add('show');
+      submitBtn.textContent = 'Sent ✓';
+      form.reset();
+      setTimeout(() => { submitBtn.textContent = original; }, 4000);
+    } else {
+      throw new Error(data.message || 'Failed');
+    }
+  } catch (err) {
+    msg.textContent = 'Something went wrong. Please email me directly at graham.orprecio12@gmail.com.';
     msg.classList.add('show');
-    form.querySelector('button').textContent = 'Sent ✓';
-    setTimeout(() => { form.reset(); }, 300);
-  });
-})();
+    submitBtn.textContent = original;
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
 </script>
 
 <script>
