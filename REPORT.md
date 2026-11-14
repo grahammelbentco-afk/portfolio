@@ -10,7 +10,19 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 46: CTA desk dressed as our studio, stronger text gradient (latest)
+## Revision 47: CTA photo regenerated at full quality, no person (latest)
+
+- **Ask (Jasper):** higher quality, remove the person. The edited laptop and phone screens didn't make sense.
+- **Photo (fal flux-pro v1.1-ultra, 21:9 raw, 3136×1344, 2 generated, $0.12):** `cta-hq-b` is used (`public/images/cta-studio-hq-{1200,2000}.webp`):
+  - a navy desk from above with no people
+  - the laptop and phone with **screens off**, so there's no fake UI
+  - wireframe sketches on the left, and swatches in navy, teal, seafoam and coral with a pencil, coffee and plants on the right
+  - an empty centre
+
+  The garbled lettering on the wireframe sheets was inpainted (fal flux-pro/v1/fill with a hand-drawn mask, $0.05) and composited back at full resolution, in the web copy only. `cta-hq-a` was rejected for garbled swatch labels.
+- **CTA photo spend, Revisions 42–47:** about $0.57.
+
+## Revision 46: CTA desk dressed as our studio, stronger text gradient
 
 - **Ask (Jasper):** the clean centre works, but the edge objects (microscope, mixer, lamps) don't say what we do. He also suggested a gradient behind the text, as in earlier sections.
 - **Edit (fal flux-pro/kontext, $0.04 each, 2 edits, $0.08):** the source is the Revision 45 cleared desk. Edit A is used (`public/images/cta-workdesk-*.webp`): a laptop and phone showing site layouts, website wireframe sketches, a colour-swatch fan in Aqua, Seafoam and Ember tones, a tablet with stylus and coffee mugs. The centre is still empty and the person is still at the bottom edge. Edit B was rejected for garbled printout text.
