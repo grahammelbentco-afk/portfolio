@@ -10,7 +10,80 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 39: Services as a true bento, each tile showing the service in use (latest)
+## Revision 41: Services bento made our own, type and contrast aligned (latest)
+
+- **Ask (Jasper):**
+  - He prefers the Revision 40 first-pass structure (hero left, tiles right, a bottom row), but made our own rather than a copy of the reference.
+  - Remove the half-moon sparks.
+  - Fix the corner residue and the cut-off look on Content marketing.
+  - Match fonts and the highlighter to the established sections.
+  - Check contrast.
+  - Icons: lighter glass, all white. Logos: white discs with a ring in the tile colour, as before.
+- **Layout (12 columns):**
+  - Rows 1–2: **Website design and development** (hero, Aqua, 6 columns × 2 rows) | **Web applications**, wide across the top right on the laptop with a new coded **job-booking dashboard** | **SEO** and **Email marketing** under it.
+  - Row 3: three equal tiles: **Social media marketing**, **Content marketing**, **Mobile apps**.
+  - The call tile is now a closing text line under the grid: "Not sure where to start? … Book a call".
+  - At 640–1023px: 2 columns. Below 640px: 1 column.
+- **Ours, not the reference's:**
+  - Every tile's top-right corner is **cut at the Split Arc's 24° channel** (a white notch; the tile's top-right radius is 0). The spark in the notch was tried and removed at Jasper's request.
+  - On hover, the duotone photo gives way to the **photo's real colour** (a second, untinted image fades in over 700ms; off under reduced motion).
+- **Corner residue (cause and fix):** the tile clips its children to its rounded corner, so the white notch was clipped on the same curve. The anti-aliased edge left an arc of tile colour. The notched corner is now square. A hairline edge (8% Deep Water) on every tile, plus a top tint on the pale Shell tile, keeps Content marketing's corner visible against the white page.
+- **Type, matched to the established sections:**
+  - Section title uses the shared `.sec-title` (700, `clamp(2.25rem … 4.75rem)`, −0.04em).
+  - Tile titles match the Benefits card titles (700, `clamp(1.5rem … 2rem)`, −0.03em). The hero tile is 700, up to 3.5rem.
+  - Body text matches the Benefits card body (15px, 400, line height 1.5).
+  - The heading highlighter is **Seafoam at 0.34em**, exactly as in About. It was Aqua.
+- **Icons:** very subtle frosted glass (8px blur), a two-tone hairline border (40% white inside, 10% Deep Water outside) and a soft shadow under the chip, with no shadow on the glyph. The glyph colour follows the photo behind it: **Deep Water** where the corner is light (Website design, SEO, Social, Content: `lightCorner` in `content/homepage.ts`, glass 30% white) and **white** where it's dark (Web apps, Email, Mobile: glass 14% Deep Water). **Logos:** white discs with a 2px ring in the tile colour, overlapping.
+- **Contrast, measured from rendered pixels** (`qa/contrast_services.py`: text and icons hidden, background captured, WCAG ratio at the darkest 5% of pixels), at 1440 and 390:
+  - Titles: 4.3–10.4:1. Needs 3:1, as large text.
+  - Body: 5.5–10.6:1. Needs 4.5:1.
+  - Icons: **4.4–19.5:1** at 1440 and 390. Needs 3:1. All pass, including Web apps on mobile, which was 3.0:1 until its glass took the faint Deep Water tint.
+- **Awwwards MCP:** searches for bento, cards and grid returned nothing usable.
+- **QA:**
+  - Services checks updated: order, device photos cover their tiles, all photos duotone, 7 corner cuts, hover brings back the true colour, hero tech logos.
+  - The closing line sits in its own container, so it passes the side-padding check.
+  - `qa/qa.py` **146/146**.
+- Screenshots: `screenshots/2026-11-14_services-r41-own/`.
+- **No fal spend. Not pushed.**
+
+## Revision 40: Services colour-blocked after Graham's reference, core services first
+
+- **Ask (Jasper):**
+  - The section didn't pop. Follow Graham's colour-blocked reference ("Ten services. One goal.").
+  - Then reshuffle the rows and columns so it doesn't copy the reference, and let the core services stand out more than the optional ones.
+  - Rewrite the copy in our own voice (humanizer skill) and use existing images.
+- **Content source:** Notion's "Agency Business Model & Positioning Notes" (Nov 12, 2026), with seven proposed services, the same as V1.6 p.5.
+  - Notion says which services launch first is still open, so the Revision 39 Available now / Coming soon split is gone.
+  - The hero's logos (WordPress, Next.js, Astro, React) follow Notion's "flexible technology stack" principle (Nov 14).
+  - Core services follow Notion's "web design/development as the clearest core starting offer", then web apps and SEO.
+- **Layout (12 columns, white ground):**
+  - Rows 1–2: **SEO** and **Web applications** stacked (5 columns each), beside the **Website design and development** hero (7 columns × 2 rows, Aqua). The hero is on the right, a mirror image of the reference.
+  - Row 3, a shorter row of supporting services with smaller titles: Email marketing, Social media marketing, Content marketing, Mobile apps.
+  - Row 4: a full-width "Not sure where to start?" strip.
+  - At 640–1023px: 2 columns. Below 640px: 1 column.
+- **Look:**
+  - Solid colour blocks: an **Aqua** hero, then **Ochre**, **Harbour**, **Dusk Violet**, **Kelp**, **Shell** and **Coral Clay**, plus a Deep Water strip.
+  - Existing photos in **duotone** (`mix-blend-mode: luminosity` over the tile colour).
+  - The hero's graphic is a rising "enquiries" chart with an outlined axis word and a small **Ember** spark at the peak.
+  - The heading uses the brand Aqua highlighter.
+  - Email and Mobile reuse the blank-screen laptop and phone with new coded screens: a Harlow Joinery newsletter and a booking app.
+- **Copy (humanizer pass):**
+  - Heading: "Websites first. The rest brings people to them."
+  - Every blurb was rewritten plain, with no contrasts or sales language. All **UNCONFIRMED**.
+- **Images:** all existing (`svc-*`, `bento-wordpress`, `bento-seo`). **No fal spend.**
+- **Removed:** the Revision 39 screens (WordPress editor, Google results, design-to-page, care dashboard) and their CSS. The image files stay.
+- **⚠ For Graham:** all six supporting colours in one section (V1.6 says one per layout); third-party logos; the service hierarchy.
+- **QA:** the Services checks were replaced with 4 new ones:
+  - Notion's seven services, in order
+  - device photos cover their tiles
+  - all six photos are duotone
+  - the hero shows WordPress, Next.js, Astro and React
+
+  `qa/qa.py` **144/144** on the final run (the flaky shader check passed this time).
+- Screenshots: `screenshots/2026-11-14_services-r40-colour/`.
+- **Not pushed.**
+
+## Revision 39: Services as a true bento, each tile showing the service in use
 
 - **Ask (Jasper):** Graham wants a bento. The Revision 38 photos were out of context. Each tile should show the service's real-world use, with real platform logos. Permission to generate new images.
 - **Layout (12 columns, Deep Water):**

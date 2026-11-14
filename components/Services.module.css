@@ -1,23 +1,17 @@
-/* Services (Revision 39): Deep Water ground, a bento of eight services plus a call tile.
-   Live tiles = visual (device photo + coded screen) over a caption band in the tile's
-   V1.6 supporting colour. Coming-soon tiles = dashed outline over 24° channel hairlines.
-   Only hover motion: the stage (photo and screen together) eases up 3%. */
+/* Services (Revision 40): white ground, a colour-blocked bento after Graham's reference.
+   Colours: Aqua hero (core), V1.6 supporting colours for the rest, Deep Water call tile.
+   Photos are duotone: the photo's luminosity over the tile colour. */
 .section {
   padding-block: var(--section-y);
-  background: var(--deep-water);
-  color: var(--white);
+  background: var(--white);
+  color: var(--deep-water);
 }
 
-/* ---- Heading row with the status legend ---- */
+/* ---- Heading ---- */
 .head {
   display: grid;
   gap: var(--s-3);
-  margin-bottom: clamp(40px, 1.5rem + 3vw, 72px);
-}
-
-.headSide {
-  display: grid;
-  gap: var(--s-3);
+  margin-bottom: clamp(32px, 1rem + 3vw, 64px);
 }
 
 @media (min-width: 960px) {
@@ -28,180 +22,144 @@
   }
 
   .head > :first-child {
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 8;
   }
 
-  .headSide {
+  .head > :last-child {
     grid-column: 9 / -1;
   }
 }
 
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-1) var(--s-3);
-  color: var(--cloud);
-  font-size: var(--fs-small);
-  font-weight: 600;
+/* Size, weight and tracking come from the shared .sec-title (same as Benefits). */
+.title {
+  max-width: 18ch;
 }
 
-.legend > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.legendLive,
-.legendSoon,
-.chipDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.legendLive {
-  background: var(--aqua);
-  box-shadow: 0 0 0 4px rgb(60 207 195 / 0.16);
-}
-
-.legendSoon,
-.chipDot {
-  box-shadow: inset 0 0 0 1.5px var(--haze);
+/* The brand highlighter, exactly as About: a Seafoam band low on the line. */
+.mark {
+  background: linear-gradient(to top, var(--seafoam) 0.34em, transparent 0.34em) no-repeat;
+  padding-inline: 0.04em;
+  white-space: nowrap;
 }
 
 /* ---- Grid ---- */
 .bento {
   display: grid;
-  gap: 12px;
+  gap: 14px;
+  grid-template-areas:
+    "hero"
+    "wide"
+    "a"
+    "b"
+    "d"
+    "e"
+    "c";
 }
 
 @media (min-width: 640px) {
   .bento {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .tile[data-service="wordpress"],
-  .tile[data-service="production"],
-  .moreTile {
-    grid-column: 1 / -1;
+    grid-template-areas:
+      "hero hero"
+      "wide wide"
+      "a b"
+      "d e"
+      "c c";
   }
 }
 
+/* Desktop: the hero holds the left half; Web applications runs wide across the top right,
+   SEO and Email sit under it; three equal tiles close the grid. */
 @media (min-width: 1024px) {
   .bento {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-auto-rows: minmax(250px, auto);
-  }
-
-  .tile[data-service="wordpress"] {
-    grid-column: 1 / span 6;
-    grid-row: span 2;
-  }
-
-  .tile[data-service="seo"],
-  .tile[data-service="design"] {
-    grid-column: span 3;
-    grid-row: span 2;
-  }
-
-  .tile[data-service="production"],
-  .moreTile {
-    grid-column: span 6;
-  }
-
-  .tile[data-service="production"] {
-    flex-direction: row;
-  }
-
-  .tile[data-service="production"] .visual {
-    min-height: 300px;
-  }
-
-  .tile[data-service="production"] .caption {
-    flex: 0 0 42%;
-    align-content: end;
-    border-top: 0;
-    border-left: 2px solid color-mix(in srgb, var(--c) 80%, white);
-  }
-
-  .soonTile {
-    grid-column: span 3;
+    grid-template-rows: repeat(2, clamp(260px, 21vw, 330px)) clamp(250px, 20vw, 310px);
+    grid-template-areas:
+      "hero hero hero hero hero hero wide wide wide wide wide wide"
+      "hero hero hero hero hero hero a a a b b b"
+      "d d d d e e e e c c c c";
   }
 }
 
-/* ---- Live tile ---- */
+.tile[data-slot="hero"] { grid-area: hero; }
+.tile[data-slot="a"] { grid-area: a; }
+.tile[data-slot="b"] { grid-area: b; }
+.tile[data-slot="wide"] { grid-area: wide; }
+.tile[data-slot="c"] { grid-area: c; }
+.tile[data-slot="d"] { grid-area: d; }
+.tile[data-slot="e"] { grid-area: e; }
+
+/* ---- Tile ---- */
 .tile {
-  --c: var(--harbour);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--r-lg);
-  background: color-mix(in srgb, var(--c) 30%, var(--abyss));
-  box-shadow: inset 0 0 0 1px rgb(238 247 246 / 0.08);
-}
-
-.tile[data-colour="ochre"] {
-  --c: var(--ochre);
-}
-
-.tile[data-colour="dusk"] {
-  --c: var(--dusk-violet);
-}
-
-.tile[data-colour="kelp"] {
-  --c: var(--kelp);
-}
-
-.visual {
+  --c: var(--aqua);
+  --ink: var(--white);
   position: relative;
-  flex: 1;
+  isolation: isolate;
   min-height: 300px;
+  overflow: hidden;
+  border-radius: clamp(18px, 1.6vw, 26px);
+  background: var(--c);
+  color: var(--ink);
 }
 
-/* The size container: absolutely inset, so its height is definite and cqh resolves
-   (a flex-stretched container reports 0 for cqh in Chrome). */
+.tile[data-colour="aqua"] { --c: var(--aqua); --ink: var(--deep-water); }
+.tile[data-colour="ochre"] { --c: var(--ochre); }
+.tile[data-colour="harbour"] { --c: var(--harbour); }
+.tile[data-colour="dusk"] { --c: var(--dusk-violet); }
+.tile[data-colour="coral"] { --c: var(--coral-clay); }
+.tile[data-colour="kelp"] { --c: var(--kelp); }
+.tile[data-colour="shell"] { --c: var(--shell); --ink: var(--deep-water); }
+
+.tile[data-slot="hero"] {
+  min-height: 460px;
+}
+
+/* Photo layer (inset, so container units resolve). */
 .box {
   position: absolute;
   inset: 0;
+  z-index: -2;
   overflow: hidden;
   container-type: size;
 }
 
-.tile[data-service="wordpress"] .visual {
-  min-height: clamp(300px, 52vw, 520px);
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+  filter: contrast(1.12) brightness(1.08);
+  transition: transform 1100ms var(--ease-out);
 }
 
-.tile[data-service="seo"] .visual,
-.tile[data-service="design"] .visual {
-  min-height: 440px;
+/* Readability: the tile colour deepens toward the text at the bottom. */
+.tile:has(.box)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--c) 45%, #051a2d) 0%,
+    color-mix(in srgb, color-mix(in srgb, var(--c) 55%, #051a2d) 85%, transparent) 36%,
+    transparent 72%
+  );
 }
 
-@media (min-width: 1024px) {
-  .tile[data-service="wordpress"] .visual {
-    min-height: 0;
-  }
-
-  .tile[data-service="seo"] .visual,
-  .tile[data-service="design"] .visual {
-    min-height: 380px;
-  }
+.tile[data-colour="shell"]:has(.box)::after {
+  background: linear-gradient(to top, color-mix(in srgb, var(--c) 70%, white) 0%, color-mix(in srgb, color-mix(in srgb, var(--c) 70%, white) 90%, transparent) 40%, transparent 74%);
 }
 
-/* The stage keeps the photo's own aspect ratio and covers the visual, centred. */
+/* Device stage: photo plus coded screen, covering the tile like object-fit: cover. */
 .stage {
   position: absolute;
   top: 50%;
   left: 50%;
   width: max(100cqw, calc(100cqh * var(--r)));
   height: max(100cqh, calc(100cqw / var(--r)));
+  background: var(--c);
   transform: translate(-50%, -50%);
   transition: transform 1100ms var(--ease-out);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .tile:hover .stage {
-    transform: translate(-50%, -50%) scale(1.03);
-  }
 }
 
 .stage > img {
@@ -209,6 +167,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  mix-blend-mode: luminosity;
+  filter: contrast(1.1) brightness(1.1);
 }
 
 .screen {
@@ -218,81 +178,135 @@
   background: #fff;
 }
 
-/* Production has no photo: the dashboard floats on its Kelp ground with channel lines. */
-.solo {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 28px clamp(20px, 6cqw, 64px);
-  background:
-    radial-gradient(70% 90% at 80% 0%, color-mix(in srgb, var(--c) 70%, transparent), transparent 70%),
-    repeating-linear-gradient(114deg, transparent 0 21px, rgb(255 255 255 / 0.05) 21px 22px),
-    color-mix(in srgb, var(--c) 45%, var(--abyss));
+/* Wide email tile: a larger stage, shifted right but still covering, so the laptop clears
+   the text column on the left. */
+
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tile:hover .box > img {
+    transform: scale(1.04);
+  }
+
+  .tile:hover .stage {
+    transform: translate(-50%, -50%) scale(1.03);
+  }
 }
 
-/* The dashboard sizes itself in cqw of this box. */
-.soloInner {
-  width: 100%;
-  max-width: 440px;
-  container-type: inline-size;
-}
-
-/* Caption band */
-.caption {
-  display: grid;
-  gap: 8px;
-  padding: clamp(18px, 1.6vw, 26px);
-  background: color-mix(in srgb, var(--c) 30%, var(--abyss));
-  border-top: 2px solid color-mix(in srgb, var(--c) 80%, white);
-}
-
-.captionTop {
+/* ---- Content ---- */
+.content {
+  position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 4px;
+  gap: var(--s-3);
+  height: 100%;
+  min-height: inherit;
+  padding: clamp(20px, 1.9vw, 30px);
+  pointer-events: none;
+}
+
+.content a {
+  pointer-events: auto;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .icon {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--r-sm);
-  background: color-mix(in srgb, var(--c) 60%, transparent);
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  /* Light frosted glass, no border. The blurred photo behind is dimmed a little and the
+     glyph carries a soft shadow, so the icon holds on bright photos without a heavy chip. */
+  background: rgb(7 34 59 / 0.14);
+  color: var(--white);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  /* Subtle two-tone hairline: a light inner edge for dark photos, a faint dark outer edge
+     for bright ones, so the glass keeps its shape on any background. */
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.4),
+    0 0 0 1px rgb(7 34 59 / 0.1),
+    0 6px 18px -8px rgb(7 34 59 / 0.35);
 }
+
+/* Light photo behind the icon: the glass turns a touch whiter and the glyph goes Deep Water. */
+.tile[data-light-corner] .icon {
+  background: rgb(255 255 255 / 0.3);
+  color: var(--deep-water);
+}
+
+
+
+
 
 .icon svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 
+.bottom {
+  display: grid;
+  gap: 10px;
+  max-width: 34rem;
+}
+
+
+
+@media (max-width: 1023px) {
+  .tile[data-slot="wide"] {
+    min-height: 380px;
+  }
+
+  .tile[data-slot="wide"] .bottom {
+    max-width: none;
+  }
+}
+
+/* Same scale as the Benefits card titles. */
 .name {
-  font-size: clamp(1.25rem, 1rem + 0.7vw, 1.625rem);
+  font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem);
   font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-wrap: balance;
 }
 
-.tile[data-service="wordpress"] .name {
-  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+.tile[data-slot="hero"] .name {
+  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
+.tile[data-slot="hero"] .name :global(.outline-type) {
+  display: block;
+}
+
+/* Same as the Benefits card body, in the tile's ink colour. */
 .text {
-  max-width: 40ch;
-  color: rgb(255 255 255 / 0.84);
+  max-width: 36ch;
   font-size: var(--fs-small);
+  font-weight: 400;
   line-height: 1.5;
 }
 
-/* Platform logos: white discs, each mark in its brand colour. */
+.tile[data-slot="hero"] .text {
+  font-size: var(--fs-body);
+}
+
+/* Logos: white discs, marks in brand colour. */
 .logos {
   display: flex;
   padding-left: 6px;
 }
 
-.logo {
+.logos li {
   display: grid;
   place-items: center;
   width: 36px;
@@ -300,107 +314,169 @@
   margin-left: -6px;
   border-radius: 50%;
   background: var(--white);
-  box-shadow: 0 0 0 2px var(--deep-water);
+  box-shadow: 0 0 0 2px var(--c);
   font-size: 18px;
 }
 
-.logos[data-size="sm"] .logo {
-  width: 30px;
-  height: 30px;
-  font-size: 15px;
+/* ---- Hero chart ---- */
+.chart {
+  position: absolute;
+  top: clamp(20px, 3vw, 48px);
+  right: clamp(16px, 2.4vw, 40px);
+  z-index: -1;
+  width: auto;
+  height: min(50%, 300px);
+  max-width: 70%;
 }
 
-/* ---- Coming soon ---- */
-.soonTile {
-  display: grid;
-  align-content: start;
-  gap: 8px;
-  padding: clamp(18px, 1.6vw, 26px);
-  border: 1px dashed rgb(238 247 246 / 0.22);
-  border-radius: var(--r-lg);
-  background:
-    repeating-linear-gradient(114deg, transparent 0 21px, rgb(191 240 227 / 0.06) 21px 22px),
-    rgb(5 26 45 / 0.55);
-  color: var(--cloud);
+.gridLine {
+  stroke: rgb(7 34 59 / 0.12);
+  stroke-width: 1.5;
 }
 
-.soonTop {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: var(--s-3);
+.axis {
+  stroke: rgb(7 34 59 / 0.45);
+  stroke-width: 2;
 }
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  border-radius: var(--r-pill);
-  background: rgb(238 247 246 / 0.06);
-  color: var(--haze);
-  font-size: var(--fs-caption);
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.soonName {
-  color: var(--white);
-  font-size: var(--fs-h3);
-  font-weight: 700;
+.axisWord {
+  fill: none;
+  stroke: rgb(7 34 59 / 0.55);
+  stroke-width: 1.5;
+  font-family: var(--font-display);
+  font-size: 46px;
+  font-weight: 800;
   letter-spacing: -0.02em;
 }
 
-.soonText {
-  max-width: 32ch;
-  font-size: var(--fs-small);
-  line-height: 1.5;
-}
-
-/* ---- Call tile ---- */
-.moreTile {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  align-content: center;
-  justify-items: start;
-  gap: 10px;
-  min-height: 220px;
-  padding: clamp(22px, 2.2vw, 36px);
-  overflow: hidden;
-  border-radius: var(--r-lg);
-  background:
-    radial-gradient(110% 120% at 100% 100%, rgb(60 207 195 / 0.28), transparent 60%),
-    var(--abyss);
-  box-shadow: inset 0 0 0 1px rgb(238 247 246 / 0.08);
-}
-
-.ripples {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  width: 70%;
-  height: auto;
+.trend {
   fill: none;
-  stroke: rgb(191 240 227 / 0.12);
+  stroke: var(--deep-water);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.peak {
+  fill: var(--ember);
+}
+
+.peakGlow {
+  fill: rgb(255 122 61 / 0.3);
+}
+
+/* ---- Closing line (replaces a call tile) ---- */
+.more {
+  margin-top: var(--s-4);
+  color: var(--wet-slate);
+  font-size: var(--fs-lead);
 }
 
 .moreTitle {
-  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+  color: var(--deep-water);
   font-weight: 700;
-  letter-spacing: -0.03em;
 }
 
-.moreText {
-  max-width: 40ch;
-  margin-bottom: 8px;
-  color: var(--cloud);
+.moreLink {
+  color: var(--deep-water);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+
+.moreLink:hover {
+  text-decoration-color: var(--deep-water);
+}
+
+/* ---- The Split Arc in every tile ----
+   A white wedge cuts the top-right corner at the 24° channel (W wide, W / tan 24° tall),
+   and the logo's spark sits in the notch in the tile's own colour. */
+.tile {
+  --w: clamp(40px, 3.6vw, 58px);
+}
+
+/* A hairline edge on every tile, above the photo, so each corner reads against the white
+   page even where the photo is near-white (Content marketing's paper). */
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgb(7 34 59 / 0.08);
+  pointer-events: none;
+}
+
+/* The pale Shell tile: pull the photo's whites down and tint the top so the edge holds. */
+.tile[data-colour="shell"] .photo {
+  filter: contrast(1.05) brightness(0.9);
+}
+
+.tile[data-colour="shell"] .box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 70%, transparent) 0%, transparent 38%);
+}
+
+/* The notch replaces the top-right corner, so that corner is square: a rounded corner here
+   is clipped on the same curve as the notch and leaves an anti-aliased arc of tile colour. */
+.tile {
+  border-top-right-radius: 0;
+}
+
+.corner {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  z-index: 3;
+  width: calc(var(--w) + 1px);
+  height: calc(var(--w) * 2.246 + 1px);
+  overflow: visible;
+}
+
+.notch {
+  fill: var(--white);
+}
+
+.top {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* ---- Colour on hover: the duotone gives way to the photo's real colour ---- */
+.box img {
+  position: absolute;
+  inset: 0;
+}
+
+.true {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 1100ms var(--ease-out);
+}
+
+.stage > .true {
+  mix-blend-mode: normal;
+  filter: none;
+}
+
+@media (hover: hover) {
+  .tile:hover .true {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .photo,
+  .true,
   .stage {
     transition: none;
   }

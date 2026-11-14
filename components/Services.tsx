@@ -1,30 +1,29 @@
-import { services, type DeviceStage, type LiveService, type PlatformLogo } from "@/content/homepage";
+import { services, type DeviceStage, type PlatformLogo, type ServiceTile } from "@/content/homepage";
 import ServiceIcon from "./ServiceIcon";
-import { CareDashboard, DesignToPage, Mark, Serp, WpEditor } from "./ServiceScreens";
+import { BookingApp, Dashboard, Mark } from "./ServiceScreens";
 import styles from "./Services.module.css";
 
 /**
- * Services (Revision 39): a bento of Graham's eight services, each tile showing the service
- * in real use, with the real platform logos.
+ * Services (Revision 40): Graham's colour-blocked bento reference, made ours.
  *
- * Desktop, 12 columns:
- *   [ WordPress: laptop + editor (6×2) ][ SEO: phone + Google (3×2) ][ Design: tablet (3×2) ]
- *   [ Production: care dashboard (6)    ][ Web emails (3)            ][ Social media (3)     ]
- *   [ Web and mobile apps (3)           ][ Content marketing (3)     ][ Not sure? (6)        ]
+ *   Core services lead (Notion: web design/development first, then web apps and SEO):
+ *   [ SEO, Ochre (5)          ][ Website design and development (hero, Aqua, 7) ]
+ *   [ Web applications (5)    ][   rising enquiries chart, tech logos           ]
+ *   [ Email ][ Social ][ Content ][ Mobile ]   supporting services, shorter row
+ *   [ Not sure where to start? (full-width Deep Water strip)                   ]
  *
- * Live tiles: a visual on top and a caption band below in the tile's V1.6 supporting colour.
- * The device photo and its coded screen share one "stage" that covers the visual like
- * object-fit: cover, so the interface stays locked to the glass at every size.
- * Coming-soon tiles: dashed outline over 24° channel hairlines, with a status chip.
+ * Photo tiles show existing photos in duotone (luminosity over the tile colour). Email and
+ * Mobile put coded screens on the blank-screen laptop and phone photos.
  */
 
-const UI = { "wp-editor": WpEditor, serp: Serp, design: DesignToPage, care: CareDashboard };
+const SCREENS = { dashboard: Dashboard, app: BookingApp };
 
-function Logos({ logos, size = "md" }: { logos: PlatformLogo[]; size?: "md" | "sm" }) {
+function Logos({ logos }: { logos: PlatformLogo[] }) {
+  if (!logos.length) return null;
   return (
-    <ul className={styles.logos} data-size={size} aria-label={`Works with ${logos.map((l) => l.name).join(", ")}`}>
+    <ul className={styles.logos} aria-label={`Works with ${logos.map((l) => l.name).join(", ")}`}>
       {logos.map((l) => (
-        <li key={l.name} className={styles.logo} title={l.name}>
+        <li key={l.name} title={l.name}>
           <Mark src={l.file} colour={l.colour} />
         </li>
       ))}
@@ -34,129 +33,142 @@ function Logos({ logos, size = "md" }: { logos: PlatformLogo[]; size?: "md" | "s
 
 function Stage({ stage, children }: { stage: DeviceStage; children: React.ReactNode }) {
   const s = stage.screen;
+  const wide = stage.width > 2500;
   return (
-    <div className={styles.stage} style={{ "--r": stage.width / stage.height } as React.CSSProperties}>
-      <img
-        src={`${stage.base}-${stage.width > 2500 ? 900 : 720}.webp`}
-        srcSet={
-          stage.width > 2500
-            ? `${stage.base}-900.webp 900w, ${stage.base}-1600.webp 1600w`
-            : `${stage.base}-720.webp 720w, ${stage.base}-1200.webp 1200w`
-        }
-        sizes="(min-width: 1024px) 60vw, 100vw"
-        width={stage.width}
-        height={stage.height}
-        alt={stage.alt}
-        loading="lazy"
-        decoding="async"
-      />
-      <div
-        className={styles.screen}
-        style={{ left: `${s.left}%`, top: `${s.top}%`, width: `${s.width}%`, height: `${s.height}%`, borderRadius: s.radius }}
-        aria-hidden="true"
-      >
-        {children}
+    <div className={styles.box}>
+      <div className={styles.stage} style={{ "--r": stage.width / stage.height } as React.CSSProperties}>
+        <img
+          src={`${stage.base}-${wide ? 900 : 720}.webp`}
+          srcSet={wide ? `${stage.base}-900.webp 900w, ${stage.base}-1600.webp 1600w` : `${stage.base}-720.webp 720w, ${stage.base}-1200.webp 1200w`}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          width={stage.width}
+          height={stage.height}
+          alt={stage.alt}
+          loading="lazy"
+          decoding="async"
+        />
+        <img className={styles.true} src={`${stage.base}-${wide ? 900 : 720}.webp`} alt="" width={stage.width} height={stage.height} loading="lazy" decoding="async" />
+        <div
+          className={styles.screen}
+          style={{ left: `${s.left}%`, top: `${s.top}%`, width: `${s.width}%`, height: `${s.height}%`, borderRadius: s.radius }}
+          aria-hidden="true"
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
 }
 
-function LiveTile({ s }: { s: LiveService }) {
-  const Screen = UI[s.ui];
+/** The hero's graphic: enquiries climbing, with an Ember spark at the peak. */
+function EnquiryChart() {
   return (
-    <li className={styles.tile} data-colour={s.colour} data-service={s.id} data-ui={s.ui}>
-      <div className={styles.visual}>
+    <svg className={styles.chart} viewBox="0 0 600 420" aria-hidden="true" focusable="false">
+      {[80, 160, 240, 320].map((y) => (
+        <line key={y} x1="70" x2="580" y1={y} y2={y} className={styles.gridLine} />
+      ))}
+      <line x1="70" x2="70" y1="20" y2="380" className={styles.axis} />
+      <line x1="70" x2="580" y1="380" y2="380" className={styles.axis} />
+      <text x="0" y="0" transform="translate(52 380) rotate(-90)" className={styles.axisWord}>
+        enquiries
+      </text>
+      <polyline points="70,350 170,330 250,300 320,260 380,250 450,170 520,110 560,70" className={styles.trend} />
+      <circle cx="560" cy="70" r="22" className={styles.peakGlow} />
+      <circle cx="560" cy="70" r="9" className={styles.peak} />
+    </svg>
+  );
+}
+
+function Tile({ t }: { t: ServiceTile }) {
+  const Screen = t.ui ? SCREENS[t.ui] : null;
+  return (
+    <li className={styles.tile} data-colour={t.colour} data-slot={t.slot} data-service={t.id} data-light-corner={t.lightCorner ? "true" : undefined}>
+      {t.slot === "hero" && <EnquiryChart />}
+      {t.photo && (
         <div className={styles.box}>
-        {s.stage ? (
-          <Stage stage={s.stage}>
-            <Screen />
-          </Stage>
-        ) : (
-          <div className={styles.solo} aria-hidden="true">
-            <div className={styles.soloInner}>
-              <Screen />
-            </div>
-          </div>
-        )}
+          <img
+            className={styles.photo}
+            src={`${t.photo.base}-720.webp`}
+            srcSet={`${t.photo.base}-720.webp 720w, ${t.photo.base}-1280.webp 1280w`}
+            sizes="(min-width: 1024px) 25vw, 100vw"
+            width={720}
+            height={720}
+            alt={t.photo.alt}
+            loading="lazy"
+            decoding="async"
+            style={t.photo.position ? { objectPosition: t.photo.position } : undefined}
+          />
+          <img
+            className={styles.true}
+            src={`${t.photo.base}-720.webp`}
+            alt=""
+            width={720}
+            height={720}
+            loading="lazy"
+            decoding="async"
+            style={t.photo.position ? { objectPosition: t.photo.position } : undefined}
+          />
         </div>
-      </div>
-      <div className={styles.caption}>
-        <div className={styles.captionTop}>
+      )}
+      {t.stage && Screen && (
+        <Stage stage={t.stage}>
+          <Screen />
+        </Stage>
+      )}
+
+      {/* The Split Arc channel: each tile's top-right corner is cut at 24° (W wide, W / tan 24° tall). */}
+      <svg className={styles.corner} viewBox="0 0 100 224.6" aria-hidden="true" focusable="false">
+        <polygon points="0,0 100,0 100,224.6" className={styles.notch} />
+      </svg>
+
+      <div className={styles.content}>
+        <div className={styles.top}>
           <span className={styles.icon} aria-hidden="true">
-            <ServiceIcon kind={s.icon} />
+            <ServiceIcon kind={t.icon} />
           </span>
-          <Logos logos={s.logos} />
+          <Logos logos={t.logos} />
         </div>
-        <h3 className={styles.name}>
-          {s.title}
-          <span className="sr-only"> (available now)</span>
-        </h3>
-        <p className={styles.text}>{s.text}</p>
+        <div className={styles.bottom}>
+          <h3 className={styles.name}>
+            {t.title}
+            {t.outline && (
+              <>
+                {" "}
+                <span className="outline-type">{t.outline}</span>
+              </>
+            )}
+          </h3>
+          <p className={styles.text}>{t.text}</p>
+        </div>
       </div>
     </li>
   );
 }
 
 export default function Services() {
-  const [wp, seo, design, production] = services.live;
-  const [email, apps, social, content] = services.soon;
-  const soon = (s: (typeof services.soon)[number]) => (
-    <li key={s.id} className={styles.soonTile} data-service={s.id}>
-      <div className={styles.soonTop}>
-        <span className={styles.chip}>
-          <span className={styles.chipDot} aria-hidden="true" />
-          {services.soonLabel}
-        </span>
-        <Logos logos={s.logos} size="sm" />
-      </div>
-      <h3 className={styles.soonName}>{s.title}</h3>
-      <p className={styles.soonText}>{s.text}</p>
-    </li>
-  );
-
   return (
-    <section id="services" className={styles.section} data-ground="dark" data-services aria-labelledby="services-title">
+    <section id="services" className={styles.section} data-ground="light" data-services aria-labelledby="services-title">
       <div className={`container ${styles.head}`}>
-        <h2 id="services-title" className="sec-title">
-          {services.title}
+        <h2 id="services-title" className={`sec-title ${styles.title}`}>
+          <span className={styles.mark}>{services.title.mark}</span> {services.title.rest}
         </h2>
-        <div className={styles.headSide}>
-          <p className="sec-intro">{services.intro}</p>
-          <p className={styles.legend}>
-            <span>
-              <span className={styles.legendLive} aria-hidden="true" />
-              {services.liveLabel}
-            </span>
-            <span>
-              <span className={styles.legendSoon} aria-hidden="true" />
-              {services.soonLabel}
-            </span>
-          </p>
-        </div>
+        <p className="sec-intro">{services.intro}</p>
       </div>
 
       <ul className={`container ${styles.bento}`} data-services-bento>
-        <LiveTile s={wp} />
-        <LiveTile s={seo} />
-        <LiveTile s={design} />
-        <LiveTile s={production} />
-        {soon(email)}
-        {soon(social)}
-        {soon(apps)}
-        {soon(content)}
-        <li className={styles.moreTile}>
-          <svg className={styles.ripples} viewBox="0 0 600 600" aria-hidden="true" focusable="false">
-            {[90, 150, 210, 270, 330].map((r) => (
-              <circle key={r} cx="600" cy="600" r={r} />
-            ))}
-          </svg>
-          <h3 className={styles.moreTitle}>{services.more.title}</h3>
-          <p className={styles.moreText}>{services.more.text}</p>
-          <a href={services.more.action.href} className="btn btn-light">
+        {services.tiles.map((t) => (
+          <Tile key={t.id} t={t} />
+        ))}
+      </ul>
+
+      <div className="container">
+        <p className={styles.more}>
+          <span className={styles.moreTitle}>{services.more.title}</span> {services.more.text}{" "}
+          <a href={services.more.action.href} className={styles.moreLink}>
             {services.more.action.label}
           </a>
-        </li>
-      </ul>
+        </p>
+      </div>
     </section>
   );
 }

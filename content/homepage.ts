@@ -326,91 +326,108 @@ export type DeviceStage = {
   screen: { left: number; top: number; width: number; height: number; radius: string };
 };
 
-export type LiveService = {
+/** Tile colour: Aqua (core) for the hero, V1.6 supporting colours (p.14) for the rest. */
+export type TileColour = "aqua" | "ochre" | "harbour" | "dusk" | "coral" | "kelp" | "shell";
+
+export type ServiceTile = {
   id: string;
   title: string;
+  /** The hero tile sets its second line in outline type. */
+  outline?: string;
   text: string;
   icon: ServiceIcon;
-  colour: SupportColour;
-  /** Which coded interface the tile shows: on a device photo, or on its own. */
-  ui: "wp-editor" | "serp" | "design" | "care";
+  colour: TileColour;
+  /** Grid slot, following Graham's reference bento. */
+  slot: "hero" | "a" | "b" | "wide" | "c" | "d" | "e";
+  /** A photo shown in duotone over the tile colour. */
+  photo?: { base: string; alt: string; position?: string };
+  /** Or a device photo with a coded screen on its glass. */
   stage?: DeviceStage;
+  ui?: "dashboard" | "app";
   logos: PlatformLogo[];
+  /** The photo is light where the icon sits, so the icon is drawn dark. */
+  lightCorner?: boolean;
 };
-
-export type SoonService = { id: string; title: string; text: string; icon: ServiceIcon; logos: PlatformLogo[] };
 
 const logo = {
   wordpress: { name: "WordPress", file: "/brands/si/wordpress.svg", colour: "#21759B" },
+  next: { name: "Next.js", file: "/brands/si/nextdotjs.svg", colour: "#000000" },
+  astro: { name: "Astro", file: "/brands/si/astro.svg", colour: "#BC52EE" },
+  react: { name: "React", file: "/brands/si/react.svg", colour: "#087EA4" },
   google: { name: "Google", file: "/brands/si/google.svg", colour: "#4285F4" },
-  figma: { name: "Figma", file: "/brands/si/figma.svg", colour: "#F24E1E" },
   gmail: { name: "Gmail", file: "/brands/si/gmail.svg", colour: "#EA4335" },
-  apple: { name: "Apple", file: "/brands/si/apple.svg", colour: "#0B0B0B" },
+  apple: { name: "Apple", file: "/brands/si/apple.svg", colour: "#000000" },
   android: { name: "Android", file: "/brands/si/android.svg", colour: "#34A853" },
   instagram: { name: "Instagram", file: "/brands/si/instagram.svg", colour: "#E4405F" },
   facebook: { name: "Facebook", file: "/brands/si/facebook.svg", colour: "#0866FF" },
-  tiktok: { name: "TikTok", file: "/brands/si/tiktok.svg", colour: "#0B0B0B" },
+  tiktok: { name: "TikTok", file: "/brands/si/tiktok.svg", colour: "#000000" },
   linkedin: { name: "LinkedIn", file: "/brands/si/linkedin.svg", colour: "#0A66C2" },
 } satisfies Record<string, PlatformLogo>;
 
 /**
- * Services (Revision 39, bento). The list and the Available now / Coming soon split are
- * from Graham's reference (his dark eight-card grid). UNCONFIRMED: Graham to confirm the
- * list, the split and the copy. Each live tile shows the service in use: a coded interface
- * (WordPress editor, Google result, design-to-page, care dashboard) on a fal device photo.
- * Business names on screen (Harlow Joinery) are the fictional concept project.
- * Photos: fal flux-pro v1.1-ultra, 2026-11-14. Manifest:
- * Webleta-AI-Generated-Images/manifest-2026-11-14-services.csv
+ * Services (Revision 40). The list is Notion's "Agency Business Model & Positioning Notes"
+ * (Nov 12, 2026), the same seven services as V1.6 p.5. Which launch first is an open
+ * decision there, so no availability is shown. The tech logos on the hero follow Notion's
+ * "flexible technology stack" principle (Nov 14). Colour blocking follows Graham's bento
+ * reference; the grid is reshuffled (Jasper) and the copy is our own (humanizer pass). UNCONFIRMED: all copy. Images are existing
+ * fal illustrations (see the 2026-11-14 manifests); Harlow Joinery is the fictional concept.
  */
 export const services = {
-  title: "Ready now, and what comes next.",
-  intro: "Websites are what we do best, so they come first. The rest is on its way.",
-  liveLabel: "Available now",
-  soonLabel: "Coming soon",
-  live: [
+  title: { mark: "Websites first.", rest: "The rest brings people to them." },
+  intro: "We design and build the site, then help people find it through search, email, social and content. Pick one service or several.",
+  tiles: [
     {
-      id: "wordpress", title: "WordPress development", icon: "code", colour: "harbour", ui: "wp-editor",
-      text: "Custom WordPress builds made for speed, stability and easy updates.",
-      logos: [logo.wordpress],
+      id: "websites", slot: "hero", lightCorner: true, colour: "aqua", icon: "web",
+      title: "Website design and", outline: "development",
+      text: "Your own design, built on the platform that suits the job: WordPress, Next.js or Astro.",
+      logos: [logo.wordpress, logo.next, logo.astro, logo.react],
+    },
+    {
+      id: "apps", slot: "wide", colour: "harbour", icon: "app", ui: "dashboard",
+      title: "Web applications", text: "Booking systems and client portals, built around how your business runs.",
       stage: {
         base: "/images/bento-wordpress", width: 2752, height: 1536,
-        alt: "A laptop on an oak desk against a blue wall, open on a WordPress page editor.",
+        alt: "A laptop on an oak desk showing a joinery's job-booking dashboard.",
         screen: { left: 35.61, top: 35.68, width: 31.83, height: 36.2, radius: "0.6% / 1%" },
       },
+      logos: [],
     },
     {
-      id: "seo", title: "SEO support", icon: "search", colour: "ochre", ui: "serp",
-      text: "On-page and technical SEO, so the right people find you first.",
+      id: "seo", slot: "a", lightCorner: true, colour: "ochre", icon: "search",
+      title: "SEO", text: "Get found when people nearby search for what you do.",
+      photo: { base: "/images/svc-seo", alt: "A man checking his phone against a sunlit wall.", position: "50% 60%" },
       logos: [logo.google],
+    },
+    {
+      id: "email", slot: "b", colour: "dusk", icon: "mail",
+      title: "Email marketing", text: "Newsletters that bring past customers back for another job.",
+      photo: { base: "/images/svc-wordpress", alt: "A woman reading on her laptop in a lamp-lit studio.", position: "45% 40%" },
+      logos: [logo.gmail],
+    },
+    {
+      id: "social", slot: "d", lightCorner: true, colour: "kelp", icon: "social",
+      title: "Social media marketing", text: "Posts and ads that send people from social media to your site.",
+      photo: { base: "/images/svc-production", alt: "A nursery owner smiling at her tablet among potted plants.", position: "60% 40%" },
+      logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin],
+    },
+    {
+      id: "content", slot: "e", lightCorner: true, colour: "shell", icon: "pen",
+      title: "Content marketing", text: "Articles and pages that answer what customers ask before they call.",
+      photo: { base: "/images/svc-design", alt: "Hands arranging printed page layouts beside violet colour swatches.", position: "50% 40%" },
+      logos: [],
+    },
+    {
+      id: "mobile", slot: "c", colour: "coral", icon: "phone", ui: "app",
+      title: "Mobile apps", text: "An app on your regulars' phones, for bookings and orders.",
       stage: {
         base: "/images/bento-seo", width: 2368, height: 1792,
-        alt: "A hand holding a phone against a sunlit wall, showing a business at the top of Google results.",
+        alt: "A hand holding a phone showing a booking app.",
         screen: { left: 44.09, top: 19.87, width: 23.99, height: 66.96, radius: "14% / 6.5%" },
       },
+      logos: [logo.apple, logo.android],
     },
-    {
-      id: "design", title: "Design implementation", icon: "web", colour: "dusk", ui: "design",
-      text: "Designs turned into polished pages that follow the brand and lead to a sale.",
-      logos: [logo.figma],
-      stage: {
-        base: "/images/bento-design", width: 2368, height: 1792,
-        alt: "A tablet on a desk beside violet colour swatches, showing a design next to the finished page.",
-        screen: { left: 34.8, top: 22.1, width: 32.09, height: 58.26, radius: "4% / 2.6%" },
-      },
-    },
-    {
-      id: "production", title: "Website production", icon: "care", colour: "kelp", ui: "care",
-      text: "Updates, maintenance and support that keep a site current, secure and running smoothly.",
-      logos: [logo.wordpress],
-    },
-  ] satisfies LiveService[],
-  soon: [
-    { id: "email", title: "Web emails", icon: "mail", text: "Professional email addresses on your own domain.", logos: [logo.gmail] },
-    { id: "apps", title: "Web and mobile apps", icon: "phone", text: "Custom tools and dashboards that go beyond a standard website.", logos: [logo.apple, logo.android] },
-    { id: "social", title: "Social media", icon: "social", text: "Consistent posting and management across your channels.", logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin] },
-    { id: "content", title: "Content marketing", icon: "pen", text: "Blog posts and on-site content that bring the right people in.", logos: [logo.google] },
-  ] satisfies SoonService[],
-  more: { title: "Not sure which you need?", text: "Tell us what you want more of. We'll tell you what's worth doing first.", action: { label: "Book a call", href: "#contact" } },
+  ] satisfies ServiceTile[],
+  more: { title: "Not sure where to start?", text: "Tell us what you'd like more of, and we'll suggest where to begin.", action: { label: "Book a call", href: "#contact" } },
 };
 
 /** CTA banner (Graham: "cta banner"). The outlined word reuses the hero's outline device. UNCONFIRMED copy. */
