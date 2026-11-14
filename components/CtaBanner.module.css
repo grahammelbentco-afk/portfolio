@@ -1,7 +1,7 @@
 /* CTA banner: white page ground (continuing Services), with an inset Deep Water panel.
    The section is data-ground="dark" so the header switches to its glass over the panel. */
 .section {
-  padding-block: 0 var(--section-y);
+  padding-block: var(--section-y);
   background: var(--white);
 }
 

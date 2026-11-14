@@ -10,7 +10,64 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 37: every remaining section, down to the footer (latest)
+## Revision 39: Services as a true bento, each tile showing the service in use (latest)
+
+- **Ask (Jasper):** Graham wants a bento. The Revision 38 photos were out of context. Each tile should show the service's real-world use, with real platform logos. Permission to generate new images.
+- **Layout (12 columns, Deep Water):**
+  - Row 1–2: **WordPress development** (6×2) | **SEO support** (3×2) | **Design implementation** (3×2).
+  - Row 3: **Website production** (6, horizontal on desktop) | **Web emails** (3) | **Social media** (3).
+  - Row 4: **Web and mobile apps** (3) | **Content marketing** (3) | **"Not sure which you need?"** call tile (6, ripples).
+  - At 640–1023px: 2 columns. Below 640px: 1 column.
+  - A legend in the heading (● Available now ○ Coming soon) replaces the row labels.
+- **Live tiles = the service in use:** a fal device photo with a **blank screen**, plus a **coded interface laid exactly on the glass**, over a caption band in the tile's V1.6 supporting colour.
+  - WordPress (**Harbour**): laptop showing a WordPress block editor with Harlow Joinery's hero block selected.
+  - SEO (**Ochre**): phone in hand showing Google results for "joiner fremantle", with Harlow Joinery first, ringed in Ochre.
+  - Design (**Dusk Violet**): tablet showing a design frame with selection handles above the finished page.
+  - Production (**Kelp**): no photo. A site-care dashboard (core up to date, plugins updated, backup, security scan, 30-day uptime bars).
+  - Screen positions were **measured from each photo** (flood fill of the blank screen). Photo and screen share one "stage" that covers the tile like `object-fit: cover`, so they stay aligned at every width. The screens are HTML and CSS sized in container units, so they stay sharp.
+- **Real logos:** Simple Icons SVGs (CC0 data; the marks belong to their owners), saved locally in `public/brands/si/` (no requests to other domains) and shown in brand colours on white discs.
+  - WordPress (WordPress, Production), Google (SEO, Content), Figma (Design), Gmail (Web emails), Apple and Android (Apps), Instagram, Facebook, TikTok and LinkedIn (Social).
+- **Coming-soon tiles:** a dashed outline over 24° channel hairlines, a "Coming soon" chip and their platform logos.
+- **Bug found and fixed:** container-query height (`cqh`) resolves to 0 on a flex-stretched container in Chrome, which letterboxed the photos. The container is now an absolutely inset `.box`.
+- **Photos (fal flux-pro v1.1-ultra, raw, $0.06 each): 6 generated, $0.36, 3 used:** `bento-laptop-a` (16:9), `bento-phone-a` (4:3) and `bento-tablet-b` (4:3, portrait tablet). Alternates are kept. Manifest rows were appended to `manifest-2026-11-14-services.csv`. Services spend across Revisions 38–39: **$0.84**.
+- The Revision 38 `svc-*.webp` photos are no longer used. They're left in place.
+- **UNCONFIRMED:** the service list and split, all copy, and the on-screen details (Harlow Joinery is the fictional concept business; "12 updated" and similar figures are illustrative). Logo use should be cleared with Graham.
+- **QA:** the Revision 38 checks were replaced with 5 bento checks:
+  - 4 live + 4 coming-soon tiles
+  - every device photo covers its tile
+  - coded screens sit inside their photos
+  - 12 platform logos
+  - every coming-soon tile says so
+
+  `qa/qa.py` **144/145**. The one failure is the known flaky shader check.
+- Screenshots: `screenshots/2026-11-14_services-r39-bento/` (1440, 1024, 390, per-tile shots, and `screen-*@2x.png` close-ups).
+- **Not pushed.**
+
+## Revision 38: Services redesigned as an expanding bento
+
+- **Ask (Jasper):** don't copy the reference layout. Make our own premium bento, keep Graham's content and structure, use the supporting colours, generate photos with fal, and use the Awwwards MCP.
+- **Content (Graham's reference, his dark eight-card grid):** his eight services and his **Available now / Coming soon** split.
+  - Available now: WordPress development, Design implementation, Website production, SEO support.
+  - Coming soon: Web emails, Web and mobile apps, Social media, Content marketing.
+  - The copy is adapted to read for both businesses and agencies. Each live service has three short points. All **UNCONFIRMED** in `content/homepage.ts`. This replaces Revision 37's V1.6 seven-service list.
+- **Design (Deep Water ground, like Graham's reference):**
+  - **Available now:** an expanding row of four photo tiles. One is open at a time. Hover, keyboard focus or a tap opens a tile, and it grows to 3.4× the width of the others (720ms, brand ease-out). The open tile shows its photo in full colour with its **V1.6 supporting colour** rising from the bottom, its icon, text and points, and the **24° channel cut** in its top-right corner. Closed tiles turn into dark, desaturated spines with a vertical title and a colour dot. Colours: WordPress **Harbour**, Design **Dusk Violet**, Production **Kelp**, SEO **Ochre**.
+  - **Coming soon:** four quiet dashed-outline tiles over **24° channel hairlines** (V1.6 p.16), with no photos, so "ready" and "not yet" read apart at once. On hover the hairlines drift.
+  - **Closing line:** "Not sure which you need? Book a call."
+  - **Mobile (<960px):** every live tile is shown open and stacked, each with the cut.
+- **Accessibility:** each tile's title is an `h4` button with `aria-expanded`/`aria-controls`, so focus opens the tile. Under reduced motion, all transitions are off.
+- **Awwwards MCP:** the elements index returned nothing for bento, services or expanding-gallery searches, and the SOTD agency results weren't useful for a services grid. No reference was used.
+- **Photos (fal flux-pro v1.1-ultra, 1:1 raw, $0.06 each): 8 generated, $0.48 in total, 4 used.**
+  - Used: developer at a navy wall (`svc-wordpress`), hands with layouts and violet swatches (`svc-design`; its garbled printout heading was painted out in the **web copy only**, `05-web-cleaned/2026-11-14/service-design-a-clean.jpg`), nursery owner with a tablet (`svc-production`), man on an ochre wall with leaf shadows (`svc-seo`).
+  - Rejected: laptop showing a video-call grid, and three SEO shots with garbled signs or sleeve text.
+  - Manifest: `Webleta-AI-Generated-Images/manifest-2026-11-14-services.csv`.
+- **Also:** the CTA banner now has white space above its panel (`padding-block: var(--section-y)`), so the dark panel doesn't sit right against the dark Services section. The Revision 37 `service-*.webp` files are no longer used. They're left in place, not deleted.
+- **⚠ For Graham:** all four supporting colours in one section (V1.6 says one per layout), as Jasper asked. He should also confirm the service list and which services are available now.
+- **QA:** 3 new checks (4 + 4 tiles; hover opens that tile and it's the widest; keyboard focus opens a tile with `aria-expanded` following). The side-padding check now exempts closed tiles, whose text is hidden and clipped. `qa/qa.py` **142/143**. The one failure is the known flaky shader check.
+- Screenshots: `screenshots/2026-11-14_services-r38/` (rest, SEO hovered, mid-transition, 390).
+- **Not pushed.** Staging is unchanged until Jasper says push.
+
+## Revision 37: every remaining section, down to the footer
 
 - **Ask (Jasper):** build all the remaining sections in one go, following Graham's outline and references. Jasper will revise what he doesn't like afterwards.
 - **Order (Graham's outline):** Services → CTA banner → Steps (marked optional in the outline, built anyway) → Work → Reviews → Clients → Pricing → Contact → Footer. Not built: Graham's "Additional sections" (Business industries, FAQ). No placeholder sections are left.

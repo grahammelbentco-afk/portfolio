@@ -424,6 +424,23 @@ with sync_playwright() as p:
     page.evaluate("document.querySelector('[data-contact-form] button[type=submit]').click()")
     invalid = page.evaluate("document.querySelectorAll('[data-contact-form] :invalid').length")
     check("contact: empty form is blocked by validation", invalid >= 2, str(invalid))
+    # Services (Revision 39): bento, live tiles with coded screens on device photos.
+    counts = [page.locator("#services [data-ui]").count(), page.locator("#services [data-service]:not([data-ui])").count()]
+    check("services: four live tiles and four coming-soon tiles", counts == [4, 4], str(counts))
+    page.locator("#services").scroll_into_view_if_needed()
+    page.wait_for_timeout(600)
+    fit = page.evaluate("""[...document.querySelectorAll('#services [data-ui] [class*=stage]')].map(st => {
+        const v = st.closest('[class*=box]').getBoundingClientRect(), r = st.getBoundingClientRect();
+        return r.left <= v.left + 1 && r.top <= v.top + 1 && r.right >= v.right - 1 && r.bottom >= v.bottom - 1; })""")
+    check("services: every device photo covers its tile (no letterboxing)", len(fit) == 3 and all(fit), str(fit))
+    inside = page.evaluate("""[...document.querySelectorAll('#services [class*=screen]')].map(sc => {
+        const s = sc.getBoundingClientRect(), p = sc.parentElement.getBoundingClientRect();
+        return s.width > 40 && s.left >= p.left && s.right <= p.right + 1; })""")
+    check("services: coded screens sit inside their photos", len(inside) == 3 and all(inside), str(inside))
+    logos = page.evaluate("[...document.querySelectorAll('#services [class*=logos] li')].length")
+    check("services: 12 platform logos shown (WordPress x2, Google x2, Figma, Gmail, Apple, Android, 4 socials)", logos == 12, str(logos))
+    soon = page.evaluate("[...document.querySelectorAll('#services [data-service]:not([data-ui])')].every(e => e.textContent.includes('Coming soon'))")
+    check("services: each coming-soon tile says so", soon)
     concept = page.locator("#work [data-project]").count()
     labels = page.evaluate("[...document.querySelectorAll('#work [data-project]')].every(e => e.textContent.includes('Concept'))")
     check("work: four projects, each labelled as a concept", concept == 4 and labels)

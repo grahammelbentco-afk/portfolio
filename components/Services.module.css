@@ -1,19 +1,23 @@
-/* Services: white ground, a bento of eight tiles.
-   Desktop (12 columns, three rows):
-     [ Websites (6 cols, 2 rows) ][ SEO (3)   ][ Web apps (3) ]
-     [                           ][ Email (3) ][ Mobile (3)   ]
-     [ Social (4)    ][ Content (4)    ][ Not sure? (4)        ]
-   Tiles are large panels, so they take --r-lg. */
+/* Services (Revision 39): Deep Water ground, a bento of eight services plus a call tile.
+   Live tiles = visual (device photo + coded screen) over a caption band in the tile's
+   V1.6 supporting colour. Coming-soon tiles = dashed outline over 24° channel hairlines.
+   Only hover motion: the stage (photo and screen together) eases up 3%. */
 .section {
   padding-block: var(--section-y);
-  background: var(--white);
-  color: var(--deep-water);
+  background: var(--deep-water);
+  color: var(--white);
 }
 
+/* ---- Heading row with the status legend ---- */
 .head {
   display: grid;
   gap: var(--s-3);
   margin-bottom: clamp(40px, 1.5rem + 3vw, 72px);
+}
+
+.headSide {
+  display: grid;
+  gap: var(--s-3);
 }
 
 @media (min-width: 960px) {
@@ -27,185 +31,377 @@
     grid-column: 1 / span 7;
   }
 
-  .head > :last-child {
+  .headSide {
     grid-column: 9 / -1;
   }
 }
 
-.grid {
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+  color: var(--cloud);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legendLive,
+.legendSoon,
+.chipDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legendLive {
+  background: var(--aqua);
+  box-shadow: 0 0 0 4px rgb(60 207 195 / 0.16);
+}
+
+.legendSoon,
+.chipDot {
+  box-shadow: inset 0 0 0 1.5px var(--haze);
+}
+
+/* ---- Grid ---- */
+.bento {
   display: grid;
   gap: 12px;
 }
 
 @media (min-width: 640px) {
-  .grid {
+  .bento {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .tile[data-service="websites"],
-  .more {
+  .tile[data-service="wordpress"],
+  .tile[data-service="production"],
+  .moreTile {
     grid-column: 1 / -1;
   }
 }
 
 @media (min-width: 1024px) {
-  .grid {
+  .bento {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-auto-rows: minmax(240px, 17vw);
+    grid-auto-rows: minmax(250px, auto);
   }
 
-  .tile {
-    grid-column: span 3;
-  }
-
-  .tile[data-service="websites"] {
+  .tile[data-service="wordpress"] {
     grid-column: 1 / span 6;
     grid-row: span 2;
   }
 
-  .tile[data-service="social"],
-  .tile[data-service="content"],
-  .more {
-    grid-column: span 4;
+  .tile[data-service="seo"],
+  .tile[data-service="design"] {
+    grid-column: span 3;
+    grid-row: span 2;
+  }
+
+  .tile[data-service="production"],
+  .moreTile {
+    grid-column: span 6;
+  }
+
+  .tile[data-service="production"] {
+    flex-direction: row;
+  }
+
+  .tile[data-service="production"] .visual {
+    min-height: 300px;
+  }
+
+  .tile[data-service="production"] .caption {
+    flex: 0 0 42%;
+    align-content: end;
+    border-top: 0;
+    border-left: 2px solid color-mix(in srgb, var(--c) 80%, white);
+  }
+
+  .soonTile {
+    grid-column: span 3;
   }
 }
 
-/* ---- Tile ---- */
+/* ---- Live tile ---- */
 .tile {
-  position: relative;
-  isolation: isolate;
+  --c: var(--harbour);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: var(--s-4);
-  min-height: 240px;
-  padding: clamp(20px, 1.6vw, 28px);
-  border-radius: var(--r-lg);
   overflow: hidden;
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--c) 30%, var(--abyss));
+  box-shadow: inset 0 0 0 1px rgb(238 247 246 / 0.08);
 }
 
-.tile[data-look="deep"] {
-  background: var(--deep-water);
-  color: var(--shallows);
+.tile[data-colour="ochre"] {
+  --c: var(--ochre);
 }
 
-.tile[data-look="seafoam"] {
-  background: var(--seafoam);
+.tile[data-colour="dusk"] {
+  --c: var(--dusk-violet);
 }
 
-.tile[data-look="white"] {
-  background: var(--shallows);
-  box-shadow: inset 0 0 0 1px var(--line-on-light);
+.tile[data-colour="kelp"] {
+  --c: var(--kelp);
 }
 
-/* Photo tiles: the image under a Deep Water scrim that darkens toward the text. */
-.tile[data-look="photo"] {
-  background: var(--deep-water);
-  color: var(--white);
+.visual {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
 }
 
-.tile[data-look="photo"]::after {
-  content: "";
+/* The size container: absolutely inset, so its height is definite and cqh resolves
+   (a flex-stretched container reports 0 for cqh in Chrome). */
+.box {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background: linear-gradient(to top, rgb(7 34 59 / 0.94) 10%, rgb(7 34 59 / 0.5) 52%, rgb(7 34 59 / 0.1) 100%);
+  overflow: hidden;
+  container-type: size;
 }
 
-.photo {
+.tile[data-service="wordpress"] .visual {
+  min-height: clamp(300px, 52vw, 520px);
+}
+
+.tile[data-service="seo"] .visual,
+.tile[data-service="design"] .visual {
+  min-height: 440px;
+}
+
+@media (min-width: 1024px) {
+  .tile[data-service="wordpress"] .visual {
+    min-height: 0;
+  }
+
+  .tile[data-service="seo"] .visual,
+  .tile[data-service="design"] .visual {
+    min-height: 380px;
+  }
+}
+
+/* The stage keeps the photo's own aspect ratio and covers the visual, centred. */
+.stage {
   position: absolute;
-  inset: 0;
-  z-index: -2;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 900ms var(--ease-out);
+  top: 50%;
+  left: 50%;
+  width: max(100cqw, calc(100cqh * var(--r)));
+  height: max(100cqh, calc(100cqw / var(--r)));
+  transform: translate(-50%, -50%);
+  transition: transform 1100ms var(--ease-out);
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .tile:hover .photo {
-    transform: scale(1.04);
+  .tile:hover .stage {
+    transform: translate(-50%, -50%) scale(1.03);
   }
 }
 
-/* The big tile carries the V1.6 channel cut (24 degrees) on its top-right corner. */
-.tile[data-service="websites"] {
-  --cut: clamp(56px, 6vw, 104px);
-  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% calc(var(--cut) * 2.246), 100% 100%, 0 100%);
-  border-radius: var(--r-lg) 0 var(--r-lg) var(--r-lg);
-  padding: clamp(24px, 2.4vw, 40px);
+.stage > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.screen {
+  position: absolute;
+  overflow: hidden;
+  container-type: inline-size;
+  background: #fff;
+}
+
+/* Production has no photo: the dashboard floats on its Kelp ground with channel lines. */
+.solo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 28px clamp(20px, 6cqw, 64px);
+  background:
+    radial-gradient(70% 90% at 80% 0%, color-mix(in srgb, var(--c) 70%, transparent), transparent 70%),
+    repeating-linear-gradient(114deg, transparent 0 21px, rgb(255 255 255 / 0.05) 21px 22px),
+    color-mix(in srgb, var(--c) 45%, var(--abyss));
+}
+
+/* The dashboard sizes itself in cqw of this box. */
+.soloInner {
+  width: 100%;
+  max-width: 440px;
+  container-type: inline-size;
+}
+
+/* Caption band */
+.caption {
+  display: grid;
+  gap: 8px;
+  padding: clamp(18px, 1.6vw, 26px);
+  background: color-mix(in srgb, var(--c) 30%, var(--abyss));
+  border-top: 2px solid color-mix(in srgb, var(--c) 80%, white);
+}
+
+.captionTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
 }
 
 .icon {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--r-md);
-  background: rgb(238 247 246 / 0.14);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-}
-
-.tile[data-look="seafoam"] .icon,
-.tile[data-look="white"] .icon {
-  background: var(--deep-water);
-  color: var(--seafoam);
-}
-
-.tile[data-look="deep"] .icon {
-  background: rgb(60 207 195 / 0.16);
-  color: var(--aqua);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--c) 60%, transparent);
 }
 
 .icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.text {
-  display: grid;
-  gap: 10px;
+  width: 18px;
+  height: 18px;
 }
 
 .name {
-  max-width: 18ch;
-  font-size: clamp(1.375rem, 1.1rem + 0.7vw, 1.75rem);
+  font-size: clamp(1.25rem, 1rem + 0.7vw, 1.625rem);
   font-weight: 700;
   letter-spacing: -0.025em;
-  line-height: 1.05;
+  line-height: 1.1;
 }
 
-.tile[data-service="websites"] .name {
-  max-width: 13ch;
-  font-size: clamp(2rem, 1.3rem + 2.2vw, 3.5rem);
-  letter-spacing: -0.04em;
-  line-height: 0.98;
+.tile[data-service="wordpress"] .name {
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
 }
 
-.body {
-  max-width: 34ch;
+.text {
+  max-width: 40ch;
+  color: rgb(255 255 255 / 0.84);
   font-size: var(--fs-small);
   line-height: 1.5;
-  opacity: 0.88;
 }
 
-.tile[data-service="websites"] .body {
-  font-size: var(--fs-body);
+/* Platform logos: white discs, each mark in its brand colour. */
+.logos {
+  display: flex;
+  padding-left: 6px;
 }
 
-/* "Not sure what you need?": Deep Water with a faint Aqua glow, plus the action. */
-.more {
+.logo {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 0 0 2px var(--deep-water);
+  font-size: 18px;
+}
+
+.logos[data-size="sm"] .logo {
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+}
+
+/* ---- Coming soon ---- */
+.soonTile {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: clamp(18px, 1.6vw, 26px);
+  border: 1px dashed rgb(238 247 246 / 0.22);
+  border-radius: var(--r-lg);
   background:
-    radial-gradient(120% 140% at 100% 100%, rgb(60 207 195 / 0.3), transparent 60%),
-    var(--deep-water);
-  color: var(--shallows);
+    repeating-linear-gradient(114deg, transparent 0 21px, rgb(191 240 227 / 0.06) 21px 22px),
+    rgb(5 26 45 / 0.55);
+  color: var(--cloud);
 }
 
-.moreBtn {
-  align-self: flex-start;
+.soonTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: var(--s-3);
 }
 
-.more :focus-visible {
-  outline-color: var(--aqua);
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: rgb(238 247 246 / 0.06);
+  color: var(--haze);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.soonName {
+  color: var(--white);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.soonText {
+  max-width: 32ch;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+/* ---- Call tile ---- */
+.moreTile {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 10px;
+  min-height: 220px;
+  padding: clamp(22px, 2.2vw, 36px);
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(110% 120% at 100% 100%, rgb(60 207 195 / 0.28), transparent 60%),
+    var(--abyss);
+  box-shadow: inset 0 0 0 1px rgb(238 247 246 / 0.08);
+}
+
+.ripples {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  width: 70%;
+  height: auto;
+  fill: none;
+  stroke: rgb(191 240 227 / 0.12);
+}
+
+.moreTitle {
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.moreText {
+  max-width: 40ch;
+  margin-bottom: 8px;
+  color: var(--cloud);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    transition: none;
+  }
 }

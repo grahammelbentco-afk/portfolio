@@ -2,6 +2,13 @@ import type { ServiceIcon as Kind } from "@/content/homepage";
 
 /** Small line icons for the service tiles. Decorative: the tile title carries the meaning. */
 const PATHS: Record<Kind, React.ReactNode> = {
+  code: <path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15" />,
+  care: (
+    <>
+      <path d="M12 20.5s-7.5-4.4-7.5-10A4.3 4.3 0 0112 8a4.3 4.3 0 017.5 2.5c0 5.6-7.5 10-7.5 10z" />
+      <path d="M8.5 12.5h2l1.2-2 1.6 4 1.2-2h1" />
+    </>
+  ),
   web: (
     <>
       <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
