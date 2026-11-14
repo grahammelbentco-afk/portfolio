@@ -10,7 +10,13 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 44: CTA photo with a clean centre (latest)
+## Revision 45: CTA back to the studio desk, centre cleared (latest)
+
+- **Ask (Jasper):** he prefers the Revision 43 studio-desk photo; make it less busy instead of replacing it.
+- **Edit (fal flux-pro/kontext, $0.04 each, 2 edits, $0.08):** the source is `cta-call-b`. In edit A (used, `public/images/cta-studio-*.webp`), the two laptops, the sketch sheets and the typing hands are removed from the middle. The lamps, gear, mug, plant and the person's head stay at the edges. Edit B kept the laptop and hands, which would sit under the platform chips. The output is 1392×752, which is enough behind the veil. The veil is a 55% centre radial plus a light floor.
+- **CTA photo spend, Revisions 42–45:** $0.32.
+
+## Revision 44: CTA photo with a clean centre
 
 - **Ask (Jasper):** the Revision 43 desk photo was too busy behind the text. Keep objects outside the text area, or only slightly overlapping it.
 - **New photo (fal flux-pro v1.1-ultra, 21:9 raw, 2 generated, $0.12):** `cta-edges-c` is used (`public/images/cta-edges-*.webp`): a Deep Water desk from above, with a laptop, notebook and brass lamp only at the corners and the centre empty. `cta-edges-d` (phone and mug) is an alternate. With the clean centre, the veil is now a light radial (45% Deep Water at the centre), down from 78%.

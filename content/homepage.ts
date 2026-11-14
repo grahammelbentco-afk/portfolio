@@ -441,9 +441,9 @@ export const ctaBanner = {
   primary: { label: "Book a 30-minute call", href: "#contact" },
   secondary: { label: "See pricing", href: "#pricing" },
   stack: ["wordpress", "nextdotjs", "astro", "react", "google"],
-  // fal flux-pro v1.1-ultra, 2026-11-14 (Revision 44): a navy desk from above, objects only at
-  // the corners, the centre empty for the text. Decorative, so alt is empty.
-  image: { base: "/images/cta-edges", width: 3136, height: 1344, alt: "" },
+  // Revision 45: the Revision 43 overhead studio desk (fal flux-pro ultra), edited with
+  // flux-pro/kontext to clear the centre for the text. Decorative, so alt is empty.
+  image: { base: "/images/cta-studio", width: 1392, height: 752, alt: "" },
 };
 
 /**

@@ -38,7 +38,9 @@
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(50% 60% at 50% 50%, rgb(7 34 59 / 0.45), transparent 80%);
+    /* Deep Water deepening toward the text, like the Services tiles' title gradient. */
+    radial-gradient(48% 62% at 50% 52%, rgb(5 26 45 / 0.88), rgb(7 34 59 / 0.6) 55%, rgb(7 34 59 / 0.18) 100%),
+    linear-gradient(to top, rgb(5 26 45 / 0.55), transparent 35%);
 }
 
 .corner {
