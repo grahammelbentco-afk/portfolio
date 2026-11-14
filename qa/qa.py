@@ -15,6 +15,7 @@ from PIL import Image, ImageChops
 from playwright.sync_api import sync_playwright
 
 URL = os.environ.get("QA_URL", "http://127.0.0.1:4173/")
+ORIGIN = "/".join(URL.split("/")[:3])  # scheme://host[:port]; every request must stay on it
 ROOT = Path(__file__).resolve().parents[1]
 SHOTS = ROOT / "screenshots"
 SHOTS.mkdir(exist_ok=True)
@@ -180,7 +181,7 @@ with sync_playwright() as p:
     ctx = browser.new_context(viewport={"width": 1440, "height": 900})
     page = ctx.new_page()
     external = []
-    page.on("request", lambda r: external.append(r.url) if not r.url.startswith(("http://127.0.0.1", "data:", "blob:")) else None)
+    page.on("request", lambda r: external.append(r.url) if not r.url.startswith((ORIGIN, "data:", "blob:")) else None)
     page.add_init_script(
         """window.__cls = 0; window.__lcp = 0;
         new PerformanceObserver(l => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cls += e.value; }).observe({type: 'layout-shift', buffered: true});
@@ -218,7 +219,7 @@ with sync_playwright() as p:
     cards = page.evaluate("[...document.querySelectorAll('[data-card]')].map(c => { const r = c.getBoundingClientRect(); return [c.textContent.trim(), Math.round(r.left), Math.round(r.top)]; })")
     staggered = len(cards) == 3 and [c[0] for c in cards] == ["Design", "Market", "Conversion"] and cards[1][1] > cards[2][1] > cards[0][1] and cards[0][2] < cards[1][2] < cards[2][2]
     check("hero: three cards staggered like Graham's outline", staggered, str(cards))
-    check("network: no requests outside the local server", not external, ", ".join(external[:5]))
+    check("network: no requests to other domains", not external, ", ".join(external[:5]))
     cls = page.evaluate("window.__cls")
     lcp = page.evaluate("window.__lcp")
     check("layout: cumulative layout shift < 0.1", cls < 0.1, f"CLS {cls:.4f}, LCP {lcp:.0f} ms (local server)")

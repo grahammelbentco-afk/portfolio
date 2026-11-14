@@ -3,7 +3,7 @@ import os
 import sys
 from playwright.sync_api import sync_playwright
 
-URL = "http://localhost:4173/"
+URL = os.environ.get("QA_URL", "http://localhost:4173/")
 CHROME = os.path.join(os.environ["LOCALAPPDATA"], "ms-playwright", "chromium-1248", "chrome-win64", "chrome.exe")
 OUT = os.path.join(os.path.dirname(__file__), "..", "screenshots", "2026-11-14_remaining-sections")
 IDS = ["services", "cta", "steps", "work", "reviews", "clients", "pricing", "contact"]
