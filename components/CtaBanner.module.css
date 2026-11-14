@@ -31,16 +31,14 @@
   object-position: 50% 50%;
 }
 
-/* Deep Water veil: heaviest at the centre where the text sits, lighter at the edges so the
-   lit windows still glow through. */
+/* The photo's centre is already empty navy; a light veil only evens it out under the text. */
 .panel::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(55% 65% at 50% 50%, rgb(7 34 59 / 0.78), rgb(7 34 59 / 0.4) 75%, rgb(7 34 59 / 0.25)),
-    linear-gradient(to bottom, rgb(5 26 45 / 0.25), transparent 30%, rgb(5 26 45 / 0.35));
+    radial-gradient(50% 60% at 50% 50%, rgb(7 34 59 / 0.45), transparent 80%);
 }
 
 .corner {

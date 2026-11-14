@@ -10,7 +10,14 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 43: CTA banner centred, new photo (latest)
+## Revision 44: CTA photo with a clean centre (latest)
+
+- **Ask (Jasper):** the Revision 43 desk photo was too busy behind the text. Keep objects outside the text area, or only slightly overlapping it.
+- **New photo (fal flux-pro v1.1-ultra, 21:9 raw, 2 generated, $0.12):** `cta-edges-c` is used (`public/images/cta-edges-*.webp`): a Deep Water desk from above, with a laptop, notebook and brass lamp only at the corners and the centre empty. `cta-edges-d` (phone and mug) is an alternate. With the clean centre, the veil is now a light radial (45% Deep Water at the centre), down from 78%.
+- **CTA photo spend, Revisions 42–44:** $0.24 (4 images).
+- **QA:** `qa/qa.py` 146/146 (the shader check is flaky as before).
+
+## Revision 43: CTA banner centred, new photo
 
 - **Ask (Jasper):** follow Graham's centred CTA references ("Be the name they say", "Need a WordPress production partner?") in our brand, with centred text and buttons. Rewrite the copy with the humanizer skill and generate one new image that fits. It must transition well from Services (white) to Steps (Seafoam).
 - **Layout:** an inset Deep Water panel on the white ground under Services, over a full-bleed photo with a Deep Water veil (heaviest at the centre). Everything is centred:

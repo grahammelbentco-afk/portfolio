@@ -25,8 +25,8 @@ export default function CtaBanner() {
         <div className={styles.panel}>
           <img
             className={styles.photo}
-            src={`${image.base}-900.webp`}
-            srcSet={`${image.base}-900.webp 900w, ${image.base}-1600.webp 1600w`}
+            src={`${image.base}-1000.webp`}
+            srcSet={`${image.base}-1000.webp 1000w, ${image.base}-1800.webp 1800w`}
             sizes="100vw"
             width={image.width}
             height={image.height}
