@@ -10,7 +10,14 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 45: CTA back to the studio desk, centre cleared (latest)
+## Revision 46: CTA desk dressed as our studio, stronger text gradient (latest)
+
+- **Ask (Jasper):** the clean centre works, but the edge objects (microscope, mixer, lamps) don't say what we do. He also suggested a gradient behind the text, as in earlier sections.
+- **Edit (fal flux-pro/kontext, $0.04 each, 2 edits, $0.08):** the source is the Revision 45 cleared desk. Edit A is used (`public/images/cta-workdesk-*.webp`): a laptop and phone showing site layouts, website wireframe sketches, a colour-swatch fan in Aqua, Seafoam and Ember tones, a tablet with stylus and coffee mugs. The centre is still empty and the person is still at the bottom edge. Edit B was rejected for garbled printout text.
+- **Gradient:** a Deep Water radial that deepens toward the text (88% at the centre, falling to 18% at the edges) plus a darker floor, the same device the Services tiles use under their titles.
+- **CTA photo spend, Revisions 42–46:** $0.40.
+
+## Revision 45: CTA back to the studio desk, centre cleared
 
 - **Ask (Jasper):** he prefers the Revision 43 studio-desk photo; make it less busy instead of replacing it.
 - **Edit (fal flux-pro/kontext, $0.04 each, 2 edits, $0.08):** the source is `cta-call-b`. In edit A (used, `public/images/cta-studio-*.webp`), the two laptops, the sketch sheets and the typing hands are removed from the middle. The lamps, gear, mug, plant and the person's head stay at the edges. Edit B kept the laptop and hands, which would sit under the platform chips. The output is 1392×752, which is enough behind the veil. The veil is a 55% centre radial plus a light floor.
