@@ -1,38 +1,52 @@
 import { ctaBanner } from "@/content/homepage";
 import styles from "./CtaBanner.module.css";
 
+const NAMES: Record<string, string> = {
+  wordpress: "WordPress",
+  nextdotjs: "Next.js",
+  astro: "Astro",
+  react: "React",
+  google: "Google",
+};
+
 /**
- * CTA banner (Graham: "cta banner"; reference "Be the name they say"). Ours: a Deep Water
- * panel lit by the Preview V2 caustics photo (light through water, the Lagoon in Lagoon
- * Ember), with the hero's outline device on one word. The panel is inset from the page edge
- * so it reads as a break between sections, not another section.
+ * CTA banner (Revision 43): Graham's centred CTA references in our brand. A Deep Water panel
+ * over the corner-shop photo (dimmed, full bleed), everything centred: an eyebrow pill, the
+ * hero's headline device (gradient phrase, outline word), one line of text, Ember primary
+ * and glass secondary, then a row of the platforms we build on. The panel keeps the
+ * Services tiles' 24° corner cut.
  */
 export default function CtaBanner() {
   const { title, image } = ctaBanner;
+  const [before] = title.first.split(title.highlight);
   return (
     <section id="cta" className={styles.section} data-ground="dark" data-cta aria-labelledby="cta-title">
-      <div className={`container ${styles.wrap}`}>
+      <div className="container">
         <div className={styles.panel}>
           <img
             className={styles.photo}
-            src={`${image.base}-1280.webp`}
-            srcSet={`${image.base}-720.webp 720w, ${image.base}-1280.webp 1280w`}
+            src={`${image.base}-900.webp`}
+            srcSet={`${image.base}-900.webp 900w, ${image.base}-1600.webp 1600w`}
             sizes="100vw"
-            width={1280}
-            height={714}
-            alt=""
+            width={image.width}
+            height={image.height}
+            alt={image.alt}
             loading="lazy"
             decoding="async"
           />
-          <svg className={styles.ripples} viewBox="0 0 600 600" aria-hidden="true" focusable="false">
-            {[110, 180, 250, 320, 390].map((r) => (
-              <circle key={r} cx="0" cy="600" r={r} />
-            ))}
+          <svg className={styles.corner} viewBox="0 0 100 224.6" aria-hidden="true" focusable="false">
+            <polygon points="0,0 100,0 100,224.6" />
           </svg>
           <div className={styles.content}>
+            <p className={styles.eyebrow}>{ctaBanner.eyebrow}</p>
             <h2 id="cta-title" className={styles.title}>
-              {title.before} <span className="outline-type">{title.outline}</span>
-              {title.after}
+              <span className={styles.line}>
+                {before}
+                <span className="text-gradient">{title.highlight}</span>
+              </span>{" "}
+              <span className={styles.line}>
+                <span className="outline-type">{title.outline}</span> {title.rest}
+              </span>
             </h2>
             <p className={styles.text}>{ctaBanner.text}</p>
             <div className={styles.actions}>
@@ -43,6 +57,14 @@ export default function CtaBanner() {
                 {ctaBanner.secondary.label}
               </a>
             </div>
+            <ul className={styles.stack} aria-label="Platforms we build on">
+              {ctaBanner.stack.map((id) => (
+                <li key={id}>
+                  <span className={styles.stackMark} style={{ "--src": `url(/brands/si/${id}.svg)` } as React.CSSProperties} aria-hidden="true" />
+                  {NAMES[id]}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

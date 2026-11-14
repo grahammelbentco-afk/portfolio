@@ -1,23 +1,21 @@
-/* CTA banner: white page ground (continuing Services), with an inset Deep Water panel.
-   The section is data-ground="dark" so the header switches to its glass over the panel. */
+/* CTA banner (Revision 43): centred, after Graham's references. White page ground from
+   Services, an inset Deep Water panel over the dimmed corner-shop photo. */
 .section {
-  padding-block: var(--section-y);
+  /* Services above already ends with its own section padding. */
+  padding-block: 0 var(--section-y);
   background: var(--white);
 }
 
-.wrap {
-  display: block;
-}
-
 .panel {
+  --w: clamp(40px, 3.6vw, 58px);
   position: relative;
   isolation: isolate;
   display: grid;
   place-items: center;
-  min-height: clamp(440px, 34vw, 600px);
-  padding: clamp(56px, 6vw, 112px) clamp(20px, 4vw, 64px);
-  border-radius: clamp(16px, 1.6vw, 28px);
+  min-height: clamp(520px, 44vw, 720px);
   overflow: hidden;
+  border-radius: clamp(18px, 1.6vw, 26px);
+  border-top-right-radius: 0;
   background: var(--deep-water);
   color: var(--white);
   text-align: center;
@@ -30,50 +28,65 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.55;
-  mix-blend-mode: screen;
+  object-position: 50% 50%;
 }
 
-/* Deep Water vignette so the centre stays readable over the brightest caustics. */
-.panel::before {
+/* Deep Water veil: heaviest at the centre where the text sits, lighter at the edges so the
+   lit windows still glow through. */
+.panel::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(60% 70% at 50% 50%, rgb(7 34 59 / 0.72), rgb(7 34 59 / 0.25) 70%, rgb(7 34 59 / 0.1)),
-    linear-gradient(to bottom, rgb(5 26 45 / 0.4), transparent 40%, rgb(5 26 45 / 0.5));
+    radial-gradient(55% 65% at 50% 50%, rgb(7 34 59 / 0.78), rgb(7 34 59 / 0.4) 75%, rgb(7 34 59 / 0.25)),
+    linear-gradient(to bottom, rgb(5 26 45 / 0.25), transparent 30%, rgb(5 26 45 / 0.35));
 }
 
-/* Ripples (V1.6 p.16): concentric arcs from the bottom-left corner, low contrast. */
-.ripples {
+.corner {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: -1;
-  width: min(46vw, 560px);
-  height: auto;
-  fill: none;
-  stroke: rgb(191 240 227 / 0.14);
-  stroke-width: 1;
+  top: -1px;
+  right: -1px;
+  z-index: 2;
+  width: calc(var(--w) + 1px);
+  height: calc(var(--w) * 2.246 + 1px);
+  fill: var(--white);
 }
 
 .content {
   display: grid;
   justify-items: center;
   gap: var(--s-3);
-  max-width: 52rem;
+  max-width: 56rem;
+  padding: clamp(56px, 6vw, 112px) clamp(20px, 4vw, 64px);
 }
 
+.eyebrow {
+  padding: 6px 16px;
+  border-radius: var(--r-pill);
+  background: rgb(238 247 246 / 0.08);
+  box-shadow: inset 0 0 0 1px var(--line-on-dark);
+  color: var(--cloud);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* The hero's headline device at section scale. */
 .title {
-  font-size: clamp(3rem, 1.6rem + 6vw, 8.5rem);
+  font-size: clamp(2.5rem, 1.2rem + 4.6vw, 6rem);
   font-weight: 800;
   letter-spacing: -0.045em;
-  line-height: 0.92;
+  line-height: 1;
+}
+
+.line {
+  display: block;
 }
 
 .text {
-  max-width: 34rem;
+  max-width: 36rem;
   color: var(--cloud);
   font-size: var(--fs-lead);
   line-height: 1.55;
@@ -84,7 +97,36 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
+  margin-top: var(--s-1);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
   margin-top: var(--s-2);
+}
+
+.stack li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  background: rgb(238 247 246 / 0.07);
+  box-shadow: inset 0 0 0 1px var(--line-on-dark);
+  color: var(--cloud);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.stackMark {
+  width: 15px;
+  height: 15px;
+  background: currentColor;
+  -webkit-mask: var(--src) center / contain no-repeat;
+  mask: var(--src) center / contain no-repeat;
 }
 
 @media (max-width: 479px) {

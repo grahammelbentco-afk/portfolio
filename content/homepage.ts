@@ -432,11 +432,18 @@ export const services = {
 
 /** CTA banner (Graham: "cta banner"). The outlined word reuses the hero's outline device. UNCONFIRMED copy. */
 export const ctaBanner = {
-  title: { before: "Let's make", outline: "yours", after: "." },
-  text: "Tell us about your business. We'll come back with a scope and a price before anything starts.",
-  primary: { label: "Book a call", href: "#contact" },
+  // Revision 43, humanizer pass. Follows Graham's centred CTA references with our devices:
+  // the hero's gradient phrase on line one and outline word on line two. UNCONFIRMED copy;
+  // "30-minute call" assumes the booking length Graham uses.
+  eyebrow: "For local businesses and agencies",
+  title: { first: "Need a web partner", highlight: "web partner", outline: "who", rest: "actually ships?" },
+  text: "Book a 30-minute call. Tell us about your business or your agency's workload, and we'll come back with a plan and a price.",
+  primary: { label: "Book a 30-minute call", href: "#contact" },
   secondary: { label: "See pricing", href: "#pricing" },
-  image: { base: "/images/cta-caustics" },
+  stack: ["wordpress", "nextdotjs", "astro", "react", "google"],
+  // fal flux-pro v1.1-ultra, 2026-11-14 (Revision 43): an overhead studio desk at night, the
+  // centre left dark for the text. Decorative, so alt is empty.
+  image: { base: "/images/cta-desk", width: 2752, height: 1536, alt: "" },
 };
 
 /**

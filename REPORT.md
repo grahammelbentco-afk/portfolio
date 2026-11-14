@@ -10,6 +10,24 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
+## Revision 43: CTA banner centred, new photo (latest)
+
+- **Ask (Jasper):** follow Graham's centred CTA references ("Be the name they say", "Need a WordPress production partner?") in our brand, with centred text and buttons. Rewrite the copy with the humanizer skill and generate one new image that fits. It must transition well from Services (white) to Steps (Seafoam).
+- **Layout:** an inset Deep Water panel on the white ground under Services, over a full-bleed photo with a Deep Water veil (heaviest at the centre). Everything is centred:
+  - an eyebrow pill
+  - the headline, using the hero's device (gradient phrase on line one, outline word on line two)
+  - one line of text
+  - **Ember** "Book a 30-minute call" and a glass "See pricing" button
+  - a row of the platforms we build on (WordPress, Next.js, Astro, React, Google)
+
+  The panel's top-right corner has the same 24° cut as the Services tiles. Revision 42 (photo on the right, text on the left) was replaced at Jasper's request.
+- **Copy (humanizer pass, UNCONFIRMED):** "Need a web partner who actually ships?" / "Book a 30-minute call. Tell us about your business or your agency's workload, and we'll come back with a plan and a price." The 30-minute length needs Graham's confirmation.
+- **Photo (fal flux-pro v1.1-ultra, 16:9 raw, $0.06 each, 2 generated, $0.12 in total):**
+  - `cta-call-b` is used (`public/images/cta-desk-*.webp`): an overhead studio desk at night, two people working at opposite ends, a dark empty centre for the text. No text cleanup was needed.
+  - `cta-blue-hour-a` (a corner shop at dusk; garbled sign lettering painted out in the web copy) was used in Revision 42 and then replaced. Its `cta-shop-*.webp` files are left in place.
+  - Both are in `manifest-2026-11-14-services.csv`. `cta-caustics` is no longer used.
+- **QA:** `qa/qa.py` **146/146**, with no overflow at 1440 and 390. Screenshots: `screenshots/2026-11-14_cta-r42/`.
+
 ## Revision 41: Services bento made our own, type and contrast aligned (latest)
 
 - **Ask (Jasper):**
