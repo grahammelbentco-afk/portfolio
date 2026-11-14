@@ -459,12 +459,20 @@ export const steps = {
     { title: "Plan the pages", text: "Like it? We agree the pages, the scope and the price, in writing." },
     { title: "Build and launch", text: "We build it, move your content across and put it live." },
   ],
+  // Revision 48: Bloom & Fern is a fictional example florist. Photo: fal flux-pro ultra
+  // (steps-florist), illustration only.
   compare: {
     label: "Compare the site today with the preview",
     before: "Today",
     after: "Your preview",
-    url: "harlowjoinery.com.au",
+    url: "bloomandfern.com.au",
     note: "An example. Your preview is designed for your business.",
+    business: "Bloom & Fern",
+    nav: ["Bouquets", "Weddings", "Visit"],
+    headline: "Flowers for this Friday.",
+    sub: "Hand-tied bouquets, delivered same day across Fremantle.",
+    cta: "Order a bouquet",
+    image: { base: "/images/steps-florist", width: 2752, height: 1536 },
   },
   action: { label: "Get my free preview", href: "#contact" },
 };

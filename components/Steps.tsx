@@ -5,39 +5,47 @@ import { steps } from "@/content/homepage";
 import styles from "./Steps.module.css";
 
 /**
- * Steps (Graham's outline: "Steps / OPTIONAL"; reference "See it before we build it").
- * Three real steps in order (so they are numbered), and a compare slider: a generic template
- * site on the left, the preview on the right. The slider is a native range input, so it
- * works with keyboard, touch and screen readers. The sites are illustrations built in code.
+ * Steps (Revision 48). Two columns on desktop:
+ *   [ heading, intro          ][ browser frame: compare slider          ]
+ *   [ 1 ─ Free preview        ][   template site  |  the preview         ]
+ *   [ │                       ][                                         ]
+ *   [ 2 ─ Plan the pages      ][  Today        note        Your preview  ]
+ *   [ 3 ─ Build and launch    ]
+ *   [ Get my free preview     ]
+ * The steps are a real sequence, so they are numbered on a connecting line. The preview's
+ * text sits on its right, so the handle never cuts through it. The slider is a native range
+ * input (keyboard, touch, screen readers). Bloom & Fern is a fictional example.
  */
 export default function Steps() {
-  const [split, setSplit] = useState(32);
-  const { compare } = steps;
+  const [split, setSplit] = useState(42);
+  const c = steps.compare;
 
   return (
     <section id="steps" className={styles.section} data-ground="light" data-steps aria-labelledby="steps-title">
-      <div className={`container ${styles.head}`}>
-        <h2 id="steps-title" className="sec-title">
-          <span className="outline-type">{steps.title.outline}</span> {steps.title.rest}
-        </h2>
-        <p className="sec-intro">{steps.intro}</p>
-      </div>
+      <div className={`container ${styles.layout}`}>
+        <div className={styles.copy}>
+          <h2 id="steps-title" className="sec-title">
+            <span className="outline-type">{steps.title.outline}</span> {steps.title.rest}
+          </h2>
+          <p className="sec-intro">{steps.intro}</p>
+          <ol className={styles.list}>
+            {steps.items.map((s, i) => (
+              <li key={s.title} className={styles.step}>
+                <span className={styles.num} aria-hidden="true">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className={styles.stepTitle}>{s.title}</h3>
+                  <p className={styles.stepText}>{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <a href={steps.action.href} className={`btn btn-lg btn-primary ${styles.action}`}>
+            {steps.action.label}
+          </a>
+        </div>
 
-      <ol className={`container ${styles.list}`}>
-        {steps.items.map((s, i) => (
-          <li key={s.title} className={styles.step}>
-            <span className={styles.num} aria-hidden="true">
-              {i + 1}
-            </span>
-            <div>
-              <h3 className={styles.stepTitle}>{s.title}</h3>
-              <p className={styles.stepText}>{s.text}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      <div className={`container ${styles.compareWrap}`}>
         <figure className={styles.compare} style={{ "--split": `${split}%` } as React.CSSProperties}>
           <div className={styles.chrome} aria-hidden="true">
             <span className={styles.dots}>
@@ -45,14 +53,14 @@ export default function Steps() {
               <i />
               <i />
             </span>
-            <span className={styles.url}>{compare.url}</span>
+            <span className={styles.url}>{c.url}</span>
           </div>
 
           <div className={styles.stage} aria-hidden="true">
             {/* Before: the template look most local sites share. */}
             <div className={`${styles.site} ${styles.before}`}>
               <div className={styles.bNav}>
-                <span className={styles.bLogo}>HARLOW JOINERY</span>
+                <span className={styles.bLogo}>{c.business.toUpperCase()} FLORIST</span>
                 <span className={styles.bLinks}>
                   <i />
                   <i />
@@ -73,21 +81,30 @@ export default function Steps() {
               </div>
             </div>
 
-            {/* After: the preview, clipped to the right of the handle. */}
+            {/* After: the preview, revealed to the right of the handle. */}
             <div className={`${styles.site} ${styles.after}`}>
-              <img src="/images/work-joinery-720.webp" alt="" width={720} height={894} loading="lazy" decoding="async" />
+              <img
+                src={`${c.image.base}-1000.webp`}
+                srcSet={`${c.image.base}-1000.webp 1000w, ${c.image.base}-1600.webp 1600w`}
+                sizes="(min-width: 1024px) 56vw, 100vw"
+                alt=""
+                width={c.image.width}
+                height={c.image.height}
+                loading="lazy"
+                decoding="async"
+              />
               <div className={styles.aNav}>
-                <span className={styles.aLogo}>Harlow</span>
-                <span className={styles.aLinks}>Kitchens&nbsp;&nbsp;Furniture&nbsp;&nbsp;About</span>
-                <span className={styles.aBtn}>Request a quote</span>
+                <span className={styles.aLogo}>{c.business}</span>
+                <span className={styles.aLinks}>
+                  {c.nav.map((n) => (
+                    <span key={n}>{n}</span>
+                  ))}
+                </span>
               </div>
               <div className={styles.aHero}>
-                <span className={styles.aTitle}>
-                  Made to measure.
-                  <br />
-                  Made to last.
-                </span>
-                <span className={styles.aSub}>Kitchens and furniture, built by hand in Fremantle.</span>
+                <span className={styles.aTitle}>{c.headline}</span>
+                <span className={styles.aSub}>{c.sub}</span>
+                <span className={styles.aBtn}>{c.cta}</span>
               </div>
             </div>
 
@@ -105,21 +122,17 @@ export default function Steps() {
             max={100}
             value={split}
             onChange={(e) => setSplit(Number(e.target.value))}
-            aria-label={compare.label}
-            aria-valuetext={`${split}% ${compare.before.toLowerCase()}, ${100 - split}% preview`}
+            aria-label={c.label}
+            aria-valuetext={`${split}% today, ${100 - split}% preview`}
             data-steps-range
           />
 
           <figcaption className={styles.caption}>
-            <span className={styles.tagBefore}>{compare.before}</span>
-            <span className={styles.note}>{compare.note}</span>
-            <span className={styles.tagAfter}>{compare.after}</span>
+            <span className={styles.tagBefore}>{c.before}</span>
+            <span className={styles.note}>{c.note}</span>
+            <span className={styles.tagAfter}>{c.after}</span>
           </figcaption>
         </figure>
-
-        <a href={steps.action.href} className={`btn btn-lg btn-primary ${styles.action}`}>
-          {steps.action.label}
-        </a>
       </div>
     </section>
   );

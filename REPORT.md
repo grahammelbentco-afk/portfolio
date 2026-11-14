@@ -10,7 +10,19 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 47: CTA photo regenerated at full quality, no person (latest)
+## Revision 48: Steps rebuilt, two columns, new preview photo (latest)
+
+- **Ask (Jasper):** the next section, using Awwwards, fal and frontend-design, then push. (The Awwwards element search for before/after sliders returned nothing.)
+- **Problems fixed:** the preview headline was cut in half by the slider ("sure."), the joinery photo overpowered the section, and the three step cards looked generic.
+- **Layout (Seafoam):**
+  - Left column (5/12): heading, intro, the three steps as a **numbered vertical timeline** (a real sequence) with a connector between numbers, and the Ember "Get my free preview" button.
+  - Right column (7/12): the before/after comparison in a browser frame.
+  - On mobile the columns stack.
+- **Preview:** a new fictional example, **Bloom & Fern** (a florist, bloomandfern.com.au). Its text sits on the right over the photo's plain sage wall, so the handle never cuts it. On mobile the text moves to the lower right over a sage fade. The slider starts at 42%.
+- **Photo (fal flux-pro v1.1-ultra, 16:9 raw, 2 generated, $0.12):** `steps-florist-a` is used (`public/images/steps-florist-*.webp`): a florist at a timber counter on the left, with a clean sage wall on the right. `-b` was rejected because the subject fills the frame.
+- **QA:** the slider keyboard check now expects 47 (42 + 5). `qa/qa.py` 146/146 (the shader check is flaky as before).
+
+## Revision 47: CTA photo regenerated at full quality, no person
 
 - **Ask (Jasper):** higher quality, remove the person. The edited laptop and phone screens didn't make sense.
 - **Photo (fal flux-pro v1.1-ultra, 21:9 raw, 3136×1344, 2 generated, $0.12):** `cta-hq-b` is used (`public/images/cta-studio-hq-{1200,2000}.webp`):

@@ -420,7 +420,7 @@ with sync_playwright() as p:
     for _ in range(5):
         page.keyboard.press("ArrowRight")
     val = rng.input_value()
-    check("steps: compare slider moves with the keyboard", val == "37", val)
+    check("steps: compare slider moves with the keyboard", val == "47", val)
     page.evaluate("document.querySelector('[data-contact-form] button[type=submit]').click()")
     invalid = page.evaluate("document.querySelectorAll('[data-contact-form] :invalid').length")
     check("contact: empty form is blocked by validation", invalid >= 2, str(invalid))
