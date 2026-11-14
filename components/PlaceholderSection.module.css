@@ -1,0 +1,48 @@
+/* Each section gets its own ground, per Graham's note "different colours on each section". */
+.section {
+  padding-block: var(--s-12);
+  background: var(--shallows);
+  color: var(--deep-water);
+}
+
+.section[data-tone="white"] {
+  background: var(--white);
+}
+
+.section[data-tone="mist"] {
+  background: var(--mist);
+}
+
+.section[data-tone="deep"] {
+  background: var(--deep-water);
+  color: var(--shallows);
+}
+
+.inner {
+  display: grid;
+  gap: var(--s-2);
+}
+
+@media (min-width: 960px) {
+  .inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s-6);
+    align-items: end;
+  }
+}
+
+.title {
+  font-size: var(--fs-h1);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.intro {
+  max-width: var(--text-max);
+  color: var(--wet-slate);
+  font-size: var(--fs-lead);
+}
+
+[data-tone="deep"] .intro {
+  color: var(--cloud);
+}

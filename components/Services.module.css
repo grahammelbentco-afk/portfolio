@@ -1,0 +1,211 @@
+/* Services: white ground, a bento of eight tiles.
+   Desktop (12 columns, three rows):
+     [ Websites (6 cols, 2 rows) ][ SEO (3)   ][ Web apps (3) ]
+     [                           ][ Email (3) ][ Mobile (3)   ]
+     [ Social (4)    ][ Content (4)    ][ Not sure? (4)        ]
+   Tiles are large panels, so they take --r-lg. */
+.section {
+  padding-block: var(--section-y);
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 72px);
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > :first-child {
+    grid-column: 1 / span 7;
+  }
+
+  .head > :last-child {
+    grid-column: 9 / -1;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tile[data-service="websites"],
+  .more {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: minmax(240px, 17vw);
+  }
+
+  .tile {
+    grid-column: span 3;
+  }
+
+  .tile[data-service="websites"] {
+    grid-column: 1 / span 6;
+    grid-row: span 2;
+  }
+
+  .tile[data-service="social"],
+  .tile[data-service="content"],
+  .more {
+    grid-column: span 4;
+  }
+}
+
+/* ---- Tile ---- */
+.tile {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-height: 240px;
+  padding: clamp(20px, 1.6vw, 28px);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.tile[data-look="deep"] {
+  background: var(--deep-water);
+  color: var(--shallows);
+}
+
+.tile[data-look="seafoam"] {
+  background: var(--seafoam);
+}
+
+.tile[data-look="white"] {
+  background: var(--shallows);
+  box-shadow: inset 0 0 0 1px var(--line-on-light);
+}
+
+/* Photo tiles: the image under a Deep Water scrim that darkens toward the text. */
+.tile[data-look="photo"] {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+.tile[data-look="photo"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgb(7 34 59 / 0.94) 10%, rgb(7 34 59 / 0.5) 52%, rgb(7 34 59 / 0.1) 100%);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tile:hover .photo {
+    transform: scale(1.04);
+  }
+}
+
+/* The big tile carries the V1.6 channel cut (24 degrees) on its top-right corner. */
+.tile[data-service="websites"] {
+  --cut: clamp(56px, 6vw, 104px);
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% calc(var(--cut) * 2.246), 100% 100%, 0 100%);
+  border-radius: var(--r-lg) 0 var(--r-lg) var(--r-lg);
+  padding: clamp(24px, 2.4vw, 40px);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  background: rgb(238 247 246 / 0.14);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.tile[data-look="seafoam"] .icon,
+.tile[data-look="white"] .icon {
+  background: var(--deep-water);
+  color: var(--seafoam);
+}
+
+.tile[data-look="deep"] .icon {
+  background: rgb(60 207 195 / 0.16);
+  color: var(--aqua);
+}
+
+.icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.text {
+  display: grid;
+  gap: 10px;
+}
+
+.name {
+  max-width: 18ch;
+  font-size: clamp(1.375rem, 1.1rem + 0.7vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.tile[data-service="websites"] .name {
+  max-width: 13ch;
+  font-size: clamp(2rem, 1.3rem + 2.2vw, 3.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.body {
+  max-width: 34ch;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  opacity: 0.88;
+}
+
+.tile[data-service="websites"] .body {
+  font-size: var(--fs-body);
+}
+
+/* "Not sure what you need?": Deep Water with a faint Aqua glow, plus the action. */
+.more {
+  background:
+    radial-gradient(120% 140% at 100% 100%, rgb(60 207 195 / 0.3), transparent 60%),
+    var(--deep-water);
+  color: var(--shallows);
+}
+
+.moreBtn {
+  align-self: flex-start;
+}
+
+.more :focus-visible {
+  outline-color: var(--aqua);
+}

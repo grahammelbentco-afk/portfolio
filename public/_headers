@@ -1,0 +1,3 @@
+# Cloudflare Pages: staging preview, keep it out of search engines.
+/*
+  X-Robots-Tag: noindex, nofollow

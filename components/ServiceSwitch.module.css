@@ -1,0 +1,154 @@
+.switch {
+  display: grid;
+  justify-items: start;
+  width: 100%;
+  gap: var(--s-2);
+  max-width: 36rem;
+  margin-top: var(--s-4);
+}
+
+/* ---------- Tabs: a glass pill holding two pills ---------- */
+.tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgb(238 247 246 / 0.14);
+  border-radius: var(--r-pill);
+  background: rgb(7 34 59 / 0.45);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--cloud);
+  font: 600 var(--fs-small) / 1 var(--font-body);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out);
+}
+
+.tab svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tab:hover {
+  color: var(--white);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--shallows);
+  color: var(--deep-water);
+}
+
+/* ---------- Field: one white pill with the Ember action inside ---------- */
+.panel {
+  display: grid;
+  gap: var(--s-2);
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  width: 100%;
+  padding: 6px 6px 6px 24px;
+  border-radius: var(--r-pill);
+  background: var(--shallows);
+  /* A soft Aqua lip under the field, like Webtec's, plus depth. */
+  box-shadow:
+    0 4px 0 rgb(60 207 195 / 0.28),
+    0 20px 40px -20px rgb(2 12 22 / 0.8);
+}
+
+.field:focus-within {
+  outline: 3px solid var(--aqua);
+  outline-offset: 3px;
+}
+
+.input {
+  flex: 1;
+  /* Zero base width so the input's default ~20ch size never widens the layout. */
+  width: 0;
+  min-width: 0;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--deep-water);
+  font: 500 1.0625rem / 1 var(--font-body);
+}
+
+.input::placeholder {
+  color: var(--wet-slate);
+  opacity: 0.8;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.submit {
+  flex-shrink: 0;
+  min-height: 52px;
+  padding-inline: 28px;
+}
+
+/* Agency tab: the action on its own, same pill and size as the field's button. */
+.solo {
+  justify-self: start;
+}
+
+.note {
+  color: var(--cloud);
+  font-size: var(--fs-small);
+}
+
+.note a {
+  white-space: nowrap;
+  color: var(--white);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.note a:hover {
+  text-decoration-color: var(--seafoam);
+}
+
+/* Narrow phones: tighter tabs so both fit on one line. */
+@media (max-width: 479px) {
+  .tabs {
+    max-width: 100%;
+  }
+
+  .tab {
+    padding: 8px 12px;
+    font-size: var(--fs-caption);
+  }
+
+  .tab svg {
+    display: none;
+  }
+
+  .field {
+    padding-left: 16px;
+  }
+
+  .submit {
+    padding-inline: 18px;
+  }
+}

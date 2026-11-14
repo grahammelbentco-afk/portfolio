@@ -1,0 +1,95 @@
+/* ---------- First paint and fallback ----------
+   A static stand-in for the live Halo: same dark base and the same icy light at the
+   lower right, with no rings or sheens, so the swap to the shader is barely visible. */
+.ground {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #030f1c;
+}
+
+.layer {
+  /* Layers overhang by 10% so they can drift without showing an edge.
+     Positions below are in layer space: visible % = layer % × 1.2 − 10. */
+  position: absolute;
+  inset: -10%;
+  will-change: transform;
+}
+
+/* Darker water in the upper left, where the headline sits. */
+.depth {
+  background:
+    radial-gradient(55% 55% at 14% 12%, #03172a 0%, rgb(3 23 42 / 0) 72%),
+    linear-gradient(155deg, rgb(4 25 43 / 0.75) 0%, rgb(7 34 59 / 0) 50%);
+}
+
+/* The light: the shader's icy #9FD8E4 through #10304A, from the lower right. */
+.bloom {
+  background:
+    radial-gradient(36% 40% at 86% 92%, rgb(159 216 228 / 0.75) 0%, rgb(36 82 106 / 0.6) 22%, rgb(16 48 74 / 0.4) 44%, rgb(16 48 74 / 0) 100%),
+    radial-gradient(64% 70% at 88% 94%, rgb(16 48 74 / 0.95) 0%, rgb(16 48 74 / 0.45) 45%, rgb(16 48 74 / 0) 78%);
+  animation: bloom 18s ease-in-out infinite alternate;
+}
+
+/* Keeps the headline on the darkest water (V1.6: text sits on solid or the darkest part). */
+.scrim {
+  position: absolute;
+  inset: 0;
+  /* Angled like the V1.6 cover: near-black water top left, the light left free bottom right. */
+  background: linear-gradient(125deg, rgb(3 18 32 / 0.82) 0%, rgb(4 24 42 / 0.55) 32%, rgb(7 34 59 / 0.18) 58%, rgb(7 34 59 / 0) 78%);
+}
+
+/* Fallback grain for the CSS gradient: fine and monochrome, also stops banding. */
+.dither {
+  position: absolute;
+  inset: 0;
+  opacity: 0.09;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+@keyframes bloom {
+  to {
+    transform: translate3d(-4%, -3%, 0) scale(1.06);
+  }
+}
+
+/* The live Halo (shadergradient.co) over the CSS layers, fading in once it renders. */
+.shader {
+  position: absolute;
+  inset: 0;
+}
+
+.shader canvas {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shader canvas {
+    animation: shader-in 1.2s ease both;
+  }
+}
+
+@keyframes shader-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Once the shader covers them, the CSS layers stop drifting. */
+.ground[data-sg-ready="true"] .layer {
+  animation: none;
+}
+
+/* The shader brings its own grain, so the CSS grain is only for the fallback. */
+.ground[data-sg-ready="true"] .dither {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer {
+    animation: none !important;
+  }
+}

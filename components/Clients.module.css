@@ -1,0 +1,98 @@
+/* Clients: a slim Abyss strip between Reviews (white) and Pricing (Shallows). */
+.section {
+  padding-block: clamp(36px, 3vw, 56px);
+  background: var(--abyss);
+  color: var(--cloud);
+}
+
+.inner {
+  display: grid;
+  gap: var(--s-3);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .inner {
+    grid-template-columns: 13rem 1fr;
+    column-gap: var(--s-6);
+  }
+}
+
+.title {
+  max-width: 22ch;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: var(--haze);
+}
+
+.marks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+}
+
+@media (min-width: 640px) {
+  .marks {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .marks {
+    grid-template-columns: repeat(6, auto);
+    justify-content: space-between;
+  }
+}
+
+.mark {
+  color: var(--cloud);
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0.82;
+}
+
+.mark[data-style="serif"] {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.4rem);
+}
+
+.mark[data-style="wide"] {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: clamp(0.8125rem, 0.75rem + 0.3vw, 1rem);
+}
+
+.mark[data-style="lower"] {
+  font-family: var(--font-body);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.45rem);
+}
+
+.mark[data-style="italic"] {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.03em;
+}
+
+.mark[data-style="plain"] {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
+}
+
+.mark[data-style="heavy"] {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
+}

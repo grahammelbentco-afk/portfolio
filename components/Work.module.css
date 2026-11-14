@@ -1,0 +1,352 @@
+/* Work: Deep Water ground, so each concept site's own colours carry the section. */
+.section {
+  padding-block: var(--section-y);
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 72px);
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > :first-child {
+    grid-column: 1 / span 7;
+  }
+
+  .head > :last-child {
+    grid-column: 9 / -1;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: clamp(40px, 4vw, 64px) var(--s-4);
+}
+
+@media (min-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .item[data-layout="wide"] {
+    grid-column: span 7;
+  }
+
+  .item[data-layout="tall"] {
+    grid-column: span 5;
+  }
+
+  /* Second row mirrors the first: tall then wide, and the tall frame drops lower. */
+  .item:nth-child(2) {
+    margin-top: clamp(48px, 6vw, 112px);
+  }
+}
+
+/* ---- Browser frame ---- */
+.frame {
+  margin: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--abyss);
+  box-shadow:
+    0 0 0 1px var(--line-on-dark),
+    0 48px 96px -56px rgb(0 0 0 / 0.8);
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 38px;
+  padding-inline: 14px;
+  background: rgb(238 247 246 / 0.06);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(238 247 246 / 0.22);
+}
+
+.url {
+  flex: 1;
+  max-width: 320px;
+  margin-inline: auto;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: rgb(238 247 246 / 0.07);
+  color: var(--haze);
+  font-size: 0.75rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- The mock site: each takes its own ground (--g), ink (--i) and accent (--a). ---- */
+.site {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  aspect-ratio: 16 / 10;
+  padding: 5% 6%;
+  background: var(--g);
+  color: var(--i);
+  overflow: hidden;
+}
+
+.item[data-layout="tall"] .site {
+  aspect-ratio: 5 / 5.6;
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1200ms var(--ease-out);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .item:hover .photo {
+    transform: scale(1.035);
+  }
+}
+
+.site::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.siteNav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: clamp(0.6875rem, 0.8vw, 0.875rem);
+}
+
+.siteLogo {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.siteLinks {
+  display: flex;
+  gap: 14px;
+  margin-left: auto;
+  opacity: 0.85;
+}
+
+.siteHero {
+  display: grid;
+  align-content: end;
+  justify-items: start;
+  gap: clamp(12px, 1.4vw, 20px);
+}
+
+.siteTitle {
+  max-width: 12ch;
+  font-size: clamp(1.75rem, 3.4vw, 3.5rem);
+  line-height: 1;
+}
+
+.siteBtn {
+  padding: 0.7em 1.3em;
+  background: var(--a);
+  color: var(--g);
+  font-size: clamp(0.75rem, 0.85vw, 0.9375rem);
+  font-weight: 600;
+}
+
+/* Winery: warm serif, gold rule, dark vignette from the left. */
+.site[data-type="serif"] {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.site[data-type="serif"]::after {
+  background: linear-gradient(90deg, rgb(45 42 38 / 0.92) 0%, rgb(45 42 38 / 0.55) 50%, rgb(45 42 38 / 0.05));
+}
+
+.site[data-type="serif"] .siteTitle {
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.site[data-type="serif"] .siteLogo {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+}
+
+.site[data-type="serif"] .siteBtn {
+  border-radius: 0;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--a);
+  color: var(--i);
+}
+
+/* Juice bar: loud, heavy, the photo pushed under a hot orange band at the bottom. */
+.site[data-type="heavy"] {
+  font-family: var(--font-display);
+}
+
+.site[data-type="heavy"]::after {
+  background: linear-gradient(to top, var(--g) 0%, var(--g) 30%, rgb(255 91 46 / 0) 62%);
+}
+
+.site[data-type="heavy"] .siteTitle {
+  font-size: clamp(2.25rem, 4.4vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  text-transform: lowercase;
+}
+
+.site[data-type="heavy"] .siteBtn {
+  border-radius: var(--r-pill);
+  color: #1d1d1d;
+  font-weight: 800;
+}
+
+.site[data-type="heavy"] .siteNav {
+  padding: 6px 6px 6px 14px;
+  border-radius: var(--r-pill);
+  background: var(--g);
+}
+
+/* Swim club: cool and light, thin type, a frosted card. */
+.site[data-type="light"] {
+  font-family: var(--font-body);
+}
+
+.site[data-type="light"]::after {
+  background: linear-gradient(to bottom, rgb(31 78 107 / 0.55), rgb(31 78 107 / 0) 30%, rgb(31 78 107 / 0) 50%, rgb(31 78 107 / 0.85));
+}
+
+.site[data-type="light"] .siteHero {
+  padding: clamp(14px, 1.6vw, 24px);
+  border-radius: 14px;
+  background: rgb(230 238 240 / 0.16);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  align-self: end;
+}
+
+.site[data-type="light"] .siteTitle {
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.site[data-type="light"] .siteBtn {
+  border-radius: var(--r-pill);
+  color: var(--g);
+}
+
+/* Joinery: calm, light ground, mono type, photo set right like a print layout. */
+.site[data-type="mono"] {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 6%;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+.site[data-type="mono"] .photo {
+  position: relative;
+  grid-column: 2;
+  grid-row: 2;
+  z-index: 0;
+  height: 100%;
+  min-height: 0;
+  margin-top: 6%;
+}
+
+.site[data-type="mono"] .siteNav {
+  grid-column: 1 / -1;
+}
+
+.site[data-type="mono"] .siteHero {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.site[data-type="mono"] .siteTitle {
+  font-size: clamp(1.375rem, 2.6vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 1.02;
+}
+
+.site[data-type="mono"] .siteBtn {
+  border-radius: 2px;
+  color: var(--g);
+}
+
+/* ---- Meta under each frame ---- */
+.meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.name {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.sector {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+  color: var(--cloud);
+  font-size: var(--fs-small);
+}
+
+.concept {
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  box-shadow: inset 0 0 0 1px var(--line-on-dark);
+  color: var(--seafoam);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+}
+
+.swatches {
+  display: flex;
+  flex: none;
+}
+
+.swatches li {
+  width: 22px;
+  height: 22px;
+  margin-left: -6px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--deep-water);
+}

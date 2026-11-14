@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+qa/node_modules/
+
+# Local-only working files (not needed to build the site)
+screenshots/
+qa/qa-results.json
+qa/last-run.txt
+__pycache__/
+
+# Environment files and secrets
+.env
+.env.*

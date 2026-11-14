@@ -1,0 +1,219 @@
+/* Contact: Deep Water with a soft Halo-like glow (the hero's palette, no shader), ripples
+   from the top-left corner, and the form on a darker card. */
+.section {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--section-y);
+  overflow: hidden;
+  background:
+    radial-gradient(60% 70% at 85% 20%, rgb(118 181 206 / 0.26), transparent 70%),
+    radial-gradient(50% 60% at 10% 100%, rgb(60 207 195 / 0.16), transparent 70%),
+    linear-gradient(160deg, #10304a 0%, var(--deep-water) 45%, var(--abyss) 100%);
+  color: var(--white);
+}
+
+.ripples {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: min(60vw, 720px);
+  height: auto;
+  fill: none;
+  stroke: rgb(191 240 227 / 0.1);
+}
+
+.layout {
+  display: grid;
+  gap: clamp(40px, 4vw, 64px);
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 6fr 5fr;
+    align-items: center;
+    column-gap: clamp(48px, 6vw, 120px);
+  }
+}
+
+.title {
+  max-width: 14ch;
+  font-size: clamp(2.5rem, 1.3rem + 4vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.promises {
+  display: grid;
+  gap: 14px;
+  margin-top: var(--s-6);
+}
+
+.promises li {
+  display: flex;
+  gap: 14px;
+  color: var(--cloud);
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+}
+
+.spark {
+  flex: none;
+  width: 10px;
+  height: 16px;
+  margin-top: 5px;
+  fill: var(--aqua);
+}
+
+.direct {
+  margin-top: var(--s-6);
+  padding-left: var(--s-2);
+  border-left: 2px solid var(--aqua);
+  color: var(--haze);
+}
+
+.direct a {
+  color: var(--white);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+/* ---- Form ---- */
+.form {
+  display: grid;
+  gap: 18px;
+  padding: clamp(24px, 2.6vw, 40px);
+  border-radius: var(--r-lg);
+  background: rgb(5 26 45 / 0.78);
+  box-shadow:
+    inset 0 0 0 1px var(--line-on-dark),
+    0 48px 96px -48px rgb(0 0 0 / 0.7);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.row {
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 560px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field > span,
+.goals legend {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.field em {
+  color: var(--haze);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgb(238 247 246 / 0.2);
+  border-radius: var(--r-sm);
+  background: rgb(238 247 246 / 0.05);
+  color: var(--white);
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--haze);
+}
+
+.field input:hover,
+.field textarea:hover {
+  border-color: rgb(238 247 246 / 0.4);
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  border-color: var(--aqua);
+  outline: 2px solid var(--aqua);
+  outline-offset: 1px;
+  background: rgb(238 247 246 / 0.08);
+}
+
+.field input:user-invalid {
+  border-color: var(--ember);
+}
+
+.goals {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.goals legend {
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid rgb(238 247 246 / 0.22);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--cloud);
+  font: inherit;
+  font-size: var(--fs-small);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+
+.chip:hover {
+  border-color: rgb(238 247 246 / 0.5);
+}
+
+.chip[aria-pressed="true"] {
+  border-color: var(--seafoam);
+  background: var(--seafoam);
+  color: var(--deep-water);
+  font-weight: 600;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.status {
+  min-height: 1.4em;
+  color: var(--seafoam);
+  font-size: var(--fs-small);
+  text-align: center;
+}
+
+.status:empty {
+  display: none;
+}

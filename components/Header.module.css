@@ -1,0 +1,389 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  color: var(--shallows);
+  transition:
+    background-color var(--dur) ease,
+    box-shadow var(--dur) ease;
+}
+
+/* A soft dark fade behind the bar at the top of the page, so the nav stays readable over
+   the lightest part of the hero gradient. It fades out once the frosted bar takes over. */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -128px;
+  z-index: -1;
+  /* Cosine-eased fade over 200px: no kink and no visible end line. */
+  background: linear-gradient(180deg, rgb(3 15 28 / 0.720) 0.0%, rgb(3 15 28 / 0.693) 12.5%, rgb(3 15 28 / 0.615) 25.0%, rgb(3 15 28 / 0.498) 37.5%, rgb(3 15 28 / 0.360) 50.0%, rgb(3 15 28 / 0.222) 62.5%, rgb(3 15 28 / 0.105) 75.0%, rgb(3 15 28 / 0.027) 87.5%, rgb(3 15 28 / 0.000) 100.0%);
+  pointer-events: none;
+  transition: opacity var(--dur) ease;
+}
+
+.header[data-scrolled="true"]::before {
+  opacity: 0;
+}
+
+/* Frosted once the page moves. No bottom border: the glass alone separates it. */
+.header[data-scrolled="true"] {
+  background: var(--glass-dark);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+}
+
+/* Over light sections: near-solid Deep Water (the 72% glass reads as slate grey on white),
+   with a hairline so the bar's edge stays crisp against the light ground. */
+.header[data-scrolled="true"][data-over="light"] {
+  background: rgb(7 34 59 / 0.96);
+  box-shadow: 0 1px 0 rgb(7 34 59 / 0.12), 0 8px 24px -16px rgb(7 34 59 / 0.5);
+}
+
+.header[data-open="true"] {
+  background: var(--deep-water);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  height: var(--header-h);
+}
+
+.logo {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding-block: var(--s-1);
+  border-radius: 4px;
+}
+
+.logoSvg {
+  height: 28px;
+  width: auto;
+  overflow: visible;
+}
+
+/* Symbol at rest: the Logo Kit offsets (big half down-left, spark up-right). On hover or
+   focus both slide home into one circle; the parallel 24° channel between them stays open.
+   Transforms are in the symbol's own units (CSS px = SVG user units here). */
+.logoBig,
+.logoSpark {
+  transform: translate(-8px, 8px);
+  transition:
+    transform 520ms var(--ease-out),
+    fill var(--dur) ease;
+}
+
+.logoSpark {
+  transform: translate(12px, -26px);
+}
+
+.logo:hover .logoBig,
+.logo:focus-visible .logoBig,
+.logo:hover .logoSpark,
+.logo:focus-visible .logoSpark {
+  transform: translate(0, 0);
+}
+
+.logo:hover .logoSpark,
+.logo:focus-visible .logoSpark {
+  fill: var(--aqua);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logoBig,
+  .logoSpark {
+    transition: fill var(--dur) ease;
+  }
+
+  .logo:hover .logoBig,
+  .logo:focus-visible .logoBig {
+    transform: translate(-8px, 8px);
+  }
+
+  .logo:hover .logoSpark,
+  .logo:focus-visible .logoSpark {
+    transform: translate(12px, -26px);
+  }
+}
+
+/* ---------- Desktop nav ---------- */
+.nav {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  /* Links sit beside the logo; the WhatsApp and Book a call group stays on the right. */
+  .nav {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-left: var(--s-4);
+  }
+
+  .navList {
+    margin-right: auto;
+  }
+
+  .toggle {
+    display: none !important;
+  }
+
+  .panel {
+    display: none !important;
+  }
+}
+
+.navList {
+  display: flex;
+  gap: var(--s-1);
+}
+
+.navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: var(--r-pill);
+  color: var(--cloud);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* ---- Letter roll ----
+   Each letter carries a white copy of itself one line below (text-shadow). On hover the
+   letters lift by one line, left to right, 24ms apart: the Cloud text rolls out and the
+   white copy rolls in. The clip window is exactly one line tall. */
+.roll {
+  --line: 1.4em;
+  display: inline-flex;
+  height: var(--line);
+  overflow: hidden;
+  line-height: var(--line);
+}
+
+.char {
+  display: inline-block;
+  white-space: pre;
+  text-shadow: 0 var(--line) 0 var(--white);
+  transition: transform 640ms cubic-bezier(0.76, 0, 0.24, 1);
+  transition-delay: calc(var(--i) * 24ms);
+}
+
+.navLink:hover .char,
+.navLink:focus-visible .char {
+  transform: translateY(calc(-1 * var(--line)));
+}
+
+/* The spark marker settles in just left of the word: the brand's list device, small. */
+.navSpark {
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  width: 6px;
+  height: 10px;
+  fill: var(--aqua);
+  opacity: 0;
+  transform: translate(-4px, -50%) rotate(-24deg) scale(0.4);
+  transition:
+    opacity var(--dur) ease,
+    transform 520ms var(--ease-out);
+}
+
+.navLink:hover .navSpark,
+.navLink:focus-visible .navSpark {
+  opacity: 1;
+  transform: translate(0, -50%) rotate(0deg) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char {
+    transition: color var(--dur-fast) ease;
+  }
+
+  .navLink:hover .char,
+  .navLink:focus-visible .char {
+    transform: none;
+    color: var(--white);
+  }
+
+  .navSpark {
+    transform: translate(0, -50%);
+    transition: opacity var(--dur) ease;
+  }
+
+  .navLink:hover .navSpark,
+  .navLink:focus-visible .navSpark {
+    transform: translate(0, -50%);
+  }
+}
+
+.cta {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: var(--fs-small);
+}
+
+/* WhatsApp and Book a call sit together as one group. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+}
+
+/* ---------- WhatsApp ----------
+   The glyph is drawn in WhatsApp green (#25D366) straight on the dark pill: about 8:1
+   against Deep Water, where white on the green circle was only about 2:1. */
+.whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  min-height: 40px;
+  padding: 8px 16px 8px 12px;
+  border: 1px solid rgb(238 247 246 / 0.22);
+  border-radius: var(--r-pill);
+  background: rgb(238 247 246 / 0.06);
+  color: var(--shallows);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease;
+}
+
+.whatsapp:hover {
+  border-color: #25d366;
+  background: rgb(37 211 102 / 0.1);
+}
+
+.waNumber {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.waIcon {
+  display: grid;
+  place-items: center;
+  color: #25d366;
+}
+
+.panelWhatsapp {
+  width: 100%;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: var(--s-4);
+}
+
+.panelWhatsapp + .panelCta {
+  margin-top: var(--s-2);
+}
+
+/* ---------- Mobile toggle ---------- */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 4px 8px 12px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--shallows);
+  font: 600 var(--fs-small) / 1 var(--font-body);
+  cursor: pointer;
+}
+
+/* Two bars that close into a cross; the lower one sits on the 24° channel. */
+.toggleIcon {
+  position: relative;
+  width: 22px;
+  height: 12px;
+}
+
+.toggleIcon::before,
+.toggleIcon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.toggleIcon::before {
+  top: 0;
+}
+
+.toggleIcon::after {
+  bottom: 0;
+  width: 70%;
+  left: 30%;
+}
+
+.toggle[aria-expanded="true"] .toggleIcon::before {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.toggle[aria-expanded="true"] .toggleIcon::after {
+  left: 0;
+  width: 100%;
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* ---------- Mobile panel ---------- */
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: calc(100dvh - var(--header-h));
+  overflow-y: auto;
+  background: var(--deep-water);
+  padding-block: var(--s-4) var(--s-6);
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panelList {
+  display: grid;
+}
+
+.panelLink {
+  display: block;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-on-dark);
+  color: var(--shallows);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.5rem + 2vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.panelCta {
+  width: 100%;
+  margin-top: var(--s-4);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .panel:not([hidden]) {
+    animation: panel-in var(--dur) var(--ease-out);
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}

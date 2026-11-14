@@ -1,0 +1,300 @@
+/* About: white ground. A statement that fills in as it scrolls (after Signal-A), then an
+   editorial split: arc-cropped photo left, story right (after AUGE's split blocks). */
+.section {
+  position: relative;
+  padding-block: clamp(80px, 40px + 7vw, 168px);
+  background: var(--white);
+  color: var(--deep-water);
+  overflow: clip;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--s-6);
+}
+
+/* ---- Eyebrow ---- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: start;
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.eyebrowSpark {
+  width: 10px;
+  height: 16px;
+  fill: var(--aqua);
+}
+
+/* ---- Statement ---- */
+.statement {
+  max-width: 22ch;
+  font-size: clamp(2.125rem, 1rem + 3.6vw, 5.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  text-wrap: pretty;
+}
+
+.word {
+  display: inline;
+}
+
+/* Seafoam marker band behind the two audiences, low on the line like a highlighter. */
+.mark {
+  background: linear-gradient(to top, var(--seafoam) 0.34em, transparent 0.34em) no-repeat;
+  background-size: 100% 100%;
+  padding-inline: 0.04em;
+}
+
+/* ---- Figure (arc crop) ---- */
+.figure {
+  margin: 0;
+}
+
+.arc {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.photo {
+  transform-box: fill-box;
+  transform-origin: 30% 50%;
+}
+
+.spark {
+  fill: var(--aqua);
+}
+
+.caption {
+  margin-top: var(--s-2);
+  color: var(--wet-slate);
+  font-size: var(--fs-caption);
+  letter-spacing: 0.02em;
+}
+
+/* ---- Story ---- */
+.story {
+  display: grid;
+  align-content: start;
+  gap: var(--s-3);
+}
+
+.storyTitle {
+  max-width: 24ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.15rem + 1vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.storyText {
+  max-width: 34rem;
+  color: var(--wet-slate);
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+}
+
+.audiences {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+
+/* Spark marker list (V1.6 p.16): spark leads, text aligns past it. Ember on one only. */
+.audience {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  column-gap: var(--s-2);
+  row-gap: 4px;
+}
+
+.marker {
+  grid-row: 1 / span 2;
+  width: 12px;
+  height: 20px;
+  margin-top: 3px;
+  fill: var(--deep-water);
+}
+
+.audience[data-lead] .marker {
+  fill: var(--ember);
+}
+
+.audienceTitle {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.audienceText {
+  max-width: 30rem;
+  color: var(--wet-slate);
+}
+
+.facts {
+  display: grid;
+  gap: var(--s-2);
+  margin: var(--s-3) 0 0;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line-on-light);
+}
+
+/* Phones: label beside value. From 600px: three columns. */
+.fact {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s-2);
+}
+
+@media (min-width: 600px) {
+  .facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .fact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+}
+
+.fact dt {
+  color: var(--wet-slate);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fact dd {
+  margin: 0;
+  text-wrap: balance;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  min-height: 44px;
+  margin-top: var(--s-1);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  text-decoration-color: var(--line-on-light);
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+
+.link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+.link:hover svg {
+  transform: translateX(4px);
+}
+
+/* ---- Desktop: 12-column editorial grid ---- */
+@media (min-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    row-gap: clamp(64px, 2rem + 5vw, 144px);
+  }
+
+  .eyebrow {
+    grid-column: 1 / span 3;
+    margin-top: 0.9em;
+  }
+
+  .statement {
+    grid-column: 4 / -1;
+  }
+
+  /* The photo stays beside the story while it scrolls past. */
+  .figure {
+    grid-column: 1 / span 5;
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-4));
+    align-self: start;
+  }
+
+  .story {
+    grid-column: 7 / -1;
+    padding-top: clamp(0px, 4vw, 72px);
+  }
+}
+
+/* ---- Scroll motion: progressive, CSS scroll timelines only. Without support (or with
+   reduced motion) everything simply shows in its final state. ---- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .word {
+      animation: fill linear both;
+      animation-timeline: view();
+      animation-range: cover 18% cover 42%;
+    }
+
+    .photo {
+      animation: settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 55%;
+    }
+
+    .spark {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 50%;
+    }
+  }
+}
+
+@keyframes fill {
+  from {
+    color: var(--cloud);
+  }
+  to {
+    color: var(--deep-water);
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.14);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate(14px, -14px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}

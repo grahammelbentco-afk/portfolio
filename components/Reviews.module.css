@@ -1,0 +1,181 @@
+/* Reviews: white ground. A 9:16 portrait card (the future video slot) beside the heading
+   and three text reviews. */
+.section {
+  padding-block: var(--section-y);
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+.layout {
+  display: grid;
+  gap: clamp(40px, 4vw, 64px);
+}
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(300px, 3.6fr) 8fr;
+    align-items: stretch;
+    column-gap: clamp(40px, 5vw, 96px);
+  }
+}
+
+/* ---- Portrait card ---- */
+.portrait {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--s-4);
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 9 / 16;
+  max-height: 680px;
+  margin: 0;
+  padding: clamp(24px, 2.4vw, 40px);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background:
+    radial-gradient(90% 60% at 100% 0%, rgb(60 207 195 / 0.32), transparent 70%),
+    radial-gradient(80% 50% at 0% 100%, rgb(45 106 160 / 0.4), transparent 70%),
+    var(--deep-water);
+  color: var(--white);
+}
+
+@media (max-width: 959px) {
+  .portrait {
+    aspect-ratio: auto;
+    min-height: 420px;
+    max-width: none;
+  }
+}
+
+.ripples {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 90%;
+  height: auto;
+  fill: none;
+  stroke: rgb(191 240 227 / 0.14);
+}
+
+.portraitSpark {
+  position: absolute;
+  top: clamp(24px, 2.4vw, 40px);
+  left: clamp(24px, 2.4vw, 40px);
+  width: 18px;
+  height: 29px;
+  fill: var(--aqua);
+}
+
+.featured {
+  margin: 0;
+}
+
+.featured p {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 1.1rem + 1.4vw, 2.375rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.featured p::before {
+  content: "\201C";
+}
+
+.featured p::after {
+  content: "\201D";
+}
+
+/* ---- Side: heading and list ---- */
+.side {
+  display: grid;
+  align-content: center;
+  gap: clamp(40px, 4vw, 64px);
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.list {
+  display: grid;
+  gap: var(--s-4);
+}
+
+@media (min-width: 760px) {
+  .list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.review {
+  display: grid;
+  align-content: space-between;
+  gap: var(--s-3);
+  height: 100%;
+  margin: 0;
+  padding-top: var(--s-3);
+  border-top: 2px solid var(--deep-water);
+}
+
+.review blockquote {
+  margin: 0;
+}
+
+.review p {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+}
+
+.review p::before {
+  content: "\201C";
+}
+
+.review p::after {
+  content: "\201D";
+}
+
+/* ---- Byline ---- */
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--seafoam);
+  color: var(--deep-water);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+}
+
+.who {
+  display: block;
+  font-weight: 600;
+}
+
+.where {
+  display: block;
+  color: var(--wet-slate);
+  font-size: var(--fs-caption);
+}
+
+.portraitByline .where {
+  color: var(--cloud);
+}
+
+.portraitByline .avatar {
+  background: rgb(238 247 246 / 0.16);
+  color: var(--white);
+}
