@@ -1,96 +1,60 @@
-/* Steps (Revision 48): Seafoam ground. Copy and a numbered timeline on the left, the
-   before/after preview on the right. */
+/* Steps (Revision 49): a light Shallows ground with faint 24° channel lines. One large
+   stage, driven by the three steps under it. */
 .section {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--section-y);
-  background: var(--seafoam);
+  overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 80% 0%, rgb(191 240 227 / 0.55), transparent 70%),
+    var(--shallows);
   color: var(--deep-water);
 }
 
-.layout {
+/* Channel lines (V1.6 p.16): hairlines 24° off vertical, very faint. */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: repeating-linear-gradient(114deg, transparent 0 46px, rgb(7 34 59 / 0.035) 46px 47px);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 70%);
+  mask-image: linear-gradient(to bottom, #000, transparent 70%);
+}
+
+/* ---- Heading row ---- */
+.head {
   display: grid;
-  gap: clamp(40px, 5vw, 72px);
-  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 64px);
 }
 
-@media (min-width: 1024px) {
-  .layout {
-    grid-template-columns: 5fr 7fr;
-    column-gap: clamp(48px, 5vw, 96px);
-  }
-}
-
-.copy {
+.headSide {
   display: grid;
   justify-items: start;
   gap: var(--s-3);
 }
 
-.copy :global(.sec-intro) {
-  color: rgb(7 34 59 / 0.78);
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > :first-child {
+    grid-column: 1 / span 7;
+  }
+
+  .headSide {
+    grid-column: 9 / -1;
+  }
 }
 
-/* ---- Timeline ---- */
-.list {
-  position: relative;
-  display: grid;
-  gap: var(--s-3);
-  margin-block: var(--s-2);
-}
-
-/* A line from each number down to the next one; none after the last. */
-.step:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  top: 40px;
-  bottom: calc(var(--s-3) * -1);
-  left: 19px;
-  width: 2px;
-  background: rgb(7 34 59 / 0.35);
-}
-
-.step {
-  position: relative;
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  column-gap: var(--s-2);
-  align-items: start;
-}
-
-.num {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--r-pill);
-  background: var(--deep-water);
-  color: var(--seafoam);
-  font-family: var(--font-display);
-  font-weight: 700;
-  box-shadow: 0 0 0 6px var(--seafoam);
-}
-
-.stepTitle {
-  margin: 6px 0 4px;
-  font-size: var(--fs-h3);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.stepText {
-  max-width: 36ch;
-  color: rgb(7 34 59 / 0.78);
-  font-size: var(--fs-small);
-  line-height: 1.5;
-}
-
-.action {
-  margin-top: var(--s-1);
-}
-
-/* ---- Compare ---- */
+/* ---- Stage ---- */
 .compare {
+  --ease: var(--ease-out);
   position: relative;
-  width: 100%;
   margin: 0;
 }
 
@@ -98,9 +62,9 @@
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  height: 40px;
+  height: 44px;
   padding-inline: var(--s-2);
-  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  border-radius: 20px 20px 0 0;
   background: var(--white);
   box-shadow: inset 0 -1px 0 var(--line-on-light);
 }
@@ -118,23 +82,53 @@
 }
 
 .url {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   flex: 1;
-  max-width: 380px;
+  max-width: 420px;
   margin-inline: auto;
-  padding: 4px 14px;
+  padding: 5px 14px;
   border-radius: var(--r-pill);
   background: var(--shallows);
   color: var(--wet-slate);
   font-size: var(--fs-caption);
-  text-align: center;
+}
+
+.lock,
+.liveTag {
+  display: none;
+}
+
+.lock {
+  width: 12px;
+  height: 12px;
+  color: var(--kelp);
+}
+
+.liveTag {
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+  background: var(--kelp-tint);
+  color: #2c5a49;
+  font-weight: 700;
+}
+
+.compare[data-step="2"] .lock,
+.compare[data-step="2"] .liveTag {
+  display: inline-block;
 }
 
 .stage {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 8;
   overflow: hidden;
-  border-radius: 0 0 var(--r-lg) var(--r-lg);
-  box-shadow: 0 48px 96px -56px rgb(7 34 59 / 0.55);
+  border-radius: 0 0 20px 20px;
+  background: #eceff1;
+  box-shadow:
+    0 0 0 1px rgb(7 34 59 / 0.06),
+    0 60px 120px -60px rgb(7 34 59 / 0.45);
   container-type: inline-size;
 }
 
@@ -147,8 +141,8 @@
 .before {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: 4cqw;
-  padding: 3cqw 4cqw;
+  gap: 3cqw;
+  padding: 2.4cqw 3.4cqw;
   background: #eceff1;
   color: #8a949c;
 }
@@ -161,18 +155,18 @@
 
 .bLogo {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.4cqw;
+  font-size: 1.1cqw;
   letter-spacing: 0.08em;
 }
 
 .bLinks {
   display: flex;
-  gap: 1.2cqw;
+  gap: 1cqw;
 }
 
 .bLinks i {
-  width: 5cqw;
-  height: 0.8cqw;
+  width: 4cqw;
+  height: 0.6cqw;
   border-radius: 1cqw;
   background: #cfd5da;
 }
@@ -181,51 +175,52 @@
   display: grid;
   align-content: center;
   justify-items: start;
-  gap: 1.4cqw;
-  padding: 4cqw;
+  gap: 1.1cqw;
+  padding: 3cqw;
   background: #dde2e6;
 }
 
 .bTitle {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 3.6cqw;
+  font-size: 2.8cqw;
   color: #7b858d;
 }
 
 .bLine {
-  width: 60%;
-  height: 1cqw;
+  width: 50%;
+  height: 0.8cqw;
   border-radius: 1cqw;
   background: #c4cbd1;
 }
 
 .bLine[data-short] {
-  width: 40%;
+  width: 32%;
 }
 
 .bBtn {
-  margin-top: 0.6cqw;
-  padding: 0.8cqw 1.8cqw;
+  margin-top: 0.5cqw;
+  padding: 0.6cqw 1.4cqw;
   background: #aab3ba;
   color: #fff;
-  font-size: 1.3cqw;
+  font-size: 1cqw;
 }
 
 .bCols {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3cqw;
-  height: 9cqw;
+  gap: 2.4cqw;
+  height: 6cqw;
 }
 
 .bCols span {
   background: #dde2e6;
 }
 
-/* After: the florist preview, its text on the right over the sage wall. */
+/* After: the florist preview, text over the sage wall on the right. */
 .after {
   clip-path: inset(0 0 0 var(--split));
   color: #2f3a2c;
+  transition: clip-path 700ms var(--ease);
 }
 
 .after img {
@@ -234,7 +229,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 20% 50%;
+  object-position: 20% 45%;
 }
 
 .aNav,
@@ -244,18 +239,18 @@
 }
 
 .aNav {
-  top: 3.6cqw;
-  right: 4cqw;
-  left: 52%;
+  top: 2.6cqw;
+  right: 3.4cqw;
+  left: 50%;
   display: flex;
   align-items: center;
   gap: 2cqw;
-  font-size: 1.4cqw;
+  font-size: 1.1cqw;
 }
 
 .aLogo {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 2cqw;
+  font-size: 1.7cqw;
   font-style: italic;
 }
 
@@ -268,36 +263,161 @@
 
 .aHero {
   top: 50%;
-  right: 6cqw;
-  left: 56%;
+  right: 5cqw;
+  left: 54%;
   display: grid;
   justify-items: start;
-  gap: 1.8cqw;
+  gap: 1.4cqw;
   transform: translateY(-50%);
 }
 
 .aTitle {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 5cqw;
+  font-size: 4.4cqw;
   line-height: 1.02;
   letter-spacing: -0.02em;
 }
 
 .aSub {
-  font-size: 1.6cqw;
+  max-width: 30ch;
+  font-size: 1.3cqw;
   line-height: 1.45;
   opacity: 0.85;
 }
 
 .aBtn {
-  padding: 1.1cqw 2.2cqw;
+  padding: 0.9cqw 1.9cqw;
   border-radius: 99cqw;
   background: #5b3a4a;
   color: #fff;
-  font-size: 1.5cqw;
+  font-size: 1.2cqw;
   font-weight: 600;
 }
 
+/* Step 2: dim the preview, bring in the plan card. */
+.plan {
+  position: absolute;
+  top: 50%;
+  left: 6cqw;
+  z-index: 2;
+  display: grid;
+  gap: 1.4cqw;
+  width: 30cqw;
+  padding: 2.6cqw;
+  border-radius: 1.6cqw;
+  background: rgb(255 255 255 / 0.94);
+  box-shadow: 0 2cqw 5cqw -2cqw rgb(7 34 59 / 0.45);
+  font-size: 1.25cqw;
+  opacity: 0;
+  transform: translate(-2cqw, -50%);
+  transition:
+    opacity 420ms var(--ease),
+    transform 600ms var(--ease);
+  pointer-events: none;
+}
+
+.planTitle {
+  font-family: var(--font-display);
+  font-size: 2cqw;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.planPages {
+  display: grid;
+  gap: 0.7cqw;
+}
+
+.planPages li {
+  display: flex;
+  align-items: center;
+  gap: 0.8cqw;
+}
+
+.planPages svg {
+  width: 1.4cqw;
+  height: 1.4cqw;
+  color: var(--kelp);
+}
+
+.planScope {
+  padding-top: 1cqw;
+  border-top: 1px solid var(--line-on-light);
+  color: var(--wet-slate);
+}
+
+.planPrice {
+  justify-self: start;
+  padding: 0.6cqw 1.4cqw;
+  border-radius: 99cqw;
+  background: var(--deep-water);
+  color: var(--seafoam);
+  font-weight: 600;
+}
+
+.compare[data-step="1"] .plan {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.compare[data-step="1"] .after img {
+  filter: brightness(0.82) saturate(0.85);
+}
+
+.after img {
+  transition: filter 600ms var(--ease);
+}
+
+/* Step 3: the site is live. */
+.toast {
+  position: absolute;
+  right: 3cqw;
+  bottom: 3cqw;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1.2cqw;
+  padding: 1.4cqw 2cqw;
+  border-radius: 1.4cqw;
+  background: var(--deep-water);
+  color: var(--white);
+  font-size: 1.2cqw;
+  box-shadow: 0 2cqw 4cqw -2cqw rgb(7 34 59 / 0.6);
+  opacity: 0;
+  transform: translateY(1.5cqw);
+  transition:
+    opacity 420ms var(--ease) 200ms,
+    transform 600ms var(--ease) 200ms;
+}
+
+.toast b,
+.toast small {
+  display: block;
+}
+
+.toast b {
+  font-size: 1.4cqw;
+}
+
+.toast small {
+  color: var(--cloud);
+  font-size: 1.1cqw;
+}
+
+.toastDot {
+  width: 1.2cqw;
+  height: 1.2cqw;
+  border-radius: 50%;
+  background: var(--aqua);
+  box-shadow: 0 0 0 0.6cqw rgb(60 207 195 / 0.25);
+}
+
+.compare[data-step="2"] .toast {
+  opacity: 1;
+  transform: none;
+}
+
+/* Handle: only on step 1. */
 .handle {
   position: absolute;
   top: 0;
@@ -308,31 +428,42 @@
   background: var(--white);
   transform: translateX(-1px);
   pointer-events: none;
+  transition:
+    left 700ms var(--ease),
+    opacity 300ms var(--ease);
+}
+
+.compare:not([data-step="0"]) .handle {
+  opacity: 0;
 }
 
 .handle svg {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   max-width: none;
-  padding: 10px;
+  padding: 12px;
   border-radius: var(--r-pill);
   background: var(--white);
   color: var(--deep-water);
   box-shadow: 0 8px 24px -8px rgb(7 34 59 / 0.5);
   transform: translate(-50%, -50%);
-  transition: transform var(--dur-fast) var(--ease-out);
 }
 
-/* The range input covers the stage, invisible, so a drag anywhere moves the handle. */
+/* While dragging, follow the pointer with no lag. */
+.compare:has(.range:active) .after,
+.compare:has(.range:active) .handle {
+  transition: none;
+}
+
 .range {
   position: absolute;
-  top: 40px;
+  top: 44px;
   left: 0;
   width: 100%;
-  height: calc(100% - 40px - 52px);
+  height: calc(100% - 44px - 52px);
   margin: 0;
   opacity: 0;
   cursor: ew-resize;
@@ -342,12 +473,6 @@
 .compare:has(.range:focus-visible) .handle svg {
   outline: 3px solid var(--deep-water);
   outline-offset: 3px;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .compare:has(.range:active) .handle svg {
-    transform: translate(-50%, -50%) scale(1.1);
-  }
 }
 
 .caption {
@@ -368,7 +493,11 @@
 }
 
 .tagBefore {
-  background: rgb(7 34 59 / 0.1);
+  background: rgb(7 34 59 / 0.08);
+}
+
+.tagBefore:empty {
+  visibility: hidden;
 }
 
 .tagAfter {
@@ -377,11 +506,134 @@
 }
 
 .note {
-  color: rgb(7 34 59 / 0.7);
+  color: var(--wet-slate);
   text-align: center;
 }
 
-/* Phones: a taller preview, so the text has room. */
+/* ---- Steps (tabs) ---- */
+.tabs {
+  position: relative;
+  display: grid;
+  gap: var(--s-3);
+  margin-top: clamp(32px, 3vw, 48px);
+}
+
+@media (min-width: 760px) {
+  .tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    padding-top: 28px;
+  }
+}
+
+/* The progress line above the steps, filled to the chosen one. */
+.track {
+  display: none;
+}
+
+@media (min-width: 760px) {
+  .track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    height: 2px;
+    background: rgb(7 34 59 / 0.12);
+  }
+
+  .fill {
+    display: block;
+    height: 100%;
+    width: calc((100% - 2 * var(--s-4)) / 3 * (var(--progress) * 2 + 1) + var(--s-4) * var(--progress) * 2);
+    background: var(--deep-water);
+    transition: width 700ms var(--ease-out);
+  }
+}
+
+.tab {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--s-2);
+  row-gap: 6px;
+  align-content: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.num {
+  grid-row: span 2;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 2rem + 2vw, 4rem);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(7 34 59 / 0.35);
+  transition:
+    color var(--dur) var(--ease-out),
+    -webkit-text-stroke-color var(--dur) var(--ease-out);
+}
+
+.tabTitle {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--wet-slate);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.tabText {
+  max-width: 34ch;
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.tab[aria-selected="true"] .num {
+  color: var(--deep-water);
+  -webkit-text-stroke-color: var(--deep-water);
+}
+
+.tab[aria-selected="true"] .tabTitle {
+  color: var(--deep-water);
+}
+
+@media (hover: hover) {
+  .tab:hover .num {
+    -webkit-text-stroke-color: var(--deep-water);
+  }
+
+  .tab:hover .tabTitle {
+    color: var(--deep-water);
+  }
+}
+
+.tab:focus-visible {
+  outline: 3px solid var(--deep-water);
+  outline-offset: 6px;
+  border-radius: var(--r-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .after,
+  .after img,
+  .handle,
+  .plan,
+  .toast,
+  .fill,
+  .num,
+  .tabTitle {
+    transition: none !important;
+  }
+}
+
+/* Phones: a taller stage; the plan card and preview text scale up. */
 @media (max-width: 599px) {
   .note {
     display: none;
@@ -391,16 +643,15 @@
     aspect-ratio: 4 / 5;
   }
 
-  .after img {
-    object-position: 15% 50%;
-  }
-
-  /* A sage fade at the bottom holds the text clear of the photo. */
   .after::after {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(to top, #c9cfb8 0%, rgb(201 207 184 / 0.92) 34%, transparent 62%);
+  }
+
+  .after img {
+    object-position: 15% 50%;
   }
 
   .aNav {
@@ -448,5 +699,55 @@
 
   .bBtn {
     font-size: 2.6cqw;
+  }
+
+  .aHero {
+    transition: opacity 300ms var(--ease);
+  }
+
+  .compare[data-step="1"] .aHero {
+    opacity: 0;
+  }
+
+  .plan {
+    left: 5cqw;
+    width: 70cqw;
+    gap: 3cqw;
+    padding: 5cqw;
+    font-size: 3.4cqw;
+    border-radius: 4cqw;
+  }
+
+  .planTitle {
+    font-size: 5cqw;
+  }
+
+  .planPages svg {
+    width: 3.4cqw;
+    height: 3.4cqw;
+  }
+
+  .toast {
+    left: 4cqw;
+    right: 4cqw;
+    top: 4cqw;
+    bottom: auto;
+    gap: 3cqw;
+    padding: 3.4cqw 4cqw;
+    font-size: 3.2cqw;
+    border-radius: 3cqw;
+  }
+
+  .toast b {
+    font-size: 3.6cqw;
+  }
+
+  .toast small {
+    font-size: 3cqw;
+  }
+
+  .toastDot {
+    width: 3cqw;
+    height: 3cqw;
   }
 }

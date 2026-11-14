@@ -459,6 +459,14 @@ export const steps = {
     { title: "Plan the pages", text: "Like it? We agree the pages, the scope and the price, in writing." },
     { title: "Build and launch", text: "We build it, move your content across and put it live." },
   ],
+  // Revision 49: what the stage shows at steps 2 and 3. UNCONFIRMED, illustrative only.
+  plan: {
+    title: "Your site plan",
+    pages: ["Home", "Bouquets", "Weddings", "Visit us", "Order online"],
+    scope: "Five pages, online ordering, set up for local search",
+    price: "Fixed price, agreed in writing",
+  },
+  live: { title: "Your site is live", text: "bloomandfern.com.au is up and taking orders." },
   // Revision 48: Bloom & Fern is a fictional example florist. Photo: fal flux-pro ultra
   // (steps-florist), illustration only.
   compare: {

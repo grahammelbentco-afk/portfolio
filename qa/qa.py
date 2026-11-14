@@ -421,6 +421,12 @@ with sync_playwright() as p:
         page.keyboard.press("ArrowRight")
     val = rng.input_value()
     check("steps: compare slider moves with the keyboard", val == "47", val)
+    page.focus("[data-steps-tab='0']")
+    page.keyboard.press("ArrowRight")
+    page.wait_for_timeout(200)
+    st = [page.get_attribute("#steps-stage", "data-step"), page.get_attribute("[data-steps-tab='1']", "aria-selected"), page.locator("[data-steps-range]").count()]
+    check("steps: arrow keys move to step 2, stage follows, slider hides", st == ["1", "true", 0], str(st))
+    page.click("[data-steps-tab='0']")
     page.evaluate("document.querySelector('[data-contact-form] button[type=submit]').click()")
     invalid = page.evaluate("document.querySelectorAll('[data-contact-form] :invalid').length")
     check("contact: empty form is blocked by validation", invalid >= 2, str(invalid))

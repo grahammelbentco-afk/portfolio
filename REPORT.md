@@ -10,7 +10,20 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 48: Steps rebuilt, two columns, new preview photo (latest)
+## Revision 49: Steps as one interactive stage, lighter ground (latest)
+
+- **Ask (Jasper):** Revision 48 still looked basic. He wants a lighter background and a premium, award-level section.
+- **Idea:** one large browser stage driven by the three steps, so the process plays out on one example site.
+  - **1 Free preview:** the before/after slider.
+  - **2 Plan the pages:** the preview dims and a plan card slides in (five pages, scope, "Fixed price, agreed in writing").
+  - **3 Build and launch:** the full preview, a padlock and **Live** tag in the address bar, and a "Your site is live" notice.
+- **Steps:** a tablist under the stage (click or arrow keys) with large outline numerals that fill when chosen, and a progress line that fills up to the chosen step. Motion only answers the visitor's choice and is off under reduced motion.
+- **Ground:** Shallows with a soft Seafoam glow and faint 24° channel lines (V1.6), lighter than Revision 48's solid Seafoam. The heading row has the intro and the Ember button on the right.
+- **Images:** reuses `steps-florist` (Revision 48). No new spend. The Awwwards searches (process, bento, before/after) returned nothing usable.
+- **Copy:** the plan and live content are in `steps.plan` and `steps.live` in `content/homepage.ts`, all **UNCONFIRMED** and illustrative.
+- **QA:** 1 new check (arrow keys move to step 2, the stage follows, the slider hides).
+
+## Revision 48: Steps rebuilt, two columns, new preview photo
 
 - **Ask (Jasper):** the next section, using Awwwards, fal and frontend-design, then push. (The Awwwards element search for before/after sliders returned nothing.)
 - **Problems fixed:** the preview headline was cut in half by the slider ("sure."), the joinery photo overpowered the section, and the three step cards looked generic.
