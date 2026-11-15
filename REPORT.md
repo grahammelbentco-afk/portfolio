@@ -15,7 +15,23 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 74: Clients as a wall of real logos (latest)
+## Revision 75: Pricing rebuilt (latest)
+
+- **Ask (Jasper):** an award-level Pricing section using the Awwwards MCP, frontend-design and humanizer, with a reused image matched to the brand.
+- **Diagnosis (frontend-design):** the old section was the stock "SaaS card kit": three outlined cards, with a featured card carrying an Aqua gradient and a drop shadow.
+- **Design:**
+  - Heading: "Pick a package," solid, then "or ask for a quote." outlined (Jasper's rule), on two set lines.
+  - A shared "Every plan includes" row sits beside the audience tabs, so the cards don't repeat it.
+  - The featured plan is the one bold element: a large Deep Water panel spanning two rows on the left, with a reused photo in brand duotone that sinks into the panel, the Split Arc 24° cut, a Seafoam display price and the section's one Ember button. Photos: `card-design` for businesses, `service-design` for agencies.
+  - The other two plans stack on the right as flat white tiles: name, line and price on the left, features on the right. No borders, glows or shadows.
+  - A closing link, "Not sure yet? See a free preview first", goes to Steps.
+  - DOM order is unchanged, so the QA hooks, tab order and screen readers still work. Phones stack.
+- **Humanizer:** "Custom design, never a theme" (a clipped contrast) became "Your own design, built from scratch". "kept fresh" became "updated and looked after every month". Prices and terms are still UNCONFIRMED placeholders.
+- **Awwwards:** not re-run for pricing; every element search this session has returned nothing.
+- **Skills and tools actually used:** frontend-design (plan and critique), humanizer, design-taste-frontend lint, Playwright.
+- **QA:** taste lint 0 FAIL (one `taste-skill-ignore` for the 10px tone band, and one for the photo's scrim). tsc is clean. `qa/qa.py` 150/150.
+
+## Revision 74: Clients as a wall of real logos (pushed: `d2da148`, Cloudflare check succeeded)
 
 - **Ask (Jasper):** revise the logo section with the logos from webleta.com, then push.
 - **Logos:** seven from Graham's site (`media/Companies`): Ground Control Systems, Rack n Road, Melbourne Entertainment Co, Adrenaline Solutions, Nicole Steffen Design, Creative Marketing Concepts and Entertainment Co. Each is cropped to its ink and saved in `public/brands/clients/`. Portside Marketing (comp1) is left out: its only file is a blurred raster inside a grey box, which can't be recoloured cleanly. The fictional typed names are removed.

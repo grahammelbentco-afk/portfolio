@@ -659,19 +659,25 @@ export type Plan = {
   unit: string;
   features: string[];
   featured?: boolean;
+  /** Featured plans carry a reused photo, shown in brand duotone. */
+  image?: { base: string; w: number; h: number };
   action: string;
 };
 export const pricing = {
   eyebrow: "Pricing",
-  title: "Pick a package, or ask for a quote.",
+  title: { solid: "Pick a package,", outline: "or ask for a quote." },
   intro: "Either way, you see the price before we start.",
+  // Promises every plan shares, said once instead of on each card (same as Contact's).
+  always: ["Your own design, built from scratch", "Scope and price agreed before we start", "A real person on email"],
+  preview: { lead: "Not sure yet?", label: "See a free preview first", href: "#steps" },
   audiences: [
     {
       id: "business", label: "For local businesses",
       plans: [
         { id: "project", name: "Project", fit: "A new site with a clear start and finish.", price: "$2,400", unit: "from, one-off", action: "Start a project",
-          features: ["Custom design, never a theme", "Up to six pages", "Mobile, speed and SEO basics", "Training so you can edit it", "30 days of fixes after launch"] },
-        { id: "subscription", name: "Subscription", fit: "Your site, kept fresh and looked after.", price: "$190", unit: "per month", action: "Choose subscription", featured: true,
+          features: ["Up to six pages", "Mobile, speed and SEO basics", "Training so you can edit it", "30 days of fixes after launch"] },
+        { id: "subscription", name: "Subscription", fit: "Your site, updated and looked after every month.", price: "$190", unit: "per month", action: "Choose subscription", featured: true,
+          image: { base: "/images/card-design", w: 1280, h: 720 },
           features: ["A new custom site, paid monthly", "Monthly updates and changes", "Hosting, backups and security", "A named person to email", "Minimum term of 12 months"] },
         { id: "adhoc", name: "Ad hoc", fit: "Help when it's needed.", price: "$95", unit: "per hour", action: "Book some time",
           features: ["Edits, fixes and new pages", "Booked as it comes up", "Quoted before we start", "No contract"] },
@@ -685,6 +691,7 @@ export const pricing = {
         { id: "projects", name: "Agency projects", fit: "Full builds and redesigns, white-labelled.", price: "$1,800", unit: "from, per site", action: "Send a brief",
           features: ["Designed to your agency's standards", "Development and launch", "Speed and SEO basics", "Handover in your process"] },
         { id: "dedicated", name: "Dedicated designer or developer", fit: "Someone from Webleta on your team.", price: "$3,200", unit: "per month", action: "Talk to us", featured: true,
+          image: { base: "/images/service-design", w: 1280, h: 853 },
           features: ["A named designer or developer", "Works in your tools and meetings", "Design, build and care", "Scale up or down each month"] },
       ],
     },

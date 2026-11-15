@@ -1,5 +1,6 @@
-/* Pricing: Shallows ground. Three plans; the featured one is Deep Water with an Aqua glow
-   and takes the section's one Ember button. Plans are panels, so --r-lg. */
+/* Pricing (Revision 75): Shallows ground. Flat plan tiles in tone steps, no borders, glows
+   or shadows (Jasper's rule). The featured plan is the one bold element: Deep Water, a reused
+   photo in brand duotone, the Split Arc's 24° cut and the section's one Ember button. */
 .section {
   padding-block: var(--section-y);
   background: var(--shallows);
@@ -29,15 +30,22 @@
 }
 
 /* ---- Audience tabs: a segmented control with a sliding thumb ---- */
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-6);
+  margin-bottom: clamp(24px, 2vw, 40px);
+}
+
 .tabs {
   position: relative;
   display: inline-grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: clamp(24px, 2vw, 40px);
   padding: 4px;
   border-radius: var(--r-pill);
   background: var(--white);
-  box-shadow: inset 0 0 0 1px var(--line-on-light);
 }
 
 .tab {
@@ -90,78 +98,147 @@
   }
 }
 
+/* ---- Every plan includes ---- */
+.always {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px var(--s-3);
+  color: var(--deep-water);
+  font-size: var(--fs-small);
+}
+
+.alwaysLabel {
+  color: var(--wet-slate);
+}
+
+.always ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.always li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.spark {
+  flex: none;
+  width: 9px;
+  height: 14px;
+  fill: var(--aqua);
+}
+
 /* ---- Plans ---- */
 .plans {
   display: grid;
-  gap: 12px;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-@media (min-width: 900px) {
+/* Desktop: the featured plan is a large panel on the left across two rows; the other two
+   stack on the right. DOM order is unchanged (screen readers and tab order follow it). */
+@media (min-width: 960px) {
   .plans {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    grid-auto-flow: row dense;
     align-items: stretch;
+  }
+
+  .plan[data-featured] {
+    grid-row: 1 / span 2;
+    grid-column: 1;
+  }
+
+  .plan:not([data-featured]) {
+    grid-column: 2;
+  }
+
+  /* Side plans: name, line and price on the left, features on the right. */
+  .plan:not([data-featured]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+    column-gap: var(--s-4);
+    row-gap: var(--s-1);
+  }
+
+  .plan:not([data-featured]) > .name,
+  .plan:not([data-featured]) > .fit,
+  .plan:not([data-featured]) > .price {
+    grid-column: 1;
+  }
+
+  .plans .plan:not([data-featured]) > .features {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    align-content: start;
+    margin: 0;
+    padding: 0;
+    border-top: 0;
+  }
+
+  .plan:not([data-featured]) > .price {
+    align-self: start;
+  }
+
+  .plan:not([data-featured]) > a {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    margin-top: var(--s-3);
   }
 }
 
+.line {
+  display: block;
+}
+
 .plan {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
   padding: clamp(24px, 2.2vw, 36px);
   border-radius: var(--r-lg);
   background: var(--white);
-  box-shadow: inset 0 0 0 1px var(--line-on-light);
-}
-
-.plan[data-featured] {
-  background:
-    radial-gradient(110% 80% at 100% 0%, rgb(60 207 195 / 0.3), transparent 60%),
-    radial-gradient(90% 70% at 0% 100%, rgb(45 106 160 / 0.45), transparent 70%),
-    var(--deep-water);
-  color: var(--white);
-  box-shadow: 0 40px 80px -48px rgb(7 34 59 / 0.7);
-}
-
-.plan[data-featured] :focus-visible {
-  outline-color: var(--aqua);
+  color: var(--deep-water);
 }
 
 .name {
+  font-family: var(--font-display);
   font-size: var(--fs-h3);
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .fit {
-  min-height: 3em;
   color: var(--wet-slate);
   font-size: var(--fs-small);
 }
 
-.plan[data-featured] .fit,
-.plan[data-featured] .unit {
-  color: var(--cloud);
-}
-
 .price {
   display: flex;
-  align-items: baseline;
   flex-wrap: wrap;
-  gap: 10px;
-  padding-bottom: var(--s-3);
-  border-bottom: 1px solid var(--line-on-light);
-}
-
-.plan[data-featured] .price {
-  border-bottom-color: var(--line-on-dark);
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-block: var(--s-2);
 }
 
 .amount {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 2rem + 2vw, 3.75rem);
+  font-size: clamp(2.75rem, 2rem + 2vw, 4rem);
   font-weight: 800;
   letter-spacing: -0.045em;
-  line-height: 1;
+  line-height: 0.95;
 }
 
 .unit {
@@ -171,45 +248,117 @@
 
 .features {
   display: grid;
-  flex: 1;
-  align-content: start;
-  gap: 12px;
-  padding-block: var(--s-1) var(--s-3);
+  gap: 10px;
+  margin: 0 0 var(--s-3);
+  padding: var(--s-3) 0 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+/* Tone step instead of a rule between price and features. */
+.plan:not([data-featured]) .features {
+  margin-inline: calc(clamp(24px, 2.2vw, 36px) * -1);
+  padding: var(--s-3) clamp(24px, 2.2vw, 36px) 0;
+  border-top: 10px solid var(--shallows); /* taste-skill-ignore: a 10px tone band, the section ground, not a hairline */
 }
 
 .features li {
   display: flex;
-  gap: 12px;
-  font-size: var(--fs-small);
-  line-height: 1.45;
+  align-items: baseline;
+  gap: 10px;
 }
 
-/* V1.6 spark marker as the list bullet: Aqua on the featured plan, Deep Water elsewhere. */
-.spark {
-  flex: none;
-  width: 8px;
-  height: 13px;
-  margin-top: 3px;
-  fill: var(--deep-water);
-}
-
-.plan[data-featured] .spark {
-  fill: var(--aqua);
+.features .spark {
+  transform: translateY(2px);
 }
 
 .planBtn {
-  border-color: rgb(7 34 59 / 0.22);
-  background: transparent;
+  margin-top: auto;
+  background: var(--shallows);
   color: var(--deep-water);
 }
 
 .planBtn:hover {
-  border-color: var(--deep-water);
-  background: var(--deep-water);
-  color: var(--shallows);
+  background: var(--mist);
 }
 
-.plan .btn,
-.plan :global(.btn) {
+.plan :global(.btn-primary) {
+  margin-top: auto;
+}
+
+/* ---- Featured: the one bold element ---- */
+.plan[data-featured] {
+  padding-top: 0;
+  overflow: hidden;
+  background: var(--deep-water);
+  color: var(--white);
+  clip-path: polygon(0 0, calc(100% - 64px) 0, 100% 144px, 100% 100%, 0 100%);
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 16 / 8;
+  margin-inline: calc(clamp(24px, 2.2vw, 36px) * -1);
+  margin-bottom: var(--s-2);
+  overflow: hidden;
+  background: var(--deep-water);
+}
+
+.photo img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+  opacity: 0.6;
+}
+
+/* Seafoam lifts the lights, then the photo sinks into the panel at its foot. */
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, transparent 45%, var(--deep-water)), /* taste-skill-ignore: neutral scrim into the panel */
+    rgb(191 240 227 / 0.22);
+  mix-blend-mode: normal;
+}
+
+.plan[data-featured] .fit,
+.plan[data-featured] .unit {
+  color: var(--cloud);
+}
+
+.plan[data-featured] .amount {
+  font-size: clamp(3.5rem, 2.4rem + 3vw, 5.5rem);
+  color: var(--seafoam);
+}
+
+.plan[data-featured] .features {
+  border-top: 0;
+}
+
+/* ---- Free preview line ---- */
+.preview {
+  margin-top: clamp(24px, 2vw, 40px);
+  color: var(--wet-slate);
+  font-size: var(--fs-body);
+}
+
+.previewLink {
+  color: var(--deep-water);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.previewLink:hover {
+  text-decoration-color: var(--deep-water);
+}
+
+@media (max-width: 959px) {
+  .plan[data-featured] {
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 90px, 100% 100%, 0 100%);
+  }
 }
