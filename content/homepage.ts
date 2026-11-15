@@ -453,6 +453,23 @@ export const ctaBanner = {
  * Ties to the band's "See it first" hook. UNCONFIRMED: the free preview offer is not
  * confirmed by Graham. The compare slider is an illustration, not a client site.
  */
+/** Copy for the shared three-step request form (components/RequestForm.tsx). */
+export type RequestFormCopy = {
+  title: string;
+  reply: string;
+  progress: string;
+  steps: { label: string; title: string; hint: string }[];
+  goals: { id: string; label: string; note: string }[];
+  next: string;
+  back: string;
+  submit: string;
+  trust: string;
+  sent: string;
+  /** The email subject, before ": <website>". */
+  subject: string;
+  errors: { website: string; email: string };
+};
+
 export const steps = {
   eyebrow: "How it works",
   title: { solid: "See it before", outline: "you pay for it." },
@@ -534,7 +551,9 @@ export const steps = {
     submit: "Get my free preview",
     trust: "Free. No card, no contract. You decide after you've seen it.",
     sent: "Your email app has your request ready. Press send there and we'll start on your preview.",
-  },
+    subject: "Free preview request",
+    errors: { website: "Add your website or business name to continue.", email: "Add an email address we can send the preview to." },
+  } satisfies RequestFormCopy,
 
 };
 
@@ -699,22 +718,44 @@ export const pricing = {
 };
 
 /**
- * Contact (Graham's reference: "Tell us your win"). UNCONFIRMED: no form service yet.
- * Sending opens the visitor's email app with the request filled in, addressed to `email`.
- * `email` is UNCONFIRMED (hello@webleta.com appears only in older notes).
+ * Contact (Graham's reference: "Tell us your win"). Revision 76: the same three-step request
+ * as Steps (shared RequestForm), worded for a project, on the hero's live gradient, with the
+ * reused cta-shop photo. No form service yet: sending opens the visitor's email app,
+ * addressed to `email` (UNCONFIRMED: hello@webleta.com appears only in older notes).
  */
 export const contact = {
   eyebrow: "Contact",
-  title: "Tell us what a win looks like. We'll bring the plan.",
+  title: { solid: "Tell us what a win looks like.", outline: "We'll bring the plan." },
   promises: [
     "A site that's yours, never a theme with your logo on it",
     "A clear scope and price, agreed before we start",
     "A reply from a person, usually within one working day",
   ],
   email: "hello@webleta.com",
-  goals: ["More calls", "More bookings", "More sales", "More quote requests"],
-  submit: "Send my request",
-  sent: "Your email app has your request ready. Press send there and we'll reply.",
+  image: { base: "/images/cta-shop", w: 1600, h: 900, alt: "A corner shop at dusk, its windows lit warm against a navy sky." },
+  form: {
+    title: "Start your project",
+    reply: "A person replies within one working day.",
+    progress: "Step",
+    steps: [
+      { label: "Website", title: "Which site is this about?", hint: "No website yet? Type your business name instead." },
+      { label: "Goal", title: "What should the new site win you?", hint: "Pick the one that matters most. We plan around it." },
+      { label: "Details", title: "Where should we reply?", hint: "We'll email you a plan and a price. No calls unless you ask." },
+    ],
+    goals: [
+      { id: "calls", label: "More calls", note: "People ring you from the site" },
+      { id: "bookings", label: "More bookings", note: "Appointments booked online" },
+      { id: "sales", label: "More sales", note: "Orders through the site" },
+      { id: "quotes", label: "More quote requests", note: "Enquiries for bigger jobs" },
+    ],
+    next: "Continue",
+    back: "Back",
+    submit: "Send my request",
+    trust: "No obligation. You get a plan and a price before anything starts.",
+    sent: "Your email app has your request ready. Press send there and we'll reply.",
+    subject: "Website request",
+    errors: { website: "Add your website or business name to continue.", email: "Add an email address we can reply to." },
+  } satisfies RequestFormCopy,
 };
 
 /** Sections after the hero, in the order of Graham's outline. Placeholders for Phase 2+. */

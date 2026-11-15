@@ -1,59 +1,27 @@
-"use client";
-
-import { useEffect, useState, type FormEvent } from "react";
 import Eyebrow from "./Eyebrow";
-import { contact } from "@/content/homepage";
+import HeroGradient from "./HeroGradient";
+import RequestForm from "./RequestForm";
 import Spark from "./Spark";
+import { contact } from "@/content/homepage";
 import styles from "./Contact.module.css";
 
 /**
- * Contact (Graham's reference: "Tell us your win"). No form service is connected yet, so
- * sending opens the visitor's own email app with the request filled in: nothing is lost
- * and nothing pretends to send. The website field picks up ?website= from the hero switch.
- *   [ heading, three promises, email ][ form card ]
+ * Contact (Revision 76). The page closes on the ground it opened with: the hero's live Halo
+ * gradient with its grain (HeroGradient; its shader only runs while this section is near the
+ * screen). The request is the same three-step form as Steps, worded for a project.
+ *   [ heading (solid, then outline), promises, email ][ three-step request (white card) ]
+ *   [ the reused cta-shop photo, 24° cut              ][                                 ]
  */
 export default function Contact() {
-  const [website, setWebsite] = useState("");
-  const [goals, setGoals] = useState<string[]>([]);
-  const [sent, setSent] = useState(false);
-
-  useEffect(() => {
-    const fromHero = new URLSearchParams(window.location.search).get("website");
-    if (fromHero) setWebsite(fromHero);
-  }, []);
-
-  const toggle = (g: string) => setGoals((cur) => (cur.includes(g) ? cur.filter((x) => x !== g) : [...cur, g]));
-
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (!form.reportValidity()) return;
-    const data = new FormData(form);
-    const body = [
-      `Name: ${data.get("name")}`,
-      `Email: ${data.get("email")}`,
-      `Website: ${data.get("website") || "none yet"}`,
-      `What the site should win: ${goals.join(", ") || "not sure yet"}`,
-      "",
-      String(data.get("message") || ""),
-    ].join("\n");
-    const subject = `Website request from ${data.get("name")}`;
-    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
-  };
-
   return (
     <section id="contact" className={styles.section} data-ground="dark" data-contact aria-labelledby="contact-title">
-      <svg className={styles.ripples} viewBox="0 0 600 600" aria-hidden="true" focusable="false">
-        {[100, 170, 240, 310, 380, 450].map((r) => (
-          <circle key={r} cx="0" cy="0" r={r} />
-        ))}
-      </svg>
+      <HeroGradient />
       <div className={`container ${styles.layout}`}>
         <div className={styles.copy}>
           <Eyebrow>{contact.eyebrow}</Eyebrow>
           <h2 id="contact-title" className={styles.title}>
-            {contact.title}
+            <span className={styles.line}>{contact.title.solid}</span>{" "}
+            <span className={`${styles.line} outline-type`}>{contact.title.outline}</span>
           </h2>
           <ul className={styles.promises}>
             {contact.promises.map((p) => (
@@ -66,57 +34,21 @@ export default function Contact() {
           <p className={styles.direct}>
             Prefer email? <a href={`mailto:${contact.email}`}>{contact.email}</a>
           </p>
+          <figure className={styles.photo}>
+            <img
+              src={`${contact.image.base}-900.webp`}
+              srcSet={`${contact.image.base}-900.webp 900w, ${contact.image.base}-1600.webp 1600w`}
+              sizes="(min-width: 960px) 40vw, 92vw"
+              width={contact.image.w}
+              height={contact.image.h}
+              alt={contact.image.alt}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
         </div>
 
-        <form className={styles.form} onSubmit={onSubmit} noValidate data-contact-form>
-          <div className={styles.row}>
-            <label className={styles.field}>
-              <span>Name</span>
-              <input name="name" type="text" autoComplete="name" required />
-            </label>
-            <label className={styles.field}>
-              <span>Email</span>
-              <input name="email" type="email" autoComplete="email" required />
-            </label>
-          </div>
-          <label className={styles.field}>
-            <span>
-              Your website <em>if you have one</em>
-            </span>
-            <input
-              name="website"
-              type="text"
-              inputMode="url"
-              autoComplete="url"
-              placeholder="yourbusiness.com.au"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              data-contact-website
-            />
-          </label>
-          <fieldset className={styles.goals}>
-            <legend>What should the new site win you?</legend>
-            <div className={styles.chips}>
-              {contact.goals.map((g) => (
-                <button key={g} type="button" className={styles.chip} aria-pressed={goals.includes(g)} onClick={() => toggle(g)}>
-                  {g}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-          <label className={styles.field}>
-            <span>
-              Anything we should know? <em>optional</em>
-            </span>
-            <textarea name="message" rows={3} placeholder="Who you sell to, a site you like, what isn't working today." />
-          </label>
-          <button type="submit" className={`btn btn-lg btn-primary ${styles.submit}`}>
-            {contact.submit}
-          </button>
-          <p className={styles.status} role="status">
-            {sent ? contact.sent : ""}
-          </p>
-        </form>
+        <RequestForm copy={contact.form} hook="contact" className={styles.form} />
       </div>
     </section>
   );

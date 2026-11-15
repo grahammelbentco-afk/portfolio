@@ -191,7 +191,8 @@ with sync_playwright() as p:
     settle(page)
     page.wait_for_selector("#gradientCanvas", timeout=15000)
     page.wait_for_timeout(1500)
-    check("background: live ShaderGradient canvas over CSS fallback", page.locator("#gradientCanvas").count() == 1 and page.locator("[data-bg-layer]").count() == 2 and page.get_attribute("[data-bg]", "data-sg-ready") == "true")
+    # Hero and Contact share the ground (Revision 76); only the one near the screen runs a scene.
+    check("background: live ShaderGradient canvas over CSS fallback, one scene at a time", page.locator("#gradientCanvas").count() == 1 and page.locator("#top [data-bg-layer]").count() == 2 and page.get_attribute("#top [data-bg]", "data-sg-ready") == "true")
     # The loop is slow and dark by design, so compare a large area over 5 seconds.
     a = page.screenshot(clip={"x": 0, "y": 80, "width": 1440, "height": 720})
     page.wait_for_timeout(5000)
@@ -439,9 +440,11 @@ with sync_playwright() as p:
     s3 = [form.get_attribute("data-step"), form.locator("input[name=name]").count(), form.locator("input[name=email]").count()]
     check("steps: request is three steps with validation (website, goal, name and email)",
           blocked == ["0", True] and s2 == ["1", 4] and s3 == ["2", 1, 1], f"{blocked} {s2} {s3}")
-    page.evaluate("document.querySelector('[data-contact-form] button[type=submit]').click()")
-    invalid = page.evaluate("document.querySelectorAll('[data-contact-form] :invalid').length")
-    check("contact: empty form is blocked by validation", invalid >= 2, str(invalid))
+    # Contact (Revision 76): the shared three-step request; an empty website is blocked.
+    page.evaluate("document.querySelector('[data-contact-next]').click()")
+    page.wait_for_timeout(150)
+    cblock = [page.get_attribute("[data-contact-form]", "data-step"), page.evaluate("document.querySelector('#contact-error').textContent.length > 0")]
+    check("contact: empty request is blocked on the website step", cblock == ["0", True], str(cblock))
     # Services (Revision 40): colour bento after Graham's reference, Notion's seven services.
     ids = page.evaluate("[...document.querySelectorAll('#services [data-service]')].map(e => e.dataset.service)")
     check("services: Notion's seven services, in bento order", ids == ["websites", "apps", "seo", "email", "social", "content", "mobile"], str(ids))

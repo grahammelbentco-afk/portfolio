@@ -15,7 +15,23 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 75: Pricing rebuilt (latest)
+## Revision 76: Contact on the hero's gradient, with the shared three-step form (latest)
+
+- **Ask (Jasper):** revise Contact using the form design from "How it works" and an existing image matched to the brand, on the same background as the hero ("that moving grainy gradient"), then push.
+- **Shared form:** the Steps request is now `components/RequestForm.tsx`, taking its copy as a prop (`RequestFormCopy` in `content/homepage.ts`) and a `hook` for the QA data attributes. Steps uses it unchanged (same copy, ids and hooks). Contact uses it worded for a project: "Start your project", "Which site is this about?", "Where should we reply?", "Send my request", with the subject "Website request". The CSS stays in `Steps.module.css`, so the design lives in one place. The old one-page Contact form (name, email, website, chips, message) is gone.
+- **Background:** Contact renders `HeroGradient`, the live ShaderGradient Halo with its grain pass over the CSS fallback, scrim and dither, so the page ends on the ground it opened with.
+- **One WebGL scene at a time:** `HeroShader` now mounts its scene only while its section is within 200px of the screen (IntersectionObserver), and unmounts it when it leaves, which frees the context.
+- **Image:** the reused `cta-shop` (a corner shop at dusk; its navy sky already sits in the Halo palette, so it keeps its own colour), with the Split Arc 24° cut, under the promises.
+- **Heading:** "Tell us what a win looks like." solid, then "We'll bring the plan." outlined (Jasper's rule).
+- **Layout:** the form card is sticky beside the copy on desktop and stacks on phones.
+- **QA:**
+  - The contact validation check now runs the multistep flow: an empty website is blocked on step 1.
+  - The background check is scoped to the hero and asserts exactly one live canvas.
+  - taste lint 0 FAIL. tsc is clean. `qa/qa.py` 150/150.
+  - Known, pre-existing: eslint's `react-hooks/set-state-in-effect` flags the `?website=` pickup, as it did in Steps before the move.
+- **Skills and tools actually used:** frontend-design (the brief carried over), design-taste-frontend lint, Playwright. No fal and no new images.
+
+## Revision 75: Pricing rebuilt (pushed: `896ab45`, Cloudflare check succeeded)
 
 - **Ask (Jasper):** an award-level Pricing section using the Awwwards MCP, frontend-design and humanizer, with a reused image matched to the brand.
 - **Diagnosis (frontend-design):** the old section was the stock "SaaS card kit": three outlined cards, with a featured card carrying an Aqua gradient and a drop shadow.

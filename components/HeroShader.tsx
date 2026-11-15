@@ -25,13 +25,28 @@ function supportsWebGL() {
 }
 
 /**
- * Mounts the live Halo over the CSS gradient once the page is idle and WebGL exists.
+ * Mounts the live Halo over the CSS gradient once the page is idle and WebGL exists, and
+ * only while its section is near the screen (unmounted, it frees its WebGL context).
  * The motion is slow and ambient; with reduced motion it renders as a still frame.
  */
 export default function HeroShader() {
   const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(REDUCED).matches, () => false);
   const [enabled, setEnabled] = useState(false);
+  const [near, setNear] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  // Only keep a live scene while its section is on or near the screen. The hero and Contact
+  // both use this ground, so at most one WebGL scene runs; the CSS gradient shows otherwise.
+  useEffect(() => {
+    const el = ref.current?.closest<HTMLElement>("[data-bg]") ?? ref.current;
+    if (!el || !("IntersectionObserver" in window)) {
+      setNear(true);
+      return;
+    }
+    const io = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), { rootMargin: "200px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const start = () => {
@@ -50,7 +65,7 @@ export default function HeroShader() {
 
   return (
     <div ref={ref} className={styles.shader}>
-      {enabled && <ShaderHalo playing={!reduced} />}
+      {enabled && near && <ShaderHalo playing={!reduced} />}
     </div>
   );
 }
