@@ -15,7 +15,19 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 76: Contact on the hero's gradient, with the shared three-step form (latest)
+## Revision 77: Footer with a full-width wordmark (latest)
+
+- **Ask (Jasper):** an award-level footer ("be creative here"), then push.
+- **Design:**
+  - Abyss ground after Contact's gradient.
+  - The top row is a closing line, "Have a site in mind?", with the tagline and a Seafoam "Book a call" (the same closing button as Work's frame), beside two link columns: Explore (the site navigation) and Contact (email, WhatsApp display number, Book a call).
+  - The bottom bar has "© 2026 Webleta. Based in Australia." and "Back to top".
+  - **Signature:** the brand wordmark file used as a CSS mask at the full container width, one tone step above the ground (`#0d2c49` on Abyss), cut by the bottom edge so only its top 74% shows. As the footer scrolls in, it rises into place (a CSS scroll timeline, `view()`, where supported). Reduced motion shows it still.
+  - The old corner ripples are removed. There are no rules or outlines; sections are separated by space and tone.
+- **Still UNCONFIRMED:** the email and the WhatsApp number (the ACMA fiction number) are the same placeholders as the header and Contact.
+- **QA:** taste lint 0 FAIL. tsc is clean. `qa/qa.py` 150/150.
+
+## Revision 76: Contact on the hero's gradient, with the shared three-step form (pushed: `0b325c1`, Cloudflare check succeeded)
 
 - **Ask (Jasper):** revise Contact using the form design from "How it works" and an existing image matched to the brand, on the same background as the hero ("that moving grainy gradient"), then push.
 - **Shared form:** the Steps request is now `components/RequestForm.tsx`, taking its copy as a prop (`RequestFormCopy` in `content/homepage.ts`) and a `hook` for the QA data attributes. Steps uses it unchanged (same copy, ids and hooks). Contact uses it worded for a project: "Start your project", "Which site is this about?", "Where should we reply?", "Send my request", with the subject "Website request". The CSS stays in `Steps.module.css`, so the design lives in one place. The old one-page Contact form (name, email, website, chips, message) is gone.

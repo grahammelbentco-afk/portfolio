@@ -834,6 +834,8 @@ export const sections: PlaceholderSection[] = [
 
 export const footer = {
   tagline: site.description,
+  lead: "Have a site in mind?",
   columns: [{ title: "Explore", links: navigation }],
   contact: { label: "Book a call", href: "#contact" },
+  top: "Back to top",
 };
