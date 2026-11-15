@@ -623,19 +623,27 @@ export const reviews = {
   ] satisfies Review[],
 };
 
-/** Clients (Graham: "Logos of company we previously worked with"). UNCONFIRMED: fictional names set in type, no logo files. */
-export type ClientMark = { name: string; style: "serif" | "wide" | "lower" | "italic" | "plain" | "heavy" };
+/**
+ * Clients (Graham: "Logos of company we previously worked with"). The real logos from Graham's
+ * live site (webleta.com, media/Companies), cropped and saved as single-colour masks in
+ * public/brands/clients/, so they can take any brand tone. Portside Marketing's logo is left
+ * out: the only file is a blurred raster in a box that can't be recoloured cleanly.
+ */
+/** ar: the logo file's width / height, so each mark sizes without distortion. */
+export type ClientLogo = { id: string; name: string; ar: number; scale?: number };
 export const clients = {
-  eyebrow: "Who we work with",
-  title: "Local businesses we've worked with",
-  names: [
-    { name: "Crumb & Co", style: "serif" },
-    { name: "Kingsway Auto", style: "wide" },
-    { name: "studio nine", style: "lower" },
-    { name: "Ford & Field", style: "italic" },
-    { name: "Harbourside Physio", style: "plain" },
-    { name: "Clayworks", style: "heavy" },
-  ] satisfies ClientMark[],
+  eyebrow: "Who we've worked with",
+  title: { solid: "Brands we've", outline: "built for." },
+  logos: [
+    { id: "groundcontrol", name: "Ground Control Systems", ar: 4.966 },
+    { id: "racknroad", name: "Rack n Road", ar: 5.943 },
+    { id: "mec", name: "Melbourne Entertainment Co", ar: 8.125 },
+    { id: "adrenaline", name: "Adrenaline Solutions", ar: 3.488, scale: 1.45 },
+    { id: "nicolesteffen", name: "Nicole Steffen Design", ar: 6.025 },
+    { id: "cmc", name: "Creative Marketing Concepts", ar: 6.851 },
+    { id: "entertainmentco", name: "Entertainment Co", ar: 6.727 },
+  ] satisfies ClientLogo[],
+  next: { lead: "Yours could be next", label: "Get my free preview", href: "#steps" },
 };
 
 /**

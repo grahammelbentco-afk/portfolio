@@ -15,7 +15,20 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 73: Reviews rebuilt with real reviews (latest)
+## Revision 74: Clients as a wall of real logos (latest)
+
+- **Ask (Jasper):** revise the logo section with the logos from webleta.com, then push.
+- **Logos:** seven from Graham's site (`media/Companies`): Ground Control Systems, Rack n Road, Melbourne Entertainment Co, Adrenaline Solutions, Nicole Steffen Design, Creative Marketing Concepts and Entertainment Co. Each is cropped to its ink and saved in `public/brands/clients/`. Portside Marketing (comp1) is left out: its only file is a blurred raster inside a grey box, which can't be recoloured cleanly. The fictional typed names are removed.
+- **Design:**
+  - Deep Water ground, with the heading "Brands we've" solid, then "built for." outlined.
+  - A 4 × 2 wall (2 columns on phones) of flat Abyss tiles: one tone step down, no borders or glows.
+  - Each logo is a CSS mask painted in Cloud at 78% opacity, so all seven share one quiet tone. On hover the tile steps lighter and the logo turns Seafoam (colour swaps only).
+  - Adrenaline's thin, wide-spaced mark gets a 1.45 optical boost.
+  - The eighth tile is the open slot: Seafoam, "Yours could be next" and "Get my free preview", linking to Steps.
+- **No sector labels:** only three of the seven businesses are confirmed, so no labels were invented.
+- **QA:** taste lint 0 FAIL. tsc is clean. `qa/qa.py` 149/150 (the flaky shader check).
+
+## Revision 73: Reviews rebuilt with real reviews (pushed: `691c68d`, Cloudflare check succeeded)
 
 - **Ask (Jasper):** an award-level Reviews section using the Awwwards MCP, with an image (reused, matched to the brand). Use real testimonials from webleta.com and his own from LinkedIn and Upwork (screenshots), picking the best ones.
 - **Reviews (quoted word for word, shortened only to one unbroken passage):**
