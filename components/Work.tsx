@@ -1,4 +1,5 @@
 import { work, type Project } from "@/content/homepage";
+import Eyebrow from "./Eyebrow";
 import styles from "./Work.module.css";
 
 /**
@@ -49,6 +50,7 @@ export default function Work() {
   return (
     <section id="work" className={styles.section} data-ground="dark" data-work aria-labelledby="work-title">
       <div className={`container ${styles.head}`}>
+        <Eyebrow>{work.eyebrow}</Eyebrow>
         <h2 id="work-title" className="sec-title">
           {work.title}
         </h2>

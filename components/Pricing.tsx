@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type KeyboardEvent } from "react";
+import Eyebrow from "./Eyebrow";
 import { pricing } from "@/content/homepage";
 import Spark from "./Spark";
 import styles from "./Pricing.module.css";
@@ -30,6 +31,7 @@ export default function Pricing() {
   return (
     <section id="pricing" className={styles.section} data-ground="light" data-pricing aria-labelledby="pricing-title">
       <div className={`container ${styles.head}`}>
+        <Eyebrow>{pricing.eyebrow}</Eyebrow>
         <h2 id="pricing-title" className="sec-title">
           {pricing.title}
         </h2>

@@ -1,4 +1,5 @@
 import { services, type DeviceStage, type PlatformLogo, type ServiceTile } from "@/content/homepage";
+import Eyebrow from "./Eyebrow";
 import ServiceIcon from "./ServiceIcon";
 import { BookingApp, Dashboard, Mark } from "./ServiceScreens";
 import styles from "./Services.module.css";
@@ -149,6 +150,7 @@ export default function Services() {
   return (
     <section id="services" className={styles.section} data-ground="light" data-services aria-labelledby="services-title">
       <div className={`container ${styles.head}`}>
+        <Eyebrow>{services.eyebrow}</Eyebrow>
         <h2 id="services-title" className={`sec-title ${styles.title}`}>
           <span className={styles.mark}>{services.title.mark}</span> {services.title.rest}
         </h2>

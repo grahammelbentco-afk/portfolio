@@ -47,6 +47,8 @@ export default function ServiceSwitch({
     else url.searchParams.delete("website");
     url.hash = current.href;
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+    // Lets the preview form further down fill in the website without a reload.
+    window.dispatchEvent(new CustomEvent("webleta:website", { detail: website }));
     document.getElementById(current.href.replace(/^#/, ""))?.scrollIntoView();
   };
 

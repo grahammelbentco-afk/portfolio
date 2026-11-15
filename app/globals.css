@@ -274,6 +274,31 @@ video {
   color: var(--cloud);
 }
 
+/* Section eyebrow: the spark in Aqua and a short label (same as About and Benefits).
+   In a grid head it spans the full row, so the heading layout below it is unchanged. */
+.eyebrow {
+  display: inline-flex;
+  grid-column: 1 / -1;
+  justify-self: start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--s-3);
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.eyebrow-spark {
+  width: 10px;
+  height: 16px;
+  fill: var(--aqua);
+}
+
+[data-ground="dark"] .eyebrow {
+  color: var(--cloud);
+}
+
 /* Outline-only type: the hero's second-line device, reused for one phrase per heading. */
 .outline-type {
   letter-spacing: -0.015em;

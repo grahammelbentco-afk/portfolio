@@ -213,7 +213,9 @@ with sync_playwright() as p:
     page.click("#top [role=tabpanel]:not([hidden]) button[type=submit]")
     page.wait_for_timeout(600)
     carried = page.evaluate("[new URL(location.href).searchParams.get('website'), location.hash]")
-    check("toggle: business URL carried to next step (?website=)", carried == ["smithsplumbing.com.au", "#contact"], str(carried))
+    check("toggle: business URL carried to next step (?website=)", carried == ["smithsplumbing.com.au", "#steps"], str(carried))
+    pre = page.input_value("[data-steps-website]")
+    check("toggle: preview form picks up the hero website", pre == "smithsplumbing.com.au", pre)
     page.goto(URL)
     settle(page)
     cards = page.evaluate("[...document.querySelectorAll('[data-card]')].map(c => { const r = c.getBoundingClientRect(); return [c.textContent.trim(), Math.round(r.left), Math.round(r.top)]; })")
@@ -420,13 +422,23 @@ with sync_playwright() as p:
     for _ in range(5):
         page.keyboard.press("ArrowRight")
     val = rng.input_value()
-    check("steps: compare slider moves with the keyboard", val == "47", val)
-    page.focus("[data-steps-tab='0']")
-    page.keyboard.press("ArrowRight")
-    page.wait_for_timeout(200)
-    st = [page.get_attribute("#steps-stage", "data-step"), page.get_attribute("[data-steps-tab='1']", "aria-selected"), page.locator("[data-steps-range]").count()]
-    check("steps: arrow keys move to step 2, stage follows, slider hides", st == ["1", "true", 0], str(st))
-    page.click("[data-steps-tab='0']")
+    check("steps: compare slider moves with the keyboard", val == "25", val)
+    pays = page.locator("[data-steps-list] > li").count()
+    check("steps: three steps, each saying what you pay", pays == 3, str(pays))
+    form = page.locator("[data-steps-form]")
+    form.locator("[data-steps-website]").fill("")
+    form.locator("[data-steps-next]").click()
+    blocked = [form.get_attribute("data-step"), form.locator("[role=alert]").inner_text().strip() != ""]
+    form.locator("[data-steps-website]").fill("tidewellphysio.com.au")
+    form.locator("[data-steps-next]").click()
+    page.wait_for_timeout(150)
+    s2 = [form.get_attribute("data-step"), form.locator("input[type=radio]").count()]
+    form.locator("input[value=bookings]").check(force=True)
+    form.locator("[data-steps-next]").click()
+    page.wait_for_timeout(150)
+    s3 = [form.get_attribute("data-step"), form.locator("input[name=name]").count(), form.locator("input[name=email]").count()]
+    check("steps: request is three steps with validation (website, goal, name and email)",
+          blocked == ["0", True] and s2 == ["1", 4] and s3 == ["2", 1, 1], f"{blocked} {s2} {s3}")
     page.evaluate("document.querySelector('[data-contact-form] button[type=submit]').click()")
     invalid = page.evaluate("document.querySelectorAll('[data-contact-form] :invalid').length")
     check("contact: empty form is blocked by validation", invalid >= 2, str(invalid))

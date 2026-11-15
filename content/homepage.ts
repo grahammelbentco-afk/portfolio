@@ -148,7 +148,7 @@ export const hero = {
       label: "For local businesses",
       field: { label: "Your business website", placeholder: "yourbusiness.com.au" },
       action: "Get my free preview",
-      href: "#contact",
+      href: "#steps",
       note: "Your own design, never a theme with your logo on it.",
     },
     {
@@ -262,6 +262,7 @@ export type Benefit = {
 export const benefits = {
   eyebrow: "Why it pays off",
   title: "A good website brings work in.",
+  titleMark: "work in", // Seafoam highlighter, as in About
   intro: "A shop wants orders. A salon wants bookings. A plumber wants the right jobs. We find out what a win looks like for you, then build the site to bring it in.",
   items: [
     {
@@ -373,6 +374,7 @@ const logo = {
  * fal illustrations (see the 2026-11-14 manifests); Harlow Joinery is the fictional concept.
  */
 export const services = {
+  eyebrow: "What we do",
   title: { mark: "Websites first.", rest: "The rest brings people to them." },
   intro: "We design and build the site, then help people find it through search, email, social and content. Pick one service or several.",
   tiles: [
@@ -452,38 +454,90 @@ export const ctaBanner = {
  * confirmed by Graham. The compare slider is an illustration, not a client site.
  */
 export const steps = {
+  eyebrow: "How it works",
   title: { outline: "See it", rest: "before you pay for it." },
-  intro: "Send us your website. We design a real preview of your new homepage first. If you like it, we build the rest. If not, you've lost nothing.",
+  intro: "Send us your website. We design a real preview of your new homepage, before you pay anything. If you like it, we build the rest. If not, you've lost nothing.",
+  // Revision 51: each step says what it costs. UNCONFIRMED: Graham to confirm the free preview offer.
   items: [
-    { title: "Free preview", text: "We redesign your homepage as a working preview, in your brand." },
-    { title: "Plan the pages", text: "Like it? We agree the pages, the scope and the price, in writing." },
-    { title: "Build and launch", text: "We build it, move your content across and put it live." },
+    { title: "Free preview", text: "We redesign your homepage as a working preview, in your brand.", pay: "Free" },
+    { title: "Plan the pages", text: "Like it? We agree the pages, the scope and the price, in writing.", pay: "Free" },
+    { title: "Build and launch", text: "We build it, move your content across and put it live.", pay: "Agreed price" },
   ],
-  // Revision 49: what the stage shows at steps 2 and 3. UNCONFIRMED, illustrative only.
-  plan: {
-    title: "Your site plan",
-    pages: ["Home", "Bouquets", "Weddings", "Visit us", "Order online"],
-    scope: "Five pages, online ordering, set up for local search",
-    price: "Fixed price, agreed in writing",
-  },
-  live: { title: "Your site is live", text: "bloomandfern.com.au is up and taking orders." },
-  // Revision 48: Bloom & Fern is a fictional example florist. Photo: fal flux-pro ultra
-  // (steps-florist), illustration only.
+  // Revision 52: the example preview is Tidewell Physio, a fictional physio group with three
+  // Brisbane clinics (Notion: Australian local service businesses, often multi-location,
+  // where booking is the conversion). Names, hours, times and the rating are illustrative.
+  // Photo: fal flux-pro ultra (tidewell-knee, Revision 61), polo lettering healed locally.
   compare: {
     label: "Compare the site today with the preview",
     before: "Today",
     after: "Your preview",
-    url: "bloomandfern.com.au",
-    note: "An example. Your preview is designed for your business.",
-    business: "Bloom & Fern",
-    nav: ["Bouquets", "Weddings", "Visit"],
-    headline: "Flowers for this Friday.",
-    sub: "Hand-tied bouquets, delivered same day across Fremantle.",
-    cta: "Order a bouquet",
-    image: { base: "/images/steps-florist", width: 2752, height: 1536 },
+    hint: "Drag to compare. An example: yours is designed for your business.",
+    url: "tidewellphysio.com.au",
+    start: 20,
+    today: {
+      name: "Tidewell Physiotherapy",
+      phone: "Call us: 07 3123 4567",
+      hours: "Mon to Fri 8am - 6pm",
+      nav: ["Home", "About Us", "Services", "Our Team", "Contact Us"],
+      book: "Book Now",
+      title: "Welcome to Tidewell Physiotherapy",
+      servicesTitle: "Our Services",
+      services: ["Physiotherapy", "Remedial Massage", "Clinical Pilates"],
+      button: "Read More",
+      footer: "Copyright 2014 Tidewell Physiotherapy. All rights reserved.",
+    },
+    preview: {
+      name: "Tidewell",
+      nav: ["Treatments", "Clinics", "Team", "Prices"],
+      phone: "07 3123 4567",
+      book: "Book online",
+      headline: ["Find out why", "your knee hurts."],
+      sub: "Physio, pilates and massage at three Brisbane clinics. We find the cause first.",
+      cta: "Book an assessment",
+      link: "Find your clinic",
+      announce: "Now open in Bulimba, with Saturday appointments from 8 am.",
+      reviews: {
+        google: { score: "4.9", count: "380 reviews" },
+        trustindex: "Verified reviews",
+        claims: "HICAPS claims on the spot",
+      },
+      slot: { label: "Free today, New Farm", times: ["3:40", "4:20", "5:50"], unit: "pm" },
+      clinics: [
+        { name: "New Farm", hours: "Today, 7 am to 7 pm" },
+        { name: "Paddington", hours: "Today, 7 am to 6 pm" },
+        { name: "Bulimba", hours: "Saturdays, 8 am to 1 pm" },
+      ],
+      image: { base: "/images/steps-tidewell", width: 1792, height: 2368 },
+    },
   },
-  action: { label: "Get my free preview", href: "#contact" },
+  // Revision 51: the preview request. No form service yet, so it opens the visitor's email app,
+  // the same as Contact. UNCONFIRMED: replace with the real form service.
+  // Revision 54: a three-step request. No form service yet, so it opens the visitor's email
+  // app, the same as Contact. UNCONFIRMED: replace with the real form service.
+  form: {
+    title: "Get your free preview",
+    reply: "A person replies within one working day.",
+    progress: "Step",
+    steps: [
+      { label: "Website", title: "Which site should we redesign?", hint: "No website yet? Type your business name instead." },
+      { label: "Goal", title: "What should the new site win you?", hint: "Pick the one that matters most. We design around it." },
+      { label: "Details", title: "Where should we send your preview?", hint: "We'll email it to you. No calls unless you ask." },
+    ],
+    goals: [
+      { id: "calls", label: "More calls", note: "People ring you from the site" },
+      { id: "bookings", label: "More bookings", note: "Appointments booked online" },
+      { id: "sales", label: "More sales", note: "Orders through the site" },
+      { id: "quotes", label: "More quote requests", note: "Enquiries for bigger jobs" },
+    ],
+    next: "Continue",
+    back: "Back",
+    submit: "Get my free preview",
+    trust: "Free. No card, no contract. You decide after you've seen it.",
+    sent: "Your email app has your request ready. Press send there and we'll start on your preview.",
+  },
+
 };
+
 
 /**
  * Work (Graham: "Portfolio - freedom of display"). UNCONFIRMED: no client work is cleared
@@ -506,6 +560,7 @@ export type Project = {
 };
 
 export const work = {
+  eyebrow: "Selected work",
   title: "Four businesses. Four different looks.",
   intro: "Concept sites made to show the range. Each one starts from the business, not from a theme.",
   items: [
@@ -543,6 +598,7 @@ export const work = {
  */
 export type Review = { quote: string; name: string; business: string; place: string };
 export const reviews = {
+  eyebrow: "Client reviews",
   title: "What clients say",
   intro: "Straight from the people we've built for.",
   featured: {
@@ -559,6 +615,7 @@ export const reviews = {
 /** Clients (Graham: "Logos of company we previously worked with"). UNCONFIRMED: fictional names set in type, no logo files. */
 export type ClientMark = { name: string; style: "serif" | "wide" | "lower" | "italic" | "plain" | "heavy" };
 export const clients = {
+  eyebrow: "Who we work with",
   title: "Local businesses we've worked with",
   names: [
     { name: "Crumb & Co", style: "serif" },
@@ -586,6 +643,7 @@ export type Plan = {
   action: string;
 };
 export const pricing = {
+  eyebrow: "Pricing",
   title: "Pick a package, or ask for a quote.",
   intro: "Either way, you see the price before we start.",
   audiences: [
@@ -620,6 +678,7 @@ export const pricing = {
  * `email` is UNCONFIRMED (hello@webleta.com appears only in older notes).
  */
 export const contact = {
+  eyebrow: "Contact",
   title: "Tell us what a win looks like. We'll bring the plan.",
   promises: [
     "A site that's yours, never a theme with your logo on it",

@@ -184,7 +184,9 @@ export default function Benefits() {
           {benefits.eyebrow}
         </p>
         <h2 id="benefits-title" className={styles.title}>
-          {benefits.title}
+          {benefits.title.split(benefits.titleMark)[0]}
+          <span className={styles.titleMark}>{benefits.titleMark}</span>
+          {benefits.title.split(benefits.titleMark)[1]}
         </h2>
         <p className={styles.intro}>{benefits.intro}</p>
         <div className={styles.controls}>

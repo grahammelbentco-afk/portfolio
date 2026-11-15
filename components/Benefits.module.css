@@ -503,3 +503,12 @@
     opacity: 0;
   }
 }
+
+/* Seafoam marker band behind the payoff, low on the line like a highlighter (same as About). */
+.titleMark {
+  background: linear-gradient(to top, var(--seafoam) 0.34em, transparent 0.34em) no-repeat; /* taste-skill-ignore: a highlighter band, shared with About */
+  background-size: 100% 100%;
+  padding-inline: 0.04em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}

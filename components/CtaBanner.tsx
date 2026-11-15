@@ -1,4 +1,5 @@
 import { ctaBanner } from "@/content/homepage";
+import Eyebrow from "./Eyebrow";
 import styles from "./CtaBanner.module.css";
 
 const NAMES: Record<string, string> = {
@@ -38,7 +39,7 @@ export default function CtaBanner() {
             <polygon points="0,0 100,0 100,224.6" />
           </svg>
           <div className={styles.content}>
-            <p className={styles.eyebrow}>{ctaBanner.eyebrow}</p>
+            <Eyebrow className={styles.eyebrow}>{ctaBanner.eyebrow}</Eyebrow>
             <h2 id="cta-title" className={styles.title}>
               <span className={styles.line}>
                 {before}

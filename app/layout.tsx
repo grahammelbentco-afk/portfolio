@@ -24,6 +24,15 @@ const instrument = localFont({
   display: "swap",
 });
 
+// Instrument Serif: SIL Open Font License 1.1. Only for the example client site in Steps,
+// so it isn't preloaded.
+const instrumentSerif = localFont({
+  src: [{ path: "./fonts/InstrumentSerif-400-latin.woff2", weight: "400", style: "normal" }],
+  variable: "--font-demo-serif",
+  display: "swap",
+  preload: false,
+});
+
 export const metadata: Metadata = {
   title: "Webleta: websites made to stand out",
   description: site.description,
@@ -49,7 +58,7 @@ const motionScript = `try{if(matchMedia('(prefers-reduced-motion: no-preference)
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-AU" className={`${cabinet.variable} ${instrument.variable}`} suppressHydrationWarning>
+    <html lang="en-AU" className={`${cabinet.variable} ${instrument.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: motionScript }} />
         <link rel="preload" as="image" href="/images/card-design-1280.webp" type="image/webp" />

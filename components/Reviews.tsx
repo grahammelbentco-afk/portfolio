@@ -1,4 +1,5 @@
 import { reviews, type Review } from "@/content/homepage";
+import Eyebrow from "./Eyebrow";
 import Spark from "./Spark";
 import styles from "./Reviews.module.css";
 
@@ -53,6 +54,7 @@ export default function Reviews() {
 
         <div className={styles.side}>
           <div className={styles.head}>
+            <Eyebrow>{reviews.eyebrow}</Eyebrow>
             <h2 id="reviews-title" className="sec-title">
               {reviews.title}
             </h2>

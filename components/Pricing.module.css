@@ -19,7 +19,7 @@
     align-items: end;
   }
 
-  .head > :first-child {
+  .head > h2 {
     grid-column: 1 / span 7;
   }
 

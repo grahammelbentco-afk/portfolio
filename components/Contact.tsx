@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import Eyebrow from "./Eyebrow";
 import { contact } from "@/content/homepage";
 import Spark from "./Spark";
 import styles from "./Contact.module.css";
@@ -50,6 +51,7 @@ export default function Contact() {
       </svg>
       <div className={`container ${styles.layout}`}>
         <div className={styles.copy}>
+          <Eyebrow>{contact.eyebrow}</Eyebrow>
           <h2 id="contact-title" className={styles.title}>
             {contact.title}
           </h2>

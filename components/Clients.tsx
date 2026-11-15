@@ -1,4 +1,5 @@
 import { clients } from "@/content/homepage";
+import Eyebrow from "./Eyebrow";
 import styles from "./Clients.module.css";
 
 /**
@@ -10,6 +11,7 @@ export default function Clients() {
   return (
     <section id="clients" className={styles.section} data-ground="dark" data-clients aria-labelledby="clients-title">
       <div className={`container ${styles.inner}`}>
+        <Eyebrow>{clients.eyebrow}</Eyebrow>
         <h2 id="clients-title" className={styles.title}>
           {clients.title}
         </h2>
