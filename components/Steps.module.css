@@ -1,25 +1,32 @@
-/* Steps (Revision 54): the free preview offer as one Seafoam panel on Shallows.
-   Compare and request side by side, then the three steps across the full width.
-   Ember is used only on the primary button. */
+/* Steps (Revision 65): the free preview offer as one full-bleed Seafoam band, so the page
+   steps white > Seafoam > Deep Water with no pale in-between strip. The band's top-right
+   corner is cut at the Split Arc's 24 degrees (dx = tan 24 x dy), letting the white CTA
+   ground above run into it. Ember is used only on the primary button. */
 .section {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   padding-block: var(--section-y);
-  background: var(--shallows);
+  /* White behind the cut, matching the CTA ground above; the Seafoam fill is ::after. */
+  background: var(--white);
   color: var(--deep-water);
 }
 
-/* The panel. Top-right corner cut at the Split Arc's 24 degrees (dx = tan 24 x dy). */
+.section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background: var(--seafoam);
+  clip-path: polygon(0 0, calc(100% - 120px) 0, 100% 270px, 100% 100%, 0 100%);
+}
+
 .panel {
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding: clamp(28px, 1rem + 3.5vw, 72px);
-  border-radius: 32px;
-  background: var(--seafoam);
-  clip-path: polygon(0 0, calc(100% - 80px) 0, 100% 180px, 100% 100%, 0 100%);
 }
 
 /* Faint channel lines in the lower glow, V1.6 p.16. */
-.panel::before {
+.section::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1205,8 +1212,9 @@
 .step {
   position: relative;
   display: grid;
-  grid-template-columns: clamp(52px, 2rem + 2.6vw, 76px) minmax(0, 1fr);
-  column-gap: var(--s-2);
+  /* The number slot fits its digit (Revision 66): a fixed slot left the narrow 1 floating. */
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: clamp(14px, 0.5rem + 0.8vw, 22px);
   align-items: start;
 }
 
@@ -1257,7 +1265,8 @@
 }
 
 .stepText {
-  max-width: 32ch;
+  /* Fill the column so each step ends where its arrow starts (Revision 66). */
+  max-width: none;
   color: #2c4a5e;
   font-size: 1.0625rem;
   line-height: 1.5;
@@ -1280,9 +1289,8 @@
 }
 
 @media (max-width: 639px) {
-  .panel {
-    border-radius: 24px;
-    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 90px, 100% 100%, 0 100%);
+  .section::after {
+    clip-path: polygon(0 0, calc(100% - 48px) 0, 100% 108px, 100% 100%, 0 100%);
   }
 }
 

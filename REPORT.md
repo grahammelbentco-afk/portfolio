@@ -10,7 +10,31 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 64: Tidewell CTAs in the sans, with a split main button (latest)
+## Milestone: Steps section (Revisions 65–66), pushed to staging (latest)
+
+- **Approval:** Jasper asked for the push after the Revision 66 fix (2026-11-16). This is a provisional approval for staging only. Graham's feedback is still pending, and it doesn't authorise a production launch.
+- **Changes:** Revision 65 (CTA to Steps transition) and Revision 66 (balanced steps row), below.
+- **References:** none new. Both fixes came from Jasper's screenshots.
+- **Skills and tools actually used:** design-taste-frontend lint; Playwright (Python) screenshots and bounding-box measurement of the steps row. No fal spend, no Awwwards.
+- **QA:** taste lint 0 FAIL, 0 WARN. `npm run build` clean. `qa/qa.py` 149/149 (the usually flaky shader check passed this run).
+- **What worked:** measuring the rendered boxes instead of eyeballing. The columns were already geometrically equal; the problem was the content inside them.
+- **What didn't:** right-aligning the numbers in a fixed slot (first try in Revision 66) pushed the narrow "1" 47px off the left edge.
+- **Lesson:** when a row looks unbalanced, check whether the content fills its column before changing the grid. Display digits differ in width even with tabular figures, so size number slots to the digit.
+- **Commit SHA:** recorded below after the push.
+
+## Revision 66: steps row balanced
+
+- **Ask (Jasper):** the steps row (1 Free preview → 2 Plan the pages → 3 Build and launch) "looks off, it is not balanced on columns".
+- **Cause:** the three columns were equal (413px each), but each step's text stopped at 32ch, leaving about 55px empty before every arrow. The arrows sat against the next number, and the last step stopped short of the right edge. The fixed number slot also left the narrow "1" floating.
+- **Change:** the text fills its column, so each step ends where its arrow starts, and the arrows sit centred in the gaps. The number slot is now `auto` (it fits the digit), so every step starts on its column edge, and step 1 lines up with the heading above.
+
+## Revision 65: CTA to Steps transition
+
+- **Ask (Jasper):** the transition from the CTA banner into Steps felt "meh".
+- **Cause:** three surfaces stacked between the two sections: the white CTA ground, a pale Shallows band, then the inset Seafoam panel with its own padding. That made a dead gap and two near-identical tints.
+- **Change:** Steps is now one full-bleed Seafoam band (no inset panel), so the page steps white > Seafoam > Deep Water (Work). The Split Arc 24° cut moved from the panel to the band's top-right corner (120 × 270px desktop, 48 × 108px mobile), with white behind it so the CTA ground runs into the angle. The channel lines now sit on the band.
+
+## Revision 64: Tidewell CTAs in the sans, with a split main button
 
 - **Ask (Jasper):** no serif on CTAs or buttons, and make Tidewell's CTA more distinctive.
 - **Change:** all Tidewell buttons are back in the sans, bold, keeping the square corners. The main CTA is now a split button: a eucalyptus "Book an assessment" block joined to a butter cap with a calendar icon. "Find your clinic" gets a map-pin icon and an underline. "Book online" is a butter block. The knee wireframe is a little smaller and further right, so it clears the wider link.
