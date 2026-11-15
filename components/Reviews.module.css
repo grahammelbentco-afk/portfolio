@@ -115,13 +115,9 @@
   gap: clamp(32px, 3vw, 48px);
 }
 
+/* The quote area keeps the height of a long quote, so the controls don't jump. */
 .panel {
-  border-radius: var(--r-md);
-}
-
-.panel:focus-visible {
-  outline: 2px solid var(--deep-water);
-  outline-offset: 6px;
+  min-height: 15.5rem;
 }
 
 .current {
@@ -212,63 +208,85 @@
   font-weight: 600;
 }
 
-/* ---- Picker: flat tiles, the active one in Deep Water ---- */
-.picker {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+/* ---- Controls: arrows, count and the Split Arc gauge ---- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-@media (min-width: 1200px) {
-  .picker {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.tab {
+.arrow {
   display: grid;
-  gap: 2px;
-  min-height: 64px;
-  padding: 12px 14px;
+  place-items: center;
+  width: 52px;
+  height: 52px;
   border: 0;
-  border-radius: var(--r-md);
+  border-radius: 50%;
   background: var(--shallows);
   color: var(--deep-water);
-  font: inherit;
-  text-align: left;
   cursor: pointer;
   transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
-.tab:hover {
-  background: var(--mist);
-}
-
-.tab[aria-selected="true"] {
+.arrow:hover {
   background: var(--deep-water);
   color: var(--white);
 }
 
-.tab:focus-visible {
+.arrow:focus-visible {
   outline: 2px solid var(--deep-water);
   outline-offset: 3px;
 }
 
-.tabName {
-  font-size: var(--fs-small);
-  font-weight: 700;
+.arrow svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.tabRole {
-  overflow: hidden;
+.count {
+  margin-left: var(--s-2);
   color: var(--wet-slate);
-  font-size: var(--fs-caption);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
 }
 
-.tab[aria-selected="true"] .tabRole {
-  color: var(--cloud);
+.count b {
+  color: var(--deep-water);
+}
+
+.gauge {
+  width: 40px;
+  height: 22px;
+  margin-left: 4px;
+  overflow: visible;
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.gaugeTrack {
+  stroke: var(--mist);
+}
+
+.gaugeFill {
+  stroke: var(--aqua);
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.gaugeFill[data-running] {
+  animation: gauge-fill linear both;
+}
+
+@keyframes gauge-fill {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes quote-in {
@@ -283,7 +301,7 @@
     animation: none;
   }
 
-  .tab {
+  .arrow {
     transition: none;
   }
 }

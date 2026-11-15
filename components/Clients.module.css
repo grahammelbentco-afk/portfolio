@@ -1,138 +1,128 @@
-/* Clients (Revision 74): Deep Water ground between Reviews (white) and Pricing. A wall of
-   flat Abyss tiles, one tone step down from the ground, with no borders or glows. Every
-   logo is a mask in one quiet tone; hover steps the tile lighter and the logo to Seafoam.
-   Colour swaps only, on the shared fast duration. */
+/* Clients (Revision 78): light ground, white, continuing Reviews as one proof block (Pricing
+   below is Shallows, so a Shallows band would merge with it). The logo
+   carousel runs the full browser width, fading out at both edges; the heading stays in the
+   container. Logos are masks in Deep Water. */
 .section {
-  padding-block: var(--section-y);
-  background: var(--deep-water);
-  color: var(--white);
-}
-
-.inner {
-  display: grid;
-  gap: clamp(40px, 1.5rem + 3vw, 64px);
+  /* Reviews above ends with its own padding, so this band starts closer. */
+  padding-block: calc(var(--section-y) * 0.5) var(--section-y);
+  background: var(--white);
+  color: var(--deep-water);
+  overflow: hidden;
 }
 
 .head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-6);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 64px);
+}
+
+.head > div {
   display: grid;
   gap: var(--s-3);
 }
 
-/* ---- The wall ---- */
-.wall {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 900px) {
-  .wall {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.tile {
-  --h: clamp(22px, 1rem + 1.2vw, 36px);
-  display: grid;
-  place-items: center;
-  min-height: clamp(112px, 6rem + 4vw, 168px);
-  padding: 20px;
-  border-radius: var(--r-md);
-  background: var(--abyss);
-  transition: background-color var(--dur) var(--ease-out);
-}
-
-/* The logo is its own file used as a mask, painted in the tile's ink. Width follows the
-   file's shape (--ar) at a shared height, capped by the tile. */
-.logo {
-  display: block;
-  width: min(78%, calc(var(--h) * var(--ar) * var(--s, 1))); /* --s: optical size for thin marks */
-  aspect-ratio: var(--ar);
-  background: var(--cloud);
-  -webkit-mask: var(--logo) center / contain no-repeat;
-  mask: var(--logo) center / contain no-repeat;
-  opacity: 0.78;
-  transition: background-color var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
-}
-
-@media (hover: hover) {
-  .tile:hover {
-    background: #0b2a46; /* one step up from Abyss, below Deep Water's own tone */
-  }
-
-  .tile:hover .logo {
-    background: var(--seafoam);
-    opacity: 1;
-  }
-}
-
-/* ---- The open slot ---- */
 .next {
-  padding: 0;
-  background: var(--seafoam);
-}
-
-.nextLink {
-  display: grid;
-  align-content: space-between;
-  gap: var(--s-2);
-  width: 100%;
-  height: 100%;
-  padding: 20px 22px;
-  border-radius: inherit;
-  color: var(--deep-water);
+  color: var(--wet-slate);
+  font-size: var(--fs-body);
   text-decoration: none;
 }
 
-.nextLead {
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 1rem + 0.7vw, 1.625rem);
+.next span {
+  color: var(--deep-water);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  text-decoration: underline;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
-.nextLabel {
-  display: inline-flex;
+.next:hover span {
+  text-decoration-color: var(--deep-water);
+}
+
+/* ---- The carousel ---- */
+.marquee {
+  --gap: clamp(56px, 3rem + 3vw, 112px);
+  --h: clamp(26px, 1.2rem + 1vw, 40px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); /* taste-skill-ignore: edge fade on a looping row */
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); /* taste-skill-ignore: edge fade on a looping row */
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+.row {
+  display: flex;
+  flex: none;
   align-items: center;
-  gap: 8px;
-  font-size: var(--fs-small);
-  font-weight: 700;
+  gap: var(--gap);
+  margin: 0;
+  padding: 0 calc(var(--gap) / 2);
+  list-style: none;
 }
 
-.nextLabel svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform var(--dur) var(--ease-out);
+.item {
+  display: grid;
+  place-items: center;
+  height: calc(var(--h) * 1.8);
 }
 
-@media (hover: hover) {
-  .next:hover {
-    background: var(--shallows);
+.logo {
+  display: block;
+  width: calc(var(--h) * var(--ar) * var(--s, 1));
+  aspect-ratio: var(--ar);
+  background: var(--deep-water);
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+  opacity: 0.62;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.item:hover .logo {
+  opacity: 1;
+}
+
+/* One full row's width per loop: the second copy lands where the first began. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
-
-  .next:hover .nextLabel svg {
-    transform: translateX(4px);
-  }
-}
-
-.nextLink:focus-visible {
-  outline: 2px solid var(--seafoam);
-  outline-offset: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tile,
-  .logo,
-  .nextLabel svg {
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .track {
+    width: auto;
+    animation: none;
+  }
+
+  .row {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: var(--s-3);
+    width: 100%;
+  }
+
+  .row[aria-hidden] {
+    display: none;
+  }
+
+  .logo {
     transition: none;
   }
 }

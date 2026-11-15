@@ -15,7 +15,32 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 77: Footer with a full-width wordmark (latest)
+## Revisions 78–80: logo carousel, rotating reviews, footer without a CTA (latest)
+
+- **78, Clients (Jasper: "full width carousel of logos, light themed"):**
+  - The logo wall is now a full-browser-width loop on white: one row drawn twice, with the copy hidden from screen readers, moving 50% every 48s and fading at both edges.
+  - Logos are Deep Water masks at 62%, full on hover. Hover pauses the loop; reduced motion shows a still, centred, wrapping row.
+  - Background: white, not Shallows, because Pricing below is Shallows. It reads as one proof block with Reviews, so its top padding is halved.
+  - "Yours could be next? Get my free preview" sits beside the heading.
+  - The QA side-padding check skips the track, like the other carousels.
+- **79, Reviews (Jasper: use all of his testimonials, clip the long ones, make it rotate, with arrows):**
+  - 16 reviews: Graham's four, Jasper's four LinkedIn recommendations (Pontus Lenell and Sam Medriano added) and eight Upwork reviews (six added, transcribed from his screenshots). Each is clipped to one unbroken passage, never stitched.
+  - The picker tiles are replaced by a carousel: it moves on every 8s by itself and pauses while hovered, focused or off screen. With reduced motion it doesn't advance on its own.
+  - Previous and next arrows, ←/→ on the region, "4 / 16", and Work's Split Arc gauge filling as each review's time runs. Live-region politeness switches off while it rotates on its own.
+  - **To check:** confirm the Upwork quotes against the live profile, since they were transcribed from small screenshots.
+- **79, Contact to footer (Jasper: "contrast or color combination seems off"):**
+  - Contact's bright Halo corner met flat Abyss with a hard cut.
+  - Contact now fades to the Halo's base `#030f1c` at its foot, and the footer uses that base.
+- **80, Footer (Jasper: no second CTA after Contact, fix contrast, Awwwards for inspiration):**
+  - Awwwards: the element search returned nothing. The site search for design agencies found Studio PLATO, whose footer is a giant full-contrast wordmark fading at its base above a calm, labelled info row. That's the model used here.
+  - The CTA is removed.
+  - The wordmark is now first: Shallows at full contrast on `#030f1c`, its base fading into the ground, rising in on a scroll timeline.
+  - Then four labelled columns: Studio (tagline, Based in Australia), Explore (navigation), Services (the seven services, linking to #services) and Contact (email, WhatsApp). Then © and Back to top.
+  - Contrast on `#030f1c`: white 18.6:1, Cloud 12.4:1, Haze 7.0:1.
+- **For later (Jasper):** the Pricing cards are a bit too tall.
+- **QA:** taste lint 0 FAIL. tsc is clean. `qa/qa.py` 150/150. Reviews rotation was verified in the browser (it advanced after 8s, then on the arrow).
+
+## Revision 77: Footer with a full-width wordmark (pushed: `da6877f`, Cloudflare check succeeded, live QA 149/150 with the flaky shader check)
 
 - **Ask (Jasper):** an award-level footer ("be creative here"), then push.
 - **Design:**

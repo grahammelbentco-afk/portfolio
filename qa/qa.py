@@ -61,7 +61,7 @@ with sync_playwright() as p:
               const bad = [];
               document.querySelectorAll('h1,h2,h3,p,li,a.btn').forEach(el => {
                 // Cards in a horizontal carousel run past the edge by design.
-                if (el.closest('[data-benefits-track], [data-work-track]')) return;
+                if (el.closest('[data-benefits-track], [data-work-track], [data-clients-track]')) return;
                 const r = el.getBoundingClientRect();
                 if (r.width && (r.left < 15.5 || vw - r.right < 15.5)) bad.push(el.tagName + ':' + el.textContent.trim().slice(0,30));
               });

@@ -602,8 +602,9 @@ export const work = {
  * Reviews (Graham: "text based atm - but reserve space for portrait vid"). Real reviews,
  * quoted word for word (2026-11-16): four client testimonials from Graham's live site
  * (webleta.com), two LinkedIn recommendations for Jasper and two Upwork client reviews for
- * Jasper (from his screenshots; Upwork shows no reviewer names). Long quotes are shortened
- * to one unbroken passage, never stitched. Photo: the reused card-market image, in duotone.
+ * Jasper, then (Revision 79, his ask) all of them: four LinkedIn recommendations and eight
+ * Upwork reviews, transcribed from his screenshots (Upwork shows no reviewer names; the role
+ * is the job title). Long quotes are clipped to one unbroken passage, never stitched. Photo: the reused card-market image, in duotone.
  */
 export type Review = {
   id: string;
@@ -626,19 +627,35 @@ export const reviews = {
     { id: "greg", org: "Ground Control Systems", initials: "GB", name: "Greg Bauer", role: "CEO, Ground Control Systems", source: "Client of Graham",
       quote: "Graham was an exceptional partner on our WordPress project. He quickly identified and resolved performance issues, and his communication skills were outstanding." },
     { id: "giuliano", org: "Webtec", initials: "GB", name: "Giuliano Barducci", role: "Head of Production, Design and QA", source: "LinkedIn, on Jasper",
-      quote: "One thing that particularly impressed me was his ability to turn around projects where clients weren't happy with the existing design direction. I've seen his redesigns transform those situations, restoring client confidence and giving projects a much stronger direction." },
+      quote: "I've seen his redesigns transform those situations, restoring client confidence and giving projects a much stronger direction." },
+    { id: "upwork-renovation", org: "Upwork", name: "Upwork client", role: "WordPress landing page", source: "Upwork, on Jasper",
+      quote: "Great experience with Jasper (Ted)! Quick turnaround good communication and willing to go the extra mile to complete the project successfully." },
     { id: "olaf", org: "Rack n Road", initials: "OG", name: "Olaf Guerrero", role: "Marketing Director, Rack n Road", source: "Client of Graham",
-      quote: "With strong SEO knowledge and site optimization skills, he's reliable and ideal for long-term or short contracts. Professional, punctual, and quick to learn, Graham is recommended for your projects." },
-    { id: "upwork-agency", org: "Upwork", name: "Agency client", role: "Elementor build, Upwork", source: "Upwork, on Jasper",
+      quote: "With strong SEO knowledge and site optimization skills, he's reliable and ideal for long-term or short contracts." },
+    { id: "pontus", org: "Webtec", initials: "PL", name: "Pontus Lenell", role: "Building, investing and growing companies", source: "LinkedIn, on Jasper",
+      quote: "Throughout his time with us, Jasper demonstrated strong web design skills, attention to detail, and a commitment to delivering high-quality work." },
+    { id: "upwork-agency", org: "Upwork", name: "Agency client", role: "Elementor build", source: "Upwork, on Jasper",
       quote: "Jasper combines two important attributes, talent and adaptability. He's a creative designer that explores different ways to generate beautiful design." },
     { id: "daniel", org: "Endtimes Official", initials: "DC", name: "Daniel Clarke", role: "Owner, Endtimes Official", source: "Client of Graham",
-      quote: "Graham's expertise was appreciated, especially in how you guys followed exactly how I envisioned the final product, while offering and implementing some very helpful suggestions. Recommending him!" },
+      quote: "Graham's expertise was appreciated, especially in how you guys followed exactly how I envisioned the final product, while offering and implementing some very helpful suggestions." },
     { id: "ellaine", org: "LinkedIn", initials: "EG", name: "Ellaine Gabotero", role: "Web Designer, UI/UX Specialist", source: "LinkedIn, on Jasper",
-      quote: "His designs are consistently excellent, but he brings so much more to the table than just visuals. He has a great way of working with websites, ensuring everything functions exactly as requested while going above and beyond to suggest layouts that actually improve the user experience." },
+      quote: "His designs are consistently excellent, but he brings so much more to the table than just visuals." },
+    { id: "upwork-website", org: "Upwork", name: "Upwork client", role: "Professional WordPress website", source: "Upwork, on Jasper",
+      quote: "Jasper is responsive, reliable, and a hard worker. He jumped right in and took great care of the task. Will definitely use Jasper in the future!" },
     { id: "eureka", org: "Adrenaline Solutions", initials: "EQ", name: "Eureka Quinto", role: "COO, Adrenaline Solutions", source: "Client of Graham",
-      quote: "Graham is a reliable WordPress Developer. We are pleased with his performance. We hired him as a Senior Developer, and we are satisfied with his work. We wholeheartedly recommend him." },
-    { id: "upwork-theme", org: "Upwork", name: "Theme client", role: "WordPress theme build, Upwork", source: "Upwork, on Jasper",
+      quote: "Graham is a reliable WordPress Developer. We are pleased with his performance. We wholeheartedly recommend him." },
+    { id: "sam", org: "LinkedIn", initials: "SM", name: "Sam Medriano", role: "Director of Project Operations", source: "LinkedIn, on Jasper",
+      quote: "He has a keen eye for innovative and modern designs, and his proficiency in using Figma sets him apart in the field." },
+    { id: "upwork-help", org: "Upwork", name: "Upwork client", role: "Web design in WordPress", source: "Upwork, on Jasper",
+      quote: "Expectations of the deliverables were even exceeded and the quality of the project was superb." },
+    { id: "upwork-theme", org: "Upwork", name: "Theme client", role: "WordPress theme build", source: "Upwork, on Jasper",
       quote: "Jasper did great! He is very knowledgeable in web development and meeting all our PSD to Wordpress requirements." },
+    { id: "upwork-divi", org: "Upwork", name: "Upwork client", role: "Divi shop pages", source: "Upwork, on Jasper",
+      quote: "He did a really great job in completing the work, helped me through the process step by step. I will hire him again if any more work is required." },
+    { id: "upwork-images", org: "Upwork", name: "Upwork client", role: "Website images", source: "Upwork, on Jasper",
+      quote: "Great worker. Fast correspondence; fast action. Very happy, thank u Jasper!" },
+    { id: "upwork-translation", org: "Upwork", name: "Upwork client", role: "WordPress translation", source: "Upwork, on Jasper",
+      quote: "Very happy with the results, good communication, always available I recommend, thanks" },
   ] satisfies Review[],
 };
 
@@ -832,10 +849,9 @@ export const sections: PlaceholderSection[] = [
   },
 ];
 
+/** Footer (Revision 80): no call to action (Contact just asked); after Studio PLATO's footer. */
 export const footer = {
   tagline: site.description,
-  lead: "Have a site in mind?",
-  columns: [{ title: "Explore", links: navigation }],
-  contact: { label: "Book a call", href: "#contact" },
+  services: ["Website design and development", "Web applications", "SEO", "Email marketing", "Social media marketing", "Content marketing", "Mobile apps"],
   top: "Back to top",
 };

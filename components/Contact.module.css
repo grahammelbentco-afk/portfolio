@@ -10,6 +10,21 @@
   color: var(--white);
 }
 
+/* The foot fades into the Halo's own base, which the footer continues, so there is no cut
+   between the bright corner of the gradient and the footer. Same z as the gradient but
+   later in order, so it paints over it and under the content. */
+.section::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  height: min(42%, 360px);
+  background: linear-gradient(to bottom, rgb(3 15 28 / 0), #030f1c 92%); /* taste-skill-ignore: neutral scrim into the footer */
+  pointer-events: none;
+}
+
 .layout {
   display: grid;
   gap: clamp(40px, 4vw, 64px);
