@@ -1,181 +1,296 @@
-/* Reviews: white ground. A 9:16 portrait card (the future video slot) beside the heading
-   and three text reviews. */
+/* Reviews (Revision 73): white ground after the dark Work flight. Flat surfaces separated by
+   tone steps (Jasper: no outlines or glows), Seafoam as the one accent, the Split Arc's 24°
+   cut on the photo. */
 .section {
   padding-block: var(--section-y);
   background: var(--white);
   color: var(--deep-water);
 }
 
+/* ---- Head ---- */
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 72px);
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .head > h2 {
+    grid-column: 1 / span 7;
+  }
+
+  .head > :last-child {
+    grid-column: 9 / -1;
+  }
+}
+
+/* ---- Layout: photo | quote and picker ---- */
 .layout {
   display: grid;
-  gap: clamp(40px, 4vw, 64px);
+  gap: clamp(32px, 4vw, 64px);
 }
 
 @media (min-width: 960px) {
   .layout {
-    grid-template-columns: minmax(300px, 3.6fr) 8fr;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     align-items: stretch;
-    column-gap: clamp(40px, 5vw, 96px);
   }
 }
 
-/* ---- Portrait card ---- */
-.portrait {
+/* The photo in brand duotone: luminosity over Deep Water, Seafoam lifting the lights. The
+   top-right corner is cut at the Split Arc's 24° (dx = tan 24 x dy). */
+.photo {
   position: relative;
   isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: var(--s-4);
-  width: 100%;
-  max-width: 460px;
-  aspect-ratio: 9 / 16;
-  max-height: 680px;
+  min-height: 420px;
   margin: 0;
-  padding: clamp(24px, 2.4vw, 40px);
-  border-radius: var(--r-lg);
   overflow: hidden;
-  background:
-    radial-gradient(90% 60% at 100% 0%, rgb(60 207 195 / 0.32), transparent 70%),
-    radial-gradient(80% 50% at 0% 100%, rgb(45 106 160 / 0.4), transparent 70%),
-    var(--deep-water);
-  color: var(--white);
+  border-radius: var(--r-lg);
+  background: var(--deep-water);
+  clip-path: polygon(0 0, calc(100% - 72px) 0, 100% 162px, 100% 100%, 0 100%);
 }
 
-@media (max-width: 959px) {
-  .portrait {
-    aspect-ratio: auto;
-    min-height: 420px;
-    max-width: none;
-  }
-}
-
-.ripples {
+.photo img {
   position: absolute;
-  top: 0;
-  right: 0;
-  z-index: -1;
-  width: 90%;
-  height: auto;
-  fill: none;
-  stroke: rgb(191 240 227 / 0.14);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 50%;
+  mix-blend-mode: luminosity;
+  opacity: 0.62;
 }
 
-.portraitSpark {
+.photo::after {
+  content: "";
   position: absolute;
-  top: clamp(24px, 2.4vw, 40px);
-  left: clamp(24px, 2.4vw, 40px);
-  width: 18px;
-  height: 29px;
-  fill: var(--aqua);
+  inset: 0;
+  background: var(--seafoam);
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
 }
 
-.featured {
-  margin: 0;
+/* Real proof from Jasper's Upwork profile, on a flat Seafoam chip. */
+.proof {
+  position: absolute;
+  z-index: 1;
+  bottom: clamp(16px, 2vw, 28px);
+  left: clamp(16px, 2vw, 28px);
+  display: grid;
+  gap: 2px;
+  max-width: 15rem;
+  padding: 16px 20px;
+  border-radius: var(--r-md);
+  background: var(--seafoam);
+  color: var(--deep-water);
 }
 
-.featured p {
+.proof strong {
   font-family: var(--font-display);
-  font-size: clamp(1.625rem, 1.1rem + 1.4vw, 2.375rem);
-  font-weight: 700;
+  font-size: clamp(2rem, 1.4rem + 1.6vw, 2.75rem);
+  font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.12;
+  line-height: 1;
 }
 
-.featured p::before {
-  content: "\201C";
+.proof span {
+  font-size: var(--fs-small);
+  line-height: 1.4;
 }
 
-.featured p::after {
-  content: "\201D";
-}
-
-/* ---- Side: heading and list ---- */
-.side {
-  display: grid;
-  align-content: center;
-  gap: clamp(40px, 4vw, 64px);
-}
-
-.head {
-  display: grid;
-  gap: var(--s-3);
-}
-
-.list {
-  display: grid;
-  gap: var(--s-4);
-}
-
-@media (min-width: 760px) {
-  .list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.review {
+/* ---- The quote ---- */
+.stage {
   display: grid;
   align-content: space-between;
-  gap: var(--s-3);
-  height: 100%;
+  gap: clamp(32px, 3vw, 48px);
+}
+
+.panel {
+  border-radius: var(--r-md);
+}
+
+.panel:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 6px;
+}
+
+.current {
+  display: grid;
+  gap: var(--s-4);
   margin: 0;
-  padding-top: var(--s-3);
-  border-top: 2px solid var(--deep-water);
+  animation: quote-in 360ms var(--ease-out) both;
 }
 
-.review blockquote {
+.quote {
   margin: 0;
 }
 
-.review p {
-  font-size: var(--fs-lead);
-  line-height: 1.55;
+.quote p {
+  max-width: 34ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.05rem + 1.3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+  text-wrap: pretty;
 }
 
-.review p::before {
+/* An opening mark in Aqua, hung in the margin so the text keeps its left edge. */
+.quote p::before {
   content: "\201C";
+  padding-right: 0.05em;
+  color: var(--aqua);
 }
 
-.review p::after {
+/* Hung in the margin on wide screens only; on phones it would touch the screen edge. */
+@media (min-width: 960px) {
+  .quote p::before {
+    margin-left: -0.45em;
+  }
+}
+
+.quote p::after {
   content: "\201D";
 }
 
-/* ---- Byline ---- */
 .byline {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .avatar {
   display: grid;
   flex: none;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: var(--seafoam);
-  color: var(--deep-water);
-  font-size: var(--fs-caption);
+  background: var(--deep-water);
+  color: var(--seafoam);
+  font-family: var(--font-display);
+  font-size: 1rem;
   font-weight: 700;
+}
+
+.avatarSpark {
+  width: 14px;
+  height: 22px;
+  fill: var(--aqua);
 }
 
 .who {
   display: block;
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+
+.role {
+  display: block;
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+}
+
+.source {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 10px;
+  border-radius: var(--r-pill);
+  background: var(--shallows);
+  color: var(--deep-water);
+  font-size: var(--fs-caption);
   font-weight: 600;
 }
 
-.where {
-  display: block;
-  color: var(--wet-slate);
-  font-size: var(--fs-caption);
+/* ---- Picker: flat tiles, the active one in Deep Water ---- */
+.picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
-.portraitByline .where {
+@media (min-width: 1200px) {
+  .picker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tab {
+  display: grid;
+  gap: 2px;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--shallows);
+  color: var(--deep-water);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.tab:hover {
+  background: var(--mist);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 3px;
+}
+
+.tabName {
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.tabRole {
+  overflow: hidden;
+  color: var(--wet-slate);
+  font-size: var(--fs-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab[aria-selected="true"] .tabRole {
   color: var(--cloud);
 }
 
-.portraitByline .avatar {
-  background: rgb(238 247 246 / 0.16);
-  color: var(--white);
+@keyframes quote-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .current {
+    animation: none;
+  }
+
+  .tab {
+    transition: none;
+  }
+}
+
+@media (max-width: 959px) {
+  .photo {
+    min-height: 320px;
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 90px, 100% 100%, 0 100%);
+  }
 }

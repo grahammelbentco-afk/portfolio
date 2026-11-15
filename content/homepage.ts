@@ -580,23 +580,46 @@ export const work = {
 };
 
 /**
- * Reviews (Graham: "text based atm - but reserve space for portrait vid").
- * UNCONFIRMED: fictional placeholder reviews. Replace them with real reviews, each with the
- * reviewer's permission, before launch. The portrait card takes a 9:16 video later.
+ * Reviews (Graham: "text based atm - but reserve space for portrait vid"). Real reviews,
+ * quoted word for word (2026-11-16): four client testimonials from Graham's live site
+ * (webleta.com), two LinkedIn recommendations for Jasper and two Upwork client reviews for
+ * Jasper (from his screenshots; Upwork shows no reviewer names). Long quotes are shortened
+ * to one unbroken passage, never stitched. Photo: the reused card-market image, in duotone.
  */
-export type Review = { quote: string; name: string; business: string; place: string };
+export type Review = {
+  id: string;
+  quote: string;
+  name: string;
+  role: string;
+  /** Where the review lives, and who it's about. */
+  source: string;
+  /** Short label for the picker tile. Webtec is named in Giuliano's recommendation. */
+  org: string;
+  initials?: string;
+};
 export const reviews = {
   eyebrow: "Client reviews",
-  title: "What clients say",
-  intro: "Straight from the people we've built for.",
-  featured: {
-    quote: "We'd had three websites before this one. It's the first that looks like our shop, and the first that brings people through the door.",
-    name: "Dana Whitlock", business: "Crumb & Co Bakery", place: "Fremantle, WA",
-  } satisfies Review,
+  title: { solid: "In their", outline: "own words." },
+  intro: "Webleta is Graham and Jasper. This is what clients and teammates have said about working with us.",
+  image: { base: "/images/card-market", alt: "" },
+  proof: { value: "100%", label: "Job Success on Upwork, across 15 jobs" },
   items: [
-    { quote: "They asked what a good week looks like for us, then built the site around it. Bookings came through the first weekend.", name: "Priya Raman", business: "Studio Nine Hair", place: "Newtown, NSW" },
-    { quote: "Clear price, clear dates, and a real person answering my emails. That's rarer than it should be.", name: "Tom Haddad", business: "Kingsway Auto", place: "Geelong, VIC" },
-    { quote: "We hand them our overflow builds. They come back on time, in our style and under our name.", name: "Lena Ford", business: "Ford & Field Agency", place: "Brisbane, QLD" },
+    { id: "greg", org: "Ground Control Systems", initials: "GB", name: "Greg Bauer", role: "CEO, Ground Control Systems", source: "Client of Graham",
+      quote: "Graham was an exceptional partner on our WordPress project. He quickly identified and resolved performance issues, and his communication skills were outstanding." },
+    { id: "giuliano", org: "Webtec", initials: "GB", name: "Giuliano Barducci", role: "Head of Production, Design and QA", source: "LinkedIn, on Jasper",
+      quote: "One thing that particularly impressed me was his ability to turn around projects where clients weren't happy with the existing design direction. I've seen his redesigns transform those situations, restoring client confidence and giving projects a much stronger direction." },
+    { id: "olaf", org: "Rack n Road", initials: "OG", name: "Olaf Guerrero", role: "Marketing Director, Rack n Road", source: "Client of Graham",
+      quote: "With strong SEO knowledge and site optimization skills, he's reliable and ideal for long-term or short contracts. Professional, punctual, and quick to learn, Graham is recommended for your projects." },
+    { id: "upwork-agency", org: "Upwork", name: "Agency client", role: "Elementor build, Upwork", source: "Upwork, on Jasper",
+      quote: "Jasper combines two important attributes, talent and adaptability. He's a creative designer that explores different ways to generate beautiful design." },
+    { id: "daniel", org: "Endtimes Official", initials: "DC", name: "Daniel Clarke", role: "Owner, Endtimes Official", source: "Client of Graham",
+      quote: "Graham's expertise was appreciated, especially in how you guys followed exactly how I envisioned the final product, while offering and implementing some very helpful suggestions. Recommending him!" },
+    { id: "ellaine", org: "LinkedIn", initials: "EG", name: "Ellaine Gabotero", role: "Web Designer, UI/UX Specialist", source: "LinkedIn, on Jasper",
+      quote: "His designs are consistently excellent, but he brings so much more to the table than just visuals. He has a great way of working with websites, ensuring everything functions exactly as requested while going above and beyond to suggest layouts that actually improve the user experience." },
+    { id: "eureka", org: "Adrenaline Solutions", initials: "EQ", name: "Eureka Quinto", role: "COO, Adrenaline Solutions", source: "Client of Graham",
+      quote: "Graham is a reliable WordPress Developer. We are pleased with his performance. We hired him as a Senior Developer, and we are satisfied with his work. We wholeheartedly recommend him." },
+    { id: "upwork-theme", org: "Upwork", name: "Theme client", role: "WordPress theme build, Upwork", source: "Upwork, on Jasper",
+      quote: "Jasper did great! He is very knowledgeable in web development and meeting all our PSD to Wordpress requirements." },
   ] satisfies Review[],
 };
 

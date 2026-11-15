@@ -10,7 +10,36 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Revision 72: solid-then-outline headings, warp image, subtle details, CTA in the frame (latest, local, awaiting approval)
+## Milestone: Work (Revisions 67–72), pushed to staging
+
+- **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
+- **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
+
+## Revision 73: Reviews rebuilt with real reviews (latest)
+
+- **Ask (Jasper):** an award-level Reviews section using the Awwwards MCP, with an image (reused, matched to the brand). Use real testimonials from webleta.com and his own from LinkedIn and Upwork (screenshots), picking the best ones.
+- **Reviews (quoted word for word, shortened only to one unbroken passage):**
+  - Graham's site: Greg Bauer (CEO, Ground Control Systems), Olaf Guerrero (Marketing Director, Rack n Road), Daniel Clarke (Owner, Endtimes Official) and Eureka Quinto (COO, Adrenaline Solutions).
+  - Jasper's LinkedIn: Giuliano Barducci (Head of Production, Design and QA, Webtec) and Ellaine Gabotero (Web Designer, UI/UX Specialist).
+  - Jasper's Upwork: two client reviews, shown without names because Upwork shows none.
+  - The fictional placeholder reviews are removed.
+  - Pontus Lenell and Sam Medriano were left out: strong, but they repeat what Giuliano says.
+- **Design:**
+  - Heading "In their" solid, then "own words." outlined (Jasper's rule).
+  - A one-line intro names Graham and Jasper, so the quotes make sense.
+  - The reused `card-market` photo is shown as a brand duotone (luminosity over Deep Water, Seafoam soft light), with the Split Arc 24° cut.
+  - A flat Seafoam proof chip carries the real figure: "100% Job Success on Upwork, across 15 jobs".
+  - The large quote is set in the display face, with an Aqua opening mark hung in the margin on desktop.
+  - Each byline has a source tag ("Client of Graham", "LinkedIn, on Jasper", "Upwork, on Jasper").
+  - Eight flat picker tiles form a tablist (arrow keys, Home, End); the active tile is Deep Water.
+  - The quote swaps with a 360ms rise, off under reduced motion.
+- **Awwwards:** element search ("testimonials quotes") and SOTD site search ("testimonials") returned nothing, again.
+- **QA:** the banned-words check had "Graham" (from earlier internal notes). He's now named on purpose, so the check now looks for note phrases instead ("Graham to", "Graham's approval", "awaiting Graham").
+- **Skills and tools actually used:** Awwwards MCP (2 searches, empty), design-taste-frontend lint, Playwright. No fal.
+- **Checks:** taste lint 0 FAIL. tsc is clean. `qa/qa.py` 150/150.
+- **Open:** confirm that each reviewer is happy to be quoted on the new site (Graham's four are already public on webleta.com).
+
+## Revision 72: solid-then-outline headings, warp image, subtle details, CTA in the frame
 
 - **Headings (Jasper's rule):** solid text first, outline text second. Work is now "Built by us, / for businesses" solid, then "like yours." outlined. Steps is now "See it before" solid, then "you pay for it." outlined.
 - **Background image:** Jasper rejected the cluster image. The new fal image (`work-warp-d`, seed 3859539325) is a subtle hyperspace warp made only of hairline streaks and pinpoints, with no large objects, so it stays sharp at 1920x1080 (231 KB; 1280x720 for phones, 106 KB). It's desaturated, at 32% opacity, screen-blended and masked radially from the boards' vanishing point.

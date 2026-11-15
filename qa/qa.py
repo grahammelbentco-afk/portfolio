@@ -229,7 +229,7 @@ with sync_playwright() as p:
     check("headline: gradient on 'stand out' only", hl[0] == "stand out" and "gradient" in hl[1] and hl[2] == "text", str(hl))
     check("headline: no underline arc", page.locator("h1 svg").count() == 0)
     text = page.evaluate("document.body.innerText")
-    banned = ["Open", "Sample", "Not connected", "Placeholder", "placeholder", "to be confirmed", "Generated image", "for illustration", "Not the live site", "Needed before", "Graham"]
+    banned = ["Open", "Sample", "Not connected", "Placeholder", "placeholder", "to be confirmed", "Generated image", "for illustration", "Not the live site", "Needed before", "Graham to", "Graham's approval", "awaiting Graham"]
     found = [w for w in banned if w in text.split() or w in text]
     check("ui: no helper, dev-note or approval text visible", not found, ", ".join(found))
     figures = page.evaluate("[...document.querySelectorAll('[data-stat-value]')].map(e => e.textContent)")
