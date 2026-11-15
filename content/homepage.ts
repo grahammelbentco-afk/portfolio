@@ -455,7 +455,7 @@ export const ctaBanner = {
  */
 export const steps = {
   eyebrow: "How it works",
-  title: { outline: "See it", rest: "before you pay for it." },
+  title: { solid: "See it before", outline: "you pay for it." },
   intro: "Send us your website. We design a real preview of your new homepage, before you pay anything. If you like it, we build the rest. If not, you've lost nothing.",
   // Revision 51: each step says what it costs. UNCONFIRMED: Graham to confirm the free preview offer.
   items: [
@@ -540,54 +540,42 @@ export const steps = {
 
 
 /**
- * Work (Graham: "Portfolio - freedom of display"). UNCONFIRMED: no client work is cleared
- * to publish yet. These are the four fictional concept projects from Preview V2, with its
- * fal images (illustrations). The page labels them as concepts.
+ * Work (Graham: "Portfolio - freedom of display"). Real WordPress builds from Graham's live
+ * portfolio at webleta.com, where they're already published. Each image is Graham's whole
+ * presentation board, resized only (see manifest-2026-11-16-work.csv). Sectors are read from
+ * the pages themselves.
  */
 export type Project = {
   id: string;
   name: string;
   sector: string;
-  url: string;
-  headline: string;
-  cta: string;
-  nav: string[];
-  /** Concept palette: ground, text and accent of the mock site, plus the swatches shown. */
-  palette: { ground: string; ink: string; accent: string; swatches: string[] };
-  type: "serif" | "heavy" | "light" | "mono";
-  image: { base: string; alt: string };
-  layout: "wide" | "tall";
+  /** Graham's whole presentation board, exported at 640 and 1000 wide. Width and height are the 1000 file's. */
+  image: { base: string; w: number; h: number; alt: string };
 };
 
 export const work = {
-  eyebrow: "Selected work",
-  title: "Four businesses. Four different looks.",
-  intro: "Concept sites made to show the range. Each one starts from the business, not from a theme.",
+  eyebrow: "Our work",
+  title: { solid: ["Built by us,", "for businesses"], outline: "like yours." },
+  cta: { lead: "Yours could be the next one.", label: "Get my free preview", href: "#steps" },
   items: [
-    {
-      id: "winery", name: "Red Gum Cellar Door", sector: "Winery, warm and earthy", url: "redgumcellar.com.au",
-      headline: "Taste it where it's made.", cta: "Book a tasting", nav: ["Wines", "Visit", "Club"], type: "serif", layout: "wide",
-      palette: { ground: "#2d2a26", ink: "#efe4d2", accent: "#c9a27a", swatches: ["#7a3b22", "#c9a27a", "#efe4d2", "#2d2a26"] },
-      image: { base: "/images/work-winery", alt: "A barrel room opening onto a dry paddock, with wine glasses on a timber table." },
-    },
-    {
-      id: "juice", name: "Peel & Press", sector: "Juice bar, loud and bright", url: "peelandpress.com.au",
-      headline: "Squeezed this morning.", cta: "Order ahead", nav: ["Menu", "Find us"], type: "heavy", layout: "tall",
-      palette: { ground: "#ff5b2e", ink: "#fff6e0", accent: "#ffc21a", swatches: ["#ff5b2e", "#ffc21a", "#e0115f", "#1d4ed8"] },
-      image: { base: "/images/work-juice", alt: "A tiled counter covered in oranges, grapefruit and glasses of fresh juice." },
-    },
-    {
-      id: "swim", name: "Saltwater Baths Club", sector: "Swim club, cool and fresh", url: "saltwaterbaths.org.au",
-      headline: "Laps at sunrise, all year round.", cta: "Join the club", nav: ["Swim", "Members"], type: "light", layout: "tall",
-      palette: { ground: "#1f4e6b", ink: "#e6eef0", accent: "#7fb7c9", swatches: ["#1f4e6b", "#7fb7c9", "#e6eef0", "#3a3f44"] },
-      image: { base: "/images/work-swim", alt: "An ocean pool cut into the rocks, with one swimmer doing laps." },
-    },
-    {
-      id: "joinery", name: "Harlow Joinery", sector: "Joinery workshop, calm and neutral", url: "harlowjoinery.com.au",
-      headline: "Made to measure. Made to last.", cta: "Request a quote", nav: ["Kitchens", "Furniture", "About"], type: "mono", layout: "wide",
-      palette: { ground: "#f4f1ec", ink: "#333333", accent: "#8b7355", swatches: ["#8b7355", "#d8cfc2", "#f4f1ec", "#333333"] },
-      image: { base: "/images/work-joinery", alt: "A joiner in his workshop checking his phone beside a wall of hand tools." },
-    },
+    { id: "pyper", name: "Pay the Pyper", sector: "Team payments app",
+      image: { base: "/images/work/pyper", w: 1000, h: 1602, alt: "Pay the Pyper: two dark homepage layouts with green headlines and phone screens, on a green presentation board." } },
+    { id: "wazzas", name: "Wazzas Pool", sector: "Pool builder, Gold Coast",
+      image: { base: "/images/work/wazzas", w: 1000, h: 2090, alt: "Wazzas Pool: two long homepage layouts with photos of finished concrete pools, on a blue presentation board." } },
+    { id: "mec", name: "Melbourne Entertainment Company", sector: "Wedding and event entertainment",
+      image: { base: "/images/work/mec", w: 1000, h: 1280, alt: "Melbourne Entertainment Company: black and white performer photos across two page layouts, on a blush board." } },
+    { id: "belly", name: "Belly", sector: "Restaurant and online ordering",
+      image: { base: "/images/work/belly", w: 1000, h: 993, alt: "Belly: burgers, fries and a product grid with red order buttons, on a red and yellow board." } },
+    { id: "legal", name: "411 Legal Services", sector: "Law firm",
+      image: { base: "/images/work/legal", w: 1000, h: 1793, alt: "411 Legal Services: navy and white pages with lawyer portraits and practice areas, on a dark navy board." } },
+    { id: "bonsai", name: "Bonsai", sector: "Plant store",
+      image: { base: "/images/work/bonsai", w: 1000, h: 809, alt: "Bonsai: two clean white store pages of potted bonsai trees, on a soft green board." } },
+    { id: "groundcontrol", name: "Ground Control Systems", sector: "Bike parking, online store",
+      image: { base: "/images/work/groundcontrol", w: 1000, h: 993, alt: "Ground Control Systems: night photos of bike racks with orange highlights, on an orange board." } },
+    { id: "fort", name: "The Fort", sector: "Air conditioning services",
+      image: { base: "/images/work/fort", w: 1000, h: 1069, alt: "The Fort: air conditioning repair, cleaning and installation pages in light blue, on a pale blue board." } },
+    { id: "racknroad", name: "Rack n Road", sector: "Vehicle racks, online store",
+      image: { base: "/images/work/racknroad", w: 1000, h: 809, alt: "Rack n Road: a car with bikes on the roof under the headline We fit for adventure, on a red board." } },
   ] satisfies Project[],
 };
 

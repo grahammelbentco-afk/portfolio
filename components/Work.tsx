@@ -1,94 +1,338 @@
-import { work, type Project } from "@/content/homepage";
+"use client";
+
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { work } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import styles from "./Work.module.css";
 
-/**
- * Work (Graham: "Portfolio - freedom of display"). Four concept sites, each drawn as a live
- * homepage in its own palette and typeface inside a browser frame, so the section proves the
- * brand's promise ("look nothing alike") instead of describing it. Layout alternates
- * wide and tall frames:
- *   [ Red Gum (wide, 7) ][ Peel & Press (tall, 5) ]
- *   [ Saltwater (tall, 5) ][ Harlow (wide, 7)     ]
- * Concept projects, labelled as such (see content/homepage.ts).
- */
-function MockSite({ p }: { p: Project }) {
-  return (
-    <div
-      className={styles.site}
-      data-type={p.type}
-      style={{ "--g": p.palette.ground, "--i": p.palette.ink, "--a": p.palette.accent } as React.CSSProperties}
-      aria-hidden="true"
-    >
-      <img
-        className={styles.photo}
-        src={`${p.image.base}-720.webp`}
-        srcSet={`${p.image.base}-720.webp 720w, ${p.image.base}-1280.webp 1280w`}
-        sizes="(min-width: 960px) 55vw, 100vw"
-        width={720}
-        height={480}
-        alt=""
-        loading="lazy"
-        decoding="async"
-      />
-      <div className={styles.siteNav}>
-        <span className={styles.siteLogo}>{p.name}</span>
-        <span className={styles.siteLinks}>
-          {p.nav.map((n) => (
-            <span key={n}>{n}</span>
-          ))}
-        </span>
-      </div>
-      <div className={styles.siteHero}>
-        <span className={styles.siteTitle}>{p.headline}</span>
-        <span className={styles.siteBtn}>{p.cta}</span>
-      </div>
-    </div>
-  );
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+/** Depth between boards (px), after Concept F's "What we design for". */
+const SPACING = 700;
+
+/** How visible a board is at depth t (camera z minus the board's depth): it fades in from
+ *  the distance, stays solid while it grows past the viewer, then fades out. */
+function visibility(t: number) {
+  if (t > 650) return 0;
+  if (t > 350) return (650 - t) / 300;
+  if (t < -2100) return 0;
+  if (t < -1400) return (t + 2100) / 700;
+  return 1;
 }
 
+/** Peripheral blur: a board sharp at its true size softens as it grows past the viewer. */
+function blur(t: number) {
+  return t > 60 ? Math.min(22, (t - 60) / 20) : 0;
+}
+
+/* ---- Starfield: a warp through space, drawn on one canvas ---- */
+
+type Star = { x: number; y: number; z: number; pz: number; tint: number; arc: boolean; rot: number };
+
+const TINTS = ["255,255,255", "191,240,227", "60,207,195", "209,222,234"]; // white, Seafoam, Aqua, Harbour tint
+const DEPTH = 1600;
+
+function makeStars(n: number, w: number, h: number): Star[] {
+  const span = Math.max(w, h) * 1.4;
+  return Array.from({ length: n }, (_, i) => {
+    const z = Math.random() * DEPTH + 1;
+    return {
+      x: (Math.random() - 0.5) * span,
+      y: (Math.random() - 0.5) * span,
+      z,
+      pz: z,
+      tint: i % 7 === 0 ? 2 : i % 5 === 0 ? 1 : i % 9 === 0 ? 3 : 0,
+      // About one in eighteen is a Split Arc half-circle: the brand's design element in flight.
+      arc: i % 18 === 0,
+      rot: Math.random() * Math.PI * 2,
+    };
+  });
+}
+
+function drawField(
+  ctx: CanvasRenderingContext2D,
+  stars: Star[],
+  w: number,
+  h: number,
+  cx: number,
+  cy: number,
+  speed: number,
+) {
+  const f = Math.min(w, h) * 0.9;
+  ctx.clearRect(0, 0, w, h);
+  ctx.lineCap = "round";
+  for (const s of stars) {
+    s.pz = s.z;
+    s.z -= speed;
+    if (s.z < 1) {
+      s.z = DEPTH;
+      s.pz = DEPTH;
+    }
+    const x = cx + (s.x / s.z) * f;
+    const y = cy + (s.y / s.z) * f;
+    if (x < -40 || x > w + 40 || y < -40 || y > h + 40) {
+      s.z = DEPTH;
+      s.pz = DEPTH;
+      continue;
+    }
+    const near = 1 - s.z / DEPTH; // 0 far .. 1 near
+    const alpha = Math.min(1, near * 1.25);
+    const size = 0.7 + near * 2.4;
+    const col = TINTS[s.tint];
+
+    if (s.arc) {
+      // A small half-circle, the Split Arc, turning slowly as it streams past.
+      const r = 2 + near * 14;
+      ctx.strokeStyle = `rgba(${TINTS[1]},${alpha * 0.85})`;
+      ctx.lineWidth = Math.max(1, near * 3);
+      ctx.beginPath();
+      ctx.arc(x, y, r, s.rot, s.rot + Math.PI);
+      ctx.stroke();
+      s.rot += 0.004 + speed * 0.0004;
+      continue;
+    }
+
+    // Streak from where the star was to where it is: long when warping, a dot when idle.
+    const px = cx + (s.x / s.pz) * f;
+    const py = cy + (s.y / s.pz) * f;
+    ctx.strokeStyle = `rgba(${col},${alpha})`;
+    ctx.lineWidth = size;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(x + 0.01, y);
+    ctx.stroke();
+  }
+}
+
+/**
+ * Work (Revision 71): a warp through space, past nine real projects. Jasper's reference is
+ * Concept F's "What we design for" (M5 Round 2). Each project is Graham's whole presentation
+ * board, never cropped and never moving inside its frame. On wide screens with motion allowed
+ * the stage pins under the title and the camera flies forward through the boards, which sit
+ * in depth and alternate left and right. A board is sharp at its true size, then blurs like
+ * peripheral vision as it grows past the viewer. Behind them a starfield streams out from the
+ * same vanishing point, drifting when idle and stretching into warp streaks with scroll speed,
+ * with a few Split Arc shapes in the stream. Phones get a swipe row and reduced motion a
+ * masonry grid, both over a still starfield.
+ */
 export default function Work() {
+  const root = useRef<HTMLElement>(null);
+  const items = work.items;
+
+  useGSAP(
+    () => {
+      const section = root.current!;
+      const canvas = section.querySelector<HTMLCanvasElement>("[data-work-space]")!;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      let stars: Star[] = [];
+      let w = 0;
+      let h = 0;
+      const size = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.clientWidth;
+        h = canvas.clientHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        stars = makeStars(w < 960 ? 160 : 420, w, h);
+      };
+
+      const mm = gsap.matchMedia();
+
+      // Phones and reduced motion: one still frame of stars, redrawn on resize.
+      mm.add("(max-width: 959px), (prefers-reduced-motion: reduce)", () => {
+        const still = () => {
+          size();
+          drawField(ctx, stars, w, h, w / 2, h * 0.4, 0);
+        };
+        still();
+        window.addEventListener("resize", still);
+        return () => window.removeEventListener("resize", still);
+      });
+
+      mm.add("(min-width: 960px) and (prefers-reduced-motion: no-preference)", () => {
+        const stage = section.querySelector<HTMLElement>("[data-work-stage]")!;
+        const cam = section.querySelector<HTMLElement>("[data-work-track]")!;
+        const boards = gsap.utils.toArray<HTMLElement>("[data-project]", section);
+        const view = section.querySelector<HTMLElement>("[data-work-view]")!;
+        const meterArc = section.querySelector<SVGPathElement>("[data-work-meter-arc]")!;
+        const meterNow = section.querySelector<HTMLElement>("[data-work-meter-now]")!;
+
+        section.dataset.motion = "on";
+        size();
+
+        // Opacity, visibility and blur are written directly: hidden boards also leave the tab order.
+        const paint = boards.map((b) => (t: number) => {
+          const v = visibility(t);
+          const px = v > 0 ? blur(t) : 0;
+          b.style.opacity = String(v);
+          b.style.visibility = v === 0 ? "hidden" : "visible";
+          b.style.filter = px > 0.2 ? `blur(${px.toFixed(1)}px)` : "";
+        });
+
+        const start = -200;
+        const end = (boards.length - 1) * SPACING + 60;
+        // Detail: the Split Arc fills as you travel, and the number follows the sharp board (the
+        // count moves on once the one before it has started to blur past).
+        let shown = -1;
+        const place = () => {
+          const z = Number(gsap.getProperty(cam, "z"));
+          boards.forEach((_, i) => paint[i](z - SPACING * i));
+          const p = gsap.utils.clamp(0, 1, (z - start) / (end - start));
+          meterArc.style.strokeDashoffset = String(100 - p * 100);
+          const now = gsap.utils.clamp(0, boards.length - 1, Math.floor((z + 420) / SPACING));
+          if (now !== shown) {
+            shown = now;
+            meterNow.textContent = String(now + 1);
+          }
+        };
+
+        gsap.set(cam, { z: start });
+        place();
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: stage,
+            start: "top top",
+            // A longer run and a 1.6s catch-up: the camera glides after each scroll step and
+            // settles softly, instead of jumping with every wheel notch. This section only.
+            end: `+=${(boards.length - 1) * 65 + 90}%`,
+            pin: true,
+            scrub: 1.6,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+        tl.fromTo(cam, { z: start }, { z: end, ease: "none", duration: 1, onUpdate: place }, 0);
+        // Keep the count right after a resize or a jump: refreshes don't always fire onUpdate.
+        ScrollTrigger.addEventListener("refresh", place);
+
+        // The warp: a slow drift at rest, faster with scroll speed, eased so it never snaps.
+        // It only runs while the section is on screen.
+        let speed = 1.4;
+        // Detail: the vanishing point leans a few percent toward the pointer, eased, so the
+        // boards and stars shift in depth like a slow camera.
+        const look = { x: 0, y: 0, tx: 0, ty: 0 };
+        const onPointer = (e: PointerEvent) => {
+          look.tx = (e.clientX / window.innerWidth) * 2 - 1;
+          look.ty = (e.clientY / window.innerHeight) * 2 - 1;
+        };
+        window.addEventListener("pointermove", onPointer, { passive: true });
+        const tick = () => {
+          look.x += (look.tx - look.x) * 0.04;
+          look.y += (look.ty - look.y) * 0.04;
+          view.style.perspectiveOrigin = `${50 + look.x * 5}% ${47 + look.y * 4}%`;
+          const v = Math.abs(tl.scrollTrigger?.getVelocity() ?? 0);
+          const target = 1.4 + Math.min(v / 90, 30);
+          speed += (target - speed) * 0.05;
+          drawField(ctx, stars, w, h, w * (0.5 - look.x * 0.03), h * (0.47 - look.y * 0.03), speed);
+        };
+        const watch = ScrollTrigger.create({
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          onToggle: (self) => (self.isActive ? gsap.ticker.add(tick) : gsap.ticker.remove(tick)),
+        });
+        const onResize = () => size();
+        window.addEventListener("resize", onResize);
+
+        return () => {
+          gsap.ticker.remove(tick);
+          watch.kill();
+          window.removeEventListener("resize", onResize);
+          window.removeEventListener("pointermove", onPointer);
+          view.style.perspectiveOrigin = "";
+          delete section.dataset.motion;
+          // Clear only what was set: the boards' inline style also carries --i and --ar.
+          gsap.set(cam, { clearProps: "transform" });
+          gsap.set(boards, { clearProps: "opacity,visibility,filter" });
+          ScrollTrigger.removeEventListener("refresh", place);
+        };
+      });
+    },
+    { scope: root },
+  );
+
   return (
-    <section id="work" className={styles.section} data-ground="dark" data-work aria-labelledby="work-title">
-      <div className={`container ${styles.head}`}>
-        <Eyebrow>{work.eyebrow}</Eyebrow>
-        <h2 id="work-title" className="sec-title">
-          {work.title}
-        </h2>
-        <p className="sec-intro">{work.intro}</p>
+    <section id="work" ref={root} className={styles.section} data-ground="dark" data-work aria-labelledby="work-title">
+      <div className={styles.sky} aria-hidden="true">
+        <canvas className={styles.space} data-work-space />
       </div>
 
-      <ul className={`container ${styles.grid}`}>
-        {work.items.map((p) => (
-          <li key={p.id} className={styles.item} data-layout={p.layout} data-project={p.id}>
-            <figure className={styles.frame}>
-              <div className={styles.chrome} aria-hidden="true">
-                <span className={styles.dots}>
-                  <i />
-                  <i />
-                  <i />
-                </span>
-                <span className={styles.url}>{p.url}</span>
-              </div>
-              <MockSite p={p} />
-              <figcaption className="sr-only">{p.image.alt}</figcaption>
-            </figure>
-            <div className={styles.meta}>
-              <div>
-                <h3 className={styles.name}>{p.name}</h3>
-                <p className={styles.sector}>
-                  <span className={styles.concept}>Concept</span>
-                  {p.sector}
-                </p>
-              </div>
-              <ul className={styles.swatches} aria-label={`${p.name} palette`}>
-                {p.palette.swatches.map((c) => (
-                  <li key={c} style={{ background: c }} title={c} />
-                ))}
-              </ul>
+      <div className={styles.stage} data-work-stage>
+        <div className={`container ${styles.head}`}>
+          <Eyebrow>{work.eyebrow}</Eyebrow>
+          <h2 id="work-title" className="sec-title">
+            {work.title.solid.map((l) => (
+              <span key={l} className={styles.line}>
+                {l}{" "}
+              </span>
+            ))}
+            <span className={`${styles.line} outline-type`}>{work.title.outline}</span>
+          </h2>
+        </div>
+
+        <div className={styles.view} data-work-view>
+          <ul className={styles.cam} data-work-track>
+            {items.map((p, i) => (
+              <li
+                key={p.id}
+                className={styles.study}
+                data-project={p.id}
+                style={{ "--i": i, "--ar": p.image.w / p.image.h } as React.CSSProperties}
+              >
+                <figure className={styles.figure}>
+                  <img
+                    className={styles.board}
+                    src={`${p.image.base}-1000.webp`}
+                    srcSet={`${p.image.base}-640.webp 640w, ${p.image.base}-1000.webp 1000w`}
+                    sizes="(min-width: 960px) 40vw, 70vw"
+                    width={p.image.w}
+                    height={p.image.h}
+                    alt={p.image.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption className={styles.caption}>
+                    <strong className={styles.name}>{p.name}</strong>
+                    <span className={styles.sector}>{p.sector}</span>
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Dark veil over the top of the frame, between the boards and the title: boards
+            dim as they pass under it, so the title always sits on dark. */}
+        <div className={styles.veil} aria-hidden="true" />
+
+        {/* The frame's bottom row, there for the whole flight: the line on the left, then the
+            gauge (a Split Arc that fills as you travel, and the count) beside the button. */}
+        <div className={`container ${styles.outro}`} data-work-outro>
+          <p className={styles.outroLead}>{work.cta.lead}</p>
+          <div className={styles.outroAct}>
+            <div className={styles.meter} aria-hidden="true" data-work-meter>
+              <svg className={styles.meterArc} viewBox="0 0 44 24">
+                <path className={styles.meterTrack} d="M2 2a20 20 0 0 0 40 0" />
+                <path className={styles.meterFill} d="M2 2a20 20 0 0 0 40 0" pathLength={100} data-work-meter-arc />
+              </svg>
+              <p className={styles.meterText}>
+                <span data-work-meter-now>1</span> / {items.length}
+              </p>
             </div>
-          </li>
-        ))}
-      </ul>
+            <a href={work.cta.href} className={`btn btn-lg ${styles.cta}`}>
+              {work.cta.label}
+            </a>
+          </div>
+        </div>
+      </div>
+
     </section>
   );
 }

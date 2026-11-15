@@ -10,7 +10,97 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
-## Milestone: Steps section (Revisions 65–66), pushed to staging (latest)
+## Revision 72: solid-then-outline headings, warp image, subtle details, CTA in the frame (latest, local, awaiting approval)
+
+- **Headings (Jasper's rule):** solid text first, outline text second. Work is now "Built by us, / for businesses" solid, then "like yours." outlined. Steps is now "See it before" solid, then "you pay for it." outlined.
+- **Background image:** Jasper rejected the cluster image. The new fal image (`work-warp-d`, seed 3859539325) is a subtle hyperspace warp made only of hairline streaks and pinpoints, with no large objects, so it stays sharp at 1920x1080 (231 KB; 1280x720 for phones, 106 KB). It's desaturated, at 32% opacity, screen-blended and masked radially from the boards' vanishing point.
+- **fal spend today:** $0.24, four generations. Only `work-warp-d` is used. All originals are in `source-assets/fal-2026-11-16-work/`.
+- **Subtle details (Jasper: "up to you"):**
+  - **Gauge:** a small Split Arc beside the button fills as you travel, with a count ("4 / 9") that follows the sharp board.
+  - **Pointer depth:** the vanishing point leans a few percent toward the pointer, eased, so boards and stars shift in depth like a slow camera.
+- **CTA in the frame:** the outro was a separate band under the pin, which looked disconnected. "Yours could be the next one." now sits along the bottom of the pinned frame for the whole flight. The gauge is on its left and the button is Seafoam with Deep Water text (Jasper's call). The section's bottom padding is removed when pinned, so the section ends with the frame. Phones and reduced motion keep the CTA in normal flow, with no gauge.
+- **Fix:** after a resize, the gauge could show the wrong count. It now recomputes on every ScrollTrigger refresh.
+- **QA:** taste lint 0 FAIL, 0 WARN. tsc and eslint are clean. `qa/qa.py` 150/150 or 149/150; the only failure is the known flaky shader check.
+
+## Revision 71: seamless sky, smooth scroll, outline title, deep-field background (local)
+
+- **Ask (Jasper), in several notes:**
+  - The background was cut at the top and bottom of the section.
+  - Scrolling in this section felt rough.
+  - The highlight didn't match the earlier sections; remove it and use outline text.
+  - The title needs to stay readable when boards pass behind it.
+  - The radial-gradient galaxy looked cheap; use fal for a background image.
+  - Back to the solid dark navy, with the image desaturated and showing only subtly in the centre.
+  - Make the title three compact lines on the left.
+  - The veil showed a gradient cut.
+  - Make the galaxy busier: a cluster of galaxies, 1920x1080.
+- **Seamless sky:** the stars and image moved out of the pinned stage into one viewport-sized `position: sticky` layer that sits behind the whole section, from its top padding through the outro. Negative margins keep it out of the layout. No more edges.
+- **Smooth scroll (this section only):** ScrollTrigger scrub went from 0.6 to 1.6 seconds of catch-up, so the camera glides after each wheel step. The pin is longer (about 610% of the viewport) and the warp speed is eased more gently.
+- **Title:** the highlight is gone. The title now uses the site's `.outline-type`, as the hero and Steps do, with the lead outlined: "Built by us," then "for businesses" then "like yours." as three compact lines on the left. A Seafoam band (low or full) was tried first; Jasper rejected both.
+- **Readability:** a veil in Abyss sits above the boards and below the title. It's a radial gradient anchored at the top-left that fades to nothing well inside its box. An earlier angled linear version left a visible line across passing boards.
+- **Background:** solid Abyss again. The CSS nebulae and band are removed. The galaxy is a fal image (Flux Pro Ultra, 16:9, seed 2523990429): a dense galaxy cluster, centre-cropped to exact 16:9 and exported at 1920x1080 (356 KB) and 1280x720 for phones. In CSS it's fully desaturated, at 55% opacity, screen-blended and faded radially from the centre. The canvas warp stars are fewer and fainter at rest (420 on desktop), so the photo carries the stillness and the canvas the motion.
+- **fal spend:** $0.18 for three generations, all approved by Jasper.
+  - Milky Way panorama (`galaxy-a`): replaced at his request.
+  - First cluster prompt (`deepfield-b`): the model returned a single galaxy, so it wasn't used.
+  - Second cluster prompt (`deepfield-c`): used.
+  - Originals are in `source-assets/fal-2026-11-16-work/`; the manifest is updated.
+- **Skills and tools actually used:** humanizer (Revision 70), fal (Flux Pro Ultra ×3), GSAP + ScrollTrigger, Canvas 2D, Playwright, design-taste-frontend lint.
+- **QA:** taste lint 0 FAIL, 0 WARN. tsc and eslint are clean. `qa/qa.py` 150/150.
+
+## Revision 70: Work heading rewritten with the humanizer skill (local)
+
+- **Ask (Jasper):** he didn't like the heading. Rewrite it with the humanizer skill.
+- **Diagnosis:** "Nine sites. / Not one template." is a clipped "not X" contrast (humanizer §1): it rejects a claim nobody made. It's also a pair of dramatic fragments (§2).
+- **Change:** the eyebrow is now **Our work** (was "Selected work"). The title is now **Built by us, / for businesses like yours.**, with the Seafoam marker on the second line. "Built" is safe for all nine WordPress builds. "Designed and built" isn't confirmed for every project, so it was avoided.
+- **Skills actually used:** humanizer. Playwright screenshots at 1440 and 390.
+
+## Revision 69: warp through space, peripheral blur, title in the frame (local)
+
+- **Ask (Jasper):**
+  1. Remove the intro text on the right so the boards take that space, as in Concept F.
+  2. When a board gets big on screen, blur it like peripheral vision.
+  3. Add a scrolling effect of design elements warping through a galaxy, with a galaxy background.
+- **Title:** the intro paragraph is gone (removed from `content/homepage.ts` too). The eyebrow and "Nine sites. / Not one template." now sit inside the pinned stage, top-left, as in Concept F, so the boards fly through the whole frame.
+- **Peripheral blur:** boards now keep growing past the viewer, using Concept F's distances again (solid to t = 350, gone by t = 650). From t = 60 they blur in step with their size, up to 22px, so a board is sharp at its true size and soft as it fills the view.
+- **Galaxy:**
+  - The section ground is Abyss with faint Aqua and Dusk Violet nebulae, plus a soft galaxy band across the frame at the brand's 24° channel angle.
+  - A canvas starfield (820 stars on desktop, 380 on phones, in white, Seafoam, Aqua and a Harbour tint) streams out from the same vanishing point the boards fly from. Each star is drawn as a streak from its last position to its new one, so it's a drifting dot at rest and a long warp streak when scrolling. The speed follows ScrollTrigger velocity, eased.
+  - About one in eighteen is a turning Split Arc half-circle: the brand's design element in the stream.
+  - The animation loop only runs while the section is on screen. Phones and reduced motion get one still frame of stars, redrawn on resize.
+- **Skills and tools actually used:** frontend-design, GSAP + ScrollTrigger (velocity, ticker), Canvas 2D, Playwright (frame sheets, a mid-scroll warp capture, reduced motion, mobile), design-taste-frontend lint. The nebula and band gradients carry `taste-skill-ignore` notes, since the galaxy is Jasper's explicit brief.
+- **QA:** taste lint 0 FAIL, 0 WARN. tsc and eslint are clean. `qa/qa.py` 150/150.
+- **To watch:** CSS blur on a large, close board plus an 820-star canvas is the heaviest moment on the page. Headless checks can't measure real frame rate, so check smoothness on a mid-range laptop and a real phone before launch.
+
+## Revision 68: Work as a fly-through of whole boards (local)
+
+- **Ask (Jasper):** the page-wall concept was good, but "the images are cut off". Don't move the images. Use Concept F's "What we design for" section (M5 Round 2 concepts artifact) as the main reference.
+- **Why Revision 67 felt wrong:** the crops ended where each presentation board ended, so every page stopped mid-way, and the pages also scrolled inside their frames.
+- **Reference, read from the artifact's built files:** five studies sit in 3D depth (perspective 900px, 700px apart, alternating ±16vw). The pinned stage moves a camera forward on scroll, and each study fades in from the distance and out as it nears, with its caption underneath.
+- **Change:** each project is now **Graham's whole presentation board**, resized only (no crop), exported at 640 and 1000 wide (52–179 KB each, `public/images/work/`). The manifest is rewritten. Nothing moves inside a board. On desktop with motion allowed, the stage pins (about 520% of the viewport) and the camera flies through the nine boards in depth, alternating left and right. Each board's width fits its own aspect (`min(40vw, 60svh × aspect)`), so tall and wide boards both show whole. Boards stay solid up to their true size and fade out by about 1.17× size, so none is ever cropped by the frame or shown soft. The heading sits above the pinned stage in normal flow, so no board passes under text. Phones get a swipe row of whole boards at a fixed height, and reduced motion gets a three-column masonry grid.
+- **Copy:** the outro is now "Yours could be the next one." The heading and intro are unchanged.
+- **Fixes during the build:**
+  - `clearProps: "all"` in the GSAP cleanup wiped the React inline `--i` and `--ar` variables. React's dev mode mounts twice, so every board went flat. It now clears only opacity and visibility.
+  - `quickSetter(…, "autoAlpha")` didn't apply, so boards never faded and blew up across the screen. Opacity and visibility are now written directly (hidden boards also leave the tab order).
+  - `will-change: transform` on the camera made Chrome stretch a raster, which made close boards blurry. Removed.
+- **Skills and tools actually used:** the Artifact read (reference HTML, CSS and JS), frontend-design, GSAP + ScrollTrigger via `@gsap/react`, Playwright (eight-frame scroll sheets, head, outro, mobile, reduced motion), design-taste-frontend lint. No fal, and no new Awwwards calls.
+- **QA:** taste lint 0 FAIL, 0 WARN. tsc and eslint are clean. `qa/qa.py` 149/150. The one failure is the known flaky shader still-frame check (diff 5). The work checks pass: nine described projects, and the fly-through runs on desktop.
+- **Open:** confirm with Graham that all nine projects can appear on the new site.
+
+## Revision 67: Work rebuilt as the page wall (superseded by Revision 68, never shipped)
+
+- **Ask (Jasper):** an award-level Work section built from the real projects on webleta.com (we only have screenshots in presentation-board form), using Awwwards, frontend-design, GSAP and scroll animation. fal was allowed.
+- **Content:** the four fictional concept sites are replaced by nine real WordPress builds from Graham's live portfolio: Pay the Pyper, Wazzas Pool, Melbourne Entertainment Company, Belly, 411 Legal Services, Bonsai, Ground Control Systems, The Fort and Rack n Road. Webleta's own site and Portside Marketing were left out (Portside's board is too fragmented to read as one page).
+- **Images:** each board's front page was detected by its edges and cropped out as a full-length homepage, then exported at 480 and 720 wide (57–164 KB each, `public/images/work/`). Sources and crop boxes are in `manifest-2026-11-16-work.csv`. **No fal spend:** the real pages beat any generated mockup.
+- **Concept, the page wall:** on wide screens with motion allowed, the stage pins on Deep Water and the nine homepages stand on a gently curved wall (CSS 3D, perspective 1500px). Scrolling walks along it: each page turns to face you near the centre and runs through its own full length, top to bottom, while a large caption and a "4 / 9" position follow the centred page. GSAP ScrollTrigger scrubs one progress value that drives track position, card angle and depth, fade and page scroll (quickSetters, no React re-render per frame). The cards keep the CTA card's square top-right corner. There's no browser chrome, because Steps directly above already uses a browser frame.
+- **Phones, reduced motion, no JS:** a swipe row with scroll-snap, each page's top in view, with per-card captions.
+- **Head:** "Nine sites." / "Not one template." The second line carries the Seafoam marker, full height with Deep Water text so no white letter sits on the pale band on a dark ground. The outro is "Yours could be next on the wall." with **Get my free preview**, which goes to Steps.
+- **References:** Awwwards. Jesper Landberg (Developer Award, SOTD) presents work as curved panels in space, which became the wall. Element search (project showcase) and motion search (GSAP pins with scrub) returned nothing, again.
+- **Skills and tools actually used:** frontend-design (plan and critique), Awwwards MCP (search_sites ×4), GSAP + ScrollTrigger via `@gsap/react`, Playwright (scroll-frame screenshots at four wall positions, outro, mobile, reduced motion), design-taste-frontend lint.
+- **Fixes during the build:** the stage grid column grew to the track's full width and pushed the caption off-centre (locked to one viewport column). The cards first used `data-card`, which the hero's parallax also selects page-wide, so they're now `data-work-card`. The curve was eased (12° per step) so neighbours stop overlapping. The counter dropped its zero-padding.
+- **QA:** taste lint 0 FAIL (two `taste-skill-ignore` notes: the visually hidden caption and the 100vh fallback). tsc and eslint are clean. `qa/qa.py` 150/150. The work check now asserts nine described projects, plus a new check that the wall runs on desktop. The side-padding check skips the wall track like the Benefits carousel.
+- **Open:** the client names and screenshots come from Graham's public portfolio. Check with him that all nine can appear on the new site. Sector lines are read from the pages themselves.
+
+## Milestone: Steps section (Revisions 65–66), pushed to staging
 
 - **Approval:** Jasper asked for the push after the Revision 66 fix (2026-11-16). This is a provisional approval for staging only. Graham's feedback is still pending, and it doesn't authorise a production launch.
 - **Changes:** Revision 65 (CTA to Steps transition) and Revision 66 (balanced steps row), below.
@@ -20,7 +110,7 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **What worked:** measuring the rendered boxes instead of eyeballing. The columns were already geometrically equal; the problem was the content inside them.
 - **What didn't:** right-aligning the numbers in a fixed slot (first try in Revision 66) pushed the narrow "1" 47px off the left edge.
 - **Lesson:** when a row looks unbalanced, check whether the content fills its column before changing the grid. Display digits differ in width even with tabular figures, so size number slots to the digit.
-- **Commit SHA:** recorded below after the push.
+- **Commit SHA:** `5e2694487b23146ca3281197a9a684b6a06c3d98` (pushed to `main` 2026-11-16). The Cloudflare Pages check succeeded. The live CSS contains the Revision 66 rule, and `qa/qa.py` against https://webleta-preview.pages.dev/ passed 149/149.
 
 ## Revision 66: steps row balanced
 

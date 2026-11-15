@@ -7,6 +7,7 @@ qa/node_modules/
 
 # Local-only working files (not needed to build the site)
 screenshots/
+source-assets/
 qa/qa-results.json
 qa/last-run.txt
 __pycache__/

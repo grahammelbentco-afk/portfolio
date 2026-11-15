@@ -128,7 +128,7 @@ export default function Steps() {
           <div className={styles.head}>
             <Eyebrow>{steps.eyebrow}</Eyebrow>
             <h2 id="steps-title" className={styles.title}>
-              <span className="outline-type">{steps.title.outline}</span> {steps.title.rest}
+              {steps.title.solid} <span className="outline-type">{steps.title.outline}</span>
             </h2>
             <p className={styles.intro}>{steps.intro}</p>
           </div>

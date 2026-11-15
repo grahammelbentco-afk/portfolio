@@ -61,7 +61,7 @@ with sync_playwright() as p:
               const bad = [];
               document.querySelectorAll('h1,h2,h3,p,li,a.btn').forEach(el => {
                 // Cards in a horizontal carousel run past the edge by design.
-                if (el.closest('[data-benefits-track]')) return;
+                if (el.closest('[data-benefits-track], [data-work-track]')) return;
                 const r = el.getBoundingClientRect();
                 if (r.width && (r.left < 15.5 || vw - r.right < 15.5)) bad.push(el.tagName + ':' + el.textContent.trim().slice(0,30));
               });
@@ -461,9 +461,11 @@ with sync_playwright() as p:
     check("services: hover brings back the photo's real colour", reveal == "1", reveal)
     hero = page.evaluate("[...document.querySelectorAll('[data-service=websites] [aria-label^=\"Works with\"] li')].map(l => l.title)")
     check("services: hero shows the flexible stack (WordPress, Next.js, Astro, React)", hero == ["WordPress", "Next.js", "Astro", "React"], str(hero))
-    concept = page.locator("#work [data-project]").count()
-    labels = page.evaluate("[...document.querySelectorAll('#work [data-project]')].every(e => e.textContent.includes('Concept'))")
-    check("work: four projects, each labelled as a concept", concept == 4 and labels)
+    projects = page.locator("#work [data-project]").count()
+    named = page.evaluate("[...document.querySelectorAll('#work [data-project]')].every(e => e.querySelector('figcaption').textContent.trim().length > 3 && e.querySelector('img').alt.length > 20)")
+    check("work: nine real projects, each with a caption and a described page image", projects == 9 and named, str(projects))
+    pinned = page.evaluate("document.querySelector('#work').dataset.motion")
+    check("work: the fly-through runs on desktop with motion allowed", pinned == "on", str(pinned))
     ctx.close()
 
     # No JavaScript: content still visible (failsafe).
