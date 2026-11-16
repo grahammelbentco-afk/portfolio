@@ -210,7 +210,6 @@
 .item[open] {
   background: var(--deep-water);
   color: var(--white);
-  clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 99px, 100% 100%, 0 100%);
 }
 
 /* The answer's height animates where ::details-content is supported. */
@@ -291,7 +290,6 @@
 }
 
 .item[open] .icon {
-  margin-right: 34px;
   background: var(--seafoam);
 }
 
@@ -313,13 +311,7 @@
 }
 
 @media (max-width: 639px) {
-  .item[open] {
-    clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 67px, 100% 100%, 0 100%);
-  }
 
-  .item[open] .icon {
-    margin-right: 18px;
-  }
 
   .summary {
     padding: 18px 18px;

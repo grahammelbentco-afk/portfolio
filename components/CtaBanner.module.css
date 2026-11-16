@@ -15,7 +15,6 @@
   min-height: clamp(520px, 44vw, 720px);
   overflow: hidden;
   border-radius: clamp(18px, 1.6vw, 26px);
-  border-top-right-radius: 0;
   background: var(--deep-water);
   color: var(--white);
   text-align: center;

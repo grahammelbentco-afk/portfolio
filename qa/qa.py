@@ -456,8 +456,9 @@ with sync_playwright() as p:
     check("services: device photos cover their tiles (no letterboxing)", len(fit) == 2 and all(fit), str(fit))
     duo = page.evaluate("[...document.querySelectorAll('#services img')].filter(i => !i.closest('[class*=screen]') && !/true/.test(i.className)).map(i => getComputedStyle(i).mixBlendMode)")
     check("services: every tile photo is duotone (luminosity blend)", len(duo) == 6 and set(duo) == {"luminosity"}, str(duo))
-    corners = page.evaluate("[...document.querySelectorAll('#services [data-service] > svg[class*=corner]')].length")
-    check("services: every tile carries the 24° Split Arc corner cut", corners == 7, str(corners))
+    # Revision 86: Jasper asked for normal rounded corners everywhere; no notch remains.
+    corners = page.evaluate("[...document.querySelectorAll('svg[class*=corner]')].length")
+    check("corners: no Split Arc corner cuts left on the page", corners == 0, str(corners))
     page.hover("[data-service=seo]")
     page.wait_for_timeout(900)
     reveal = page.evaluate("getComputedStyle(document.querySelector('[data-service=seo] img[class*=true]')).opacity")

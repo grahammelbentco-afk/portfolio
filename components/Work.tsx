@@ -1,14 +1,15 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import { work } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import styles from "./Work.module.css";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
 
 /** Depth between boards (px), after Concept F's "What we design for". */
 const SPACING = 700;
@@ -79,7 +80,7 @@ function drawField(
       continue;
     }
     const near = 1 - s.z / DEPTH; // 0 far .. 1 near
-    const alpha = Math.min(1, near * 1.25);
+    const alpha = Math.min(1, 0.12 + near * 1.3);
     const size = 0.7 + near * 2.4;
     const col = TINTS[s.tint];
 
@@ -120,6 +121,10 @@ function drawField(
  */
 export default function Work() {
   const root = useRef<HTMLElement>(null);
+  // Set by the fly-through while it runs: the arrows and timeline call it, and it reports
+  // the board in front so they can mark it.
+  const fly = useRef<((i: number) => void) | null>(null);
+  const [current, setCurrent] = useState(0);
   const items = work.items;
 
   useGSAP(
@@ -139,7 +144,7 @@ export default function Work() {
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        stars = makeStars(w < 960 ? 160 : 420, w, h);
+        stars = makeStars(w < 960 ? 260 : 680, w, h);
       };
 
       const mm = gsap.matchMedia();
@@ -172,6 +177,9 @@ export default function Work() {
           const px = v > 0 ? blur(t) : 0;
           b.style.opacity = String(v);
           b.style.visibility = v === 0 ? "hidden" : "visible";
+          // Only boards still ahead of the viewer take clicks: one that has grown past its true
+          // size (and blurs) would otherwise sit over the far boards and catch their clicks.
+          b.style.pointerEvents = v > 0 && t <= 120 ? "auto" : "none";
           b.style.filter = px > 0.2 ? `blur(${px.toFixed(1)}px)` : "";
         });
 
@@ -189,6 +197,7 @@ export default function Work() {
           if (now !== shown) {
             shown = now;
             meterNow.textContent = String(now + 1);
+            setCurrent(now);
           }
         };
 
@@ -209,13 +218,54 @@ export default function Work() {
           },
         });
         tl.fromTo(cam, { z: start }, { z: end, ease: "none", duration: 1, onUpdate: place }, 0);
+
+        // Click a board to fly to it: scroll to where that board sits at its true size.
+        // Keyboard: Enter or Space.
+        const flyTo = (i: number) => {
+          const st = tl.scrollTrigger;
+          if (!st) return;
+          const p = gsap.utils.clamp(0, 1, (SPACING * i - start) / (end - start));
+          // 0.3s, starting at full speed (expo.out), and it skips the scrub's catch-up, so the
+          // camera follows the scroll exactly and the click lands almost at once.
+          gsap.to(window, {
+            scrollTo: st.start + p * (st.end - st.start),
+            duration: 0.3,
+            ease: "expo.out",
+            overwrite: "auto",
+            onUpdate: () => {
+              st.getTween()?.progress(1);
+            },
+          });
+        };
+        fly.current = flyTo;
+        const onClick = boards.map((b, i) => {
+          const name = b.querySelector("figcaption strong")?.textContent ?? "project";
+          b.setAttribute("role", "button");
+          b.setAttribute("tabindex", "0");
+          b.setAttribute("aria-label", `Bring ${name} into view`);
+          const click = () => flyTo(i);
+          const key = (e: KeyboardEvent) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              flyTo(i);
+            }
+          };
+          b.addEventListener("click", click);
+          b.addEventListener("keydown", key);
+          return () => {
+            b.removeEventListener("click", click);
+            b.removeEventListener("keydown", key);
+            ["role", "tabindex", "aria-label"].forEach((a) => b.removeAttribute(a));
+          };
+        });
         // Keep the count right after a resize or a jump: refreshes don't always fire onUpdate.
         ScrollTrigger.addEventListener("refresh", place);
 
         // The warp: a slow drift at rest, faster with scroll speed, eased so it never snaps.
         // It only runs while the section is on screen.
-        let speed = 1.4;
-        // Detail: the vanishing point leans a few percent toward the pointer, eased, so the
+        let speed = 3.2;
+        // Detail: the vanishing point leans slightly toward the pointer (1.5% x, 1.2% y; was 5/4,
+        // Jasper found it too much), eased slowly, so the
         // boards and stars shift in depth like a slow camera.
         const look = { x: 0, y: 0, tx: 0, ty: 0 };
         const onPointer = (e: PointerEvent) => {
@@ -224,13 +274,14 @@ export default function Work() {
         };
         window.addEventListener("pointermove", onPointer, { passive: true });
         const tick = () => {
-          look.x += (look.tx - look.x) * 0.04;
-          look.y += (look.ty - look.y) * 0.04;
-          view.style.perspectiveOrigin = `${50 + look.x * 5}% ${47 + look.y * 4}%`;
+          look.x += (look.tx - look.x) * 0.025;
+          look.y += (look.ty - look.y) * 0.025;
+          view.style.perspectiveOrigin = `${50 + look.x * 1.5}% ${47 + look.y * 1.2}%`;
           const v = Math.abs(tl.scrollTrigger?.getVelocity() ?? 0);
-          const target = 1.4 + Math.min(v / 90, 30);
+          // A steady warp at rest (3.2), stretching with scroll speed.
+          const target = 3.2 + Math.min(v / 80, 32);
           speed += (target - speed) * 0.05;
-          drawField(ctx, stars, w, h, w * (0.5 - look.x * 0.03), h * (0.47 - look.y * 0.03), speed);
+          drawField(ctx, stars, w, h, w * (0.5 - look.x * 0.01), h * (0.47 - look.y * 0.01), speed);
         };
         const watch = ScrollTrigger.create({
           trigger: section,
@@ -242,15 +293,17 @@ export default function Work() {
         window.addEventListener("resize", onResize);
 
         return () => {
+          onClick.forEach((off) => off());
           gsap.ticker.remove(tick);
           watch.kill();
           window.removeEventListener("resize", onResize);
           window.removeEventListener("pointermove", onPointer);
           view.style.perspectiveOrigin = "";
+          fly.current = null;
           delete section.dataset.motion;
           // Clear only what was set: the boards' inline style also carries --i and --ar.
           gsap.set(cam, { clearProps: "transform" });
-          gsap.set(boards, { clearProps: "opacity,visibility,filter" });
+          gsap.set(boards, { clearProps: "opacity,visibility,filter,pointerEvents" });
           ScrollTrigger.removeEventListener("refresh", place);
         };
       });
@@ -299,7 +352,12 @@ export default function Work() {
                     decoding="async"
                   />
                   <figcaption className={styles.caption}>
-                    <strong className={styles.name}>{p.name}</strong>
+                    <strong className={styles.name}>
+                      {p.name}
+                      <svg className={styles.go} viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="M3 8h9M8.5 4l4 4-4 4" />
+                      </svg>
+                    </strong>
                     <span className={styles.sector}>{p.sector}</span>
                   </figcaption>
                 </figure>
@@ -312,11 +370,43 @@ export default function Work() {
             dim as they pass under it, so the title always sits on dark. */}
         <div className={styles.veil} aria-hidden="true" />
 
+        {/* The timeline: one point per project down the right edge; the current one is
+            Seafoam and longer, each shows its name on hover or focus, and a click flies there. */}
+        <nav className={styles.timeline} aria-label="Projects">
+          <ol>
+            {items.map((p, i) => (
+              <li key={p.id}>
+                <button
+                  type="button"
+                  className={styles.point}
+                  aria-current={i === current ? "true" : undefined}
+                  onClick={() => fly.current?.(i)}
+                  data-work-point={p.id}
+                >
+                  <span className={styles.pointName}>{p.name}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
         {/* The frame's bottom row, there for the whole flight: the line on the left, then the
             gauge (a Split Arc that fills as you travel, and the count) beside the button. */}
         <div className={`container ${styles.outro}`} data-work-outro>
           <p className={styles.outroLead}>{work.cta.lead}</p>
           <div className={styles.outroAct}>
+            <div className={styles.arrows}>
+              <button type="button" className={styles.arrow} onClick={() => fly.current?.(Math.max(0, current - 1))} disabled={current === 0} aria-label="Previous project" data-work-prev>
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M10 3.5L5.5 8l4.5 4.5" />
+                </svg>
+              </button>
+              <button type="button" className={styles.arrow} onClick={() => fly.current?.(Math.min(items.length - 1, current + 1))} disabled={current === items.length - 1} aria-label="Next project" data-work-next>
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M6 3.5L10.5 8 6 12.5" />
+                </svg>
+              </button>
+            </div>
             <div className={styles.meter} aria-hidden="true" data-work-meter>
               <svg className={styles.meterArc} viewBox="0 0 44 24">
                 <path className={styles.meterTrack} d="M2 2a20 20 0 0 0 40 0" />

@@ -317,3 +317,223 @@
   width: 100%;
   height: auto;
 }
+
+/* Boards are clickable in the fly-through: clicking one flies to it. */
+.section[data-motion="on"] .study {
+  cursor: pointer;
+}
+
+.section[data-motion="on"] .study:focus-visible {
+  outline: none;
+}
+
+.section[data-motion="on"] .study:focus-visible .board {
+  outline: 3px solid var(--seafoam);
+  outline-offset: 4px;
+}
+
+/* The camera layer spans the frame and sits in front of the boards in depth, so it must
+   not catch clicks; each board sets its own pointer-events from its depth (Work.tsx). */
+.section[data-motion="on"] .view,
+.section[data-motion="on"] .cam {
+  pointer-events: none;
+}
+
+/* ---- Hover and focus on a board (fly-through only, Revision 87) ----
+   Subtle: the page lifts 2.5% toward you, its name turns Seafoam and a small arrow slides
+   in. Transform and colour only, on the page and caption (GSAP owns the board's own
+   opacity and filter), so nothing fights the scroll animation. */
+.go {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.35em;
+  vertical-align: 0.05em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: translateX(-6px);
+}
+
+.section[data-motion="on"] .board {
+  transition: transform 520ms var(--ease-out);
+}
+
+.section[data-motion="on"] .name {
+  transition: color 320ms var(--ease-out);
+}
+
+.section[data-motion="on"] .go {
+  transition: opacity 320ms var(--ease-out), transform 420ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .section[data-motion="on"] .study:hover .board {
+    transform: scale(1.025);
+  }
+
+  .section[data-motion="on"] .study:hover .name {
+    color: var(--seafoam);
+  }
+
+  .section[data-motion="on"] .study:hover .go {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.section[data-motion="on"] .study:focus-visible .name {
+  color: var(--seafoam);
+}
+
+.section[data-motion="on"] .study:focus-visible .go {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section[data-motion="on"] .board,
+  .section[data-motion="on"] .go {
+    transition: none;
+  }
+}
+
+/* ---- Navigation in the fly-through (Revision 87): arrows and the timeline ---- */
+.arrows,
+.timeline {
+  display: none;
+}
+
+.section[data-motion="on"] .arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(238 247 246 / 0.1);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.arrow:hover:not(:disabled) {
+  background: var(--seafoam);
+  color: var(--deep-water);
+}
+
+.arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--seafoam);
+  outline-offset: 3px;
+}
+
+.arrow svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The timeline: a quiet vertical rail of points on the right edge. */
+.section[data-motion="on"] .timeline {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: clamp(16px, 2vw, 32px);
+  display: block;
+  transform: translateY(-50%);
+}
+
+.timeline ol {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each point is a 28px target holding a short bar; the current bar is Seafoam and longer. */
+.point {
+  position: relative;
+  display: grid;
+  place-items: center end;
+  width: 32px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.point::after {
+  content: "";
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgb(238 247 246 / 0.35);
+  transition: width var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out);
+}
+
+.point:hover::after {
+  width: 18px;
+  background: var(--white);
+}
+
+.point[aria-current]::after {
+  width: 26px;
+  background: var(--seafoam);
+}
+
+.point:focus-visible {
+  outline: 2px solid var(--seafoam);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* The name appears to the left of a point on hover or focus. */
+.pointName {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 10px);
+  padding: 4px 10px;
+  border-radius: var(--r-sm);
+  background: rgb(5 26 45 / 0.85);
+  color: var(--white);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(6px, -50%);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.point:hover .pointName,
+.point:focus-visible .pointName {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow,
+  .point::after,
+  .pointName {
+    transition: none;
+  }
+}

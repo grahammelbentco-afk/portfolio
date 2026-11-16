@@ -18,7 +18,6 @@
   inset: 0;
   z-index: -3;
   background: var(--seafoam);
-  clip-path: polygon(0 0, calc(100% - 120px) 0, 100% 270px, 100% 100%, 0 100%);
 }
 
 .panel {
@@ -1288,11 +1287,6 @@
   color: var(--white);
 }
 
-@media (max-width: 639px) {
-  .section::after {
-    clip-path: polygon(0 0, calc(100% - 48px) 0, 100% 108px, 100% 100%, 0 100%);
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .stepBody {

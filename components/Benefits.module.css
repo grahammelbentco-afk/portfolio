@@ -199,7 +199,6 @@
   overflow: hidden;
   border-radius: var(--r-lg);
   background: var(--c);
-  clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 99px, 100% 100%, 0 100%);
 }
 
 .media img {

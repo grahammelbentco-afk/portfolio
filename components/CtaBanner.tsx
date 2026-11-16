@@ -35,9 +35,6 @@ export default function CtaBanner() {
             loading="lazy"
             decoding="async"
           />
-          <svg className={styles.corner} viewBox="0 0 100 224.6" aria-hidden="true" focusable="false">
-            <polygon points="0,0 100,0 100,224.6" />
-          </svg>
           <div className={styles.content}>
             <Eyebrow className={styles.eyebrow}>{ctaBanner.eyebrow}</Eyebrow>
             <h2 id="cta-title" className={styles.title}>

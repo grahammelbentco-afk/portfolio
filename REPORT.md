@@ -15,7 +15,45 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 85: FAQ rebuilt for SEO, AEO and GEO (latest; approved by Jasper: "after that push")
+## Revision 86: no cut corners, clickable Work boards, Work navigation (latest; approved by Jasper: "push it")
+
+- **Ask (Jasper):** every 24° cut corner should be a normal corner. Work's projects should be clickable and scroll straight to that board, smooth but quick.
+- **Corners:** the Split Arc corner cut is removed everywhere:
+  - the Services and Industries tiles (the SVG notch is gone, and the top-right radius is back);
+  - the CTA banner card (SVG notch);
+  - the Steps band;
+  - the Benefits cards;
+  - the Reviews photo;
+  - the featured Pricing plan;
+  - the open FAQ card (its icon offset for the cut is removed too).
+  - Every corner is now the plain `--r-*` radius.
+- **Work boards:** in the fly-through, each board is a button (role, tabindex, label "Bring <name> into view"; Enter and Space work too). Clicking flies the camera to where that board sits at its true size: a GSAP ScrollToPlugin tween of 0.9s with `power3.inOut`, after which the scrub settles it. Verified: Wazzas went from second in line to front, and the gauge read 2/9. Boards show a Seafoam focus ring.
+- **Follow-up (Jasper: the click had a delay, and far boards should be clickable):**
+  - **Causes:**
+    - The 0.9s `power3.inOut` tween eased in slowly.
+    - The 1.6s scrub then had to catch up.
+    - The camera `<ul>` spans the frame in front of the boards in 3D, so it caught every click; only the front board ever received one.
+  - **Fixes:**
+    - A 0.55s `power3.out` tween that completes the scrub tween on every frame, so the camera follows the scroll directly.
+    - `.view` and `.cam` are `pointer-events: none`.
+    - Each board takes clicks only while visible and not yet past its true size, so a passing, blurred board can't cover the far ones.
+  - **Verified:** clicking the barely visible Melbourne Entertainment board moved 70% of the way in 100ms and settled by about 250ms (gauge 3/9).
+- **Follow-up (Jasper: still not instant; more warp movement, denser but balanced):**
+  - The fly tween is now 0.3s `expo.out` (full speed from the first frame), settling in about 250ms.
+  - Warp stars: 680 on desktop (was 420) and 260 on phones (was 160). The resting speed is 3.2 (was 1.4), so they always visibly stream, and they stretch to up to 32× with scroll speed. Far stars have a faint base alpha (0.12), so the field reads as depth.
+- **Follow-up (Jasper: a subtle, premium hover on the projects):**
+  - On hover (pointer devices) or keyboard focus, the board's page lifts 2.5% (520ms ease-out), its name turns Seafoam, and a small arrow slides in after the name.
+  - Transform and colour only, on the image and caption, so it never fights GSAP's opacity and blur on the board.
+  - The arrow doesn't move under reduced motion.
+- **Follow-up (Jasper: too much movement with the mouse):** the pointer lean is now about a third of what it was (vanishing point ±1.5% x and ±1.2% y, was 5% and 4%; star centre ±1%, was 3%), and it eases more slowly (0.025 per frame, was 0.04).
+- **Follow-up (Jasper: add arrows and a clickable timeline to the Work frame):**
+  - Previous and next arrow buttons sit beside the gauge in the bottom row. They're quiet glass circles that turn Seafoam on hover, and they're disabled at the first and last project.
+  - A vertical timeline down the right edge has one short bar per project. The current bar is longer and Seafoam (aria-current), and hovering or focusing a bar shows the project's name beside it.
+  - Arrows and timeline use the same fast fly as clicking a board. Both are buttons with labels, and both show only in the desktop fly-through.
+  - **Verified:** Next went to 2/9, the Bonsai point to 6/9, and Previous to 5/9.
+- **QA:** the old "every Services tile carries the corner cut" check is replaced by "no corner cuts left on the page". taste lint 0 FAIL on the changed files. tsc and eslint are clean. `qa/qa.py` 149/150 (the known flaky shader check).
+
+## Revision 85: FAQ rebuilt for SEO, AEO and GEO (approved by Jasper: "after that push"; pushed `24f896c`, Cloudflare check succeeded)
 
 - **Ask (Jasper):** the FAQ must work as a real FAQ for SEO, AEO and GEO, and look award-winning (Awwwards for inspiration).
 - **Awwwards:** "questions" (clean tag) and the element search "accordion" returned nothing.

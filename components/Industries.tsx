@@ -98,9 +98,6 @@ function Tile({ t }: { t: Industry }) {
         </div>
       )}
 
-      <svg className={tile.corner} viewBox="0 0 100 224.6" aria-hidden="true" focusable="false">
-        <polygon points="0,0 100,0 100,224.6" className={`${tile.notch} ${styles.notch}`} />
-      </svg>
 
       <div className={tile.content}>
         <div className={tile.top}>

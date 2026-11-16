@@ -424,9 +424,6 @@
 
 /* The notch replaces the top-right corner, so that corner is square: a rounded corner here
    is clipped on the same curve as the notch and leaves an anti-aliased arc of tile colour. */
-.tile {
-  border-top-right-radius: 0;
-}
 
 .corner {
   position: absolute;

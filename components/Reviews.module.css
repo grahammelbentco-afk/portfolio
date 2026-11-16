@@ -57,7 +57,6 @@
   overflow: hidden;
   border-radius: var(--r-lg);
   background: var(--deep-water);
-  clip-path: polygon(0 0, calc(100% - 72px) 0, 100% 162px, 100% 100%, 0 100%);
 }
 
 .photo img {
@@ -309,6 +308,5 @@
 @media (max-width: 959px) {
   .photo {
     min-height: 320px;
-    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 90px, 100% 100%, 0 100%);
   }
 }

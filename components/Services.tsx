@@ -117,10 +117,6 @@ function Tile({ t }: { t: ServiceTile }) {
         </Stage>
       )}
 
-      {/* The Split Arc channel: each tile's top-right corner is cut at 24° (W wide, W / tan 24° tall). */}
-      <svg className={styles.corner} viewBox="0 0 100 224.6" aria-hidden="true" focusable="false">
-        <polygon points="0,0 100,0 100,224.6" className={styles.notch} />
-      </svg>
 
       <div className={styles.content}>
         <div className={styles.top}>

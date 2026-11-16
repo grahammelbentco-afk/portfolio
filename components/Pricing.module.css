@@ -293,7 +293,6 @@
   overflow: hidden;
   background: var(--deep-water);
   color: var(--white);
-  clip-path: polygon(0 0, calc(100% - 64px) 0, 100% 144px, 100% 100%, 0 100%);
 }
 
 .photo {
@@ -367,8 +366,3 @@
   text-decoration-color: var(--deep-water);
 }
 
-@media (max-width: 959px) {
-  .plan[data-featured] {
-    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 90px, 100% 100%, 0 100%);
-  }
-}
