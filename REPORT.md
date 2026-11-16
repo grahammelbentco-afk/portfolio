@@ -15,7 +15,82 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 81: shorter Pricing cards, Contact photo removed (latest; approved by Jasper: "push it")
+## Revision 85: FAQ rebuilt for SEO, AEO and GEO (latest; approved by Jasper: "after that push")
+
+- **Ask (Jasper):** the FAQ must work as a real FAQ for SEO, AEO and GEO, and look award-winning (Awwwards for inspiration).
+- **Awwwards:** "questions" (clean tag) and the element search "accordion" returned nothing.
+- **Why it changed:** the Revision 83 tab design rendered only the selected answer, so the other answers weren't in the HTML for crawlers or AI answer engines.
+- **Structure:**
+  - 11 questions in 4 topic groups (Cost, Process, Ownership and tech, Agencies), all as native `<details>`, so every answer is in the HTML and in-page search finds it.
+  - Topic headings are `h3` and questions are `h4` inside `summary`.
+  - FAQPage JSON-LD (`schema.org`) is built from the same content, so the text can't drift. Verified: 11 Question entities, and every answer is present in the rendered HTML.
+- **Copy:**
+  - Answer-first: each answer's first sentence is the direct answer, and it names Webleta where that helps a quote stand alone ("A new Webleta website starts from $2,400…").
+  - New questions: "Can I pay monthly?", "What do you need from me to start?", "Do you do SEO?" and "Is agency work white-labelled?", all from facts already on the page.
+  - **UNCONFIRMED:** prices, ownership, platforms.
+- **Design:**
+  - A sticky side column with the heading, an intro, topic chips with counts (anchor links to each group) and "Graham and Jasper: Something else on your mind? Ask us directly".
+  - Closed questions are flat Shallows rows. An open one becomes a Deep Water card with the Split Arc 24° cut: the question keeps its size (Jasper: no size change when open) and the answer sits under it as smaller body text in Cloud, for clear hierarchy, with a Seafoam minus. One question opens at a time (`name="faq"`, Jasper's call); the first starts open.
+  - Personal names only appear in Reviews (Jasper's rule). The FAQ is signed "The Webleta team".
+  - The answer's height animates where `::details-content` is supported.
+- **QA:** taste lint 0 FAIL. tsc and eslint are clean. `qa/qa.py` 150/150.
+
+- **Follow-ups (Jasper):**
+  - Questions keep their size when open.
+  - The topic chips moved to a sticky bar at the top of the questions column (`FaqTopics.tsx`). The chip for the group in view is marked current (Deep Water, Seafoam count; IntersectionObserver), with hover and focus states. The bar sits flush under the header, with a subtle drop under it only once stuck.
+  - Answers widened to `min(76ch, 82%)` of the card.
+
+## Revision 84: Industries contrast, matching duotone, Entertainment, two-line cards (pushed with 85)
+
+- **Ask (Jasper):** text contrast issues; the colour gradients didn't match the images; add an entertainment industry (one fal image allowed); two lines of text at most on the cards.
+- **Cause of the mismatch:** each tile's photo box isolates blending (`container-type`), so the luminosity blend had no colour to tint with. The photos stayed natural while the scrim used the tile colour. The box now carries the tile colour, so each photo takes its tile's duotone and matches its gradient.
+  - **Same bug in Services ("What we do"):** it uses the same tile CSS, so its photos have this problem too. Not changed here.
+- **Contrast:**
+  - White text on every tile, over a deeper scrim in the tile's own colour.
+  - Aqua is mixed to 62% with Deep Water, Shell to 44%, and the Entertainment Seafoam to 42%, so white text holds on all three.
+- **Entertainment and events:** new tile, slot `f`. The bottom row is now four tiles: Stores, Automotive, Entertainment, Professional. The image is fal Flux Pro Ultra (1:1 raw, seed 843803988, $0.06, approved): a band on a small stage, from the crowd, with no text in frame. Saved as `industry-entertainment-{480,800}.webp`, with the manifest updated.
+- **Copy:** every card line was shortened to fit two lines (`line-clamp: 2` as a guard). Examples: "Quote requests that arrive with the job details.", "As careful online as you are in person."
+- **QA:** taste lint 0 FAIL. tsc and eslint are clean. `qa/qa.py` 149/150 (the known flaky shader check).
+
+## Revision 83: Industries as a bento, FAQ as a conversation (pushed with 85)
+
+- **Ask (Jasper):** Industries must be a bento in the "What we do" (Services) style, with reused images for now, showing industries, not projects (Work already shows those); his reference is a colour-blocked "Who we build for" grid. The FAQ looked basic and needs a premium, on-brand design (Awwwards, frontend-design, humanizer).
+- **Awwwards:** "faq" returned nothing again.
+- **Industries:**
+  - The section imports `Services.module.css`, so the tiles are the same component language: colour blocks, duotone photos (true colour on hover), the Split Arc 24° notch (cut in Deep Water here) and glass icons.
+  - The grid mirrors Services', with the hero on the right.
+  - Seven industries: Trades and construction (hero, Aqua), Food and hospitality (wide, Harbour), Salons and studios (Ochre), Health clinics (Dusk), Online stores (Coral), Automotive (Kelp) and Professional services (Shell).
+  - Photos are reused from Benefits and Services. New line icons were drawn for each industry.
+  - No project names.
+  - Intro: "Every industry wins customers differently. These are the ones we know best. If yours isn't here, ask us. We'll say honestly whether we're a fit before you spend anything." It closes with "Not on the list? Ask us about your industry".
+  - The page-top crops from Revision 82 are deleted.
+- **FAQ:**
+  - A large question index (a vertical tablist) beside a Deep Water answer card with the 24° cut. The answer is set large in the display face and signed "Graham and Jasper, Webleta" with a Seafoam spark avatar, with "Something else on your mind? Ask us directly" below.
+  - On phones the card opens under the chosen question. Only one card is ever rendered: a media hook places it, so ids stay unique.
+- **Humanizer:** intro reworded (above). The other lines were left as they were.
+- **QA:** taste lint 0 FAIL. tsc and eslint are clean. `qa/qa.py` 150/150.
+
+## Revision 82: Industries and FAQ sections (superseded by 83)
+
+- **Ask (Jasper):** add business industries and FAQ (Graham's "Additional sections"), premium, using Awwwards, frontend-design and humanizer.
+- **Awwwards:** element searches ("faq accordion", "hover list image reveal index") and the SOTD search ("services index list") returned nothing. Both sections follow the site's own patterns instead.
+- **Order:** Reviews (white) → Clients (white) → **Industries (Deep Water)** → Pricing (Shallows) → **FAQ (white)** → Contact.
+- **Industries** (`components/Industries.tsx`):
+  - Heading: "Sites that know" solid, then "your industry." outlined.
+  - A type-led index of six industries Webleta has actually built for: trades, home services, food, professional services, events and online stores. Hovering, focusing or pressing a row brings up the top of a real client homepage (Wazzas Pool, The Fort, Belly, 411 Legal Services, Melbourne Entertainment Company, Rack n Road) in a sticky frame with the 24° cut, plus what that industry needs from a site and "Built by us: …".
+  - The rows are a vertical tablist (arrow keys, Home, End). Images crossfade (opacity only).
+  - On phones the frame sits above the list.
+  - New images: 4:3 page-top crops in `public/images/industries/` (30–53 KB each). No fal.
+- **FAQ** (`components/Faq.tsx`):
+  - Heading: "Questions," solid, then "answered." outlined, sticky beside the list, with "Something else on your mind? Ask us directly" (mailto).
+  - Eight native `<details>` (`name="faq"`, so one opens at a time; the first starts open) as flat Shallows tiles. The open one turns Deep Water, and its plus turns into a minus on a Seafoam disc.
+  - The answer's height animates where `::details-content` is supported; otherwise it just appears.
+  - Answers repeat what the page already says. **UNCONFIRMED:** prices (Pricing's placeholders), ownership and platforms.
+- **Humanizer:** "you've paid nothing and owe us nothing" became "you owe us nothing". The events line now says what the site does ("Photos and video that show the night before anyone books it.").
+- **Skills and tools actually used:** frontend-design, humanizer, Awwwards MCP (3 searches, all empty), design-taste-frontend lint, Playwright.
+- **QA:** taste lint 0 FAIL. tsc and eslint are clean. `qa/qa.py` 150/150.
+
+## Revision 81: shorter Pricing cards, Contact photo removed ( approved by Jasper: "push it"; pushed `0d2500d`, Cloudflare check succeeded)
 
 - **Ask (Jasper):** the Pricing cards are still too tall, and the footer part looks off ("maybe remove the image").
 - **Pricing:**

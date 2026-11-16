@@ -1,0 +1,140 @@
+/* Industries (Revision 83): Deep Water ground; the tiles come from Services.module.css.
+   This file only sets the ground, the heading, the mirrored grid and the Deep Water notch. */
+.section {
+  padding-block: var(--section-y);
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(32px, 1rem + 3vw, 64px);
+}
+
+.head > div {
+  display: grid;
+  gap: var(--s-3);
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > div {
+    grid-column: 1 / span 7;
+  }
+
+  .head > :last-child {
+    grid-column: 9 / -1;
+  }
+}
+
+.eyebrowWrap {
+  display: block;
+}
+
+.line {
+  display: block;
+}
+
+/* The notch is cut in the section's own ground. */
+.notch.notch {
+  fill: var(--deep-water);
+}
+
+.more {
+  margin-top: clamp(24px, 2vw, 40px);
+  color: var(--cloud);
+}
+
+.more a {
+  color: var(--white);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.more a:hover {
+  text-decoration-color: var(--white);
+}
+
+/* ---- Tiles: duotone that matches its gradient, and readable text ---- */
+/* The photo box isolates its own blending (container-type), so it needs the tile colour
+   itself for the luminosity blend to tint the photo. */
+.bento > li > div:first-child {
+  background: var(--c);
+}
+
+/* White text everywhere, on a scrim that deepens the tile's own colour toward the text
+   (Aqua and Shell were dark-on-light over busy photos). */
+.bento > li[data-colour] {
+  --ink: var(--white);
+}
+
+/* Aqua and Shell are too light for white text, so their duotone is taken a step deeper. */
+.bento > li[data-colour="aqua"] {
+  --c: color-mix(in srgb, var(--aqua) 62%, var(--deep-water));
+}
+
+.bento > li[data-colour="shell"] {
+  --c: color-mix(in srgb, var(--shell) 44%, var(--deep-water));
+}
+
+.bento > li:has(img)::after {
+  background: linear-gradient( /* taste-skill-ignore: scrim over the photo, in the tile's own colour */
+    to top,
+    color-mix(in srgb, var(--c) 30%, #051a2d) 0%,
+    color-mix(in srgb, color-mix(in srgb, var(--c) 40%, #051a2d) 80%, transparent) 42%,
+    transparent 78%
+  );
+}
+
+/* Entertainment: Seafoam taken deep enough for white text, like Aqua and Shell. */
+.bento > li[data-colour="seafoam"] {
+  --c: color-mix(in srgb, var(--seafoam) 42%, var(--deep-water));
+}
+
+/* Two lines at most on every card (Jasper). */
+.bento > li p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Mirrored from Services: the hero holds the right half, Food runs wide across the top
+   left, and three tiles close the grid with Professional services under the hero. */
+.bento > li[data-slot="f"] {
+  grid-area: f;
+}
+
+.bento.bento {
+  grid-template-areas: "hero" "wide" "a" "b" "d" "e" "f" "c";
+}
+
+@media (min-width: 640px) {
+  .bento.bento {
+    grid-template-areas:
+      "hero hero"
+      "wide wide"
+      "a b"
+      "d e"
+      "f c";
+  }
+}
+
+@media (min-width: 1024px) {
+  .bento.bento {
+    grid-template-areas:
+      "wide wide wide wide wide wide hero hero hero hero hero hero"
+      "a a a b b b hero hero hero hero hero hero"
+      "d d d e e e f f f c c c";
+  }
+}

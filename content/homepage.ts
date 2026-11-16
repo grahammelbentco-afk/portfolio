@@ -775,6 +775,107 @@ export const contact = {
   } satisfies RequestFormCopy,
 };
 
+/**
+ * Industries (Graham's "Additional sections"; Revision 83). A bento in the Services style:
+ * colour tiles, duotone photos, the 24° notch. Photos are reused from Benefits and Services
+ * for now (Jasper's call). Industries only, no project names: Work already shows the
+ * projects.
+ */
+export type IndustryIcon = "trades" | "food" | "salon" | "health" | "store" | "auto" | "law" | "music";
+export type Industry = {
+  id: string;
+  slot: "hero" | "wide" | "a" | "b" | "c" | "d" | "e" | "f";
+  colour: "aqua" | "ochre" | "harbour" | "dusk" | "coral" | "kelp" | "shell" | "seafoam";
+  icon: IndustryIcon;
+  name: string;
+  need: string;
+  photo: { src: string; srcSet: string; position?: string };
+  lightCorner?: boolean;
+};
+export const industries = {
+  eyebrow: "Industries",
+  title: { solid: "Sites that know", outline: "your industry." },
+  intro: "Every industry wins customers differently. These are the ones we know best. If yours isn't here, ask us. We'll say honestly whether we're a fit before you spend anything.",
+  more: { lead: "Not on the list?", label: "Ask us about your industry", href: "#contact" },
+  items: [
+    { id: "trades", slot: "hero", colour: "aqua", icon: "trades", name: "Trades and construction",
+      need: "Quote requests that arrive with the job details.",
+      photo: { src: "/images/benefit-quotes-800.webp", srcSet: "/images/benefit-quotes-480.webp 480w, /images/benefit-quotes-800.webp 800w", position: "50% 35%" } },
+    { id: "food", slot: "wide", colour: "harbour", icon: "food", name: "Food and hospitality",
+      need: "Menus that read well on a phone, and orders straight to you.",
+      photo: { src: "/images/benefit-found-800.webp", srcSet: "/images/benefit-found-480.webp 480w, /images/benefit-found-800.webp 800w", position: "50% 40%" } },
+    { id: "salons", slot: "a", colour: "ochre", icon: "salon", name: "Salons and studios",
+      need: "Clients book themselves, even at 10pm on a Sunday.",
+      photo: { src: "/images/benefit-bookings-800.webp", srcSet: "/images/benefit-bookings-480.webp 480w, /images/benefit-bookings-800.webp 800w", position: "50% 30%" } },
+    { id: "health", slot: "b", colour: "dusk", icon: "health", name: "Health clinics",
+      need: "Clear prices and real faces people trust.",
+      photo: { src: "/images/benefit-trust-800.webp", srcSet: "/images/benefit-trust-480.webp 480w, /images/benefit-trust-800.webp 800w", position: "50% 30%" } },
+    { id: "stores", slot: "d", colour: "coral", icon: "store", name: "Online stores",
+      need: "Product pages that lead straight to checkout.",
+      photo: { src: "/images/benefit-sales-800.webp", srcSet: "/images/benefit-sales-480.webp 480w, /images/benefit-sales-800.webp 800w", position: "50% 40%" } },
+    { id: "auto", slot: "e", colour: "kelp", icon: "auto", name: "Automotive",
+      need: "One tap from your site to a ringing phone.",
+      photo: { src: "/images/benefit-calls-800.webp", srcSet: "/images/benefit-calls-480.webp 480w, /images/benefit-calls-800.webp 800w", position: "50% 35%" } },
+    { id: "entertainment", slot: "f", colour: "seafoam", icon: "music", name: "Entertainment and events",
+      need: "Dates, a show reel and a booking form.",
+      photo: { src: "/images/industry-entertainment-800.webp", srcSet: "/images/industry-entertainment-480.webp 480w, /images/industry-entertainment-800.webp 800w", position: "50% 55%" } },
+    { id: "professional", slot: "c", colour: "shell", icon: "law", name: "Professional services", lightCorner: true,
+      need: "As careful online as you are in person.",
+      photo: { src: "/images/svc-wordpress-720.webp", srcSet: "/images/svc-wordpress-720.webp 720w, /images/svc-wordpress-1280.webp 1280w", position: "45% 40%" } },
+  ] satisfies Industry[],
+};
+
+/**
+ * FAQ (Graham's "Additional sections"; Revision 85, built for SEO, AEO and GEO). Every
+ * question and full answer is in the HTML, and the same text feeds FAQPage JSON-LD, so
+ * search engines and AI answer engines can quote it. Each answer opens with the direct
+ * answer in its first sentence and names Webleta where it helps a quote stand alone.
+ * Answers repeat what the page already says. UNCONFIRMED: prices (Pricing's placeholders),
+ * ownership, platforms and the Australia-wide service area need Graham's sign-off.
+ */
+export type FaqItem = { id: string; q: string; a: string };
+export const faq = {
+  eyebrow: "FAQ",
+  title: { solid: "Questions,", outline: "answered." },
+  intro: "Straight answers about price, process and what you own. If yours isn't here, ask us.",
+  more: { lead: "Something else on your mind?", label: "Ask us directly" },
+  // Personal names appear only in Reviews (Jasper, 2026-11-16).
+  signature: { name: "The Webleta team", role: "Webleta" },
+  groups: [
+    {
+      id: "cost", title: "Cost",
+      items: [
+        { id: "cost", q: "How much does a website cost?", a: "A new Webleta website starts from $2,400, paid once. You can also pay $190 a month on a subscription that includes updates and hosting. Either way, you see the full price before any work starts." },
+        { id: "monthly", q: "Can I pay monthly?", a: "Yes. The subscription is $190 a month for a new custom site, monthly updates, hosting, backups and a named person to email, with a minimum term of 12 months." },
+        { id: "preview", q: "What is the free preview?", a: "The free preview is a real design of your new homepage, made before you pay anything. Send us your website, and if you like the preview we build the rest. If not, you owe us nothing." },
+      ],
+    },
+    {
+      id: "process", title: "Process",
+      items: [
+        { id: "time", q: "How long does a new website take?", a: "It depends on how many pages you need. You get a launch date with your quote, and the free preview usually comes first." },
+        { id: "start", q: "What do you need from me to start?", a: "Three things: your current website or business name, what you want the new site to win you, and an email to reply to. We plan the rest with you." },
+        { id: "edit", q: "Can I edit the website myself?", a: "Yes. Every project includes training so you can change text, photos and prices yourself. If you'd rather not, we can make changes for you." },
+      ],
+    },
+    {
+      id: "ownership", title: "Ownership and tech",
+      items: [
+        { id: "own", q: "Will I own my website?", a: "Yes. Your domain, your accounts and your files stay in your name." },
+        { id: "platform", q: "What platform do you build websites on?", a: "Webleta builds on WordPress when you want to edit the site yourself, and on Next.js or Astro when speed matters most. We recommend one when we quote." },
+        { id: "seo", q: "Do you do SEO?", a: "Yes. Every site is built with search basics: fast pages, clear structure and metadata. SEO is also a separate service, if you want ongoing work to rank higher." },
+      ],
+    },
+    {
+      id: "agencies", title: "Agencies",
+      items: [
+        { id: "agencies", q: "Do you work with agencies?", a: "Yes. Webleta designs and builds websites for agencies, from overflow tasks to full projects, inside your own process and tools." },
+        { id: "whitelabel", q: "Is agency work white-labelled?", a: "Yes. Your clients see your agency's name on the work, never ours." },
+      ],
+    },
+  ] satisfies { id: string; title: string; items: FaqItem[] }[],
+};
+
 /** Sections after the hero, in the order of Graham's outline. Placeholders for Phase 2+. */
 export const sections: PlaceholderSection[] = [
   {
@@ -834,11 +935,25 @@ export const sections: PlaceholderSection[] = [
     ground: "mist",
   },
   {
+    id: "industries",
+    title: "Industries",
+    intro: "Sites for the industries we've built for.",
+    needs: [],
+    ground: "deep",
+  },
+  {
     id: "pricing",
     title: "Pricing and packages",
     intro: "Pick a package or ask for a quote. Either way, you see the price first.",
     needs: ["Packages, prices and terms from Graham (none confirmed)"],
     ground: "shallows",
+  },
+  {
+    id: "faq",
+    title: "FAQ",
+    intro: "Questions, answered.",
+    needs: [],
+    ground: "white",
   },
   {
     id: "contact",
