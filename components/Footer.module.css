@@ -5,7 +5,7 @@
 .footer {
   position: relative;
   overflow: hidden;
-  padding-top: clamp(56px, 40px + 4vw, 112px);
+  padding-top: clamp(24px, 16px + 2vw, 56px);
   background: #030f1c;
   color: var(--cloud);
 }

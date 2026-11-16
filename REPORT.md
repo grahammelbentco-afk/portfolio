@@ -15,7 +15,19 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revisions 78–80: logo carousel, rotating reviews, footer without a CTA (latest)
+## Revision 81: shorter Pricing cards, Contact photo removed (latest; approved by Jasper: "push it")
+
+- **Ask (Jasper):** the Pricing cards are still too tall, and the footer part looks off ("maybe remove the image").
+- **Pricing:**
+  - Card padding is 20–28px (was 24–36px), with tighter gaps.
+  - The price is set smaller (side plans up to 3.25rem; featured up to 4.25rem).
+  - The featured photo band is 16:4 (was 16:8), and the featured plan's features run in two columns on desktop.
+  - About 100px shorter at 1440.
+- **Contact:** the `cta-shop` photo is removed. It sat right above the footer and crowded the join. The copy column is now vertically centred against the form.
+- **Footer:** top padding reduced (24–56px), so the wordmark follows Contact's fade closely.
+- **QA:** `qa/qa.py` 150/150.
+
+## Revisions 78–80: logo carousel, rotating reviews, footer without a CTA (pushed: `9ec597d`)
 
 - **78, Clients (Jasper: "full width carousel of logos, light themed"):**
   - The logo wall is now a full-browser-width loop on white: one row drawn twice, with the copy hidden from screen readers, moving 50% every 48s and fading at both edges.
