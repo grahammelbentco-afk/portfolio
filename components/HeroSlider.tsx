@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./HeroSlider.module.css";
 
-export type Card = { src: string; label: string; alt?: string };
+export type Card = { src: string; label: string; alt?: string; video?: { src: string; poster: string } };
 type Slot = React.CSSProperties;
 
 /**
@@ -42,6 +42,14 @@ export function Track({
   const { active } = pos;
   const step = (d: number) => setPos((s) => ({ active: s.active + d, prev: s.active }));
   const paused = useRef(false);
+  // Card videos play only when motion is allowed; otherwise they stay on their poster frame.
+  const trackRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+    trackRef.current?.querySelectorAll("video").forEach((v) => {
+      v.play().catch(() => {});
+    });
+  }, []);
 
   useEffect(() => {
     if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
@@ -56,6 +64,7 @@ export function Track({
 
   return (
     <div
+      ref={trackRef}
       className={styles.track}
       onPointerEnter={() => (paused.current = true)}
       onPointerLeave={() => (paused.current = false)}
@@ -81,7 +90,21 @@ export function Track({
               aria-hidden={typeof now !== "number"}
               style={style}
             >
-              <img src={card.src} alt={typeof now === "number" ? (card.alt ?? "") : ""} decoding="async" />
+              {card.video ? (
+                // Decorative looping clip; the caption names the card. Muted inline autoplay;
+                // under reduced motion it stays on the poster frame (see the effect above).
+                <video
+                  src={card.video.src}
+                  poster={card.video.poster}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-hidden="true"
+                />
+              ) : (
+                <img src={card.src} alt={typeof now === "number" ? (card.alt ?? "") : ""} decoding="async" />
+              )}
               <figcaption>{card.label}</figcaption>
             </figure>
           );

@@ -67,7 +67,12 @@ export default function Hero({ visual, id = "top" }: { visual?: React.ReactNode;
           <div data-intro="card">
             {visual ?? (
               <Track
-                cards={hero.cards.map((c) => ({ src: c.image.src, label: c.label, alt: c.image.alt }))}
+                cards={hero.cards.map((c) => ({
+                  src: c.image.src,
+                  label: c.label,
+                  alt: c.image.alt,
+                  video: c.video,
+                }))}
                 slots={DESCENDING.slots}
                 leave={DESCENDING.leave}
                 enter={DESCENDING.enter}

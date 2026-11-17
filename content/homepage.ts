@@ -11,7 +11,8 @@ export type Link = { label: string; href: string };
 
 export type HeroImage = { src: string; srcSet: string; width: number; height: number; alt: string };
 
-export type HeroCard = { label: string; image: HeroImage };
+/** `video`: optional looping clip shown instead of the image (poster = its first frame). */
+export type HeroCard = { label: string; image: HeroImage; video?: { src: string; poster: string } };
 
 export type Audience = {
   id: string;
@@ -122,6 +123,10 @@ export const hero = {
   cards: [
     {
       label: "Design",
+      // Design V4 (2026-11-18): Seedance 2.5 Flash video edit, fal request 01a1ea67-f4ae-74d3-a443-de15e8833601.
+      // Approved by Jasper for staging (2026-11-18). Note: the Ground Control logo and small text on screen are
+      // AI-rendered (garbled up close); the headline "Design. Build. Install." is correct.
+      video: { src: "/videos/hero-design-v4.mp4", poster: "/images/hero-design-v4-poster.webp" },
       image: {
         src: "/images/card-design-1280.webp",
         srcSet: "/images/card-design-720.webp 720w, /images/card-design-1280.webp 1280w",

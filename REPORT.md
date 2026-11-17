@@ -15,7 +15,20 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 92: bigger, responsive hero slider; arrows outside; team titles (latest; approved by Jasper: "push", 2026-11-17)
+## Revision 93: Design hero card plays the V4 video (latest; approved by Jasper: "push it", 2026-11-18)
+
+- **Approval:** provisional, staging only. Graham's feedback is pending.
+- **Changes:** the hero slider's Design card now plays a 4.71 s looping video instead of the still photo: a designer at our office editing the real Ground Control site in Figma ("Build" in the headline turns orange as he clicks). Muted, inline, `preload="metadata"`, poster = first frame; decorative (`aria-hidden`, the card caption names it); under `prefers-reduced-motion` it stays on the poster. `HeroCard`/`Card` gained an optional `video`; Market and Conversion are unchanged. Files: `public/videos/hero-design-v4.mp4` (657 KB, H.264, faststart), `public/images/hero-design-v4-poster.webp` (39 KB).
+- **How the video was made:** Seedance 2.5 Flash on fal. V3 (reference-to-video, request `01a1ea3d-414f-7a40-9e03-d53b08b6c837`, est. $1.51) gave the designer, office and hand action; V4 (video editing of V3 with Jasper's Figma screen recording as reference, request `01a1ea67-f4ae-74d3-a443-de15e8833601`, run in the fal web UI, **$2.54**) replaced the monitor content. Full process, prompts and QA: `Hero-Video-Production/Design/PRODUCTION_LOG.md`.
+- **References:** Jasper's Ground Control Figma recording (GCS file, a real client project), our office photo (debranded), the Webtec hero video for pacing and fixed-camera feel only.
+- **Skills and tools actually used:** `seedance` skill (prompt structure, editing wording), `ai-realism` (editing-master wording only), fal MCP (schema, pricing, V3 job), fal web playground via Claude in Chrome (V4), ffmpeg (`imageio-ffmpeg`) for faststart remux, poster and reference crop, OpenCV for QA measurements, Playwright for the hero check.
+- **QA:** `qa/qa.py` 150/150. `npm run lint`: 1 error, pre-existing on `509740f` (`components/RequestForm.tsx` line 53, `react-hooks/set-state-in-effect`), not touched here. Typecheck and build pass. In the browser both video copies load and play (readyState 4); reduced motion keeps them paused on the poster.
+- **Known limits:** the on-screen Ground Control logo, nav and small copy are AI-rendered and garbled up close (unreadable at card size); the colour change lands about 1 s before the click; the loop end state differs slightly from the start (small jump on restart, no blend applied).
+- **What worked:** Seedance video editing with the raw clip as `@Video1` master and the cropped Figma recording as `@Video2` gave one seamless shot that reads as real design work at card size, without manual compositing.
+- **What didn't:** manual Figma compositing (V2/V3) worked technically but read less naturally; V1 (camera push-in) and the V2 plate (small monitor) were rejected.
+- **Lessons:** frame the AI shot for the card size (the monitor must fill most of the width); check the endpoint's own prompting guide and fields before spending; crop private UI out of a screen recording before uploading it; large text survives a video edit, small text and logos don't.
+
+## Revision 92: bigger, responsive hero slider; arrows outside; team titles (approved by Jasper: "push", 2026-11-17; pushed `509740f`, Cloudflare check succeeded)
 
 - **Approval:** provisional, staging only. Graham's feedback is pending.
 - **Slider size:** fills the whole right half at every width (was capped at 620/760px), its height capped by the screen so it never runs past the fold. Measured stage: 840 x 700 at 2560 x 1300, 682 x 568 at 2000 x 800 (height-limited), 606 x 505 at 1440, 408 x 340 at 1024.
