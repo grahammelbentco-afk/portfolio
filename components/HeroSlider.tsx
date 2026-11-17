@@ -42,22 +42,83 @@ export function Track({
   const { active } = pos;
   const step = (d: number) => setPos((s) => ({ active: s.active + d, prev: s.active }));
   const paused = useRef(false);
-  // Card videos play only when motion is allowed; otherwise they stay on their poster frame.
   const trackRef = useRef<HTMLDivElement>(null);
+
+  // Revision 94: a card video plays once, from the start, only while its card is the front
+  // (first, largest) slot, and the slider waits for it to finish before stepping on. On the
+  // smaller slots it shows its first frame. Seeking or starting a video makes the browser decode
+  // it, which drops frames if it lands mid-glide, so videos are only paused at the step (cheap);
+  // the front one starts, and a copy that has left is rewound, once the 900ms glide is over
+  // (the leaving copy has faded out by then). Under reduced motion nothing plays or advances.
+  // Tell the hero which card is in front (index into `cards`), so the rotating headline can
+  // follow the slider (HeroRotator listens). Bubbles from the track, so each hero only hears
+  // its own slider.
   useEffect(() => {
-    if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
-    trackRef.current?.querySelectorAll("video").forEach((v) => {
-      v.play().catch(() => {});
-    });
-  }, []);
+    const front = (((active % n) + n) % n) % cards.length;
+    trackRef.current?.dispatchEvent(new CustomEvent("hero:front", { bubbles: true, detail: front }));
+  }, [active, n, cards.length]);
 
   useEffect(() => {
-    if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
-    const id = window.setInterval(() => {
-      if (!paused.current && !document.hidden) setPos((s) => ({ active: s.active + 1, prev: s.active }));
-    }, every);
-    return () => window.clearInterval(id);
-  }, [every]);
+    const motion = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+    const figs = [...(trackRef.current?.querySelectorAll("figure") ?? [])];
+    const withVideo = figs
+      .map((fig) => ({ fig, v: fig.querySelector("video") }))
+      .filter((x): x is { fig: HTMLElement; v: HTMLVideoElement } => !!x.v);
+    const frontEntry = motion ? withVideo.find(({ fig }) => fig.hasAttribute("data-front")) : undefined;
+    withVideo.forEach(({ v }) => {
+      if (v !== frontEntry?.v) v.pause();
+    });
+    if (!motion) return;
+
+    // Step on when the time is up (or the front video has ended) and the slider isn't hovered.
+    let timer = 0;
+    const advance = () => {
+      if (paused.current || document.hidden) timer = window.setTimeout(advance, 400);
+      else setPos((s) => ({ active: s.active + 1, prev: s.active }));
+    };
+
+    let cleanupVideo = () => {};
+    const settle = window.setTimeout(() => {
+      withVideo.forEach(({ fig, v }) => {
+        if (fig.getAttribute("aria-hidden") === "true" && v.currentTime > 0) v.currentTime = 0;
+      });
+      if (frontEntry) cleanupVideo = playFront(frontEntry.v);
+    }, 900);
+
+    const playFront = (video: HTMLVideoElement) => {
+      if (video.ended || video.currentTime > 0) video.currentTime = 0;
+      video.play().catch(() => {});
+      const held = () => paused.current || document.hidden;
+      // When the clip ends: step on, or, while the slider is held (hover, focus, hidden tab),
+      // replay it so the front card never sits frozen on its last frame.
+      const onEnded = () => {
+        if (held()) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+          return;
+        }
+        window.clearTimeout(timer);
+        advance();
+      };
+      // Fallback in case the clip is stuck (decode error, blocked autoplay): step on if it isn't
+      // playing; while it plays, keep checking.
+      const ms = Number.isFinite(video.duration) && video.duration > 0 ? video.duration * 1000 : 6000;
+      const check = () => {
+        if (!video.paused || held()) timer = window.setTimeout(check, 1000);
+        else advance();
+      };
+      timer = window.setTimeout(check, Math.max(every, ms + 1500));
+      video.addEventListener("ended", onEnded);
+      return () => video.removeEventListener("ended", onEnded);
+    };
+
+    if (!frontEntry) timer = window.setTimeout(advance, every);
+    return () => {
+      window.clearTimeout(settle);
+      window.clearTimeout(timer);
+      cleanupVideo();
+    };
+  }, [active, every]);
 
   const kind = (q: number) => (q < k ? q : q === n - 1 ? "leave" : "enter");
   const mod = (x: number) => ((x % n) + n) % n;
@@ -87,17 +148,17 @@ export function Track({
               key={i}
               className={styles.card}
               data-jump={jump ? "" : undefined}
+              data-front={now === 0 ? "" : undefined}
               aria-hidden={typeof now !== "number"}
               style={style}
             >
               {card.video ? (
-                // Decorative looping clip; the caption names the card. Muted inline autoplay;
-                // under reduced motion it stays on the poster frame (see the effect above).
+                // Decorative clip; the caption names the card. Muted and inline; it plays once on
+                // the front slot and otherwise shows its first frame (see the effect above).
                 <video
                   src={card.video.src}
                   poster={card.video.poster}
                   muted
-                  loop
                   playsInline
                   preload="metadata"
                   aria-hidden="true"

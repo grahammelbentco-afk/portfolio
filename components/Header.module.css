@@ -188,7 +188,7 @@
   top: 50%;
   width: 6px;
   height: 10px;
-  fill: var(--aqua);
+  fill: var(--seafoam); /* Revision 94 (Jasper): Seafoam like the logo spark, was Aqua */
   opacity: 0;
   transform: translate(-4px, -50%) rotate(-24deg) scale(0.4);
   transition:

@@ -26,7 +26,9 @@
 }
 
 /* Every card glides between slots on the Transitions.dev smooth-out curve. A spare jumping
-   between the two off-stage positions moves with no transition. */
+   between the two off-stage positions moves with no transition. Layouts on /hero-options still
+   use left/top/width/height and this transition list (plus their own inline transform);
+   transform-only slots (heroSliderLayouts.ts) set their own transform and transition inline. */
 .card {
   position: absolute;
   margin: 0;
@@ -43,8 +45,9 @@
     opacity 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.card[data-jump] {
-  transition: none;
+.card[data-jump],
+.card[data-jump] figcaption {
+  transition: none !important; /* beats the inline transition of transform-only slots */
 }
 
 .card img,
@@ -55,10 +58,16 @@
   object-fit: cover;
 }
 
+/* The caption sits 12px in from the bottom-left and keeps its size however the card is scaled:
+   it is placed at the corner and counter-scaled by --cap, which transform-only slots set (other
+   layouts fall back to a plain 12px inset). It glides on the same curve as the card. */
 .card figcaption {
   position: absolute;
-  left: 12px;
-  bottom: 12px;
+  left: 0;
+  bottom: 0;
+  transform-origin: 0 100%;
+  transform: var(--cap, translate(12px, -12px));
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
   padding: 5px 12px;
   border-radius: var(--r-pill);
   background: var(--shallows);
@@ -68,8 +77,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card {
-    transition: none;
+  .card,
+  .card figcaption {
+    transition: none !important;
   }
 }
 

@@ -98,6 +98,38 @@ function SubtleGrain() {
   return null;
 }
 
+/**
+ * Revision 94: render the Halo at a fixed 30 frames a second instead of on every display
+ * refresh (up to 180 a second on fast screens). Its motion is very slow (uSpeed 0.25), so 30fps
+ * looks the same, but the full-screen scene plus the grain pass were taking most of the GPU and
+ * made the hero slider's glide judder. The loop is switched to "never" and advanced by hand;
+ * in that mode three's clock takes the timestamp in seconds.
+ */
+function FrameCap({ fps = 30 }: { fps?: number }) {
+  const setFrameloop = useThree((s) => s.setFrameloop);
+  const advance = useThree((s) => s.advance);
+
+  useEffect(() => {
+    setFrameloop("never");
+    const step = 1000 / fps;
+    let raf = 0;
+    let last = -Infinity;
+    const loop = (t: number) => {
+      raf = requestAnimationFrame(loop);
+      if (t - last < step - 2) return;
+      last = t;
+      advance(t / 1000);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(raf);
+      setFrameloop("always");
+    };
+  }, [fps, setFrameloop, advance]);
+
+  return null;
+}
+
 export default function ShaderHalo({ playing }: { playing: boolean }) {
   return (
     <ShaderGradientCanvas
@@ -111,6 +143,7 @@ export default function ShaderHalo({ playing }: { playing: boolean }) {
     >
       <ShaderGradient {...HALO} control="props" animate={playing ? "on" : "off"} />
       <SubtleGrain />
+      <FrameCap />
     </ShaderGradientCanvas>
   );
 }

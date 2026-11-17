@@ -20,6 +20,8 @@ const TYPES = {
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
   ".webmanifest": "application/manifest+json",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
 };
 
 async function resolveFile(urlPath) {
@@ -42,7 +44,29 @@ createServer(async (req, res) => {
     res.writeHead(404).end("Not found");
     return;
   }
-  res.writeHead(status, { "Content-Type": TYPES[extname(file)] ?? "application/octet-stream" });
+  const type = TYPES[extname(file)] ?? "application/octet-stream";
+  // Byte ranges, so the browser can seek videos (Cloudflare Pages does this on staging).
+  const { size } = await stat(file);
+  const range = status === 200 && /^bytes=(\d*)-(\d*)$/.exec(req.headers.range ?? "");
+  if (range && (range[1] || range[2])) {
+    let start = range[1] ? Number(range[1]) : size - Number(range[2]);
+    let end = range[1] && range[2] ? Number(range[2]) : size - 1;
+    start = Math.max(0, start);
+    end = Math.min(end, size - 1);
+    if (start > end) {
+      res.writeHead(416, { "Content-Range": `bytes */${size}` }).end();
+      return;
+    }
+    res.writeHead(206, {
+      "Content-Type": type,
+      "Accept-Ranges": "bytes",
+      "Content-Range": `bytes ${start}-${end}/${size}`,
+      "Content-Length": end - start + 1,
+    });
+    createReadStream(file, { start, end }).pipe(res);
+    return;
+  }
+  res.writeHead(status, { "Content-Type": type, "Accept-Ranges": "bytes", "Content-Length": size });
   createReadStream(file).pipe(res);
 }).listen(PORT, "127.0.0.1", 511, () => {
   console.log(`Serving out/ at http://127.0.0.1:${PORT}/`);
