@@ -15,7 +15,18 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 89: three-line hero headline, About marker, spacing, links and photo (latest; approved by Jasper: "push it", 2026-11-17)
+## Revision 90: hero options page (latest; approved by Jasper: "push it", 2026-11-17)
+
+- **Approval:** provisional, staging only. Graham's feedback is pending. The page is for choosing a hero; it is not linked from the homepage.
+- **Ask (Jasper):** the same hero with different right-hand concepts to choose from (four reference sites and four wireframes); looping sliders with smooth transitions; only the three hero cards (videos later); quiet navigation arrows on hover.
+- **Built:** `/hero-options/`, eight copies of the real homepage hero (`Hero` gained optional `visual` and `id` props; the homepage uses the defaults). One slider engine (`app/hero-options/Track.tsx`): the three cards are repeated so a spare is always off stage; each step every card glides to the next slot (0.9s, Transitions.dev smooth-out `cubic-bezier(0.22, 1, 0.36, 1)`), one leaves and one enters, so the loop never jumps. Auto-advances, pauses on hover or focus, still under reduced motion. Arrows are low-contrast circles that fade in on hover (tooltip timing).
+- **Concepts:** 1 Arc row, 2 Curved wall (concave 3D), 3 Coverflow, 4 Deck, 5 Three centre tall, 6 Centre overlap, 7 Descending, 8 Bento.
+- **Also committed:** the About photo and link-row fixes made after Revision 89 (link row on the facts grid, faces re-matched).
+- **Skills and tools actually used:** transitions-dev motion tokens, Playwright screenshots, fal (one About face edit, about $0.30).
+- **QA:** `qa/qa.py` 150/150; the options page builds into the static export and loads with no errors or overflow at 1440 and 390.
+- **What didn't work:** a first version of the options page (generic copy, crossfading images) missed the brief; the user wanted the real hero and moving sliders. A heredoc with nested quotes failed in the shell; writing files directly was more reliable.
+
+## Revision 89: three-line hero headline, About marker, spacing, links and photo ( approved by Jasper: "push it", 2026-11-17; pushed `c41aa05`, Cloudflare check succeeded)
 
 - **Approval:** provisional, staging only. Graham's feedback is pending.
 - **Hero headline:** three lines, like Jasper's reference: "Your business / deserves a / digital presence." The small word after "deserves" and the gradient last line swap together: "a / digital presence.", "to / stand out.", "to / get more leads." The small word only animates when it changes. Type is 85px at 1440 (`min(var(--fs-display), 13cqi)`); measured clear of the cards and the screen edge at 390, 768, 1440 and 2080. Screen readers get one full sentence.

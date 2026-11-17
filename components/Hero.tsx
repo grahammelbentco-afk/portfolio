@@ -8,16 +8,21 @@ import HeroRotator from "./HeroRotator";
 import ServiceSwitch from "./ServiceSwitch";
 import styles from "./Hero.module.css";
 
-export default function Hero() {
+/**
+ * The homepage hero. `visual` and `id` are for /hero-options (Revision 90), which shows the same
+ * hero with a different right-hand visual; the homepage uses the defaults.
+ */
+export default function Hero({ visual, id = "top" }: { visual?: React.ReactNode; id?: string } = {}) {
   const { headline } = hero;
+  const titleId = id === "top" ? "hero-title" : `${id}-title`;
 
   return (
-    <HeroMotion className={styles.hero} labelledBy="hero-title">
+    <HeroMotion className={styles.hero} labelledBy={titleId} id={id}>
       <HeroGradient />
 
       <div className={`container ${styles.layout}`}>
         <div className={styles.copy}>
-          <h1 id="hero-title" className={styles.title}>
+          <h1 id={titleId} className={styles.title}>
             <span className="sr-only">{headline.spoken}</span>
             <span aria-hidden="true">
               <span className={styles.line} data-intro="line">
@@ -54,7 +59,10 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Graham's three cards, staggered: Design, Market (offset right), Conversion. */}
+        {visual ? (
+          <div className={styles.visual}>{visual}</div>
+        ) : (
+        /* Graham's three cards, staggered: Design, Market (offset right), Conversion. */
         <div className={styles.visual}>
           <HeroDecor />
           <ul className={styles.cards}>
@@ -77,6 +85,7 @@ export default function Hero() {
             ))}
           </ul>
         </div>
+        )}
       </div>
 
       <StatsRail />

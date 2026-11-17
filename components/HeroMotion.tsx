@@ -16,10 +16,12 @@ export default function HeroMotion({
   children,
   className,
   labelledBy,
+  id = "top",
 }: {
   children: React.ReactNode;
   className?: string;
   labelledBy: string;
+  id?: string;
 }) {
   const root = useRef<HTMLElement>(null);
 
@@ -69,7 +71,7 @@ export default function HeroMotion({
   );
 
   return (
-    <section ref={root} id="top" className={className} aria-labelledby={labelledBy} data-ground="dark">
+    <section ref={root} id={id} className={className} aria-labelledby={labelledBy} data-ground="dark">
       {children}
     </section>
   );
