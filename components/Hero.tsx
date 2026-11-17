@@ -10,7 +10,6 @@ import styles from "./Hero.module.css";
 
 export default function Hero() {
   const { headline } = hero;
-  const [before, after] = headline.first.split(headline.highlight);
 
   return (
     <HeroMotion className={styles.hero} labelledBy="hero-title">
@@ -19,14 +18,12 @@ export default function Hero() {
       <div className={`container ${styles.layout}`}>
         <div className={styles.copy}>
           <h1 id="hero-title" className={styles.title}>
-            <span className={`${styles.line} ${styles.lineWrap}`} data-intro="line">
-              {before}
-              <span className={`${styles.highlight} text-gradient`}>{headline.highlight}</span>
-              {after}
-            </span>{" "}
             <span className="sr-only">{headline.spoken}</span>
-            <span className={styles.line} data-intro="line">
-              <HeroRotator phrases={headline.rotating} />
+            <span aria-hidden="true">
+              <span className={styles.line} data-intro="line">
+                {headline.first}
+              </span>
+              <HeroRotator second={headline.second} phrases={headline.rotating} />
             </span>
           </h1>
 

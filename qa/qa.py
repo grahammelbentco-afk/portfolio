@@ -89,7 +89,7 @@ with sync_playwright() as p:
         check(f"{name}: containers max 1920px, centred", not widths["bad"], f"widest {widths['max']}px")
 
         hero_h1 = page.evaluate("(() => { const r = document.querySelector('h1').getBoundingClientRect(); return [r.height, parseFloat(getComputedStyle(document.querySelector('h1')).fontSize)]; })()")
-        # Revision 88: the sentence wraps to two lines and the swapping phrase adds a third.
+        # Revision 89: "Your business / deserves a / digital presence.", three lines.
         check(f"{name}: hero h1 on three lines", hero_h1[1] * 2.2 < hero_h1[0] < hero_h1[1] * 3.2, f"font-size {round(hero_h1[1], 1)}px, height {round(hero_h1[0])}px")
 
         pills = page.evaluate("[...document.querySelectorAll('.btn')].filter(b => b.offsetParent).map(b => getComputedStyle(b).borderTopLeftRadius)")
@@ -227,8 +227,8 @@ with sync_playwright() as p:
     cls = page.evaluate("window.__cls")
     lcp = page.evaluate("window.__lcp")
     check("layout: cumulative layout shift < 0.1", cls < 0.1, f"CLS {cls:.4f}, LCP {lcp:.0f} ms (local server)")
-    hl = page.evaluate("(() => { const h = document.querySelector('h1 [class*=highlight]'); const cs = getComputedStyle(h); return [h.textContent, cs.backgroundImage.slice(0, 30), cs.webkitBackgroundClip || cs.backgroundClip]; })()")
-    check("headline: gradient on 'digital presence' only", hl[0] == "digital presence" and "gradient" in hl[1] and hl[2] == "text", str(hl))
+    hl = page.evaluate("(() => { const h = document.querySelector('h1 [class*=highlight][data-state=in]'); const cs = getComputedStyle(h); return [h.textContent, cs.backgroundImage.slice(0, 30), cs.webkitBackgroundClip || cs.backgroundClip]; })()")
+    check("headline: gradient on the swapping phrase", hl[0] in ("digital presence.", "stand out.", "get more leads.") and "gradient" in hl[1] and hl[2] == "text", str(hl))
     check("headline: no underline arc", page.locator("h1 svg").count() == 0)
     text = page.evaluate("document.body.innerText")
     banned = ["Open", "Sample", "Not connected", "Placeholder", "placeholder", "to be confirmed", "Generated image", "for illustration", "Not the live site", "Needed before", "Graham to", "Graham's approval", "awaiting Graham"]

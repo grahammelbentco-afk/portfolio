@@ -15,7 +15,18 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revisions 87–88: site-wide motion, colour, a red section, team faces, Hero and About (latest; approved by Jasper: "push it", 2026-11-17)
+## Revision 89: three-line hero headline, About marker, spacing, links and photo (latest; approved by Jasper: "push it", 2026-11-17)
+
+- **Approval:** provisional, staging only. Graham's feedback is pending.
+- **Hero headline:** three lines, like Jasper's reference: "Your business / deserves a / digital presence." The small word after "deserves" and the gradient last line swap together: "a / digital presence.", "to / stand out.", "to / get more leads." The small word only animates when it changes. Type is 85px at 1440 (`min(var(--fs-display), 13cqi)`); measured clear of the cards and the screen edge at 390, 768, 1440 and 2080. Screen readers get one full sentence.
+- **About marker:** the Seafoam highlighter under "local businesses" and "agencies" draws in left to right on scroll, just behind the letter fill (same CSS view timeline; still in browsers without scroll timelines and under reduced motion).
+- **About spacing:** the gap between the statement and the story row is 74px (was about 200px).
+- **About links:** one row on the same three columns as Where / How / Care: "See the work →", "Meet our technical head ↗" (to #contact until Jasper has a personal site, UNCONFIRMED), "Meet our manager ↗" (webleta.com, new tab). Stacked on phones.
+- **About photo:** the poster photo from Alpine Mar was tried and rejected by Jasper (file kept). The AI team image is back, re-edited with fal so both faces match the real photos more closely, with neutral, closed-mouth expressions (`about-team-real-b`, about $0.30; fal total today about $1.65).
+- **QA:** `qa/qa.py` 150/150 (checks updated for the three-line headline and the new gradient phrases). tsc clean.
+- **Lesson:** a blocked command saved uncommitted work: never use `git checkout -- <file>` to undo one change in a file that holds other unsaved edits; edit the block instead.
+
+## Revisions 87–88: site-wide motion, colour, a red section, team faces, Hero and About ( approved by Jasper: "push it", 2026-11-17; pushed `ca2470f`, Cloudflare check succeeded)
 
 - **Approval:** provisional, staging only. Graham's feedback is pending; Graham asked (through Jasper) for a better angle of himself in the About photo, which led to the final swapped version.
 - **Revision 87, site-wide (Jasper's global notes):**

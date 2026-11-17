@@ -43,7 +43,20 @@ export default function About() {
           {parts.map((part, i) => (
             <Fragment key={i}>
               {part.lead && " "}
-              <span className={part.marked ? styles.mark : undefined}>
+              {/* Marked phrases carry where their letters start and end in the sentence, so
+                  the marker can draw across them just behind the fill (Revision 89). */}
+              <span
+                className={part.marked ? styles.mark : undefined}
+                style={
+                  part.marked
+                    ? ({
+                        "--ps": (n / total).toFixed(4),
+                        "--pe": ((n + part.words.join("").length - 1) / total).toFixed(4),
+                      } as React.CSSProperties)
+                    : undefined
+                }
+                data-about-mark={part.marked ? "" : undefined}
+              >
                 {part.words.map((word, j) => (
                   <Fragment key={j}>
                     {j > 0 && " "}
@@ -72,8 +85,8 @@ export default function About() {
               </clipPath>
             </defs>
             <g clipPath="url(#about-arc-crop)">
-              {/* Revision 88: placed for the two-person photo (4:5) so both faces sit inside the
-                  arc, left of the diagonal cut. Re-check these numbers if the photo changes. */}
+              {/* Placed for the two-person photo (4:5) so both faces sit inside the arc, left of
+                  the diagonal cut. Re-check these numbers if the photo changes. */}
               <image
                 className={styles.photo}
                 href={about.image.src}
@@ -116,26 +129,30 @@ export default function About() {
             ))}
           </dl>
 
-          <a className={styles.link} href={about.link.href}>
-            {about.link.label}
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
+          {/* Revision 89: one bottom row. "See the work" leads; the two people links sit on the
+              right, quiet text with a small arrow, so they don't compete with it. */}
+          <div className={styles.actions}>
+            <a className={styles.link} href={about.link.href}>
+              {about.link.label}
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
 
-          {/* Revision 88: plain text links to our own sites, deliberately low-key. */}
-          <ul className={styles.people}>
-            {about.people
-              .filter((p) => p.href)
-              .map((p) => (
+            <ul className={styles.people}>
+              {about.people.map((p) => (
                 <li key={p.label}>
-                  <a href={p.href ?? undefined} target="_blank" rel="noopener">
+                  <a href={p.href} {...(p.external ? { target: "_blank", rel: "noopener" } : {})}>
                     {p.label}
-                    <span className="sr-only"> (opens in a new tab)</span>
+                    <svg viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M5 11l6-6M6 5h5v5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    {p.external && <span className="sr-only"> (opens in a new tab)</span>}
                   </a>
                 </li>
               ))}
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </section>

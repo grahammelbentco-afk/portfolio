@@ -258,8 +258,11 @@ a.socialItem:hover {
 /* ---- Revision 88: new headline ----
    The first line is longer now, so it may wrap (balanced) and the type steps down a little.
    The second line swaps three phrases in one grid cell (see HeroRotator.tsx). */
+/* Revision 89: three short lines ("Your business / deserves a / digital presence."), so the
+   type is set big again, like Jasper's reference; 13cqi keeps "digital presence." inside the
+   copy column. */
 .title {
-  font-size: min(calc(var(--fs-display) * 0.82), 10cqi);
+  font-size: min(var(--fs-display), 13cqi);
 }
 
 .lineWrap {

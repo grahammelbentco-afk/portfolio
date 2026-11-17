@@ -91,16 +91,17 @@ export const hero = {
   // Revision 88 (Jasper/Graham's hero notes, 2026-11-17): new headline and lede. The second
   // line swaps between three phrases; `outline` is drawn outline-only, `rest` solid. Screen
   // readers get `spoken` once instead of the swapping line.
+  // Revision 89 (Jasper): three lines, "Your business / deserves a / digital presence."
+  // The small word after "deserves" (`lead`) and the last line (`rest`) swap together.
   headline: {
-    first: "Your business deserves a digital presence.",
-    highlight: "digital presence",
-    // Phrases updated 2026-11-17 (Jasper). Sentence case, like the first line.
+    first: "Your business",
+    second: "deserves",
     rotating: [
-      { outline: "Stand", rest: " out online." },
-      { outline: "Get", rest: " more leads." },
-      { outline: "Grow", rest: " your business." },
+      { lead: "a", rest: "digital presence." },
+      { lead: "to", rest: "stand out." },
+      { lead: "to", rest: "get more leads." },
     ],
-    spoken: "Stand out online, get more leads, and grow your business.",
+    spoken: "Your business deserves a digital presence, to stand out, and to get more leads.",
   },
   // Graham's note as written; only "tailored to" is replaced (Jasper, 2026-11-17).
   lede: "We help businesses build a strong online presence with websites designed around their goals, their needs, and the way they want to grow.",
@@ -243,17 +244,22 @@ export const about = {
   ],
   link: { label: "See the work", href: "#work" },
   // Revision 88 (Jasper): quiet text links to our own sites, here instead of the footer.
-  // A link with href null is not shown. Jasper has no personal site yet. Graham's portfolio
-  // is webleta.com today; once this site replaces it there, this link needs a new target.
+  // Both always show (Jasper, Revision 89). UNCONFIRMED: Jasper has no personal site yet, so
+  // his link goes to the contact section; set `href` to his site when it exists (`external`
+  // true). Graham's portfolio is webleta.com today; once this site replaces it there, this
+  // link needs a new target.
   people: [
-    { label: "Meet our technical head", href: null as string | null },
-    { label: "Meet our manager", href: "https://webleta.com/" as string | null },
+    { label: "Meet our technical head", href: "#contact", external: false },
+    { label: "Meet our manager", href: "https://webleta.com/", external: true },
   ],
   // Revision 88 (Jasper): an AI image of Jasper and Graham working together, made at his
   // request from their own photos, in an office from Jasper's photo with its signage removed
   // (fal nano-banana-pro edit, 2026-11-17; manifest:
   // Webleta-AI-Generated-Images/manifest-2026-11-17-jasper.csv). The nursery photo it
   // replaces is kept at /images/about-nursery-*.webp.
+  // Revision 89: back to the AI team image (Jasper preferred it over the poster photo, which
+  // stays at /images/about-office-733.webp), with both faces re-matched to the real photos and
+  // neutral, closed-mouth expressions (manifest: about-team-real-b).
   image: {
     src: "/images/about-team-1200.webp",
     width: 1200,

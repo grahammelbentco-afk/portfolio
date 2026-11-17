@@ -309,31 +309,6 @@
 }
 
 /* ---- Revision 88 ---- */
-/* Quiet links to our own sites: small, slate, underline on hover only. */
-.people {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 24px;
-  margin-top: calc(var(--s-1) * -1);
-}
-
-.people a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--wet-slate);
-  font-size: var(--fs-small);
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 4px;
-  transition: color var(--dur-fast) ease, text-decoration-color var(--dur-fast) ease;
-}
-
-.people a:hover {
-  color: var(--deep-water);
-  text-decoration-color: currentColor;
-}
-
 /* The spark keeps moving (Jasper: "make the blue slice moving"). It slides out along the
    24° channel and back, the same gesture as the header logo, slowly, forever. `translate`
    only, so it adds to the scroll-in drift (which owns `transform`). */
@@ -363,5 +338,118 @@
   }
   50% {
     translate: 7.3px 3.3px;
+  }
+}
+
+/* ---- Revision 89 (Jasper: "make the blue slice moving, upon scroll or load") ----
+   The Seafoam marker under "local businesses" and "agencies" draws in left to right as the
+   statement scrolls through, on the same timeline as the letter fill and just behind it
+   (--ps / --pe are where the phrase starts and ends in the sentence, 0 to 1). A phrase that
+   wraps keeps one continuous stroke across its lines. Without scroll timelines, or with
+   reduced motion, the marker is simply there. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .mark {
+      animation: mark-draw linear both;
+      animation-timeline: --about-statement;
+      animation-range-start: cover calc(18% + var(--ps) * 30%);
+      animation-range-end: cover calc(24% + var(--pe) * 30%);
+    }
+  }
+}
+
+@keyframes mark-draw {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+/* Revision 89 (Jasper: "use less space here"): a tighter gap between the statement and the
+   photo and story row (was up to 144px plus a 72px story offset). */
+@media (min-width: 960px) {
+  .grid {
+    row-gap: clamp(40px, 1rem + 2.5vw, 72px);
+  }
+
+  .story {
+    padding-top: clamp(0px, 1.5vw, 24px);
+  }
+}
+
+/* ---- Revision 89: bottom row of links ---- */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-1) var(--s-4);
+  margin-top: var(--s-1);
+}
+
+/* "See the work": the lead link. Underline in Deep Water at rest, arrow slides on hover. */
+.actions .link {
+  margin-top: 0;
+  font-weight: 700;
+  text-decoration-color: var(--seafoam);
+  text-decoration-thickness: 2px;
+}
+
+.people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--s-3);
+}
+
+.people a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--dur-fast) ease;
+}
+
+.people svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.people a:hover {
+  color: var(--deep-water);
+}
+
+.people a:hover svg {
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .people a:hover svg {
+    transform: none;
+  }
+}
+
+/* Revision 89 follow-up (Jasper: "not balanced"): from 600px the links sit on the same three
+   columns as Where / How / Care, one link under each, so the row lines up with the facts. */
+@media (min-width: 600px) {
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  .actions .link {
+    justify-self: start;
+  }
+
+  .people {
+    display: contents;
   }
 }
