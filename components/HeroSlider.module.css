@@ -145,3 +145,28 @@
 .stage {
   clip-path: inset(-30% -60% -30% 0);
 }
+
+/* Revision 92: on desktop the arrows sit outside the cards with a clear 12px gap (the hero
+   column leaves 48px each side). On phones there's no room outside, so they sit just
+   inside the stage edges. */
+@media (min-width: 960px) {
+  .prev {
+    left: auto;
+    right: calc(100% + 12px);
+  }
+
+  .next {
+    right: auto;
+    left: calc(100% + 12px);
+  }
+}
+
+@media (max-width: 959px) {
+  .prev {
+    left: 8px;
+  }
+
+  .next {
+    right: 8px;
+  }
+}

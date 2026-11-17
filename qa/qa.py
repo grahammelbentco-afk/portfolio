@@ -169,8 +169,9 @@ with sync_playwright() as p:
 
     # Hero background, header, headline, stats and trust at 1440.
     def bg_clip(page):
-        # A patch of open background between the copy and the cards.
-        return page.screenshot(clip={"x": 600, "y": 660, "width": 220, "height": 50})
+        # A patch of open background below the hero slider (Revision 92: the slider now reaches
+        # x 768 at 1440, so the old patch at x 600-820 caught card images loading).
+        return page.screenshot(clip={"x": 700, "y": 790, "width": 220, "height": 40})
 
     def max_diff(a, b):
         # Largest per-channel difference; 1-3 levels is compositing noise, not motion.

@@ -308,3 +308,19 @@ a.socialItem:hover {
     transition: none;
   }
 }
+
+/* Revision 92 (Jasper: bigger on big screens, auto-adjusting): the slider fills the whole
+   right half at every width instead of stopping at 620/760px. Its height is capped by the
+   screen height (the stage is 6:5), so it never runs past the fold on short, wide screens.
+   Side padding keeps room for the arrows outside the cards. */
+@media (min-width: 960px) {
+  .visual {
+    /* The column reaches 24px into the grid gap and the page gutter on each side, so the
+       cards stay as big as before at 1440 while the arrows get their own space. */
+    width: calc(100% + 48px);
+    max-width: calc((100svh - var(--header-h) - 160px) * 1.2 + 96px);
+    margin-inline: -24px;
+    justify-self: end;
+    padding-inline: 48px;
+  }
+}

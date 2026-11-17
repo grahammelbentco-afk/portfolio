@@ -15,7 +15,16 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 91: chosen hero slider on the homepage (latest; approved by Jasper: "push it", 2026-11-17)
+## Revision 92: bigger, responsive hero slider; arrows outside; team titles (latest; approved by Jasper: "push", 2026-11-17)
+
+- **Approval:** provisional, staging only. Graham's feedback is pending.
+- **Slider size:** fills the whole right half at every width (was capped at 620/760px), its height capped by the screen so it never runs past the fold. Measured stage: 840 x 700 at 2560 x 1300, 682 x 568 at 2000 x 800 (height-limited), 606 x 505 at 1440, 408 x 340 at 1024.
+- **Arrows:** on desktop outside the cards with a 12px gap (the column reaches 24px into the gap and gutter and keeps 48px padding each side); never over the copy or past the screen edge. On phones they sit just inside the stage edges.
+- **Team titles:** Contact card now "Graham Orprecio, Project Manager" and "Jasper Diaz, Technical Head" (Jasper).
+- **QA:** `qa/qa.py` 150/150. The reduced-motion shader check sampled a patch the bigger slider now covers (it caught card images loading, max diff 32); the patch moved to open background below the slider.
+- **Lesson:** a pixel check's sample area has to move when the layout around it grows.
+
+## Revision 91: chosen hero slider on the homepage ( approved by Jasper: "push it", 2026-11-17; pushed `a98f47b`, Cloudflare check succeeded)
 
 - **Approval:** provisional, staging only. Jasper and Graham chose option 7, "Descending", from `/hero-options/`; Graham's wider feedback is pending.
 - **Changes:** the homepage hero's right side is now the Descending slider (three hero cards stepping down in size, gliding left and growing in a smooth endless loop) instead of the three staggered cards. Spacing: even 3% gaps, all cards centred on one line, room for the arrow on the right; leaving cards are clipped at the column's left edge so they never pass over the copy.

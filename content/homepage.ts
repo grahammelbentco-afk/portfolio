@@ -789,13 +789,13 @@ export const contact = {
   // socials_1_1.webp on webleta.com (Jasper to confirm it's him). Both are cut out, matched in
   // exposure and warmth, and set on one Seafoam backdrop with the same framing. Masters:
   // source-assets/team/ (512px PNG).
-  // Titles (Jasper, 2026-11-17): short and the same length. Both design and develop (the line
+  // Titles (Jasper, 2026-11-17, updated Revision 92): Project Manager and Technical Head. Both design and develop (the line
   // says so); Graham also leads clients and strategy. The line claims no hand-off: true while the team is these two.
   people: {
     line: "We design and develop every project ourselves.",
     members: [
-      { name: "Graham Orprecio", role: "Client lead", photo: "/images/team-graham-256.webp" },
-      { name: "Jasper Diaz", role: "Design lead", photo: "/images/team-jasper-256.webp" },
+      { name: "Graham Orprecio", role: "Project Manager", photo: "/images/team-graham-256.webp" },
+      { name: "Jasper Diaz", role: "Technical Head", photo: "/images/team-jasper-256.webp" },
     ],
   },
   image: { base: "/images/cta-shop", w: 1600, h: 900, alt: "A corner shop at dusk, its windows lit warm against a navy sky." },
