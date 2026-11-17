@@ -3,7 +3,9 @@ import HeroMotion from "./HeroMotion";
 import HeroGradient from "./HeroGradient";
 import SocialIcon from "./SocialIcon";
 import StatsRail from "./StatsRail";
-import HeroDecor from "./HeroDecor";
+import { Track } from "./HeroSlider";
+import { DESCENDING } from "./heroSliderLayouts";
+import slider from "./HeroSlider.module.css";
 import HeroRotator from "./HeroRotator";
 import ServiceSwitch from "./ServiceSwitch";
 import styles from "./Hero.module.css";
@@ -59,33 +61,22 @@ export default function Hero({ visual, id = "top" }: { visual?: React.ReactNode;
           </div>
         </div>
 
-        {visual ? (
-          <div className={styles.visual}>{visual}</div>
-        ) : (
-        /* Graham's three cards, staggered: Design, Market (offset right), Conversion. */
+        {/* Revision 90: the chosen "Descending" slider (three hero cards in a smooth loop).
+            The options page passes its own `visual`. The whole slider fades in with the intro. */}
         <div className={styles.visual}>
-          <HeroDecor />
-          <ul className={styles.cards}>
-            {hero.cards.map((card, i) => (
-              <li key={card.label} className={styles.card} data-card={i}>
-                <figure className={styles.cardInner} data-intro="card">
-                  <img
-                    src={card.image.src}
-                    srcSet={card.image.srcSet}
-                    sizes="(min-width: 960px) 28vw, 62vw"
-                    width={card.image.width}
-                    height={card.image.height}
-                    alt={card.image.alt}
-                    decoding="async"
-                    fetchPriority={i === 0 ? "high" : undefined}
-                  />
-                  <figcaption className={styles.label}>{card.label}</figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
+          <div data-intro="card">
+            {visual ?? (
+              <Track
+                cards={hero.cards.map((c) => ({ src: c.image.src, label: c.label, alt: c.image.alt }))}
+                slots={DESCENDING.slots}
+                leave={DESCENDING.leave}
+                enter={DESCENDING.enter}
+                stage={slider.square}
+                name="Our work, in three pictures"
+              />
+            )}
+          </div>
         </div>
-        )}
       </div>
 
       <StatsRail />

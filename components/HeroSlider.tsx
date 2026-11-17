@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import styles from "./options.module.css";
+import styles from "./HeroSlider.module.css";
 
-export type Card = { src: string; label: string };
+export type Card = { src: string; label: string; alt?: string };
 type Slot = React.CSSProperties;
 
 /**
- * One slider engine for every hero concept (Revision 90). The three hero cards are repeated
+ * The hero slider (Revision 90; the homepage uses the Descending layout, the options page
+ * shows all eight). One engine for every concept. The three hero cards are repeated
  * so there are always spare cards off stage; each step, every card glides to the next slot
  * (Transitions.dev smooth-out curve), the first one leaves and a spare enters, so the loop
  * never jumps. `slots` are the visible positions in order, `leave` and `enter` the off-stage
@@ -80,7 +81,7 @@ export function Track({
               aria-hidden={typeof now !== "number"}
               style={style}
             >
-              <img src={card.src} alt="" decoding="async" />
+              <img src={card.src} alt={typeof now === "number" ? (card.alt ?? "") : ""} decoding="async" />
               <figcaption>{card.label}</figcaption>
             </figure>
           );

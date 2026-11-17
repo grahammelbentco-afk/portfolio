@@ -220,9 +220,10 @@ with sync_playwright() as p:
     check("toggle: preview form picks up the hero website", pre == "smithsplumbing.com.au", pre)
     page.goto(URL)
     settle(page)
-    cards = page.evaluate("[...document.querySelectorAll('[data-card]')].map(c => { const r = c.getBoundingClientRect(); return [c.textContent.trim(), Math.round(r.left), Math.round(r.top)]; })")
-    staggered = len(cards) == 3 and [c[0] for c in cards] == ["Design", "Market", "Conversion"] and cards[1][1] > cards[2][1] > cards[0][1] and cards[0][2] < cards[1][2] < cards[2][2]
-    check("hero: three cards staggered like Graham's outline", staggered, str(cards))
+    # Revision 90: the "Descending" slider. Three cards visible, stepping down in size left to right.
+    cards = page.evaluate("[...document.querySelectorAll('#top [aria-roledescription=carousel] figure:not([aria-hidden=true])')].map(c => { const r = c.getBoundingClientRect(); return [c.textContent.trim(), Math.round(r.left), Math.round(r.height)]; }).sort((a, b) => a[1] - b[1])")
+    descending = len(cards) == 3 and sorted(c[0] for c in cards) == ["Conversion", "Design", "Market"] and cards[0][2] > cards[1][2] > cards[2][2]
+    check("hero: slider shows the three cards, descending in size", descending, str(cards))
     check("network: no requests to other domains", not external, ", ".join(external[:5]))
     cls = page.evaluate("window.__cls")
     lcp = page.evaluate("window.__lcp")

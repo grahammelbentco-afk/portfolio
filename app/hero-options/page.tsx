@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import { hero } from "@/content/homepage";
-import { Track, type Card } from "./Track";
+import { Track, type Card } from "@/components/HeroSlider";
+import slider from "@/components/HeroSlider.module.css";
 import styles from "./options.module.css";
 
 /**
@@ -43,28 +44,28 @@ const flow = (x: number, a: number, extra: S = {}) =>
 const CONCEPTS: { name: string; stage: string; slots: S[]; leave: S; enter: S }[] = [
   {
     name: "Arc row",
-    stage: styles.wide,
+    stage: slider.wide,
     slots: [-2, -1, 0, 1, 2].map((d) => arc(d, { zIndex: 3 - Math.abs(d) })),
     leave: arc(-3, hide),
     enter: arc(3, hide),
   },
   {
     name: "Curved wall",
-    stage: styles.wide,
+    stage: slider.wide,
     slots: [arc0(-44), arc0(0), arc0(44)],
     leave: wall(-88, hide),
     enter: wall(88, hide),
   },
   {
     name: "Coverflow",
-    stage: styles.wide,
+    stage: slider.wide,
     slots: [flow(4, 40, { opacity: 0.55, zIndex: 1 }), flow(32, 0, { zIndex: 3 }), flow(60, -40, { opacity: 0.55, zIndex: 1 })],
     leave: flow(-24, 60, { ...hide, zIndex: 0 }),
     enter: flow(88, -60, { ...hide, zIndex: 0 }),
   },
   {
     name: "Deck",
-    stage: styles.tall,
+    stage: slider.tall,
     slots: [
       box(12, 16, 76, 80, { zIndex: 3 }),
       box(12, 16, 76, 80, { transform: "translateY(-7%) scale(0.92)", opacity: 0.7, zIndex: 2 }),
@@ -75,14 +76,14 @@ const CONCEPTS: { name: string; stage: string; slots: S[]; leave: S; enter: S }[
   },
   {
     name: "Three, centre tall",
-    stage: styles.square,
+    stage: slider.square,
     slots: [box(0, 20, 30, 60), box(35, 4, 30, 92, { zIndex: 2 }), box(70, 20, 30, 60)],
     leave: box(-35, 20, 30, 60, hide),
     enter: box(105, 20, 30, 60, hide),
   },
   {
     name: "Centre overlap",
-    stage: styles.square,
+    stage: slider.square,
     slots: [
       box(0, 18, 36, 64, { opacity: 0.6, zIndex: 1 }),
       box(24, 4, 52, 92, { zIndex: 3 }),
@@ -93,14 +94,14 @@ const CONCEPTS: { name: string; stage: string; slots: S[]; leave: S; enter: S }[
   },
   {
     name: "Descending",
-    stage: styles.square,
+    stage: slider.square,
     slots: [box(0, 6, 40, 88), box(44, 18, 30, 64), box(78, 28, 22, 44)],
     leave: box(-44, 6, 40, 88, hide),
     enter: box(104, 28, 22, 44, hide),
   },
   {
     name: "Bento",
-    stage: styles.square,
+    stage: slider.square,
     slots: [box(38, 0, 62, 100), box(0, 0, 35, 48), box(0, 52, 35, 48)],
     leave: box(104, 0, 62, 100, hide),
     enter: box(0, 104, 35, 48, hide),

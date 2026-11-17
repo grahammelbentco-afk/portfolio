@@ -15,14 +15,21 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 90: hero options page (latest; approved by Jasper: "push it", 2026-11-17)
+## Revision 91: chosen hero slider on the homepage (latest; approved by Jasper: "push it", 2026-11-17)
+
+- **Approval:** provisional, staging only. Jasper and Graham chose option 7, "Descending", from `/hero-options/`; Graham's wider feedback is pending.
+- **Changes:** the homepage hero's right side is now the Descending slider (three hero cards stepping down in size, gliding left and growing in a smooth endless loop) instead of the three staggered cards. Spacing: even 3% gaps, all cards centred on one line, room for the arrow on the right; leaving cards are clipped at the column's left edge so they never pass over the copy.
+- **Code:** the slider moved to `components/HeroSlider.tsx` (+ `HeroSlider.module.css`), shared by the homepage and the options page; the Descending layout lives in `components/heroSliderLayouts.ts` (a server-safe module: importing a constant from the client file into the server `Hero` broke rendering).
+- **QA:** `qa/qa.py` 150/150. The "three cards staggered" check is replaced by "slider shows the three cards, descending in size".
+- **Open:** a close look at the slider on phones (it fits without overflow; not reviewed visually in detail).
+
+## Revision 90: hero options page ( approved by Jasper: "push it", 2026-11-17; pushed `42fe789`, Cloudflare check succeeded)
 
 - **Approval:** provisional, staging only. Graham's feedback is pending. The page is for choosing a hero; it is not linked from the homepage.
 - **Ask (Jasper):** the same hero with different right-hand concepts to choose from (four reference sites and four wireframes); looping sliders with smooth transitions; only the three hero cards (videos later); quiet navigation arrows on hover.
 - **Built:** `/hero-options/`, eight copies of the real homepage hero (`Hero` gained optional `visual` and `id` props; the homepage uses the defaults). One slider engine (`app/hero-options/Track.tsx`): the three cards are repeated so a spare is always off stage; each step every card glides to the next slot (0.9s, Transitions.dev smooth-out `cubic-bezier(0.22, 1, 0.36, 1)`), one leaves and one enters, so the loop never jumps. Auto-advances, pauses on hover or focus, still under reduced motion. Arrows are low-contrast circles that fade in on hover (tooltip timing).
 - **Concepts:** 1 Arc row, 2 Curved wall (concave 3D), 3 Coverflow, 4 Deck, 5 Three centre tall, 6 Centre overlap, 7 Descending, 8 Bento.
-- **Also committed:** the About photo and link-row fixes made after Revision 89 (link row on the facts grid, faces re-matched).
-- **Skills and tools actually used:** transitions-dev motion tokens, Playwright screenshots, fal (one About face edit, about $0.30).
+- **Skills and tools actually used:** transitions-dev motion tokens, Playwright screenshots. No fal this revision.
 - **QA:** `qa/qa.py` 150/150; the options page builds into the static export and loads with no errors or overflow at 1440 and 390.
 - **What didn't work:** a first version of the options page (generic copy, crossfading images) missed the brief; the user wanted the real hero and moving sliders. A heredoc with nested quotes failed in the shell; writing files directly was more reliable.
 
