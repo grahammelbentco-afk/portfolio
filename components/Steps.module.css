@@ -45,7 +45,7 @@
 .title {
   max-width: 12ch;
   font-size: clamp(2.5rem, 1.2rem + 4.4vw, 6rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.04em;
   line-height: 0.95;
   text-wrap: balance;
@@ -852,7 +852,7 @@
 .formTitle {
   font-family: var(--font-display);
   font-size: clamp(1.875rem, 1.4rem + 1.1vw, 2.5rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.025em;
   line-height: 1.05;
 }
@@ -931,7 +931,7 @@
 .qTitle {
   font-family: var(--font-display);
   font-size: clamp(1.375rem, 1.1rem + 0.7vw, 1.75rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.02em;
   line-height: 1.15;
 }
@@ -1258,7 +1258,7 @@
 .stepTitle {
   font-family: var(--font-display);
   font-size: clamp(1.375rem, 1.15rem + 0.6vw, 1.75rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.02em;
   line-height: 1.1;
 }

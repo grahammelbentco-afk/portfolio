@@ -217,7 +217,7 @@
 .name {
   font-family: var(--font-display);
   font-size: var(--fs-h3);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.02em;
 }
 

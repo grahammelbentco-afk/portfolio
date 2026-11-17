@@ -83,7 +83,7 @@ function EnquiryChart() {
 function Tile({ t }: { t: ServiceTile }) {
   const Screen = t.ui ? SCREENS[t.ui] : null;
   return (
-    <li className={styles.tile} data-colour={t.colour} data-slot={t.slot} data-service={t.id} data-light-corner={t.lightCorner ? "true" : undefined}>
+    <li className={styles.tile} data-tilt data-colour={t.colour} data-slot={t.slot} data-service={t.id} data-light-corner={t.lightCorner ? "true" : undefined}>
       {t.slot === "hero" && <EnquiryChart />}
       {t.photo && (
         <div className={styles.box}>

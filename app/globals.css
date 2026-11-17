@@ -170,17 +170,18 @@ video {
 /* The one Ember moment per layout: the main call to action (V1.6 p.7). */
 .btn-primary {
   background: var(--ember);
-  color: var(--deep-water);
+  color: var(--abyss); /* R88: 7.0:1 on Ember, 8.4:1 on hover */
+  font-weight: 700;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.28),
-    0 12px 28px -14px rgb(255 122 61 / 0.75);
+    0 12px 28px -14px rgb(255 128 48 / 0.8);
 }
 
 .btn-primary:hover {
   background: var(--ember-hover);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.32),
-    0 16px 32px -14px rgb(255 122 61 / 0.85);
+    0 16px 32px -14px rgb(255 128 48 / 0.9);
 }
 
 .btn-light {
@@ -258,7 +259,7 @@ video {
 .sec-title {
   max-width: 16ch;
   font-size: clamp(2.25rem, 1.2rem + 3.2vw, 4.75rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.04em;
   line-height: 1;
 }
@@ -321,5 +322,127 @@ video {
   .outline-type {
     color: CanvasText;
     -webkit-text-stroke: 0;
+  }
+}
+
+/* ======================================================================
+   Revision 87: site-wide motion (see components/SiteMotion.tsx)
+   ====================================================================== */
+
+/* Lenis owns the smoothing, so native smooth scroll must stay off while it runs. */
+html.lenis {
+  scroll-behavior: auto;
+}
+
+/* ---- Scroll reveal: text rises with a soft blur (Transitions.dev "texts reveal"),
+   boxes rise a little further. `translate` only, so hover transforms are untouched. ---- */
+.motion [data-reveal="text"],
+.motion [data-reveal="box"] {
+  opacity: 0;
+}
+
+.motion [data-reveal="text"] {
+  translate: 0 18px;
+  filter: blur(3px);
+}
+
+.motion [data-reveal="box"] {
+  translate: 0 36px;
+}
+
+.motion [data-reveal="in"] {
+  opacity: 1;
+  translate: none;
+  filter: none;
+  transition:
+    opacity 700ms var(--ease-out) var(--rd, 0ms),
+    translate 1000ms var(--ease-out) var(--rd, 0ms),
+    filter 700ms var(--ease-out) var(--rd, 0ms);
+}
+
+/* ---- Hover tilt (Transitions.dev card tilt) on big tiles and plans ---- */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-tilt] {
+    transform: perspective(1000px) rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg));
+    transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-tilt].is-tilting {
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    /* taste-skill-ignore: pointer light (Transitions.dev card tilt glare), hover only */
+    radial-gradient(circle 140px at var(--tilt-gx, 50%) var(--tilt-gy, 50%), rgb(255 255 255 / 0.45), rgb(255 255 255 / 0.05) 55%, transparent 85%), /* taste-skill-ignore: glare */
+    radial-gradient(circle 320px at var(--tilt-gx, 50%) var(--tilt-gy, 50%), rgb(255 255 255 / 0.14), transparent 85%); /* taste-skill-ignore: glare */
+  transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-tilt].is-hover > .tilt-glare {
+  opacity: 0.32;
+}
+
+/* ---- Buttons: a light sheen sweeps across on hover ---- */
+.btn-primary,
+.btn-light {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-primary::after,
+.btn-light::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%); /* taste-skill-ignore: hover sheen, off-canvas at rest */
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn-primary::after,
+  .btn-light::after {
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-primary:hover::after,
+  .btn-light:hover::after {
+    transform: translateX(110%);
+  }
+}
+
+/* ---- Ambient: the eyebrow spark breathes, now and then ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .eyebrow-spark {
+    transform-origin: 50% 60%;
+    animation: spark-breathe 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+
+  .eyebrow:hover .eyebrow-spark {
+    animation-duration: 1.2s;
+  }
+}
+
+@keyframes spark-breathe {
+  0%,
+  70%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+  80% {
+    scale: 1.25;
+    rotate: 14deg;
   }
 }

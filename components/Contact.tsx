@@ -31,6 +31,24 @@ export default function Contact() {
               </li>
             ))}
           </ul>
+          {/* Revision 87: the two real faces behind Webleta (see content/homepage.ts). */}
+          <figure className={styles.people} data-reveal-box>
+            <div className={styles.faces}>
+              {contact.people.members.map((m) => (
+                <img key={m.name} className={styles.face} src={m.photo} alt={m.name} width={128} height={128} loading="lazy" decoding="async" />
+              ))}
+            </div>
+            <figcaption>
+              <span className={styles.peopleLine}>{contact.people.line}</span>
+              <span className={styles.names}>
+                {contact.people.members.map((m) => (
+                  <span key={m.name}>
+                    {m.name} <span className={styles.role}>{m.role}</span>
+                  </span>
+                ))}
+              </span>
+            </figcaption>
+          </figure>
           <p className={styles.direct}>
             Prefer email? <a href={`mailto:${contact.email}`}>{contact.email}</a>
           </p>

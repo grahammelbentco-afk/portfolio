@@ -4,9 +4,9 @@
 :root {
   /* Lagoon Ember core palette (V1.6 p.13, fixed) */
   --deep-water: #07223b;
-  --ember: #ff7a3d;
-  --aqua: #3ccfc3;
-  --seafoam: #bff0e3;
+  --ember: #ff8030; /* R88: vivid but light enough for 7:1 dark text (R87 #ff6a26 was 5.6:1) */
+  --aqua: #19e3d2; /* R87: brighter (was #3ccfc3) */
+  --seafoam: #a8f5e2; /* R87 (was #bff0e3) */
   --shallows: #eef7f6;
   --wet-slate: #4a6273;
 
@@ -18,18 +18,22 @@
 
   /* Derived (mixes of the core, not new brand colours) */
   --abyss: #051a2d;
-  --ember-hover: #ff9361;
+  --ember-hover: #ff9a5c; /* 8.4:1 with Abyss text */
   --line-on-dark: rgb(238 247 246 / 0.16);
   --line-on-light: rgb(7 34 59 / 0.14);
   --glass-dark: rgb(7 34 59 / 0.72);
 
   /* V1.6 supporting colours: proposed, not used in Phase 1 (one per layout, ~5%) */
-  --ochre: #c99a3c;
-  --coral-clay: #c4614b;
-  --dusk-violet: #6b6a9f;
-  --kelp: #3e7c66;
+  --ochre: #d99a1f; /* R87: more saturated (was #c99a3c) */
+  --coral-clay: #dc4f33; /* R87 (was #c4614b) */
+  --dusk-violet: #6a5fd0; /* R87 (was #6b6a9f) */
+  --kelp: #1f8a64; /* R87 (was #3e7c66) */
   --shell: #e4bcb2;
-  --harbour: #2d6aa0;
+  --harbour: #2468b8; /* R87 (was #2d6aa0) */
+
+  /* R87 (Jasper): one red section, Industries. White text on it is 4.9:1. */
+  --signal-red: #d9262b;
+  --signal-red-deep: #a8121b;
 
   /* V1.6 supporting tints (p.14) */
   --ochre-tint: #f3e9d4;

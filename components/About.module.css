@@ -36,7 +36,7 @@
 .statement {
   max-width: 22ch;
   font-size: clamp(2.125rem, 1rem + 3.6vw, 5.25rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.04em;
   line-height: 1.02;
   text-wrap: pretty;
@@ -44,6 +44,12 @@
 
 .word {
   display: inline;
+  white-space: nowrap;
+}
+
+/* One timeline for the whole statement, so the letters fill in reading order. */
+.statement {
+  view-timeline-name: --about-statement;
 }
 
 /* Seafoam marker band behind the two audiences, low on the line like a highlighter. */
@@ -91,7 +97,7 @@
   max-width: 24ch;
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 1.15rem + 1vw, 2.125rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.03em;
   line-height: 1.1;
   text-wrap: balance;
@@ -133,7 +139,7 @@
 .audienceTitle {
   font-family: var(--font-display);
   font-size: var(--fs-h3);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -250,10 +256,13 @@
    reduced motion) everything simply shows in its final state. ---- */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .word {
+    /* Revision 88 (trywebtec style): letter by letter. Each letter fills over a short
+       window that starts later the further it sits in the sentence (--p, 0 to 1). */
+    .letter {
       animation: fill linear both;
-      animation-timeline: view();
-      animation-range: cover 18% cover 42%;
+      animation-timeline: --about-statement;
+      animation-range-start: cover calc(16% + var(--p) * 30%);
+      animation-range-end: cover calc(20% + var(--p) * 30%);
     }
 
     .photo {
@@ -296,5 +305,63 @@
   to {
     transform: translate(0, 0);
     opacity: 1;
+  }
+}
+
+/* ---- Revision 88 ---- */
+/* Quiet links to our own sites: small, slate, underline on hover only. */
+.people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin-top: calc(var(--s-1) * -1);
+}
+
+.people a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: color var(--dur-fast) ease, text-decoration-color var(--dur-fast) ease;
+}
+
+.people a:hover {
+  color: var(--deep-water);
+  text-decoration-color: currentColor;
+}
+
+/* The spark keeps moving (Jasper: "make the blue slice moving"). It slides out along the
+   24° channel and back, the same gesture as the header logo, slowly, forever. `translate`
+   only, so it adds to the scroll-in drift (which owns `transform`). */
+@media (prefers-reduced-motion: no-preference) {
+  .spark {
+    animation: spark-sway 5.5s ease-in-out infinite;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .spark {
+      animation:
+        drift linear both,
+        spark-sway 5.5s ease-in-out infinite;
+      animation-timeline: view(), auto;
+      animation-range: entry 10% cover 50%, normal;
+    }
+  }
+}
+
+/* Perpendicular to the channel (direction 0.914, 0.407): out to the upper right and home. */
+@keyframes spark-sway {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 7.3px 3.3px;
   }
 }

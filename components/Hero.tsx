@@ -4,13 +4,13 @@ import HeroGradient from "./HeroGradient";
 import SocialIcon from "./SocialIcon";
 import StatsRail from "./StatsRail";
 import HeroDecor from "./HeroDecor";
+import HeroRotator from "./HeroRotator";
 import ServiceSwitch from "./ServiceSwitch";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
   const { headline } = hero;
   const [before, after] = headline.first.split(headline.highlight);
-  const rest = headline.second.slice(headline.outline.length);
 
   return (
     <HeroMotion className={styles.hero} labelledBy="hero-title">
@@ -19,14 +19,14 @@ export default function Hero() {
       <div className={`container ${styles.layout}`}>
         <div className={styles.copy}>
           <h1 id="hero-title" className={styles.title}>
-            <span className={styles.line} data-intro="line">
+            <span className={`${styles.line} ${styles.lineWrap}`} data-intro="line">
               {before}
               <span className={`${styles.highlight} text-gradient`}>{headline.highlight}</span>
               {after}
             </span>{" "}
+            <span className="sr-only">{headline.spoken}</span>
             <span className={styles.line} data-intro="line">
-              <span className={styles.outline}>{headline.outline}</span>
-              {rest}
+              <HeroRotator phrases={headline.rotating} />
             </span>
           </h1>
 

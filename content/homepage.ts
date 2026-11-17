@@ -27,7 +27,7 @@ export type Audience = {
 /** `lead` marks the one hook that matters most: its spark marker is Ember (V1.6 p.16). */
 export type Hook = { title: string; text: string; lead?: boolean };
 
-export type SocialLink = { platform: "facebook" | "instagram" | "linkedin" | "x"; label: string; href: string | null };
+export type SocialLink = { platform: "facebook" | "instagram" | "upwork" | "gmail"; label: string; href: string | null };
 
 /** A review platform shown in the trust band, using the platform's own logo file. */
 export type TrustPlatform = {
@@ -88,17 +88,32 @@ export const hero = {
   // Look nothing alike." `highlight` is the phrase in the first line that gets the gradient.
   // UNCONFIRMED: "get booked" is the benefit we aim for, not a guarantee; Graham to approve.
   // `outline` is the phrase at the start of the second line drawn as outline-only text.
-  headline: { first: "Made to stand out.", highlight: "stand out", second: "Built to get booked.", outline: "Built to" },
-  // V1.6 p.4: templates make local sites look alike. No mention of tools or AI (Jasper).
-  lede: "Most local sites share the same few templates. We design yours around what makes you different, and build it to win enquiries.",
+  // Revision 88 (Jasper/Graham's hero notes, 2026-11-17): new headline and lede. The second
+  // line swaps between three phrases; `outline` is drawn outline-only, `rest` solid. Screen
+  // readers get `spoken` once instead of the swapping line.
+  headline: {
+    first: "Your business deserves a digital presence.",
+    highlight: "digital presence",
+    // Phrases updated 2026-11-17 (Jasper). Sentence case, like the first line.
+    rotating: [
+      { outline: "Stand", rest: " out online." },
+      { outline: "Get", rest: " more leads." },
+      { outline: "Grow", rest: " your business." },
+    ],
+    spoken: "Stand out online, get more leads, and grow your business.",
+  },
+  // Graham's note as written; only "tailored to" is replaced (Jasper, 2026-11-17).
+  lede: "We help businesses build a strong online presence with websites designed around their goals, their needs, and the way they want to grow.",
   secondaryCta: { label: "See the work", href: "#work" },
   // Graham's outline: social icons under the buttons.
   // UNCONFIRMED: no profile URLs yet. href null renders the icon without a link.
   social: [
+    // Revision 88: Facebook, Instagram, Upwork and email (Gmail icon), per the hero notes.
+    // UNCONFIRMED: hello@webleta.com is not a confirmed inbox yet.
     { platform: "facebook", label: "Webleta on Facebook", href: null },
     { platform: "instagram", label: "Webleta on Instagram", href: null },
-    { platform: "linkedin", label: "Webleta on LinkedIn", href: null },
-    { platform: "x", label: "Webleta on X", href: null },
+    { platform: "upwork", label: "Webleta on Upwork", href: null },
+    { platform: "gmail", label: "Email Webleta", href: "mailto:hello@webleta.com" },
   ] satisfies SocialLink[],
   // Graham's outline: three staggered cards, Design / Market / Conversion.
   // Photos generated for these cards (fal flux-pro v1.1-ultra, 16:9, 2026-11-13); illustrations,
@@ -144,19 +159,21 @@ export const hero = {
    */
   audiences: [
     {
+      // Revision 88: tab and button wording from the hero notes.
       id: "business",
-      label: "For local businesses",
+      label: "View my new site, for free",
       field: { label: "Your business website", placeholder: "yourbusiness.com.au" },
-      action: "Get my free preview",
+      action: "Get my free design",
       href: "#steps",
       note: "Your own design, never a theme with your logo on it.",
     },
     {
-      id: "agency",
-      label: "For agencies",
-      action: "Send a project brief",
+      // UNCONFIRMED: no booking tool yet, so the meeting button goes to the contact form.
+      id: "team",
+      label: "I need a digital marketing team",
+      action: "Schedule me a meeting",
       href: "#contact",
-      note: "Say yes to more clients. We design and build under your name.",
+      note: "Design, SEO, social and email from one small team.",
     },
   ] satisfies Audience[],
 };
@@ -170,7 +187,7 @@ export const hero = {
  */
 export const hooks: Hook[] = [
   { lead: true, title: "See it first", text: "Get a free demo of your homepage before you pay a cent." },
-  { title: "Pay your way", text: "One project, a monthly plan, or help when you need it." },
+  { title: "Flexible terms", text: "One project, a monthly plan, or help when you need it." },
   { title: "Priced up front", text: "The quote you agree to is the price you pay." },
 ];
 
@@ -218,21 +235,32 @@ export const about = {
     { lead: true, title: "For local businesses", text: "A site that looks like your business, that you can update yourself, and that's built to be found." },
     { title: "For agencies", text: "Extra design and build capacity that fits your process and works under your name." },
   ] satisfies Hook[],
-  // V1.6 p.5: markets and ways to work. UNCONFIRMED.
+  // V1.6 p.5, Where and Care updated in Revision 88 (Jasper). UNCONFIRMED.
   facts: [
-    { label: "Where", value: "Australia first" },
+    { label: "Where", value: "Anywhere" },
     { label: "How", value: "Project, monthly or on call" },
-    { label: "Care", value: "A named person for your site" },
+    { label: "Care", value: "Daily support" },
   ],
   link: { label: "See the work", href: "#work" },
-  // V1.6 g26 (generated image, V1.6 p.4 "the kind of business we build for"). Not a client.
+  // Revision 88 (Jasper): quiet text links to our own sites, here instead of the footer.
+  // A link with href null is not shown. Jasper has no personal site yet. Graham's portfolio
+  // is webleta.com today; once this site replaces it there, this link needs a new target.
+  people: [
+    { label: "Meet our technical head", href: null as string | null },
+    { label: "Meet our manager", href: "https://webleta.com/" as string | null },
+  ],
+  // Revision 88 (Jasper): an AI image of Jasper and Graham working together, made at his
+  // request from their own photos, in an office from Jasper's photo with its signage removed
+  // (fal nano-banana-pro edit, 2026-11-17; manifest:
+  // Webleta-AI-Generated-Images/manifest-2026-11-17-jasper.csv). The nursery photo it
+  // replaces is kept at /images/about-nursery-*.webp.
   image: {
-    src: "/images/about-nursery-1280.webp",
-    width: 1280,
-    height: 853,
-    alt: "A nursery owner in a cap reading through printed pages among potted trees in his greenhouse.",
+    src: "/images/about-team-1200.webp",
+    width: 1200,
+    height: 1490,
+    alt: "Graham Orprecio at a laptop while Jasper Diaz leans in and points at the screen, in a bright office.",
   },
-  caption: "The kind of business we build for.",
+  caption: "Graham and Jasper, working through a client site.",
 };
 
 /**
@@ -749,6 +777,21 @@ export const contact = {
     "A reply from a person, usually within one working day",
   ],
   email: "hello@webleta.com",
+  // Revision 87 (Jasper): "we should have our face anywhere on the site, even just once."
+  // Real photos only, never AI faces. Jasper's from his IMG_0452.HEIC (shirt changed to a
+  // plain black tee with fal Nano Banana Pro edit, face untouched, at his request); Graham's from
+  // socials_1_1.webp on webleta.com (Jasper to confirm it's him). Both are cut out, matched in
+  // exposure and warmth, and set on one Seafoam backdrop with the same framing. Masters:
+  // source-assets/team/ (512px PNG).
+  // Titles (Jasper, 2026-11-17): short and the same length. Both design and develop (the line
+  // says so); Graham also leads clients and strategy. The line claims no hand-off: true while the team is these two.
+  people: {
+    line: "We design and develop every project ourselves.",
+    members: [
+      { name: "Graham Orprecio", role: "Client lead", photo: "/images/team-graham-256.webp" },
+      { name: "Jasper Diaz", role: "Design lead", photo: "/images/team-jasper-256.webp" },
+    ],
+  },
   image: { base: "/images/cta-shop", w: 1600, h: 900, alt: "A corner shop at dusk, its windows lit warm against a navy sky." },
   form: {
     title: "Start your project",
@@ -810,7 +853,7 @@ export const industries = {
     { id: "health", slot: "b", colour: "dusk", icon: "health", name: "Health clinics",
       need: "Clear prices and real faces people trust.",
       photo: { src: "/images/benefit-trust-800.webp", srcSet: "/images/benefit-trust-480.webp 480w, /images/benefit-trust-800.webp 800w", position: "50% 30%" } },
-    { id: "stores", slot: "d", colour: "coral", icon: "store", name: "Online stores",
+    { id: "stores", slot: "d", colour: "harbour" /* R87: coral vanished on the red ground */, icon: "store", name: "Online stores",
       need: "Product pages that lead straight to checkout.",
       photo: { src: "/images/benefit-sales-800.webp", srcSet: "/images/benefit-sales-480.webp 480w, /images/benefit-sales-800.webp 800w", position: "50% 40%" } },
     { id: "auto", slot: "e", colour: "kelp", icon: "auto", name: "Automotive",

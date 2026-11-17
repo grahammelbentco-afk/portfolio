@@ -7,8 +7,8 @@ import styles from "./ServiceSwitch.module.css";
 const ICONS: Record<string, string> = {
   // A shopfront, for local businesses
   business: "M3 9.5 4.5 4h15L21 9.5M3 9.5c0 1.4 1.1 2.5 2.5 2.5S8 10.9 8 9.5m-5 0h18m-13 0c0 1.4 1.1 2.5 2.5 2.5h1c1.4 0 2.5-1.1 2.5-2.5m0 0c0 1.4 1.1 2.5 2.5 2.5S21 10.9 21 9.5M5 12v8h14v-8M10 20v-4h4v4",
-  // Stacked layers, for agencies
-  agency: "M12 3 3 7.5 12 12l9-4.5L12 3Zm-9 9 9 4.5 9-4.5M3 16.5 12 21l9-4.5",
+  // Two people, for the digital marketing team
+  team: "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6.5 9a6.5 6.5 0 0 1 13 0M16 4.2a3.5 3.5 0 0 1 0 6.6M18 14a6.5 6.5 0 0 1 3.5 6",
 };
 
 /**
@@ -26,7 +26,6 @@ export default function ServiceSwitch({
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const id = useId();
-  const current = audiences[active];
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const step = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
@@ -45,11 +44,12 @@ export default function ServiceSwitch({
     const url = new URL(window.location.href);
     if (website) url.searchParams.set("website", website);
     else url.searchParams.delete("website");
-    url.hash = current.href;
+    const target = audiences[active].href;
+    url.hash = target;
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
     // Lets the preview form further down fill in the website without a reload.
     window.dispatchEvent(new CustomEvent("webleta:website", { detail: website }));
-    document.getElementById(current.href.replace(/^#/, ""))?.scrollIntoView();
+    document.getElementById(target.replace(/^#/, ""))?.scrollIntoView();
   };
 
   return (
@@ -65,7 +65,7 @@ export default function ServiceSwitch({
             role="tab"
             id={`${id}-tab-${audience.id}`}
             aria-selected={i === active}
-            aria-controls={`${id}-panel`}
+            aria-controls={`${id}-panel-${audience.id}`}
             tabIndex={i === active ? 0 : -1}
             className={styles.tab}
             onClick={() => setActive(i)}
@@ -78,33 +78,50 @@ export default function ServiceSwitch({
         ))}
       </div>
 
-      <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-tab-${current.id}`} className={styles.panel}>
-        {current.field ? (
+      {/* Revision 88: every panel is rendered in one grid cell, so the block keeps the height of
+          the tallest and nothing below moves when the tab changes. Inactive panels keep the
+          hidden attribute (out of the accessibility tree and tab order) but hold their space. */}
+      <div className={styles.panels}>
+      {audiences.map((panel, i) => (
+      <div
+        key={panel.id}
+        id={`${id}-panel-${panel.id}`}
+        role="tabpanel"
+        aria-labelledby={`${id}-tab-${panel.id}`}
+        hidden={i !== active}
+        className={styles.panel}
+      >
+        {panel.field ? (
           <form className={styles.field} onSubmit={onSubmit}>
-            <label htmlFor={`${id}-input`} className="sr-only">
-              {current.field.label}
+            <label htmlFor={`${id}-input-${panel.id}`} className="sr-only">
+              {panel.field.label}
             </label>
             <input
-              id={`${id}-input`}
+              id={`${id}-input-${panel.id}`}
               name="website"
               type="text"
               inputMode="url"
               autoComplete="url"
-              placeholder={current.field.placeholder}
+              placeholder={panel.field.placeholder}
               className={styles.input}
             />
             <button type="submit" className={`btn btn-primary ${styles.submit}`}>
-              {current.action}
+              {panel.action}
             </button>
           </form>
         ) : (
-          <a href={current.href} className={`btn btn-primary ${styles.submit} ${styles.solo}`}>
-            {current.action}
-          </a>
+          // Same height as the field row, so the note below sits at the same place.
+          <div className={styles.soloRow}>
+            <a href={panel.href} className={`btn ${styles.submit} ${styles.solo}`}>
+              {panel.action}
+            </a>
+          </div>
         )}
         <p className={styles.note}>
-          {current.note} Or <a href={secondary.href}>{secondary.label.toLowerCase()}</a>.
+          {panel.note} Or <a href={secondary.href}>{secondary.label.toLowerCase()}</a>.
         </p>
+      </div>
+      ))}
       </div>
     </div>
   );

@@ -79,6 +79,7 @@
 
 .logoSpark {
   transform: translate(12px, -26px);
+  fill: var(--seafoam); /* Revision 88: the spark is Seafoam, at rest and on hover */
 }
 
 .logo:hover .logoBig,
@@ -90,7 +91,7 @@
 
 .logo:hover .logoSpark,
 .logo:focus-visible .logoSpark {
-  fill: var(--aqua);
+  fill: var(--seafoam); /* Revision 88 (Jasper): Seafoam on hover too, was Aqua */
 }
 
 @media (prefers-reduced-motion: reduce) {

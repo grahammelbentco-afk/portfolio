@@ -3,9 +3,11 @@ import { about } from "@/content/homepage";
 import styles from "./About.module.css";
 
 /**
- * Split each phrase of the statement into words. Words fill from Cloud to Deep Water as
- * the section scrolls through (CSS scroll timeline, see About.module.css); `mark` phrases
- * also get the Seafoam marker.
+ * Split each phrase of the statement into words, and each word into letters. Revision 88:
+ * the letters fill from Cloud to Deep Water one after another as the statement scrolls
+ * through (one CSS view timeline on the h2, each letter offset by its place in the
+ * sentence; see About.module.css). `mark` phrases also get the Seafoam marker. Words stay
+ * unbreakable so a line never splits mid-word.
  */
 function statementParts(text: string, marks: string[]) {
   const pattern = new RegExp(`(${marks.map((m) => m.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`);
@@ -21,6 +23,8 @@ const ARC_SPARK = "M194.14 64.05L124.73 219.94A92 92 0 0 0 194.14 64.05Z";
 
 export default function About() {
   const parts = statementParts(about.statement, about.mark);
+  const total = about.statement.replace(/\s/g, "").length;
+  let n = 0; // running letter index across the whole sentence
 
   return (
     <section id="about" className={styles.section} data-ground="light" data-about aria-labelledby="about-title">
@@ -33,6 +37,9 @@ export default function About() {
         </p>
 
         <h2 id="about-title" className={styles.statement} data-about-statement>
+          {/* Screen readers get the sentence once; the letter spans are visual only. */}
+          <span className="sr-only">{about.statement}</span>
+          <span aria-hidden="true">
           {parts.map((part, i) => (
             <Fragment key={i}>
               {part.lead && " "}
@@ -40,8 +47,12 @@ export default function About() {
                 {part.words.map((word, j) => (
                   <Fragment key={j}>
                     {j > 0 && " "}
-                    <span className={styles.word} data-about-word>
-                      {word}
+                    <span className={styles.word}>
+                      {[...word].map((ch, k) => (
+                        <span key={k} className={styles.letter} style={{ "--p": (n++ / total).toFixed(4) } as React.CSSProperties} data-about-letter>
+                          {ch}
+                        </span>
+                      ))}
                     </span>
                   </Fragment>
                 ))}
@@ -49,6 +60,7 @@ export default function About() {
               {part.trail && " "}
             </Fragment>
           ))}
+          </span>
         </h2>
 
         {/* V1.6 p.16 "arc crop": the photo clipped to the symbol's larger half, spark beside it. */}
@@ -60,14 +72,16 @@ export default function About() {
               </clipPath>
             </defs>
             <g clipPath="url(#about-arc-crop)">
+              {/* Revision 88: placed for the two-person photo (4:5) so both faces sit inside the
+                  arc, left of the diagonal cut. Re-check these numbers if the photo changes. */}
               <image
                 className={styles.photo}
                 href={about.image.src}
-                x="20"
-                y="40"
-                width="170"
-                height="194"
-                preserveAspectRatio="xMaxYMid slice"
+                x="-14"
+                y="6"
+                width="194"
+                height="241"
+                preserveAspectRatio="xMidYMid slice"
               />
             </g>
             <g transform="translate(12 -26)">
@@ -108,6 +122,20 @@ export default function About() {
               <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
+
+          {/* Revision 88: plain text links to our own sites, deliberately low-key. */}
+          <ul className={styles.people}>
+            {about.people
+              .filter((p) => p.href)
+              .map((p) => (
+                <li key={p.label}>
+                  <a href={p.href ?? undefined} target="_blank" rel="noopener">
+                    {p.label}
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+          </ul>
         </div>
       </div>
     </section>

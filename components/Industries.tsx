@@ -66,6 +66,7 @@ function Tile({ t }: { t: Industry }) {
   return (
     <li
       className={tile.tile}
+      data-tilt
       data-colour={t.colour}
       data-slot={t.slot}
       data-industry={t.id}

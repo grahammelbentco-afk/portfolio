@@ -125,7 +125,7 @@
 .name {
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
   letter-spacing: -0.02em;
 }
 
@@ -185,7 +185,7 @@
 .outroLead {
   font-family: var(--font-display);
   font-size: var(--fs-h3);
-  font-weight: 700;
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
 }
 
 /* ---- The fly-through (wide screens, motion allowed, GSAP running) ---- */

@@ -15,7 +15,40 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
-## Revision 86: no cut corners, clickable Work boards, Work navigation (latest; approved by Jasper: "push it")
+## Revisions 87–88: site-wide motion, colour, a red section, team faces, Hero and About (latest; approved by Jasper: "push it", 2026-11-17)
+
+- **Approval:** provisional, staging only. Graham's feedback is pending; Graham asked (through Jasper) for a better angle of himself in the About photo, which led to the final swapped version.
+- **Revision 87, site-wide (Jasper's global notes):**
+  - **Red section:** Industries ("Sites that know your industry.") is on Signal Red `#D9262B` (new token; white text 4.9:1), with a deeper red pooled in the corners. The Online stores tile moved from Coral to Harbour so it doesn't vanish into the red.
+  - **Brighter colours:** Aqua `#19E3D2`, Seafoam `#A8F5E2` and the supporting colours more saturated (tokens only). Ember settled at `#FF8030` in Revision 88 (below).
+  - **Momentum scroll:** Lenis 1.3.27, driven by GSAP's ticker and synced to ScrollTrigger; anchors offset for the header; touch keeps native scrolling; off under reduced motion. Work's click-to-fly goes through Lenis (`lib/smooth.ts`).
+  - **Scroll reveals:** `components/SiteMotion.tsx` tags every heading, paragraph and box after the hero and reveals each once, in reading order with a 70ms stagger (text: 18px rise with a 3px blur; boxes: 36px rise). Uses the `translate` property, never `transform`, so it can't fight hover transforms. Carousels and the logo marquee reveal as one row; inactive tab panels and anything already animating are skipped; the footer has its own observer.
+  - **Hovers and ambient motion:** Transitions.dev card tilt (7°, cursor glare) on Services, Industries and Pricing cards; a sheen across primary and light buttons; slow drift on the three hero photos; the eyebrow spark pulses now and then.
+  - **Faces:** a Contact card with Graham and Jasper, "We design and develop every project ourselves." Graham Orprecio, Client lead; Jasper Diaz, Design lead. Both photos cut out (rembg), matched in exposure, warmth and framing on one Seafoam backdrop. Jasper's shirt was changed to a plain black tee with fal so the two match. Masters in `source-assets/team/`.
+- **Revision 88, Hero:**
+  - Header logo: the spark is Seafoam, at rest and on hover.
+  - Headline "Your business deserves a digital presence." with a swapping second line: "Stand out online." / "Get more leads." / "Grow your business." (`HeroRotator.tsx`, Transitions.dev text swap scaled for display type; one fixed sentence for screen readers; still under reduced motion).
+  - Lede is Graham's line with "tailored to" changed to "designed around".
+  - Tabs "View my new site, for free" → "Get my free design" (Ember); "I need a digital marketing team" → "Schedule me a meeting" (Seafoam, goes to #contact; no booking tool yet). Both panels share one grid cell, so nothing moves when switching tabs (measured: 0px at 1440 and 390). Tabs stack full width on phones.
+  - Ember CTA readability: Ember `#FF8030` with Abyss `#051A2D` bold text, 7.0:1 (8.4:1 on hover). It was 5.6:1 after Revision 87.
+  - Social: Facebook, Instagram, Upwork, Gmail (mailto, unconfirmed inbox). Band: "Flexible terms" replaces "Pay your way".
+  - The hero video was skipped for now (Jasper).
+- **Revision 88, About:**
+  - Statement fills letter by letter (trywebtec style): one CSS view timeline on the h2, each letter offset by its place in the sentence; screen readers get the sentence once.
+  - Photo: an AI image of Graham and Jasper working in the office from Jasper's photo, Alpine Mar signage removed by the model and the laptop logo retouched out locally. Final version swaps their places (Graham at the laptop) using new references of Graham cropped from Jasper's group photos (only Graham's face was sent). Positioned so both faces sit inside the arc.
+  - The Seafoam slice slides along the 24° channel and back, forever (`translate` only).
+  - Facts: Where "Anywhere", Care "Daily support". Quiet text link "Meet our manager" → webleta.com; "Meet our technical head" is ready but hidden until Jasper has a personal site.
+  - Headings one weight bolder (700 → 800) across the site: section titles, the About statement, subheadings, card, tile, step and FAQ titles (15 rules).
+- **References:** trywebtec (letter fill), Jasper's annotated screenshots for Hero and About, Jasper's office and group photos, webleta.com (Graham's photos, including the Upwork banner that names him).
+- **Skills and tools actually used:** transitions-dev (card tilt, texts reveal, text swap), humanizer (team caption and titles), design-taste-frontend lint, fal (Nano Banana Pro edit: 1 tee edit and 4 two-image About runs, about $1.35 in total), rembg (cut-outs), Playwright screenshots and measurements, Notion (team roles), Lenis.
+- **Images:** originals and a manifest in `Webleta-AI-Generated-Images/manifest-2026-11-17-jasper.csv`; superseded versions are marked as replaced. The nursery photo and the solo About image stay on disk.
+- **QA:** `qa/qa.py` 150/150 on the last full run (149/150 on some runs, the known flaky shader check). Checks updated for the new copy, the three-line headline, the Seafoam logo spark, the Seafoam meeting button, and letter spans. Taste lint: no new FAILs (the remaining ones were there before). tsc clean; ESLint has one error in `RequestForm.tsx` that predates this work.
+- **What worked:** measuring instead of eyeballing (contrast ratios, tab positions, head width and hair line in pixels); keeping reveals on `translate` so they never fight hover transforms.
+- **What didn't:** the Revision 87 Ember was too dark for its text; an extra test-script wheel event briefly fought Lenis; AI edits of a person sometimes move details to the wrong person (tattoos and watch on Jasper in one variant), so every variant needs a close look.
+- **Lessons:** for AI images of real people, crop references to that person only and use clear daylight photos; check both faces at full size before choosing.
+- **Open:** confirm the team titles (Contact says Client lead and Design lead; About says manager and technical head); a new target for "Meet our manager" once this site replaces webleta.com; whether showing the office implies it's Webleta's own.
+
+## Revision 86: no cut corners, clickable Work boards, Work navigation (approved by Jasper: "push it"; pushed `801a6b6`, Cloudflare check succeeded)
 
 - **Ask (Jasper):** every 24° cut corner should be a normal corner. Work's projects should be clickable and scroll straight to that board, smooth but quick.
 - **Corners:** the Split Arc corner cut is removed everywhere:

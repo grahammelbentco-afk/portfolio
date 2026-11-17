@@ -89,7 +89,7 @@ export default function Pricing() {
           >
             <ul className={styles.plans}>
               {a.plans.map((p) => (
-                <li key={p.id} className={styles.plan} data-featured={p.featured ? "true" : undefined} data-plan={p.id}>
+                <li key={p.id} className={styles.plan} data-tilt data-featured={p.featured ? "true" : undefined} data-plan={p.id}>
                   {p.image && (
                     <div className={styles.photo} aria-hidden="true">
                       <img

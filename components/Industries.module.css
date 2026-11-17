@@ -1,9 +1,29 @@
 /* Industries (Revision 83): Deep Water ground; the tiles come from Services.module.css.
    This file only sets the ground, the heading, the mirrored grid and the Deep Water notch. */
+/* Revision 87 (Jasper): the page's one red section. Signal Red with a deeper red pooled
+   in the corners so it reads rich, not flat. All text on it is white (4.9:1 or better). */
 .section {
+  position: relative;
+  isolation: isolate;
   padding-block: var(--section-y);
-  background: var(--deep-water);
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgb(255 90 60 / 0.45), transparent 60%), /* taste-skill-ignore: tonal depth on the red ground */
+    radial-gradient(90% 70% at 0% 100%, var(--signal-red-deep), transparent 70%), /* taste-skill-ignore: tonal depth on the red ground */
+    var(--signal-red);
   color: var(--white);
+}
+
+.section :global(.sec-intro),
+.section :global(.eyebrow) {
+  color: rgb(255 255 255 / 0.92);
+}
+
+.section :global(.eyebrow-spark) {
+  fill: var(--white);
+}
+
+.section :focus-visible {
+  outline-color: var(--white);
 }
 
 .head {
@@ -48,14 +68,14 @@
 
 .more {
   margin-top: clamp(24px, 2vw, 40px);
-  color: var(--cloud);
+  color: rgb(255 255 255 / 0.92);
 }
 
 .more a {
   color: var(--white);
   font-weight: 700;
   text-decoration: underline;
-  text-decoration-color: var(--aqua);
+  text-decoration-color: rgb(255 255 255 / 0.55);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }

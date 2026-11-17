@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { site } from "@/content/homepage";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 // Cabinet Grotesk: ITF Free Font License (Fontshare). Self-hosted copies from Preview V2.

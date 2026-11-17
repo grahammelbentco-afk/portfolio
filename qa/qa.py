@@ -89,7 +89,8 @@ with sync_playwright() as p:
         check(f"{name}: containers max 1920px, centred", not widths["bad"], f"widest {widths['max']}px")
 
         hero_h1 = page.evaluate("(() => { const r = document.querySelector('h1').getBoundingClientRect(); return [r.height, parseFloat(getComputedStyle(document.querySelector('h1')).fontSize)]; })()")
-        check(f"{name}: hero h1 on two lines", 0 < hero_h1[0] < hero_h1[1] * 2.2, f"font-size {round(hero_h1[1], 1)}px, height {round(hero_h1[0])}px")
+        # Revision 88: the sentence wraps to two lines and the swapping phrase adds a third.
+        check(f"{name}: hero h1 on three lines", hero_h1[1] * 2.2 < hero_h1[0] < hero_h1[1] * 3.2, f"font-size {round(hero_h1[1], 1)}px, height {round(hero_h1[0])}px")
 
         pills = page.evaluate("[...document.querySelectorAll('.btn')].filter(b => b.offsetParent).map(b => getComputedStyle(b).borderTopLeftRadius)")
         check(f"{name}: buttons are pills", bool(pills) and all(r == "9999px" for r in pills), ", ".join(sorted(set(pills))))
@@ -153,7 +154,7 @@ with sync_playwright() as p:
     for _ in range(13):
         page.keyboard.press("Tab")
         order.append(page.evaluate("(() => { const e = document.activeElement; return (e.getAttribute('aria-label') || (e.labels && e.labels[0] && e.labels[0].textContent) || e.textContent).trim().slice(0, 30); })()"))
-    check("keyboard: tab order header -> hero CTAs", order[:12] == ["Webleta, back to top", "Services", "Work", "Reviews", "Pricing", "Contact", "Chat with us on WhatsApp, +61 ", "Book a call", "For local businesses", "Your business website", "Get my free preview", "see the work"], " | ".join(order))
+    check("keyboard: tab order header -> hero CTAs", order[:12] == ["Webleta, back to top", "Services", "Work", "Reviews", "Pricing", "Contact", "Chat with us on WhatsApp, +61 ", "Book a call", "View my new site, for free", "Your business website", "Get my free design", "see the work"], " | ".join(order))
     outline = page.evaluate("getComputedStyle(document.activeElement).outlineStyle")
     page.screenshot(path=str(SHOTS / "desktop-1440-focus-hero.png"))
     check("keyboard: focus outline visible", outline != "none", outline)
@@ -203,13 +204,13 @@ with sync_playwright() as p:
     tabs = page.locator("#top [role=tab]")
     tabs.nth(1).click()
     page.wait_for_timeout(200)
-    agency = [tabs.nth(1).get_attribute("aria-selected"), page.locator("#top [role=tabpanel]:not([hidden]) a.btn-primary").inner_text(), page.locator("#top [role=tabpanel]:not([hidden]) input").count()]
-    check("toggle: agencies tab shows a standalone brief button, no URL field", agency == ["true", "Send a project brief", 0], str(agency))
+    agency = [tabs.nth(1).get_attribute("aria-selected"), page.locator("#top [role=tabpanel]:not([hidden]) a.btn").inner_text(), page.locator("#top [role=tabpanel]:not([hidden]) input").count()]
+    check("toggle: marketing-team tab shows a standalone meeting button, no URL field", agency == ["true", "Schedule me a meeting", 0], str(agency))
     page.screenshot(path=str(SHOTS / "desktop-1440-toggle-agencies.png"), clip={"x": 0, "y": 360, "width": 760, "height": 300})
     page.keyboard.press("ArrowLeft")
     page.wait_for_timeout(200)
     back = [tabs.nth(0).get_attribute("aria-selected"), page.evaluate("document.activeElement.textContent.trim()"), page.locator("#top [role=tabpanel]:not([hidden]) button[type=submit]").inner_text()]
-    check("toggle: arrow keys move between tabs", back == ["true", "For local businesses", "Get my free preview"], str(back))
+    check("toggle: arrow keys move between tabs", back == ["true", "View my new site, for free", "Get my free design"], str(back))
     page.fill("#top [role=tabpanel]:not([hidden]) input", "smithsplumbing.com.au")
     page.click("#top [role=tabpanel]:not([hidden]) button[type=submit]")
     page.wait_for_timeout(600)
@@ -227,14 +228,14 @@ with sync_playwright() as p:
     lcp = page.evaluate("window.__lcp")
     check("layout: cumulative layout shift < 0.1", cls < 0.1, f"CLS {cls:.4f}, LCP {lcp:.0f} ms (local server)")
     hl = page.evaluate("(() => { const h = document.querySelector('h1 [class*=highlight]'); const cs = getComputedStyle(h); return [h.textContent, cs.backgroundImage.slice(0, 30), cs.webkitBackgroundClip || cs.backgroundClip]; })()")
-    check("headline: gradient on 'stand out' only", hl[0] == "stand out" and "gradient" in hl[1] and hl[2] == "text", str(hl))
+    check("headline: gradient on 'digital presence' only", hl[0] == "digital presence" and "gradient" in hl[1] and hl[2] == "text", str(hl))
     check("headline: no underline arc", page.locator("h1 svg").count() == 0)
     text = page.evaluate("document.body.innerText")
     banned = ["Open", "Sample", "Not connected", "Placeholder", "placeholder", "to be confirmed", "Generated image", "for illustration", "Not the live site", "Needed before", "Graham to", "Graham's approval", "awaiting Graham"]
     found = [w for w in banned if w in text.split() or w in text]
     check("ui: no helper, dev-note or approval text visible", not found, ", ".join(found))
     figures = page.evaluate("[...document.querySelectorAll('[data-stat-value]')].map(e => e.textContent)")
-    check("band: three hooks shown", figures == ["See it first", "Pay your way", "Priced up front"], str(figures))
+    check("band: three hooks shown", figures == ["See it first", "Flexible terms", "Priced up front"], str(figures))
     logos = page.evaluate("[...document.querySelectorAll('[data-trust-logo]')].map(i => [i.closest('li').textContent.trim(), i.complete && i.naturalWidth > 0, getComputedStyle(i.parentElement).backgroundColor])")
     check("trust: Google and Trustindex icons on white circles", [l[0] for l in logos] == ["Google Reviews", "Trustindex"] and all(l[1] and l[2] == "rgb(255, 255, 255)" for l in logos), str(logos))
     check("trust: no star ratings or review counts", "★" not in text and "reviews)" not in text)
@@ -299,8 +300,8 @@ with sync_playwright() as p:
         check(f"about {w}: arc-crop photo loads", loaded)
         page.evaluate("window.scrollBy(0, document.querySelector('#about').offsetHeight * 0.6)")
         page.wait_for_timeout(600)
-        light = page.evaluate("[...document.querySelectorAll('[data-about-word]')].filter(e => getComputedStyle(e).color !== 'rgb(7, 34, 59)').length")
-        check(f"about {w}: statement fully filled once scrolled past", light == 0, f"{light} words not Deep Water")
+        light = page.evaluate("[...document.querySelectorAll('[data-about-letter]')].filter(e => getComputedStyle(e).color !== 'rgb(7, 34, 59)').length")
+        check(f"about {w}: statement fully filled once scrolled past", light == 0, f"{light} letters not Deep Water")
         check(f"about {w}: no horizontal overflow", not page.evaluate("document.documentElement.scrollWidth > innerWidth"))
         ctx.close()
     # Header logo hover (Revision 34): halves close into a circle, spark turns Aqua.
@@ -310,11 +311,11 @@ with sync_playwright() as p:
     settle(page)
     LOGO = "[...document.querySelectorAll('header a[href=\"#top\"] svg g path')].map(e => getComputedStyle(e).transform + '|' + getComputedStyle(e).fill)"
     rest = page.evaluate(LOGO)
-    check("logo at rest: Logo Kit offsets, all white", rest == ["matrix(1, 0, 0, 1, -8, 8)|rgb(255, 255, 255)", "matrix(1, 0, 0, 1, 12, -26)|rgb(255, 255, 255)"], str(rest))
+    check("logo at rest: Logo Kit offsets, white symbol, Seafoam spark", rest == ["matrix(1, 0, 0, 1, -8, 8)|rgb(255, 255, 255)", "matrix(1, 0, 0, 1, 12, -26)|rgb(168, 245, 226)"], str(rest))
     page.hover("header a[href='#top']")
     page.wait_for_timeout(900)
     hov = page.evaluate(LOGO)
-    check("logo on hover: closed circle, Aqua spark", hov == ["matrix(1, 0, 0, 1, 0, 0)|rgb(255, 255, 255)", "matrix(1, 0, 0, 1, 0, 0)|rgb(60, 207, 195)"], str(hov))
+    check("logo on hover: closed circle, Seafoam spark", hov == ["matrix(1, 0, 0, 1, 0, 0)|rgb(255, 255, 255)", "matrix(1, 0, 0, 1, 0, 0)|rgb(168, 245, 226)"], str(hov))
     ctx.close()
 
     # Nav link hover (Revision 35): letter roll + spark, accessible name intact.
@@ -382,7 +383,7 @@ with sync_playwright() as p:
     page.goto(URL)
     page.evaluate("document.querySelector('#about').scrollIntoView()")
     page.wait_for_timeout(400)
-    anim = page.evaluate("[...document.querySelectorAll('[data-about-word], [data-about-spark]')].filter(e => getComputedStyle(e).animationName !== 'none').length")
+    anim = page.evaluate("[...document.querySelectorAll('[data-about-letter], [data-about-spark]')].filter(e => getComputedStyle(e).animationName !== 'none').length")
     check("about reduced motion: no scroll animation, text in final colour", anim == 0, f"{anim} animated")
     ctx.close()
 

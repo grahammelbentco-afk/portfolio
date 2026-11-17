@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
+import { getLenis } from "@/lib/smooth";
 import { work } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import styles from "./Work.module.css";
@@ -227,8 +228,23 @@ export default function Work() {
           const p = gsap.utils.clamp(0, 1, (SPACING * i - start) / (end - start));
           // 0.3s, starting at full speed (expo.out), and it skips the scrub's catch-up, so the
           // camera follows the scroll exactly and the click lands almost at once.
+          const y = st.start + p * (st.end - st.start);
+          // Revision 87: with momentum scroll on, Lenis makes the jump so it doesn't fight it.
+          const lenis = getLenis();
+          if (lenis) {
+            const off = lenis.on("scroll", () => st.getTween()?.progress(1));
+            lenis.scrollTo(y, {
+              duration: 0.3,
+              easing: (t) => 1 - Math.pow(2, -10 * t),
+              onComplete: () => {
+                st.getTween()?.progress(1);
+                off();
+              },
+            });
+            return;
+          }
           gsap.to(window, {
-            scrollTo: st.start + p * (st.end - st.start),
+            scrollTo: y,
             duration: 0.3,
             ease: "expo.out",
             overwrite: "auto",

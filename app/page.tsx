@@ -14,6 +14,7 @@ import Faq from "@/components/Faq";
 import Contact from "@/components/Contact";
 import PlaceholderSection from "@/components/PlaceholderSection";
 import Footer from "@/components/Footer";
+import SiteMotion from "@/components/SiteMotion";
 import { sections } from "@/content/homepage";
 
 /** Every section in Graham's outline order. Any id without a component renders as a placeholder. */
@@ -44,6 +45,7 @@ export default function HomePage() {
         })}
       </main>
       <Footer />
+      <SiteMotion />
     </>
   );
 }

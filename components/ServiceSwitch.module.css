@@ -152,3 +152,58 @@
     padding-inline: 18px;
   }
 }
+
+/* Revision 88: the tab labels are full phrases now ("View my new site, for free", "I need a
+   digital marketing team"). On phones the two tabs stack, each one full width, so neither
+   label wraps; from 560px they sit side by side as before. */
+.tab {
+  white-space: nowrap;
+}
+
+@media (max-width: 559px) {
+  .tabs {
+    display: grid;
+    width: 100%;
+    border-radius: 24px;
+  }
+
+  .tab {
+    justify-content: flex-start;
+    min-height: 44px;
+  }
+}
+
+/* Revision 88: both panels share one grid cell; the inactive one keeps its space. */
+.panels {
+  display: grid;
+  width: 100%;
+}
+
+.panels > .panel {
+  grid-area: 1 / 1;
+  align-content: start;
+}
+
+.panels > .panel[hidden] {
+  display: grid;
+  visibility: hidden;
+}
+
+/* The second tab's button sits in a row as tall as the field pill (6 + 52 + 6). */
+.soloRow {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+}
+
+/* Seafoam for the meeting button: a calm second action, 14:1 with Abyss text. */
+.solo {
+  background: var(--seafoam);
+  color: var(--abyss);
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5);
+}
+
+.solo:hover {
+  background: var(--shallows);
+}
