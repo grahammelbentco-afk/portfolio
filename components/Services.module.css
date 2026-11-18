@@ -103,11 +103,11 @@
 }
 
 .tile[data-colour="aqua"] { --c: var(--aqua); --ink: var(--deep-water); }
-.tile[data-colour="ochre"] { --c: var(--ochre); }
-.tile[data-colour="harbour"] { --c: var(--harbour); }
-.tile[data-colour="dusk"] { --c: var(--dusk-violet); }
-.tile[data-colour="coral"] { --c: var(--coral-clay); }
-.tile[data-colour="kelp"] { --c: var(--kelp); }
+.tile[data-colour="ochre"] { --c: #f2a516; }
+.tile[data-colour="harbour"] { --c: #2b7fe0; }
+.tile[data-colour="dusk"] { --c: #7a5cf0; }
+.tile[data-colour="coral"] { --c: #f05a3c; }
+.tile[data-colour="kelp"] { --c: #16a874; }
 .tile[data-colour="shell"] { --c: var(--shell); --ink: var(--deep-water); }
 
 .tile[data-slot="hero"] {
@@ -123,12 +123,13 @@
   container-type: size;
 }
 
+/* Revision 98 (Graham via Jasper: "more pop colors, brighter"): photos in full colour,
+   lifted, instead of the luminosity duotone. */
 .photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  mix-blend-mode: luminosity;
-  filter: contrast(1.12) brightness(1.08);
+  filter: saturate(1.2) brightness(1.06) contrast(1.04);
   transition: transform 1100ms var(--ease-out);
 }
 
@@ -140,9 +141,9 @@
   z-index: -1;
   background: linear-gradient(
     to top,
-    color-mix(in srgb, var(--c) 45%, #051a2d) 0%,
-    color-mix(in srgb, color-mix(in srgb, var(--c) 55%, #051a2d) 85%, transparent) 36%,
-    transparent 72%
+    color-mix(in srgb, var(--c) 72%, #051a2d) 0%,
+    color-mix(in srgb, var(--c) 78%, transparent) 30%,
+    transparent 60%
   );
 }
 
@@ -167,8 +168,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  mix-blend-mode: luminosity;
-  filter: contrast(1.1) brightness(1.1);
+  filter: saturate(1.15) brightness(1.06);
 }
 
 .screen {
@@ -318,15 +318,105 @@
   font-size: 18px;
 }
 
-/* ---- Hero chart ---- */
-.chart {
+/* ---- Hero: a real site in a browser window, the enquiries chart on a card (Revision 98) ---- */
+.tile[data-colour="aqua"] {
+  /* Brighter, layered aqua: a seafoam glow top-right, a deeper teal pool bottom-left. */
+  background:
+    radial-gradient(70% 60% at 85% 10%, color-mix(in srgb, var(--seafoam) 90%, white) 0%, transparent 70%), /* taste-skill-ignore: the hero tile's light */
+    radial-gradient(60% 55% at 0% 100%, color-mix(in srgb, var(--aqua) 60%, #0aa6a0) 0%, transparent 70%), /* taste-skill-ignore: the hero tile's light */
+    var(--aqua);
+}
+
+.heroSite {
   position: absolute;
-  top: clamp(20px, 3vw, 48px);
-  right: clamp(16px, 2.4vw, 40px);
+  top: clamp(24px, 3vw, 44px);
+  right: clamp(-60px, -3vw, -20px);
   z-index: -1;
-  width: auto;
-  height: min(50%, 300px);
-  max-width: 70%;
+  width: min(58%, 500px);
+  height: 52%;
+}
+
+.win {
+  position: absolute;
+  inset: 0 0 0 8%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border-radius: 12px 0 0 12px;
+  background: #13202f;
+  transform: rotate(-3deg);
+  transform-origin: 100% 0;
+  box-shadow: 0 30px 60px -24px rgb(4 60 70 / 0.6); /* taste-skill-ignore: a window standing on the tile */
+}
+
+.winBar {
+  display: flex;
+  gap: 5px;
+  padding: 9px 11px;
+  background: #f6f8f9;
+}
+
+.winBar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+
+.winBar i:nth-child(2) {
+  background: #febc2e;
+}
+
+.winBar i:nth-child(3) {
+  background: #28c840;
+}
+
+.winScreen {
+  overflow: hidden;
+  container-type: size;
+}
+
+.winScreen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chartCard {
+  position: absolute;
+  top: 58%;
+  left: -14%;
+  display: grid;
+  gap: 4px;
+  width: 50%;
+  padding: 12px 14px 8px;
+  border-radius: var(--r-md);
+  background: var(--white);
+  color: var(--deep-water);
+  transform: rotate(2deg);
+  box-shadow: 0 24px 40px -18px rgb(4 60 70 / 0.55); /* taste-skill-ignore: a card standing on the window */
+}
+
+.chartLabel {
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .winScreen img {
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .tile:hover .winScreen img {
+    transform: translateY(calc(-100% + 100cqh));
+    transition: transform 9s cubic-bezier(0.45, 0, 0.55, 1) 150ms;
+  }
 }
 
 .gridLine {
@@ -344,7 +434,7 @@
   stroke: rgb(7 34 59 / 0.55);
   stroke-width: 1.5;
   font-family: var(--font-display);
-  font-size: 46px;
+  font-size: 40px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
@@ -412,7 +502,7 @@
 
 /* The pale Shell tile: pull the photo's whites down and tint the top so the edge holds. */
 .tile[data-colour="shell"] .photo {
-  filter: contrast(1.05) brightness(0.9);
+  filter: saturate(1.15) brightness(0.98);
 }
 
 .tile[data-colour="shell"] .box::after {
@@ -476,5 +566,25 @@
   .true,
   .stage {
     transition: none;
+  }
+}
+
+/* Phones: the hero window starts below the logo row; the chart card stays one line. */
+@media (max-width: 640px) {
+  .heroSite {
+    top: 92px;
+    width: 70%;
+    height: 40%;
+  }
+
+  .chartCard {
+    top: 34%;
+    width: 58%;
+    left: -22%;
+  }
+
+  .chartLabel {
+    white-space: nowrap;
+    font-size: 0.75rem;
   }
 }

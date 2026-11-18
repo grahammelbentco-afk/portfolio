@@ -432,8 +432,10 @@ const logo = {
  */
 export const services = {
   eyebrow: "What we do",
-  title: { mark: "Websites first.", rest: "The rest brings people to them." },
-  intro: "We design and build the site, then help people find it through search, email, social and content. Pick one service or several.",
+  // Revision 98 (Graham's note via Jasper): "Website first then everything follows". Photo tiles use
+  // new full-colour fal photos (flux-pro v1.1-ultra, 2026-11-18, manifest-2026-11-16-work.csv).
+  title: { mark: "Website first.", rest: "Then everything follows." },
+  intro: "We design and build your site first. Search, email, social and content then bring people to it. Pick one service or several.",
   tiles: [
     {
       id: "websites", slot: "hero", lightCorner: true, colour: "aqua", icon: "web",
@@ -454,25 +456,27 @@ export const services = {
     {
       id: "seo", slot: "a", lightCorner: true, colour: "ochre", icon: "search",
       title: "SEO", text: "Get found when people nearby search for what you do.",
-      photo: { base: "/images/svc-seo", alt: "A man checking his phone against a sunlit wall.", position: "50% 60%" },
+      // Revision 98: one fal image with the search results drawn in (nano-banana-pro, request
+      // 01a1eead-4fa5-7250-a432-33e227873abf): "plumber near me", Harlow Plumbing ranked #1.
+      photo: { base: "/images/svc3-seo", alt: "An illustration of search results for plumber near me, with Harlow Plumbing marked number one.", position: "50% 50%" },
       logos: [logo.google],
     },
     {
       id: "email", slot: "b", colour: "dusk", icon: "mail",
       title: "Email marketing", text: "Newsletters that bring past customers back for another job.",
-      photo: { base: "/images/svc-wordpress", alt: "A woman reading on her laptop in a lamp-lit studio.", position: "45% 40%" },
+      photo: { base: "/images/svc2-email", alt: "A laptop showing a newsletter on a desk against a lavender wall.", position: "45% 40%" },
       logos: [logo.gmail],
     },
     {
       id: "social", slot: "d", lightCorner: true, colour: "kelp", icon: "social",
       title: "Social media marketing", text: "Posts and ads that send people from social media to your site.",
-      photo: { base: "/images/svc-production", alt: "A nursery owner smiling at her tablet among potted plants.", position: "60% 40%" },
+      photo: { base: "/images/svc2-social", alt: "A nursery owner filming her potted plants with a phone on a tripod in a greenhouse.", position: "70% 35%" },
       logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin],
     },
     {
       id: "content", slot: "e", lightCorner: true, colour: "shell", icon: "pen",
       title: "Content marketing", text: "Articles and pages that answer what customers ask before they call.",
-      photo: { base: "/images/svc-design", alt: "Hands arranging printed page layouts beside violet colour swatches.", position: "50% 40%" },
+      photo: { base: "/images/svc2-content", alt: "Hands typing on a laptop beside notes, tea and pink peonies.", position: "60% 35%" },
       logos: [],
     },
     {

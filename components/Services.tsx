@@ -61,6 +61,31 @@ function Stage({ stage, children }: { stage: DeviceStage; children: React.ReactN
   );
 }
 
+/**
+ * Revision 98: the hero tile shows what the service makes, a real Webleta site in a browser
+ * window (411 Legal Services, also in Benefits), with the enquiries chart on a card in front.
+ */
+function HeroSite() {
+  return (
+    <div className={styles.heroSite} aria-hidden="true">
+      <div className={styles.win}>
+        <span className={styles.winBar}>
+          <i />
+          <i />
+          <i />
+        </span>
+        <span className={styles.winScreen}>
+          <img src="/images/benefits/screen-legal.webp" width={878} height={3015} alt="" loading="lazy" decoding="async" />
+        </span>
+      </div>
+      <div className={styles.chartCard}>
+        <span className={styles.chartLabel}>Enquiries from the site</span>
+        <EnquiryChart />
+      </div>
+    </div>
+  );
+}
+
 /** The hero's graphic: enquiries climbing, with an Ember spark at the peak. */
 function EnquiryChart() {
   return (
@@ -84,7 +109,7 @@ function Tile({ t }: { t: ServiceTile }) {
   const Screen = t.ui ? SCREENS[t.ui] : null;
   return (
     <li className={styles.tile} data-tilt data-colour={t.colour} data-slot={t.slot} data-service={t.id} data-light-corner={t.lightCorner ? "true" : undefined}>
-      {t.slot === "hero" && <EnquiryChart />}
+      {t.slot === "hero" && <HeroSite />}
       {t.photo && (
         <div className={styles.box}>
           <img

@@ -15,12 +15,25 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
+## Revision 98: Services, "Website first. Then everything follows.", brighter tiles (Jasper: "push it", 2026-11-18)
+
+- **Approval:** provisional, staging only. Graham's feedback is pending (this revision answers his note "Website first then everything follows; make the bg related to the context, a more pop colors, brighter").
+- **Changes:**
+  - Headline "Website first. Then everything follows."; intro rewritten to match.
+  - Website design tile: a brighter layered aqua, and a real Webleta build (411 Legal Services, `public/images/benefits/screen-legal.webp`) in a browser window with an "Enquiries from the site" chart card; the page scrolls in its window on hover.
+  - Photo tiles in full colour (the luminosity duotone is gone); brighter tile colours for this section only (amber, blue, violet, green, red-orange) and a lighter wash under the text.
+  - New fal photos: email, social, content (`svc2-*`, flux-pro v1.1-ultra, $0.18) and SEO (`svc3-seo`, nano-banana-pro with the search results drawn in by the model, $0.15). Jasper's rule from here on: images are generated whole in fal, no coded screen overlays or local compositing. Unused attempts (SEO bakery photo, phone and tablet SEO versions) stay in `source-assets/fal-2026-11-18-services/`, not on the site. All in `manifest-2026-11-16-work.csv`.
+- **Open:** Jasper says the social and content photos still don't fit; they'll be redone the same way as SEO. Tablet and phone QA of the SEO tile was skipped at his request.
+- **QA:** tsc and ESLint clean. `qa/qa.py` 150/150. The services check now asserts full-colour photos instead of duotone.
+- **Skills and tools actually used:** frontend-design, fal MCP (5 images, $0.39 including the two unused SEO device photos), Playwright screenshots at 1440 and 390.
+
 ## Revision 97: Market hero video updated to "heart tap", staging only (Jasper, 2026-11-18)
 
 - **Ask (Jasper):** "this the new video update hero section market video then push it again" (`Downloads/heart-tap-video.mp4`). Staging only; not a production approval.
 - **Changes:** the Market card plays `public/videos/hero-market-heart-tap.mp4` (faststart remux, no re-encode, 1,292,589 bytes, 5.04 s, 720 x 1280, H.264, no audio) with `public/images/hero-market-heart-tap-poster.webp` (first frame). Master copy: `Hero-Video-Production/Market/output/market-heart-tap.mp4`. Same Willow & Petal story as V3 (scroll, like, 1.8K / 236 badges), no app logo. `holdEnd` kept, so a held slider rests on the badges frame. V3 and V2 files stay as rollbacks.
 - **Verification (local production build, Playwright):** plays once on the front card (242 x 441 desktop, 143 x 260 phone), slider moves on after it ends, held slider rests on the last frame (t 5.04), reduced motion stays on the poster, badges legible at both sizes, no console errors.
 - **QA:** tsc and ESLint clean. `qa/qa.py` 150/150.
+- **Commit:** `6f3cff6`, pushed to `main`; Cloudflare Pages check succeeded and staging serves `hero-market-heart-tap.mp4` (200, 1,292,589 bytes).
 
 ## Revision 96: Market V3 on the hero, staging only (approved by Jasper, 2026-11-18)
 

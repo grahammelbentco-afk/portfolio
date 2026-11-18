@@ -462,7 +462,8 @@ with sync_playwright() as p:
         return r.left <= v.left + 1 && r.top <= v.top + 1 && r.right >= v.right - 1 && r.bottom >= v.bottom - 1; })""")
     check("services: device photos cover their tiles (no letterboxing)", len(fit) == 2 and all(fit), str(fit))
     duo = page.evaluate("[...document.querySelectorAll('#services img')].filter(i => !i.closest('[class*=screen]') && !/true/.test(i.className)).map(i => getComputedStyle(i).mixBlendMode)")
-    check("services: every tile photo is duotone (luminosity blend)", len(duo) == 6 and set(duo) == {"luminosity"}, str(duo))
+    # Revision 98: photos are full colour (Graham via Jasper: "more pop colors, brighter").
+    check("services: every tile photo is full colour (no luminosity blend)", len(duo) >= 6 and "luminosity" not in duo, str(duo))
     # Revision 86: Jasper asked for normal rounded corners everywhere; no notch remains.
     corners = page.evaluate("[...document.querySelectorAll('svg[class*=corner]')].length")
     check("corners: no Split Arc corner cuts left on the page", corners == 0, str(corners))
