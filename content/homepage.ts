@@ -441,16 +441,15 @@ export const services = {
       id: "websites", slot: "hero", lightCorner: true, colour: "aqua", icon: "web",
       title: "Website design and", outline: "development",
       text: "Your own design, built on the platform that suits the job: WordPress, Next.js or Astro.",
+      // Revision 98: one fal image, nano-banana-pro (request 01a1eece-6844-7172-95eb-49381c579e42), isometric, matching the other tiles.
+      photo: { base: "/images/svc3-websites", alt: "An illustration of a plumbing business homepage on desktop and phone, with an enquiries chart rising.", position: "80% 30%" },
       logos: [logo.wordpress, logo.next, logo.astro, logo.react],
     },
     {
-      id: "apps", slot: "wide", colour: "harbour", icon: "app", ui: "dashboard",
+      id: "apps", slot: "wide", colour: "harbour", icon: "app",
       title: "Web applications", text: "Booking systems and client portals, built around how your business runs.",
-      stage: {
-        base: "/images/bento-wordpress", width: 2752, height: 1536,
-        alt: "A laptop on an oak desk showing a joinery's job-booking dashboard.",
-        screen: { left: 35.61, top: 35.68, width: 31.83, height: 36.2, radius: "0.6% / 1%" },
-      },
+      // Revision 98: one fal image, nano-banana-pro (request 01a1eec5-a219-76e3-b549-dc6e8da02c55).
+      photo: { base: "/images/svc3-apps", alt: "An illustration of a booking dashboard showing this week's quotes, bookings and invoices, with a calendar.", position: "80% 50%" },
       logos: [],
     },
     {
@@ -464,29 +463,29 @@ export const services = {
     {
       id: "email", slot: "b", colour: "dusk", icon: "mail",
       title: "Email marketing", text: "Newsletters that bring past customers back for another job.",
-      photo: { base: "/images/svc2-email", alt: "A laptop showing a newsletter on a desk against a lavender wall.", position: "45% 40%" },
+      // Revision 98: one fal image, nano-banana-pro (request 01a1eec9-a2f6-77e1-9a83-239d773430af).
+      photo: { base: "/images/svc3-email", alt: "An illustration of an inbox with an opened email from Harlow Plumbing: Time for your yearly check-up?", position: "70% 30%" },
       logos: [logo.gmail],
     },
     {
       id: "social", slot: "d", lightCorner: true, colour: "kelp", icon: "social",
       title: "Social media marketing", text: "Posts and ads that send people from social media to your site.",
-      photo: { base: "/images/svc2-social", alt: "A nursery owner filming her potted plants with a phone on a tripod in a greenhouse.", position: "70% 35%" },
+      // Revision 98: one fal image, nano-banana-pro (request 01a1eeb5-4115-7132-9bd6-c1600a1ee55d).
+      photo: { base: "/images/svc3-social", alt: "An illustration of a florist's social post with 1.8K likes and a Visit website button.", position: "70% 50%" },
       logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin],
     },
     {
       id: "content", slot: "e", lightCorner: true, colour: "shell", icon: "pen",
       title: "Content marketing", text: "Articles and pages that answer what customers ask before they call.",
-      photo: { base: "/images/svc2-content", alt: "Hands typing on a laptop beside notes, tea and pink peonies.", position: "60% 35%" },
+      // Revision 98: one fal image, nano-banana-pro (request 01a1eebc-2777-7ea3-852a-c815605ecfc4).
+      photo: { base: "/images/svc3-content", alt: "An illustration of a guide titled How much does a blocked drain cost to fix?, with the answer highlighted.", position: "75% 30%" },
       logos: [],
     },
     {
-      id: "mobile", slot: "c", colour: "coral", icon: "phone", ui: "app",
+      id: "mobile", slot: "c", colour: "coral", icon: "phone",
       title: "Mobile apps", text: "An app on your regulars' phones, for bookings and orders.",
-      stage: {
-        base: "/images/bento-seo", width: 2368, height: 1792,
-        alt: "A hand holding a phone showing a booking app.",
-        screen: { left: 44.09, top: 19.87, width: 23.99, height: 66.96, radius: "14% / 6.5%" },
-      },
+      // Revision 98: one fal image, nano-banana-pro (request 01a1eeca-147a-7102-bd5e-5d1ed3475be7).
+      photo: { base: "/images/svc3-mobile", alt: "An illustration of a booking app with a time slot picked and a Booked confirmation.", position: "75% 50%" },
       logos: [logo.apple, logo.android],
     },
   ] satisfies ServiceTile[],

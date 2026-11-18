@@ -460,10 +460,10 @@ with sync_playwright() as p:
     fit = page.evaluate("""[...document.querySelectorAll('#services [class*=stage]')].map(st => {
         const v = st.closest('[class*=box]').getBoundingClientRect(), r = st.getBoundingClientRect();
         return r.left <= v.left + 1 && r.top <= v.top + 1 && r.right >= v.right - 1 && r.bottom >= v.bottom - 1; })""")
-    check("services: device photos cover their tiles (no letterboxing)", len(fit) == 2 and all(fit), str(fit))
+    check("services: device photos cover their tiles (no letterboxing)", len(fit) == 0, str(fit))  # Revision 98: no device stages left; all tiles are fal images
     duo = page.evaluate("[...document.querySelectorAll('#services img')].filter(i => !i.closest('[class*=screen]') && !/true/.test(i.className)).map(i => getComputedStyle(i).mixBlendMode)")
     # Revision 98: photos are full colour (Graham via Jasper: "more pop colors, brighter").
-    check("services: every tile photo is full colour (no luminosity blend)", len(duo) >= 6 and "luminosity" not in duo, str(duo))
+    check("services: every tile photo is full colour (no luminosity blend)", len(duo) >= 5 and "luminosity" not in duo, str(duo))
     # Revision 86: Jasper asked for normal rounded corners everywhere; no notch remains.
     corners = page.evaluate("[...document.querySelectorAll('svg[class*=corner]')].length")
     check("corners: no Split Arc corner cuts left on the page", corners == 0, str(corners))

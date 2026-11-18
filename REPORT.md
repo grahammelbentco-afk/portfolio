@@ -15,6 +15,14 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
+## Revision 99: Services tiles all in one frosted 3D style (Jasper: "push our changes so far", 2026-11-18)
+
+- **Approval:** provisional, staging only. Graham's feedback is pending.
+- **Changes:** every Services tile is now one fal image in a single house style Jasper chose (clean, minimal, isometric frosted-glass UI on the tile's colour, empty lower-left for the title), made with `fal-ai/nano-banana-pro` with all on-screen text drawn by the model: Website design (Harlow Plumbing homepage + Enquiries chart), Web applications (This week dashboard), SEO (plumber near me, #1), Email (opened "Time for your yearly check-up?"), Social (Willow & Petal post, Visit website), Content ("How much does a blocked drain cost to fix?") and Mobile apps (Book a time, Booked). The coded hero browser/chart, device stages and duotone were removed; the Social icon is white; the Content tile's pink wash is lighter. Originals and unused attempts are in `source-assets/fal-2026-11-18-services/` and `manifest-2026-11-16-work.csv`.
+- **Known flaw:** the Mobile apps image's middle day chip reads "Med" instead of "Wed".
+- **QA:** paused at Jasper's request (desktop only checked in screenshots; tablet and phone not checked). tsc clean and the build passes; `qa/qa.py` was not rerun after these tiles (its services checks were updated for the new tiles).
+- **Spend:** fal for the Services section today $1.71 (all attempts).
+
 ## Revision 98: Services, "Website first. Then everything follows.", brighter tiles (Jasper: "push it", 2026-11-18)
 
 - **Approval:** provisional, staging only. Graham's feedback is pending (this revision answers his note "Website first then everything follows; make the bg related to the context, a more pop colors, brighter").
@@ -22,10 +30,11 @@ Work stops here for visual review. Services and the other sections haven't been 
   - Headline "Website first. Then everything follows."; intro rewritten to match.
   - Website design tile: a brighter layered aqua, and a real Webleta build (411 Legal Services, `public/images/benefits/screen-legal.webp`) in a browser window with an "Enquiries from the site" chart card; the page scrolls in its window on hover.
   - Photo tiles in full colour (the luminosity duotone is gone); brighter tile colours for this section only (amber, blue, violet, green, red-orange) and a lighter wash under the text.
-  - New fal photos: email, social, content (`svc2-*`, flux-pro v1.1-ultra, $0.18) and SEO (`svc3-seo`, nano-banana-pro with the search results drawn in by the model, $0.15). Jasper's rule from here on: images are generated whole in fal, no coded screen overlays or local compositing. Unused attempts (SEO bakery photo, phone and tablet SEO versions) stay in `source-assets/fal-2026-11-18-services/`, not on the site. All in `manifest-2026-11-16-work.csv`.
+  - New fal photos: email, social, content (`svc2-*`, flux-pro v1.1-ultra, $0.06 each) and SEO (`svc3-seo`, nano-banana-pro with the search results drawn in by the model, $0.15). Jasper's rule from here on: images are generated whole in fal, no coded screen overlays or local compositing. Unused attempts (SEO bakery photo, phone and tablet SEO versions) stay in `source-assets/fal-2026-11-18-services/`, not on the site. All in `manifest-2026-11-16-work.csv`.
 - **Open:** Jasper says the social and content photos still don't fit; they'll be redone the same way as SEO. Tablet and phone QA of the SEO tile was skipped at his request.
 - **QA:** tsc and ESLint clean. `qa/qa.py` 150/150. The services check now asserts full-colour photos instead of duotone.
-- **Skills and tools actually used:** frontend-design, fal MCP (5 images, $0.39 including the two unused SEO device photos), Playwright screenshots at 1440 and 390.
+- **Skills and tools actually used:** frontend-design, fal MCP (7 images, $0.51: four flux photos $0.24, two unused SEO device photos $0.12, the nano-banana-pro SEO image $0.15), Playwright screenshots at 1440 and 390.
+- **Commit:** `6e96526`, pushed to `main`; Cloudflare Pages check succeeded and staging serves the new headline and images.
 
 ## Revision 97: Market hero video updated to "heart tap", staging only (Jasper, 2026-11-18)
 

@@ -61,62 +61,17 @@ function Stage({ stage, children }: { stage: DeviceStage; children: React.ReactN
   );
 }
 
-/**
- * Revision 98: the hero tile shows what the service makes, a real Webleta site in a browser
- * window (411 Legal Services, also in Benefits), with the enquiries chart on a card in front.
- */
-function HeroSite() {
-  return (
-    <div className={styles.heroSite} aria-hidden="true">
-      <div className={styles.win}>
-        <span className={styles.winBar}>
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className={styles.winScreen}>
-          <img src="/images/benefits/screen-legal.webp" width={878} height={3015} alt="" loading="lazy" decoding="async" />
-        </span>
-      </div>
-      <div className={styles.chartCard}>
-        <span className={styles.chartLabel}>Enquiries from the site</span>
-        <EnquiryChart />
-      </div>
-    </div>
-  );
-}
-
-/** The hero's graphic: enquiries climbing, with an Ember spark at the peak. */
-function EnquiryChart() {
-  return (
-    <svg className={styles.chart} viewBox="0 0 600 420" aria-hidden="true" focusable="false">
-      {[80, 160, 240, 320].map((y) => (
-        <line key={y} x1="70" x2="580" y1={y} y2={y} className={styles.gridLine} />
-      ))}
-      <line x1="70" x2="70" y1="20" y2="380" className={styles.axis} />
-      <line x1="70" x2="580" y1="380" y2="380" className={styles.axis} />
-      <text x="0" y="0" transform="translate(52 380) rotate(-90)" className={styles.axisWord}>
-        enquiries
-      </text>
-      <polyline points="70,350 170,330 250,300 320,260 380,250 450,170 520,110 560,70" className={styles.trend} />
-      <circle cx="560" cy="70" r="22" className={styles.peakGlow} />
-      <circle cx="560" cy="70" r="9" className={styles.peak} />
-    </svg>
-  );
-}
-
 function Tile({ t }: { t: ServiceTile }) {
   const Screen = t.ui ? SCREENS[t.ui] : null;
   return (
     <li className={styles.tile} data-tilt data-colour={t.colour} data-slot={t.slot} data-service={t.id} data-light-corner={t.lightCorner ? "true" : undefined}>
-      {t.slot === "hero" && <HeroSite />}
       {t.photo && (
         <div className={styles.box}>
           <img
             className={styles.photo}
             src={`${t.photo.base}-720.webp`}
             srcSet={`${t.photo.base}-720.webp 720w, ${t.photo.base}-1280.webp 1280w`}
-            sizes="(min-width: 1024px) 25vw, 100vw"
+            sizes={t.slot === "hero" ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 25vw, 100vw"}
             width={720}
             height={720}
             alt={t.photo.alt}
