@@ -15,6 +15,15 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
+## Revision 96: Market V3 on the hero, staging only (approved by Jasper, 2026-11-18)
+
+- **Approval:** Jasper: "Approved. Replace Market V2 with V3 on the Webleta hero, staging only." Not a production approval; Graham's feedback is pending.
+- **Changes:** the Market card plays `public/videos/hero-market-v3.mp4` (faststart remux of `Hero-Video-Production/Market/output/market-v3-seedance25flash-r2v.mp4`, 1,084,156 bytes, no re-encode) with `public/images/hero-market-v3-poster.webp` (first frame, 60 KB). V2 files stay in `public/videos/` and `public/images/` as the rollback (swap the two paths in `content/homepage.ts`).
+- **Playback:** unchanged Revision 94 behaviour (plays once, from the start, only on the front card; the slider steps on when it ends; no loop). New per-clip option `holdEnd` (`data-hold-end`), set for Market V3 only: while the slider is held (hover or focus) the clip rests on its last frame, the 1.8K / 236 badges, instead of replaying, so there's no end-to-start jump. Design V4 still replays while held.
+- **Verification (local production build, Playwright):** Market starts on the front card after the glide (readyState 4), plays to the end and the slider moves on with the clip paused and rewound; held, it stopped on the final frame (t 5.04, ended) for 7 s with no replay; reduced motion keeps both copies paused at t 0 on the poster. Badges legible at desktop (242 x 441 front card) and phone (143 x 260). No console errors. Video served as 206 ranges; `preload="metadata"`, so the full 1.08 MB loads only when the clip plays.
+- **QA:** tsc and ESLint clean on the changed files. `qa/qa.py` 150/150.
+- **Skills and tools actually used:** Playwright (playback, hold, reduced-motion and card-size checks), ffmpeg (`imageio-ffmpeg`) remux and poster. No paid generation.
+
 ## Milestone: Benefits ("A good website brings work in.") Revision 95, plus Market V2 on the hero (approved by Jasper: "push it", 2026-11-18)
 
 - **Approval:** provisional, staging only. Graham's feedback is pending. Ask Graham whether Melbourne Entertainment Company, Ground Control Systems and 411 Legal Services can appear in this section.

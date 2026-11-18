@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./HeroSlider.module.css";
 
-export type Card = { src: string; label: string; alt?: string; video?: { src: string; poster: string } };
+export type Card = { src: string; label: string; alt?: string; video?: { src: string; poster: string; holdEnd?: boolean } };
 type Slot = React.CSSProperties;
 
 /**
@@ -93,6 +93,8 @@ export function Track({
       // replay it so the front card never sits frozen on its last frame.
       const onEnded = () => {
         if (held()) {
+          // A clip that ends on its payoff (data-hold-end) rests on its last frame; others replay.
+          if (video.hasAttribute("data-hold-end")) return;
           video.currentTime = 0;
           video.play().catch(() => {});
           return;
@@ -161,6 +163,7 @@ export function Track({
                   muted
                   playsInline
                   preload="metadata"
+                  data-hold-end={card.video.holdEnd ? "" : undefined}
                   aria-hidden="true"
                 />
               ) : (

@@ -12,7 +12,8 @@ export type Link = { label: string; href: string };
 export type HeroImage = { src: string; srcSet: string; width: number; height: number; alt: string };
 
 /** `video`: optional looping clip shown instead of the image (poster = its first frame). */
-export type HeroCard = { label: string; image: HeroImage; video?: { src: string; poster: string } };
+/** `holdEnd`: while the slider is held, stay on the clip's last frame instead of replaying it. */
+export type HeroCard = { label: string; image: HeroImage; video?: { src: string; poster: string; holdEnd?: boolean } };
 
 export type Audience = {
   id: string;
@@ -137,10 +138,11 @@ export const hero = {
     },
     {
       label: "Market",
-      // Market V2 (2026-11-18): Seedance 2.5 Flash reference-to-video, fal request 01a1ed45-5867-76e2-a418-40c390d7d91b,
-      // seed 1437390280 (Hero-Video-Production/Market/PRODUCTION_LOG.md). Added by Jasper "for now"; not yet approved.
-      // Known issues: the scroll is two strokes, small generated faces and pseudo-text in the feed UI.
-      video: { src: "/videos/hero-market-v2.mp4", poster: "/images/hero-market-v2-poster.webp" },
+      // Market V3 (2026-11-18, approved by Jasper for staging): Seedance 2.5 Flash reference-to-video from
+      // four storyboard keyframes, fal request 01a1ee51-ce16-7030-a6bc-97a05ba30074, seed 933430589.
+      // Ends on the 1.8K / 236 badges (fictional demo values), so it holds that frame instead of replaying.
+      // Rollback: V2 is kept at /videos/hero-market-v2.mp4 + /images/hero-market-v2-poster.webp.
+      video: { src: "/videos/hero-market-v3.mp4", poster: "/images/hero-market-v3-poster.webp", holdEnd: true },
       image: {
         src: "/images/card-market-1280.webp",
         srcSet: "/images/card-market-720.webp 720w, /images/card-market-1280.webp 1280w",
