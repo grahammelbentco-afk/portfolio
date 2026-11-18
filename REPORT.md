@@ -15,6 +15,13 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
+## Revision 100: Conversion hero card plays the Conversion V1 video (Jasper: "put it now on hero section and push it", 2026-11-18)
+
+- **Approval:** provisional, staging only.
+- **Changes:** the Conversion card plays `public/videos/hero-conversion-v1.mp4` (faststart remux of Jasper's fal web-UI run, 5.04 s, 720 x 1280, H.264, no audio) with `public/images/hero-conversion-v1-poster.webp`; same play-once behaviour as the other cards, `holdEnd` so a held slider rests on "Booking confirmed". The previous still stays as the fallback image.
+- **Video:** Serene Spa booking on a tablet: Relaxation Massage, then Wed 14 Apr 2027 at 2:00 PM, Confirm booking, Booking confirmed. Frames 2 and 3 had past, mismatched dates; fixed in fal (nano-banana-pro edit, $0.30) before the run. Details in `Hero-Video-Production/Conversion/PRODUCTION_LOG.md`.
+- **QA:** paused at Jasper's request; build passes and the contact sheet was reviewed. Card-size and playback checks not run.
+
 ## Revision 99: Services tiles all in one frosted 3D style (Jasper: "push our changes so far", 2026-11-18)
 
 - **Approval:** provisional, staging only. Graham's feedback is pending.

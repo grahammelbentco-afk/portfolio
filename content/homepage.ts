@@ -153,6 +153,11 @@ export const hero = {
     },
     {
       label: "Conversion",
+      // Conversion V1 (2026-11-18): Seedance 2.5 Flash reference-to-video from four storyboard keyframes
+      // (Serene Spa booking on a tablet; dates fixed to Wed 14 Apr 2027 with nano-banana-pro edit). Run by
+      // Jasper in the fal web UI; master copy Hero-Video-Production/Conversion/output/conversion-v1-seedance25flash-r2v.mp4.
+      // Ends on "Booking confirmed", so it holds that frame. The still below stays as the fallback.
+      video: { src: "/videos/hero-conversion-v1.mp4", poster: "/images/hero-conversion-v1-poster.webp", holdEnd: true },
       image: {
         src: "/images/card-conversion-1280.webp",
         srcSet: "/images/card-conversion-720.webp 720w, /images/card-conversion-1280.webp 1280w",
