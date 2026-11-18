@@ -1,5 +1,7 @@
 /* Benefits: Shallows ground. A heading row with prev/next, then a scrollable row of six
-   outcome cards (Graham's reference), made ours with:
+   outcome cards (Graham's reference). Revision 95: each card is a gradient stage holding
+   either a real Webleta build (framed three different ways) or a coded illustration, with a
+   Deep Water note inside. Earlier notes, partly superseded:
    - the V1.6 channel cut: each photo's top-right corner is cut at the Split Arc's 24°;
    - one V1.6 supporting colour per story (spark, title marker, photo wash, UI accent);
    - a small UI moment that breaks out of the photo frame;
@@ -177,60 +179,96 @@
 }
 
 .card[data-colour="ochre"] {
+  --on-c: var(--deep-water); /* white on ochre is 2.3:1 */
   --c: var(--ochre);
   --m: rgb(201 154 60 / 0.4);
 }
 
-.card[data-colour="shell"] {
-  --c: #b9877b; /* Shell is too pale for marks on white; Shell deepened, accents only. */
+/* Project palettes: MEC is black and white with blush buttons; 411 Legal is navy and gold. */
+.card[data-colour="noir"] {
+  --c: color-mix(in srgb, var(--shell) 70%, var(--coral-clay));
   --m: var(--shell);
 }
 
-/* ---- Photo frame ---- */
-.frame {
-  position: relative;
-  margin-bottom: 30px;
+.card[data-colour="navy"] {
+  --c: var(--ochre);
+  --m: rgb(201 154 60 / 0.4);
 }
 
-/* The channel cut: top-right corner cut at 24° off vertical (dx = tan 24° × dy). */
-.media {
+/* ---- Stage (Revision 95): a gradient field holding a real build or an illustration ---- */
+.stage {
+  --dock: 12px; /* one inset for the tag and the note on every card */
   position: relative;
+  isolation: isolate;
   aspect-ratio: 4 / 5;
+  margin-bottom: 8px;
   overflow: hidden;
   border-radius: var(--r-lg);
-  background: var(--c);
+  background: var(--g);
 }
 
-.media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 900ms var(--ease-out);
-}
-
-/* A wash of the story colour rising from the bottom, under the UI card. */
-.media::after {
+/* Film grain so the gradients read as print, not as CSS. */
+.stage::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    color-mix(in srgb, var(--c) 78%, transparent) 0%,
-    color-mix(in srgb, var(--c) 30%, transparent) 26%,
-    transparent 48%
-  );
+  z-index: 5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.09;
+  mix-blend-mode: overlay;
   pointer-events: none;
 }
 
-.card:hover .media img {
-  transform: scale(1.04);
+/* Gradient fields, mixed only from V1.6 colours. --c-deep tints shadows. */
+.card[data-colour="kelp"] .stage {
+  /* Deep emerald: a soft light top-left, deep teal bottom-right, a near-black base. */
+  --g: radial-gradient(110% 75% at 12% 0%, #2c6b52 0%, transparent 62%), /* taste-skill-ignore: one gradient per card */
+    radial-gradient(90% 70% at 100% 100%, #0e4245 0%, transparent 68%), /* taste-skill-ignore: one gradient per card */
+    linear-gradient(165deg, #173a2e 0%, #0c211a 55%, #06120e 100%); /* taste-skill-ignore: one gradient per card */
+  --c-deep: #000;
+}
+
+.card[data-colour="ochre"] .stage {
+  --g: radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--ochre) 45%, white) 0%, transparent 70%), /* taste-skill-ignore: one gradient per card */
+    linear-gradient(165deg, #f7c548 0%, #f0a81c 45%, color-mix(in srgb, var(--ember) 75%, var(--coral-clay)) 100%); /* taste-skill-ignore: one gradient per card; Ground Control's yellow */
+  --c-deep: color-mix(in srgb, var(--coral-clay) 60%, var(--deep-water));
+}
+
+.card[data-colour="dusk"] .stage {
+  --g: radial-gradient(85% 65% at 90% 5%, var(--shell) 0%, transparent 70%), /* taste-skill-ignore: one gradient per card */
+    linear-gradient(170deg, color-mix(in srgb, var(--dusk-violet) 70%, var(--shell)) 0%, var(--dusk-violet) 50%, color-mix(in srgb, var(--dusk-violet) 55%, var(--deep-water)) 100%); /* taste-skill-ignore: one gradient per card */
+  --c-deep: color-mix(in srgb, var(--dusk-violet) 50%, var(--deep-water));
+}
+
+.card[data-colour="coral"] .stage {
+  --g: radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--ember) 85%, white) 0%, transparent 70%), /* taste-skill-ignore: one gradient per card */
+    linear-gradient(165deg, var(--ember) 0%, var(--coral-clay) 52%, var(--signal-red-deep) 100%); /* taste-skill-ignore: one gradient per card */
+  --c-deep: var(--signal-red-deep);
+}
+
+.card[data-colour="noir"] .stage {
+  --g: radial-gradient(80% 60% at 85% 8%, color-mix(in srgb, var(--shell) 70%, transparent) 0%, transparent 70%), /* taste-skill-ignore: one gradient per card */
+    linear-gradient(165deg, #3a3437 0%, #1d1b1d 60%, #0f0e10 100%); /* taste-skill-ignore: one gradient per card; MEC's charcoal */
+  --c-deep: #000;
+}
+
+.card[data-colour="navy"] .stage {
+  --g: radial-gradient(75% 55% at 15% 4%, color-mix(in srgb, var(--ochre) 55%, transparent) 0%, transparent 70%), /* taste-skill-ignore: one gradient per card; 411 Legal's gold */
+    linear-gradient(170deg, color-mix(in srgb, var(--harbour) 35%, var(--deep-water)) 0%, var(--deep-water) 50%, var(--abyss) 100%); /* taste-skill-ignore: one gradient per card */
+  --c-deep: #000;
+}
+
+.card[data-colour="harbour"] .stage {
+  --g: radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--aqua) 70%, var(--harbour)) 0%, transparent 72%), /* taste-skill-ignore: one gradient per card */
+    linear-gradient(165deg, var(--harbour) 0%, color-mix(in srgb, var(--harbour) 60%, var(--deep-water)) 55%, var(--deep-water) 100%); /* taste-skill-ignore: one gradient per card */
+  --c-deep: var(--abyss);
 }
 
 .tag {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 1;
+  top: var(--dock);
+  left: var(--dock);
+  z-index: 6;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -238,7 +276,7 @@
   border-radius: var(--r-pill);
   background: var(--white);
   color: var(--deep-water);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
@@ -248,13 +286,927 @@
   fill: var(--c);
 }
 
-/* The UI card overlaps the photo's bottom edge. */
+/* ---- Real builds in device mockups ---- */
+.browser {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f6f8f9;
+  box-shadow: 0 28px 56px -22px color-mix(in srgb, var(--c-deep) 90%, transparent); /* taste-skill-ignore: a window standing on the stage */
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #f6f8f9;
+}
+
+.dots {
+  display: flex;
+  gap: 4px;
+}
+
+.dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+
+.dots i:nth-child(2) {
+  background: #febc2e;
+}
+
+.dots i:nth-child(3) {
+  background: #28c840;
+}
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  container-type: size;
+  background: #111;
+}
+
+.screen img,
+.phoneScreen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* MEC: compact window, turned a little, its top-left in view. */
+.tiltWin {
+  top: 20%;
+  left: 9%;
+  width: 84%;
+  height: 52%;
+  transform: rotate(-5deg);
+}
+
+/* Ground Control: straight window running off the right edge. */
+.bleedWin {
+  top: 21%;
+  left: 9%;
+  width: 104%;
+  height: 58%;
+  border-radius: 10px 0 0 10px;
+}
+
+/* A phone: dark frame, rounded screen, a small island. */
+.phone {
+  position: absolute;
+  z-index: 2;
+  padding: 5px;
+  border-radius: 26px;
+  background: #0b0d10;
+  box-shadow:
+    inset 0 0 0 1.5px #3a3f46, /* taste-skill-ignore: the phone's metal edge */
+    0 30px 60px -20px rgb(0 0 0 / 0.65); /* taste-skill-ignore: a phone standing on the stage */
+}
+
+.island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  z-index: 2;
+  width: 30%;
+  height: 9px;
+  border-radius: 6px;
+  background: #0b0d10;
+  transform: translateX(-50%);
+}
+
+.phoneScreen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 21px;
+  background: #13202f;
+  container-type: size;
+}
+
+/* 411 Legal: the laptop view behind, the phone in front. */
+.duo {
+  position: absolute;
+  inset: 0;
+}
+
+.duoBack {
+  top: 22%;
+  left: 7%;
+  width: 82%;
+  height: 44%;
+}
+
+.duoPhone {
+  top: 30%;
+  right: 13%;
+  width: 33%;
+  aspect-ratio: 9 / 19;
+  transform: rotate(6deg);
+}
+
+/* Calls: the incoming-call screen inside a phone. */
+.callPhone {
+  top: 15%;
+  left: 50%;
+  width: 52%;
+  aspect-ratio: 9 / 17;
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+/* ---- Illustrations: our own objects, not app panels ---- */
+
+/* Sales: the brand spark, outlined and cropped by the bottom-right corner. */
+.sparkMark {
+  position: absolute;
+  z-index: 1;
+  right: -6%;
+  bottom: -16%;
+  width: 44%;
+  fill: none;
+  stroke: rgb(255 255 255 / 0.3);
+  transform: rotate(18deg);
+}
+
+.sparkMark path {
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Sales: a paper receipt with a torn edge and a Paid stamp. */
+.receiptWrap {
+  position: absolute;
+  z-index: 7;
+  top: 49%;
+  left: 50%;
+  width: 56%;
+  transform: rotate(6deg) scale(0.8);
+  transform-origin: 0 0;
+}
+
+.receipt {
+  display: grid;
+  gap: 9px;
+  padding: 18px 18px 30px;
+  background: var(--white);
+  color: var(--deep-water);
+  font-size: 0.9375rem;
+  /* Zigzag tear along the bottom. */
+  --z: 12px;
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / var(--z) 100%; /* taste-skill-ignore: a tear-edge mask, not a fill */
+  filter: drop-shadow(0 24px 30px color-mix(in srgb, var(--c-deep) 70%, transparent)); /* taste-skill-ignore: the receipt standing off the stage */
+}
+
+.shop {
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--line-on-light); /* taste-skill-ignore: a receipt's rule */
+  color: var(--wet-slate);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.line i {
+  border-bottom: 2px dotted rgb(7 34 59 / 0.2); /* taste-skill-ignore: dot leaders on a receipt */
+}
+
+.totalLabel {
+  margin-top: 6px;
+  color: var(--wet-slate);
+  font-size: 0.8125rem;
+}
+
+.totalValue {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 2rem + 1.4vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+.stamp {
+  position: absolute;
+  right: -16%;
+  bottom: 14%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  width: 78px;
+  height: 78px;
+  border: 3px solid var(--white);
+  border-radius: 50%;
+  background: var(--c);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  transform: rotate(14deg);
+}
+
+.stamp svg {
+  width: 10px;
+  height: 16px;
+  fill: var(--aqua);
+}
+
+/* Found first: local search, a map strip with numbered pins and your business ranked first. */
+.seo {
+  position: absolute;
+  z-index: 4;
+  top: 16%;
+  left: 6%;
+  width: 72%;
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--white);
+  color: var(--deep-water);
+  transform: rotate(-3deg);
+  box-shadow: 0 30px 60px -22px color-mix(in srgb, var(--c-deep) 85%, transparent); /* taste-skill-ignore: a results panel standing on the stage */
+}
+
+.query {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px;
+  padding: 8px 12px;
+  border-radius: var(--r-pill);
+  background: var(--shallows);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.query svg {
+  width: 13px;
+  height: 13px;
+  color: var(--wet-slate);
+}
+
+.mapStrip {
+  position: relative;
+  height: 92px;
+}
+
+.mapStrip svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.land {
+  fill: #f1efe8;
+}
+
+.park {
+  fill: #d6ead9;
+}
+
+.water {
+  fill: #cfe3f3;
+}
+
+.roads path,
+.minor path {
+  fill: none;
+  stroke: var(--white);
+  stroke-linecap: round;
+}
+
+.roads path {
+  stroke-width: 9;
+}
+
+.minor path {
+  stroke-width: 4;
+}
+
+.mapPin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--white);
+  border-radius: 50% 50% 50% 0;
+  background: var(--deep-water); /* white digits 15:1 */
+  color: var(--white);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  transform: translate(-50%, -100%) rotate(-45deg);
+}
+
+.mapPin[data-first] {
+  width: 30px;
+  height: 30px;
+  background: color-mix(in srgb, var(--c) 78%, black); /* white digit passes AA */
+  font-size: 0.875rem;
+}
+
+/* The pin is turned 45° to make the teardrop; its digit turns back to stand upright. */
+.mapPin > span {
+  line-height: 1;
+  transform: rotate(45deg);
+}
+
+
+/* More calls: an incoming call, with a pulsing answer button and a ringing handset. */
+.incoming {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 4px;
+  padding: 22px 10px 0;
+  background: linear-gradient(180deg, #1d3a2f 0%, #0a1712 100%); /* taste-skill-ignore: the phone's call screen */
+  color: var(--white);
+  text-align: center;
+}
+
+.waMark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 2px;
+  border-radius: 50%;
+  background: #25d366; /* WhatsApp green */
+  color: var(--white);
+}
+
+.callerLabel {
+  color: rgb(255 255 255 / 0.7);
+  font-size: 0.8125rem;
+}
+
+.caller {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.callActions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 150px;
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.decline,
+.answer {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: var(--white);
+}
+
+.decline {
+  background: #ff453a;
+}
+
+.decline svg {
+  width: 20px;
+  height: 20px;
+  transform: rotate(135deg);
+}
+
+.answer {
+  background: #25d366; /* WhatsApp green */
+}
+
+.handset {
+  position: relative;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+}
+
+.pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #25d366;
+  opacity: 0;
+}
+
+/* ---- Notes: Deep Water pills with the brand spark, inside the stage ---- */
 .overlay {
   position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: -26px;
-  z-index: 2;
+  z-index: 6;
+  width: max-content;
+  max-width: 86%;
+}
+
+/* Notes sit in a different spot on each card at the tag's inset, clear of each mockup's
+   headline and key figures; compact so they overlap only a little. */
+.overlay { max-width: calc(100% - 2 * var(--dock)); }
+/* Each object is placed for the composition: overlapping its mockup, turned against the
+   mockup's own tilt, clear of each page's headline. */
+.card[data-benefit="bookings"] .overlay { right: 9%; bottom: 7%; transform: rotate(6deg); }
+.card[data-benefit="quotes"] .overlay { right: 8%; bottom: 4%; transform: rotate(-5deg); }
+.card[data-benefit="sales"] .overlay { top: 15%; left: 7%; width: 48%; transform: rotate(-4deg); }
+.card[data-benefit="trust"] .overlay { bottom: 7%; left: 8%; transform: rotate(-6deg); }
+.card[data-benefit="calls"] .overlay { top: 66%; right: 6%; transform: rotate(5deg); }
+.card[data-benefit="found"] .overlay { top: 13%; right: 3%; transform: rotate(12deg); }
+
+/* Monochrome notes: a frosted tint of each card's hue, ink in a deep shade of the same hue. */
+.card[data-colour="noir"] { --scrim: #000; }
+.card[data-colour="ochre"] { --scrim: #6b3a00; }
+.card[data-colour="dusk"] { --scrim: #1b1450; }
+.card[data-colour="navy"] { --scrim: #000a18; }
+.card[data-colour="kelp"] { --scrim: #000; --scrim-strength: 25%; }
+.card[data-colour="coral"] { --scrim: #5c1206; }
+
+/* A subtle dark wash rising from the bottom of each stage, in the card's own deep shade:
+   it sits over the mockup and under the note, so the notes stand out (Jasper, R95). */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(to top, color-mix(in srgb, var(--scrim) var(--scrim-strength, 30%), transparent) 0%, color-mix(in srgb, var(--scrim) calc(var(--scrim-strength, 30%) * 0.3), transparent) 24%, transparent 44%); /* taste-skill-ignore: a scrim under the notes */
+  pointer-events: none;
+}
+
+.card[data-colour="noir"] { --note-bg: #f6e9e5; --note-ink: #2a2124; --note-spark: #c98f84; }
+.card[data-colour="ochre"] { --note-bg: #fff3d6; --note-ink: #3a2603; --note-spark: #d98a00; }
+.card[data-colour="dusk"] { --note-bg: #ecebfb; --note-ink: #221d55; --note-spark: var(--dusk-violet); }
+.card[data-colour="navy"] { --note-bg: #e3e9f1; --note-ink: var(--deep-water); --note-spark: #3b5a80; }
+.card[data-colour="kelp"] { --note-bg: #e3f7ea; --note-ink: #0c3b24; --note-spark: #30d158; }
+
+.card[data-colour="kelp"] .noteIcon,
+.card[data-colour="kelp"] .noteBtn {
+  background: #30d158;
+  color: #062b14;
+}
+
+.card[data-colour="coral"] { --note-bg: #fde8e2; --note-ink: #3d120a; --note-spark: var(--coral-clay); }
+
+
+
+
+
+
+
+
+
+/* Widgets share one width; the sales notification sizes to its text. */
+.note:not(.noteRow) {
+  width: 224px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---- Motifs: faint, one per card, in its open space ---- */
+.decor {
+  position: absolute;
+  z-index: 0;
+  fill: none;
+  stroke: rgb(255 255 255 / 0.3);
+  pointer-events: none;
+}
+
+.decor * {
+  stroke-width: 1.25px;
+  vector-effect: non-scaling-stroke;
+}
+
+.decor text {
+  fill: rgb(255 255 255 / 0.4);
+  stroke: none;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+
+.decor[data-kind="wave"] { bottom: 9%; left: 6%; width: 34%; }
+.decor[data-kind="dimension"] { bottom: 9%; left: 6%; width: 32%; }
+.decor[data-kind="section"] { top: 4%; right: 6%; width: 22%; }
+.decor[data-kind="section"] text { fill: none; stroke: rgb(255 255 255 / 0.3); font-family: Georgia, "Times New Roman", serif; font-size: 120px; }
+.decor[data-kind="dial"] { top: 44%; left: 5%; width: 12%; }
+.decor[data-kind="dial"] circle { fill: rgb(255 255 255 / 0.28); stroke: none; }
+.decor[data-kind="compass"] { right: -20%; bottom: 2%; width: 52%; stroke: rgb(255 255 255 / 0.4); }
+.decor[data-kind="compass"] path[data-n] { fill: rgb(255 255 255 / 0.35); stroke: none; }
+.decor[data-kind="compass"] text { font-size: 14px; }
+
+/* ---- Objects: real things, like the receipt ---- */
+.obj {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  width: 204px;
+  padding: 14px 16px;
+  border-radius: var(--r-sm); /* one corner for every object, inside the card's 16px */
+  color: var(--deep-water);
+  box-shadow: 0 22px 36px -18px color-mix(in srgb, var(--c-deep) 80%, transparent); /* taste-skill-ignore: an object standing off the stage */
+}
+
+.objSmall {
+  font-size: 0.875rem;
+  opacity: 1;
+}
+
+.objStrong {
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.objBig {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* Month calendar: a red binding strip with the month, a date grid, the 14th ringed. */
+.calPage {
+  width: 212px;
+  padding: 0 12px 12px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.calBind {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 -12px 6px;
+  padding: 7px 16px;
+  background: #c4473a;
+  color: var(--white);
+  font-size: 0.875rem;
+}
+
+.calBind i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1d1b1d;
+  box-shadow: inset 0 0 0 2px #e9e4e1; /* taste-skill-ignore: the binding ring */
+}
+
+.month {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.month span {
+  height: 22px;
+  border-radius: 4px;
+  background: #f0ebe9;
+}
+
+.month span[data-taken] {
+  background: #e7b7ae;
+}
+
+/* The booked day: the only number, with a tick. */
+.month .booked {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 22px;
+  background: #c4473a;
+  color: var(--white);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #c4473a; /* taste-skill-ignore: the booked day's ring */
+}
+
+.month .booked svg {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 13px;
+  height: 13px;
+  padding: 2px;
+  border-radius: 50%;
+  background: #1d1b1d;
+  color: var(--white);
+}
+
+.calPage .objSmall {
+  margin-top: 6px;
+  color: var(--wet-slate);
+  text-align: center;
+}
+
+/* Blueprint: blue paper with a fine grid, white ink. */
+.blueprint {
+  background-color: #1f4fa8; /* complement of Ground Control's amber */
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.12) 1px, transparent 1px), /* taste-skill-ignore: blueprint grid lines */
+    linear-gradient(90deg, rgb(255 255 255 / 0.12) 1px, transparent 1px); /* taste-skill-ignore: blueprint grid lines */
+  background-size: 12px 12px;
+  color: var(--white);
+}
+
+.blueprint .objSmall {
+  color: rgb(255 255 255 / 0.85);
+}
+
+.planMark {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 48px;
+  fill: none;
+  stroke: rgb(255 255 255 / 0.75);
+  stroke-width: 2;
+}
+
+/* Product card: the shop's listing for the mug on the receipt. */
+.product {
+  width: 100%;
+  box-sizing: border-box;
+  gap: 8px;
+  padding: 8px 8px 10px;
+  background: var(--white);
+}
+
+.product img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.productRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding-inline: 4px;
+}
+
+.product .objStrong {
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.product .objSmall {
+  color: var(--wet-slate);
+}
+
+.productPrice {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.cartBtn {
+  justify-self: start;
+  padding: 7px 14px;
+  border-radius: 6px;
+  background: #2b2170;
+  color: var(--white);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Case folder: manila stock, a tab, a sheet peeking out, a round stamp. */
+.folder {
+  position: relative;
+  display: grid;
+  width: 216px;
+  padding: 26px 12px 14px;
+  border-radius: 0 var(--r-sm) var(--r-sm) var(--r-sm);
+  background: #e6cf9f;
+  color: var(--deep-water);
+  box-shadow: 0 22px 36px -18px rgb(0 0 0 / 0.7); /* taste-skill-ignore: an object standing off the stage */
+}
+
+.folderTab {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  padding: 3px 12px 2px;
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+  background: #e6cf9f;
+  color: #4a3a17;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.folderSheet {
+  display: grid;
+  gap: 2px;
+  margin-top: -12px;
+  padding: 10px 12px 34px;
+  border-radius: 2px;
+  background: var(--white);
+}
+
+.folderSheet .objSmall {
+  color: var(--wet-slate);
+}
+
+.folderSheet .objStrong {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* A round rubber stamp, inked unevenly, pressed across the sheet. */
+.rubber {
+  position: absolute;
+  right: -14px;
+  bottom: -10px;
+  width: 104px;
+  color: #b0222b;
+  transform: rotate(-14deg);
+}
+
+.rubber text {
+  fill: currentColor;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.rubber .rubberRing {
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+}
+
+/* Call log: today's calls from the website. */
+.callLog {
+  width: 216px;
+  background: var(--white);
+}
+
+.callLog > .objSmall {
+  color: var(--wet-slate);
+}
+
+.logRow {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.logRow svg {
+  width: 12px;
+  height: 12px;
+  color: #128c4b; /* WhatsApp's darker green */
+}
+
+.logRow .objSmall {
+  color: var(--wet-slate);
+  font-weight: 400;
+}
+
+/* Ranked results under the map: yours first. */
+.ranks {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 8px 10px 10px;
+  list-style: none;
+}
+
+.rank {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--r-sm);
+  color: #5b6f7c;
+  font-size: 0.875rem;
+}
+
+.rank[data-first] {
+  background: color-mix(in srgb, var(--c) 12%, white);
+  color: var(--deep-water);
+}
+
+.rankNo {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+.rank[data-first] .rankNo {
+  color: color-mix(in srgb, var(--c) 78%, black);
+}
+
+.seo .small {
+  color: var(--wet-slate);
+  font-size: 0.8125rem;
+}
+
+/* First-place rosette: a medal with two ribbon tails (teal, the card's complement). */
+.rosette {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  width: 88px;
+}
+
+.medal {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  width: 82px;
+  height: 82px;
+  border: 4px dotted #ffd9c9;
+  border-radius: 50%;
+  background: #0f3f42;
+  color: var(--white);
+  box-shadow: 0 0 0 4px #0f3f42, 0 18px 30px -14px rgb(0 0 0 / 0.6); /* taste-skill-ignore: the rosette's rim and lift */
+  text-align: center;
+}
+
+.medal b {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.medal span {
+  color: #cfe7e4;
+  font-size: 0.8125rem;
+}
+
+.tails {
+  position: absolute;
+  top: 58px;
+  width: 54px;
+  height: 46px;
+  background: conic-gradient(from 180deg at 50% 100%, #1b6a6e 0 50%, #0f3f42 50% 100%); /* taste-skill-ignore: ribbon tails */
+  clip-path: polygon(0 0, 44% 0, 44% 100%, 22% 82%, 0 100%, 56% 0, 100% 0, 100% 100%, 78% 82%, 56% 100%);
+}
+
+.lines {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.strong {
+  overflow: hidden;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.small {
+  color: var(--cloud);
+  font-size: 0.8125rem;
 }
 
 /* ---- Text ---- */
@@ -271,180 +1223,10 @@
 }
 
 .cardBody {
-  max-width: 30ch;
+  max-width: 32ch;
   color: var(--wet-slate);
-  font-size: var(--fs-small);
+  font-size: var(--fs-body);
   line-height: 1.5;
-}
-
-/* ---- UI cards (decorative) ---- */
-.chip {
-  display: grid;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: var(--white);
-  color: var(--deep-water);
-  font-size: 0.8125rem;
-  line-height: 1.3;
-  box-shadow:
-    0 1px 0 rgb(7 34 59 / 0.06),
-    0 18px 36px -18px rgb(7 34 59 / 0.55);
-}
-
-.row {
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-}
-
-/* Two-part rows (text + status): the status keeps its natural width. */
-.row:has(> .lines:first-child) {
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-
-.lines {
-  display: grid;
-  gap: 1px;
-  min-width: 0;
-}
-
-.small {
-  color: var(--wet-slate);
-  font-size: 0.75rem;
-}
-
-.strong {
-  overflow: hidden;
-  font-weight: 650;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.badge {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--c) 18%, white);
-  color: var(--c);
-}
-
-.badge svg {
-  width: 15px;
-  height: 15px;
-}
-
-.price {
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 700;
-}
-
-.chipHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.slots {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 6px;
-}
-
-.slot {
-  padding: 7px 0;
-  border: 1px solid var(--line-on-light);
-  border-radius: var(--r-sm);
-  font-size: 0.75rem;
-  text-align: center;
-}
-
-.slot[data-picked] {
-  border-color: var(--c);
-  background: var(--c);
-  color: var(--white);
-  font-weight: 650;
-}
-
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 10px;
-  border-radius: var(--r-pill);
-  background: var(--c);
-  color: var(--white);
-  font-size: 0.75rem;
-  font-weight: 650;
-}
-
-.status svg {
-  width: 12px;
-  height: 12px;
-}
-
-.search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: var(--r-pill);
-  background: var(--shallows);
-}
-
-.search svg {
-  width: 13px;
-  height: 13px;
-  color: var(--wet-slate);
-}
-
-.result {
-  display: grid;
-  gap: 1px;
-  padding-left: 10px;
-  box-shadow: inset 3px 0 0 var(--c);
-}
-
-.result .small {
-  color: var(--c);
-  font-weight: 600;
-}
-
-/* Incoming-call ring. */
-.ring {
-  position: relative;
-}
-
-.ring::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border: 2px solid var(--c);
-  border-radius: inherit;
-  opacity: 0.4;
-}
-
-.faces {
-  display: flex;
-}
-
-.faces span {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  margin-left: -8px;
-  border: 2px solid var(--white);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--c) 30%, white);
-  font-size: 0.625rem;
-  font-weight: 700;
-}
-
-.faces span:first-child {
-  margin-left: 0;
 }
 
 /* ---- Progress ---- */
@@ -465,41 +1247,82 @@
 }
 
 /* ---- Motion ----
-   No scroll-timeline pop here: inside the horizontal track, view() would bind to the track
-   (which never scrolls vertically) and could leave the UI cards stuck hidden. The UI card
-   lifts slightly when its card is hovered instead. */
+   One response per card, on hover: real pages scroll through their frame like a visitor
+   reading them; illustrations shift slightly. The incoming call pulses and its handset
+   rings in short bursts, like a phone's incoming-call screen. */
 @media (prefers-reduced-motion: no-preference) {
-  .chip {
+  .screen img,
+  .phoneScreen img {
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .card:hover .screen img,
+  .card:hover .phoneScreen img {
+    transform: translateY(calc(-100% + 100cqh));
+    transition: transform var(--read, 5s) cubic-bezier(0.45, 0, 0.55, 1) 150ms;
+  }
+
+  .note,
+  .receiptWrap,
+  .seo,
+  .browser {
     transition: transform 500ms var(--ease-out);
   }
 
-  .card:hover .chip {
-    transform: translateY(-6px);
+  .card:hover .note {
+    translate: 0 -6px;
+  }
+
+  .card:hover .receiptWrap {
+    transform: rotate(3deg) translateY(-6px) scale(0.8);
+  }
+
+  .card:hover .seo {
+    transform: rotate(-1.5deg) translateY(-4px);
+  }
+
+  .pulse {
+    animation: pulse 2s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+  }
+
+  .pulse:nth-of-type(2) {
+    animation-delay: 1s;
+  }
+
+  .handset {
+    animation: ring 2s ease-in-out infinite;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .ring::after {
-    animation: ring 1.8s var(--ease-out) infinite;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .media img,
-  .card:hover .media img {
-    transition: none;
-    transform: none;
-  }
-}
-
-@keyframes ring {
-  from {
-    transform: scale(0.9);
+/* Two rings expanding from the answer button. */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
     opacity: 0.55;
   }
-  to {
-    transform: scale(1.5);
+  100% {
+    transform: scale(2.1);
     opacity: 0;
+  }
+}
+
+/* The handset shakes for a moment, then rests: a ring, then a pause. */
+@keyframes ring {
+  0%,
+  40%,
+  100% {
+    transform: rotate(0deg);
+  }
+  5%,
+  15%,
+  25%,
+  35% {
+    transform: rotate(-16deg);
+  }
+  10%,
+  20%,
+  30% {
+    transform: rotate(16deg);
   }
 }
 

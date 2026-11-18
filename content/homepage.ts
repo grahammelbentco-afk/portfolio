@@ -137,6 +137,10 @@ export const hero = {
     },
     {
       label: "Market",
+      // Market V2 (2026-11-18): Seedance 2.5 Flash reference-to-video, fal request 01a1ed45-5867-76e2-a418-40c390d7d91b,
+      // seed 1437390280 (Hero-Video-Production/Market/PRODUCTION_LOG.md). Added by Jasper "for now"; not yet approved.
+      // Known issues: the scroll is two strokes, small generated faces and pseudo-text in the feed UI.
+      video: { src: "/videos/hero-market-v2.mp4", poster: "/images/hero-market-v2-poster.webp" },
       image: {
         src: "/images/card-market-1280.webp",
         srcSet: "/images/card-market-720.webp 720w, /images/card-market-1280.webp 1280w",
@@ -278,14 +282,21 @@ export const about = {
  * Benefits (Graham's outline: "Pros of having digital presence, more sales / more booking,
  * create dummy for now"; reference: a scrollable row of outcome cards with prev/next).
  * Humanizer pass 2026-11-14.
- * UNCONFIRMED: placeholder copy, no statistics. Business names, items and prices in the
- * card overlays are fictional examples, not clients.
- * Photos: fal flux-pro v1.1-ultra, 2026-11-14, illustrations only. Manifest:
- * Webleta-AI-Generated-Images/manifest-2026-11-14-benefits.csv
- * Each card takes one V1.6 supporting colour (p.14), matched to V1.6's "Use for" notes.
+ * UNCONFIRMED: placeholder copy, no statistics. Items, places and prices in the cards are
+ * illustrative examples, not real orders or results.
+ * Revision 95 (Jasper, 2026-11-18): three cards show a real Webleta build, each framed a
+ * as a device mockup (browser windows, and a phone in front of a laptop view for 411 Legal,
+ * from the client's own screenshots in source-assets/411legal-screenshots-2026-11-18). Front pages are cropped from Graham's published
+ * portfolio boards at full size (originals in source-assets/portfolio-originals-2026-11-18,
+ * from the GitHub URLs in manifest-2026-11-16-work.csv) into public/images/benefits/.
+ * The other three are coded illustrations ("premium vectors", Graham) in our own style.
+ * Check with Graham that these three projects can appear here.
+ * The Revision 32 fal photos (benefit-*.webp) are no longer used but are kept.
+ * Stage colours follow each project's own palette (MEC charcoal and blush, Ground Control
+ * amber, 411 Legal navy and gold); the illustrated cards take V1.6 supporting colours.
  */
 export type BenefitVisual = "order" | "booking" | "quote" | "search" | "call" | "trust";
-export type SupportColour = "coral" | "dusk" | "harbour" | "kelp" | "ochre" | "shell";
+export type SupportColour = "coral" | "dusk" | "harbour" | "kelp" | "ochre" | "shell" | "noir" | "navy";
 export type Benefit = {
   id: string;
   tag: string;
@@ -295,50 +306,55 @@ export type Benefit = {
   text: string;
   visual: BenefitVisual;
   colour: SupportColour;
-  image: { base: string; alt: string };
+  /** Where the note sits on the stage: top/middle/bottom, left/right. */
+  note: "tl" | "tr" | "ml" | "mr" | "bl" | "br";
+  /** A real project (a full-length front page) and how it's framed; without it, the card
+   *  shows a coded illustration for its visual. `back` is a second page for the fan. */
+  project?: { name: string; frame: "browser" | "browser-bleed" | "phone"; screen: string; w: number; h: number; alt: string; back?: { screen: string; w: number; h: number } };
 };
 
 export const benefits = {
   eyebrow: "Why it pays off",
   title: "A good website brings work in.",
   titleMark: "work in", // Seafoam highlighter, as in About
-  intro: "A shop wants orders. A salon wants bookings. A plumber wants the right jobs. We find out what a win looks like for you, then build the site to bring it in.",
+  intro: "A shop counts orders. A builder counts the right jobs. We find out what a win is for you, then build the site to bring it in.",
   items: [
     {
-      id: "sales", tag: "Retail", title: "More sales", mark: "sales",
-      text: "Visitors become orders, not just people browsing.",
-      visual: "order", colour: "coral",
-      image: { base: "/images/benefit-sales", alt: "A potter wrapping a finished bowl in tissue paper to post an order." },
+      id: "bookings", tag: "Events and entertainment", title: "More bookings", mark: "bookings",
+      text: "Couples check a date at 10pm on a Sunday. Your calendar fills while you work.",
+      visual: "booking", colour: "noir", note: "bl",
+      project: { name: "Melbourne Entertainment Company", frame: "browser", screen: "/images/benefits/screen-mec.webp", w: 902, h: 2108,
+        alt: "The Melbourne Entertainment Company homepage, a site we built: black and white photos of performers at weddings." },
     },
     {
-      id: "bookings", tag: "Salons and studios", title: "More bookings", mark: "bookings",
-      text: "People pick a time at 10pm on a Sunday. Your diary fills while you work.",
-      visual: "booking", colour: "dusk",
-      image: { base: "/images/benefit-bookings", alt: "A stylist finishing a smiling client's hair in a small salon." },
-    },
-    {
-      id: "quotes", tag: "Trades", title: "More quote requests", mark: "quote requests",
+      id: "quotes", tag: "Builders and suppliers", title: "More quote requests", mark: "quote requests",
       text: "The job details arrive up front, so you quote the work worth doing.",
-      visual: "quote", colour: "harbour",
-      image: { base: "/images/benefit-quotes", alt: "A plumber at the back of his ute reading a new job request on his phone." },
+      visual: "quote", colour: "ochre", note: "br",
+      project: { name: "Ground Control Systems", frame: "browser-bleed", screen: "/images/benefits/screen-groundcontrol.webp", w: 874, h: 1581,
+        alt: "The Ground Control Systems homepage, a site we built: Design. Build. Install. over a night photo of bike racks." },
     },
     {
-      id: "found", tag: "Food and cafés", title: "Found first", mark: "first",
+      id: "sales", tag: "Online stores", title: "More sales", mark: "sales",
+      text: "More of the people who visit end up buying.",
+      visual: "order", colour: "dusk", note: "bl",
+    },
+    {
+      id: "trust", tag: "Law and advice", title: "Taken seriously", mark: "seriously",
+      text: "Clear services and real photos of your team help people trust you before they call.",
+      visual: "trust", colour: "navy", note: "br",
+      project: { name: "411 Legal Services", frame: "phone", screen: "/images/benefits/legal-phone.webp", w: 393, h: 1239,
+        alt: "The 411 Legal Services homepage on a phone and a laptop, a site we built: Find a Lawyer Near You.",
+        back: { screen: "/images/benefits/legal-desktop.webp", w: 1040, h: 650 } },
+    },
+    {
+      id: "calls", tag: "Home services", title: "More calls", mark: "calls",
+      text: "People tap Call on your site and your phone rings. Nobody hunts for the number.",
+      visual: "call", colour: "kelp", note: "br",
+    },
+    {
+      id: "found", tag: "Local shops and cafés", title: "Found first", mark: "first",
       text: "Show up when someone nearby searches for what you make.",
-      visual: "search", colour: "kelp",
-      image: { base: "/images/benefit-found", alt: "A customer walking into a bakery as the baker hands over a bag of bread." },
-    },
-    {
-      id: "calls", tag: "Automotive", title: "More calls", mark: "calls",
-      text: "One tap from your site to a ringing phone, with no hunting for the number.",
-      visual: "call", colour: "ochre",
-      image: { base: "/images/benefit-calls", alt: "A mechanic taking a phone call at the open roller door of his workshop." },
-    },
-    {
-      id: "trust", tag: "Health clinics", title: "Taken seriously", mark: "seriously",
-      text: "Clear prices and real faces. People trust what they can see before they visit.",
-      visual: "trust", colour: "shell",
-      image: { base: "/images/benefit-trust", alt: "A physiotherapist chatting with a smiling client in a calm treatment room." },
+      visual: "search", colour: "coral", note: "br",
     },
   ] satisfies Benefit[],
 };

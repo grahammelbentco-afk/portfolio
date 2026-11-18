@@ -375,8 +375,12 @@ with sync_playwright() as p:
             page.wait_for_timeout(500)
         end = page.evaluate(TRACK)
         check(f"benefits {w}: Next disabled at the last card", end[2], str(end))
-        ok = page.evaluate("(() => { const i = document.querySelector('[data-benefit=sales] img'); return i.complete && i.naturalWidth > 0; })()")
-        check(f"benefits {w}: potter photo loads", ok)
+        # Revision 95: three real Webleta builds in browser windows, three coded illustrations.
+        page.evaluate("document.querySelectorAll('#benefits img').forEach(i => i.loading = 'eager')")
+        page.wait_for_function("[...document.querySelectorAll('#benefits img')].every(i => i.complete)", timeout=10000)
+        shots = page.evaluate("[...document.querySelectorAll('#benefits [data-kind=site]')].filter(st => [...st.querySelectorAll('img')].some(i => i.naturalWidth > 0 && i.src.includes('/images/benefits/') && i.alt.length > 20)).length")
+        art = page.evaluate("document.querySelectorAll('#benefits [data-kind=art]').length")
+        check(f"benefits {w}: three real-site screens load with alt text, three illustrations", shots == 3 and art == 3, f"{shots} sites, {art} art")
         check(f"benefits {w}: no horizontal overflow", not page.evaluate("document.documentElement.scrollWidth > innerWidth"))
         ctx.close()
 
