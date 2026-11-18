@@ -138,11 +138,11 @@ export const hero = {
     },
     {
       label: "Market",
-      // Market V3 (2026-11-18, approved by Jasper for staging): Seedance 2.5 Flash reference-to-video from
-      // four storyboard keyframes, fal request 01a1ee51-ce16-7030-a6bc-97a05ba30074, seed 933430589.
-      // Ends on the 1.8K / 236 badges (fictional demo values), so it holds that frame instead of replaying.
-      // Rollback: V2 is kept at /videos/hero-market-v2.mp4 + /images/hero-market-v2-poster.webp.
-      video: { src: "/videos/hero-market-v3.mp4", poster: "/images/hero-market-v3-poster.webp", holdEnd: true },
+      // Market "heart tap" (2026-11-18, supplied by Jasper: Downloads/heart-tap-video.mp4; master copy in
+      // Hero-Video-Production/Market/output/market-heart-tap.mp4). Same Willow & Petal story as V3: scroll, like,
+      // ends on the 1.8K / 236 badges (fictional demo values), so it holds that frame instead of replaying.
+      // Rollback: V3 at /videos/hero-market-v3.mp4 (+ poster), V2 at /videos/hero-market-v2.mp4 (+ poster).
+      video: { src: "/videos/hero-market-heart-tap.mp4", poster: "/images/hero-market-heart-tap-poster.webp", holdEnd: true },
       image: {
         src: "/images/card-market-1280.webp",
         srcSet: "/images/card-market-720.webp 720w, /images/card-market-1280.webp 1280w",

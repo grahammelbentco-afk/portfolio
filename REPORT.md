@@ -15,6 +15,13 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
 - **Commit SHA:** `498cc1d`. The Cloudflare Pages check succeeded. `source-assets/` (the 18 MB of fal originals) is gitignored as a local-only working folder.
 
+## Revision 97: Market hero video updated to "heart tap", staging only (Jasper, 2026-11-18)
+
+- **Ask (Jasper):** "this the new video update hero section market video then push it again" (`Downloads/heart-tap-video.mp4`). Staging only; not a production approval.
+- **Changes:** the Market card plays `public/videos/hero-market-heart-tap.mp4` (faststart remux, no re-encode, 1,292,589 bytes, 5.04 s, 720 x 1280, H.264, no audio) with `public/images/hero-market-heart-tap-poster.webp` (first frame). Master copy: `Hero-Video-Production/Market/output/market-heart-tap.mp4`. Same Willow & Petal story as V3 (scroll, like, 1.8K / 236 badges), no app logo. `holdEnd` kept, so a held slider rests on the badges frame. V3 and V2 files stay as rollbacks.
+- **Verification (local production build, Playwright):** plays once on the front card (242 x 441 desktop, 143 x 260 phone), slider moves on after it ends, held slider rests on the last frame (t 5.04), reduced motion stays on the poster, badges legible at both sizes, no console errors.
+- **QA:** tsc and ESLint clean. `qa/qa.py` 150/150.
+
 ## Revision 96: Market V3 on the hero, staging only (approved by Jasper, 2026-11-18)
 
 - **Approval:** Jasper: "Approved. Replace Market V2 with V3 on the Webleta hero, staging only." Not a production approval; Graham's feedback is pending.
@@ -22,6 +29,7 @@ Work stops here for visual review. Services and the other sections haven't been 
 - **Playback:** unchanged Revision 94 behaviour (plays once, from the start, only on the front card; the slider steps on when it ends; no loop). New per-clip option `holdEnd` (`data-hold-end`), set for Market V3 only: while the slider is held (hover or focus) the clip rests on its last frame, the 1.8K / 236 badges, instead of replaying, so there's no end-to-start jump. Design V4 still replays while held.
 - **Verification (local production build, Playwright):** Market starts on the front card after the glide (readyState 4), plays to the end and the slider moves on with the clip paused and rewound; held, it stopped on the final frame (t 5.04, ended) for 7 s with no replay; reduced motion keeps both copies paused at t 0 on the poster. Badges legible at desktop (242 x 441 front card) and phone (143 x 260). No console errors. Video served as 206 ranges; `preload="metadata"`, so the full 1.08 MB loads only when the clip plays.
 - **QA:** tsc and ESLint clean on the changed files. `qa/qa.py` 150/150.
+- **Commit:** `33d3ecf`, pushed to `main`; Cloudflare Pages check succeeded, and staging serves `hero-market-v3.mp4` (200, 1,084,156 bytes) with `noindex` still in place.
 - **Skills and tools actually used:** Playwright (playback, hold, reduced-motion and card-size checks), ffmpeg (`imageio-ffmpeg`) remux and poster. No paid generation.
 
 ## Milestone: Benefits ("A good website brings work in.") Revision 95, plus Market V2 on the hero (approved by Jasper: "push it", 2026-11-18)
