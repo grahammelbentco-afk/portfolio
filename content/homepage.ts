@@ -96,14 +96,14 @@ export const hero = {
   // Revision 89 (Jasper): three lines, "Your business / deserves a / digital presence."
   // The small word after "deserves" (`lead`) and the last line (`rest`) swap together.
   headline: {
-    first: "Your business",
+    first: "My business",
     second: "deserves",
     rotating: [
       { lead: "a", rest: "digital presence." },
       { lead: "to", rest: "stand out." },
       { lead: "to", rest: "get more leads." },
     ],
-    spoken: "Your business deserves a digital presence, to stand out, and to get more leads.",
+    spoken: "My business deserves a digital presence, to stand out, and to get more leads.",
   },
   // Graham's note as written; only "tailored to" is replaced (Jasper, 2026-11-17).
   lede: "We help businesses build a strong online presence with websites designed around their goals, their needs, and the way they want to grow.",
