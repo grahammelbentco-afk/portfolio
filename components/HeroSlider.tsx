@@ -40,7 +40,6 @@ export function Track({
   // Current step and the one before it (to tell which spares jump unseen).
   const [pos, setPos] = useState({ active: 0, prev: 0 });
   const { active } = pos;
-  const step = (d: number) => setPos((s) => ({ active: s.active + d, prev: s.active }));
   const paused = useRef(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -174,16 +173,6 @@ export function Track({
           );
         })}
       </div>
-      <button type="button" className={`${styles.nav} ${styles.prev}`} onClick={() => step(-1)} aria-label="Previous">
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M10 3 5 8l5 5" />
-        </svg>
-      </button>
-      <button type="button" className={`${styles.nav} ${styles.next}`} onClick={() => step(1)} aria-label="Next">
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M6 3l5 5-5 5" />
-        </svg>
-      </button>
     </div>
   );
 }
