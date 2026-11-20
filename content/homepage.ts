@@ -734,7 +734,7 @@ export const reviews = {
 export type ClientLogo = { id: string; name: string; ar: number; scale?: number };
 export const clients = {
   eyebrow: "Who we've worked with",
-  title: { solid: "Brands we've", outline: "built for." },
+  title: { solid: "Companies we've", outline: "worked with." },
   logos: [
     { id: "groundcontrol", name: "Ground Control Systems", ar: 4.966 },
     { id: "racknroad", name: "Rack n Road", ar: 5.943 },
