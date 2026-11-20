@@ -57,7 +57,10 @@ export const viewport: Viewport = {
 // Runs before paint: lets CSS hide intro elements only when motion is allowed.
 const motionScript = `try{if(matchMedia('(prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('motion')}catch(e){}`;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const ReactGrabDev = process.env.NODE_ENV === "development"
+    ? (await import("@/components/ReactGrabDev")).default
+    : null;
   return (
     <html lang="en-AU" className={`${cabinet.variable} ${instrument.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
       <head>
@@ -69,6 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <div className="site">{children}</div>
+        {ReactGrabDev && <ReactGrabDev />}
       </body>
     </html>
   );
