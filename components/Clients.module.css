@@ -24,6 +24,10 @@
   gap: var(--s-3);
 }
 
+.title {
+  max-width: none;
+}
+
 .next {
   color: var(--wet-slate);
   font-size: var(--fs-body);

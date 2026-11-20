@@ -32,7 +32,7 @@ export default function Clients() {
       <div className={`container ${styles.head}`}>
         <div>
           <Eyebrow>{clients.eyebrow}</Eyebrow>
-          <h2 id="clients-title" className="sec-title">
+          <h2 id="clients-title" className={`sec-title ${styles.title}`}>
             {clients.title.solid} <span className="outline-type">{clients.title.outline}</span>
           </h2>
         </div>
