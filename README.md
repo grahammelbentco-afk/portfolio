@@ -1,5 +1,7 @@
 # Webleta website
 
+![Webleta website homepage](docs/webleta-website.png)
+
 The Webleta website is built with Next.js App Router and exported as a static site.
 
 ## Local development
