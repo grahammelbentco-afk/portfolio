@@ -82,8 +82,7 @@
 .caption {
   margin-top: var(--s-2);
   color: var(--wet-slate);
-  font-size: var(--fs-caption);
-  letter-spacing: 0.02em;
+  font-size: var(--fs-small);
 }
 
 /* ---- Story ---- */
@@ -95,19 +94,57 @@
 
 .storyTitle {
   max-width: 24ch;
-  font-family: var(--font-display);
   font-size: clamp(1.5rem, 1.15rem + 1vw, 2.125rem);
-  font-weight: 800; /* R88: headings one step bolder (Jasper) */
-  letter-spacing: -0.03em;
   line-height: 1.1;
-  text-wrap: balance;
 }
 
 .storyText {
   max-width: 34rem;
   color: var(--wet-slate);
-  font-size: var(--fs-lead);
-  line-height: 1.55;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: clamp(5rem, 34%, 16rem) minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s-1) var(--s-2);
+  margin: var(--s-3) 0 0;
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--line-on-light);
+  scroll-margin-top: calc(var(--header-h) + var(--s-2));
+}
+
+.stat {
+  display: grid;
+  grid-column: 2;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s-1);
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+}
+
+.stat:first-child {
+  grid-column: 1;
+  grid-row: span 3;
+  grid-template-columns: minmax(0, 1fr);
+  align-self: start;
+  gap: 0;
+}
+
+.stat dd {
+  order: -1;
+  margin: 0;
+  color: var(--deep-water);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.stat:first-child dd {
+  font-size: clamp(2.5rem, 2rem + 1.6vw, 3.75rem);
 }
 
 .audiences {
@@ -140,7 +177,7 @@
   font-family: var(--font-display);
   font-size: var(--fs-h3);
   font-weight: 800; /* R88: headings one step bolder (Jasper) */
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
   line-height: 1.2;
 }
 
@@ -179,10 +216,8 @@
 
 .fact dt {
   color: var(--wet-slate);
-  font-size: var(--fs-caption);
+  font-size: var(--fs-small);
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .fact dd {
@@ -238,8 +273,7 @@
     grid-column: 4 / -1;
   }
 
-  /* The photo stays beside the story while it scrolls past. */
-  .figure {
+  .visual {
     grid-column: 1 / span 5;
     position: sticky;
     top: calc(var(--header-h) + var(--s-4));
