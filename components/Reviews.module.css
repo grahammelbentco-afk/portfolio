@@ -47,36 +47,25 @@
   }
 }
 
-/* The photo in brand duotone: luminosity over Deep Water, Seafoam lifting the lights. The
-   top-right corner is cut at the Split Arc's 24° (dx = tan 24 x dy). */
+/* The team footage, shown in full colour. Its cinematic grade (Deep Water shadows, warm skin,
+   lifted blacks, vignette) is baked into the file, so no CSS overlay sits on top. */
 .photo {
   position: relative;
   isolation: isolate;
-  min-height: 420px;
+  min-height: 500px;
   margin: 0;
   overflow: hidden;
   border-radius: var(--r-lg);
   background: var(--deep-water);
 }
 
-.photo img {
+.photo video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 60% 50%;
-  mix-blend-mode: luminosity;
-  opacity: 0.62;
-}
-
-.photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--seafoam);
-  mix-blend-mode: soft-light;
-  opacity: 0.55;
+  object-position: 50% 40%;
 }
 
 /* Real proof from Jasper's Upwork profile, on a flat Seafoam chip. */
@@ -105,6 +94,21 @@
 .proof span {
   font-size: var(--fs-small);
   line-height: 1.4;
+}
+
+/* The Upwork mark beside the figure, in Deep Water so it sits flat on the Seafoam chip. */
+.proofValue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.proofMark {
+  width: 26px;
+  height: 26px;
+  background: var(--deep-water);
+  -webkit-mask: url(/brands/si/upwork.svg) center / contain no-repeat;
+  mask: url(/brands/si/upwork.svg) center / contain no-repeat;
 }
 
 /* ---- The quote ---- */
@@ -158,6 +162,16 @@
   content: "\201D";
 }
 
+/* Seafoam marker band behind the strongest phrase, low on the line like a highlighter (same as
+   About and Benefits). */
+.mark {
+  background: linear-gradient(to top, var(--seafoam) 0.34em, transparent 0.34em) no-repeat;
+  color: inherit;
+  padding-inline: 0.04em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 .byline {
   display: flex;
   align-items: center;
@@ -196,15 +210,84 @@
   font-size: var(--fs-small);
 }
 
-.source {
-  display: inline-block;
-  margin-left: 6px;
-  padding: 1px 10px;
-  border-radius: var(--r-pill);
-  background: var(--shallows);
-  color: var(--deep-water);
-  font-size: var(--fs-caption);
-  font-weight: 600;
+/* A logo in the circle, on no background: the mark in its own colour (Upwork green, LinkedIn
+   blue) or a company's symbol in Deep Water. */
+.avatar[data-logo] {
+  background: none;
+}
+
+.avatarMark {
+  width: 40px;
+  height: 40px;
+  background: var(--deep-water);
+  -webkit-mask: var(--src) center / contain no-repeat;
+  mask: var(--src) center / contain no-repeat;
+}
+
+/* A company's own logo, full colour. A square site icon fills the circle; a shaped mark
+   (Rack n Road's shield) sits whole inside it. */
+.avatarImg {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.avatar[data-fill] {
+  overflow: hidden;
+}
+
+.avatar[data-fill] .avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar[data-logo="upwork"] .avatarMark {
+  width: 44px;
+  background: #14a800;
+}
+
+.avatar[data-logo="linkedin"] .avatarMark {
+  width: 36px;
+  height: 36px;
+  background: #0a66c2;
+}
+
+/* Pause control for the footage (moving content longer than 5 seconds needs one). */
+.playToggle {
+  position: absolute;
+  z-index: 1;
+  right: clamp(16px, 2vw, 28px);
+  bottom: clamp(16px, 2vw, 28px);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.16);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.playToggle:hover {
+  background: rgb(255 255 255 / 0.28);
+}
+
+.playToggle:focus-visible {
+  outline: 2px solid var(--seafoam);
+  outline-offset: 3px;
+}
+
+.playToggle svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ---- Controls: arrows, count and the Split Arc gauge ---- */
@@ -300,13 +383,14 @@
     animation: none;
   }
 
-  .arrow {
+  .arrow,
+  .playToggle {
     transition: none;
   }
 }
 
 @media (max-width: 959px) {
   .photo {
-    min-height: 320px;
+    min-height: 380px;
   }
 }

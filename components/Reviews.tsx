@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { reviews } from "@/content/homepage";
+import { reviews, type Review } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import Spark from "./Spark";
 import styles from "./Reviews.module.css";
@@ -9,8 +9,49 @@ import styles from "./Reviews.module.css";
 /** Seconds each review stays up while the carousel runs on its own. */
 const HOLD = 8;
 
+/** The quote with its strongest phrase marked in Seafoam, like "Website first." in Benefits. */
+function Quote({ r }: { r: Review }) {
+  const at = r.mark ? r.quote.indexOf(r.mark) : -1;
+  if (!r.mark || at < 0) return <>{r.quote}</>;
+  return (
+    <>
+      {r.quote.slice(0, at)}
+      <mark className={styles.mark}>{r.mark}</mark>
+      {r.quote.slice(at + r.mark.length)}
+    </>
+  );
+}
+
+/** The avatar circle: the logo of where the review came from (Graham: "add the logo where the
+ *  feedback came from ... for trust"). Upwork and LinkedIn in their own colours, a company's
+ *  logo in its real colours; initials when there's no logo yet. */
+function Avatar({ r }: { r: Review }) {
+  const via = r.via;
+  if (!via) {
+    return (
+      <span className={styles.avatar} aria-hidden="true">
+        {r.initials ?? <Spark className={styles.avatarSpark} />}
+      </span>
+    );
+  }
+  if (via.kind === "client") {
+    // The company's own logo, in its real colours.
+    return (
+      <span className={styles.avatar} data-logo="client" data-fill={via.fill ? "" : undefined}>
+        <img className={styles.avatarImg} src={via.src} alt={r.org} width={52} height={52} loading="lazy" decoding="async" />
+      </span>
+    );
+  }
+  const label = via.kind === "upwork" ? "Upwork" : "LinkedIn";
+  return (
+    <span className={styles.avatar} data-logo={via.kind} role="img" aria-label={label}>
+      <span className={styles.avatarMark} style={{ "--src": `url(/brands/si/${via.kind}.svg)` } as React.CSSProperties} />
+    </span>
+  );
+}
+
 /**
- * Reviews (Revision 79). Real reviews for Graham and Jasper, one at a time, rotating:
+ * Reviews (Revision 80: real desk footage, source logos). Real reviews for Graham and Jasper, one at a time, rotating:
  *   [ duotone photo, 24° cut, Upwork proof chip ][ the quote, large, with its byline       ]
  *                                                [ ‹ ›  4 / 16  gauge filling for 8s      ]
  * It moves on by itself every 8 seconds and pauses while hovered, focused or off screen; with
@@ -23,7 +64,9 @@ export default function Reviews() {
   const [paused, setPaused] = useState(false);
   const [onScreen, setOnScreen] = useState(false);
   const [still, setStill] = useState(false);
+  const [videoOff, setVideoOff] = useState(false);
   const root = useRef<HTMLElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
   const r = items[active];
   const running = !paused && onScreen && !still;
 
@@ -49,6 +92,15 @@ export default function Reviews() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, active]);
 
+  // The clip plays only while the section is on screen, motion is allowed and nobody paused it.
+  const playing = onScreen && !still && !videoOff;
+  useEffect(() => {
+    const v = video.current;
+    if (!v) return;
+    if (playing) v.play().catch(() => {});
+    else v.pause();
+  }, [playing]);
+
   const onKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") step(1);
     if (e.key === "ArrowLeft") step(-1);
@@ -66,18 +118,34 @@ export default function Reviews() {
 
       <div className={`container ${styles.layout}`}>
         <figure className={styles.photo}>
-          <img
-            src={`${reviews.image.base}-720.webp`}
-            srcSet={`${reviews.image.base}-720.webp 720w, ${reviews.image.base}-1280.webp 1280w`}
-            sizes="(min-width: 960px) 38vw, 92vw"
-            width={720}
-            height={405}
-            alt={reviews.image.alt}
-            loading="lazy"
-            decoding="async"
+          {/* Decorative: the team at work. Muted and looped; never plays with reduced motion. */}
+          <video
+            ref={video}
+            src={reviews.video.src}
+            poster={reviews.video.poster}
+            muted
+            loop
+            playsInline
+            preload="none"
+            aria-hidden="true"
           />
+          {!still && (
+            <button
+              type="button"
+              className={styles.playToggle}
+              onClick={() => setVideoOff((o) => !o)}
+              aria-label={videoOff ? "Play background video" : "Pause background video"}
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                {videoOff ? <path d="M5 3.5v9l7-4.5z" /> : <path d="M5.5 3.5v9M10.5 3.5v9" />}
+              </svg>
+            </button>
+          )}
           <figcaption className={styles.proof}>
-            <strong>{reviews.proof.value}</strong>
+            <span className={styles.proofValue}>
+              <strong>{reviews.proof.value}</strong>
+              <span className={styles.proofMark} aria-hidden="true" />
+            </span>
             <span>{reviews.proof.label}</span>
           </figcaption>
         </figure>
@@ -105,17 +173,15 @@ export default function Reviews() {
               data-review-current
             >
               <blockquote className={styles.quote}>
-                <p>{r.quote}</p>
+                <p>
+                  <Quote r={r} />
+                </p>
               </blockquote>
               <figcaption className={styles.byline}>
-                <span className={styles.avatar} aria-hidden="true">
-                  {r.initials ?? <Spark className={styles.avatarSpark} />}
-                </span>
+                <Avatar r={r} />
                 <span>
                   <span className={styles.who}>{r.name}</span>
-                  <span className={styles.role}>
-                    {r.role} <span className={styles.source}>{r.source}</span>
-                  </span>
+                  <span className={styles.role}>{r.role}</span>
                 </span>
               </figcaption>
             </figure>

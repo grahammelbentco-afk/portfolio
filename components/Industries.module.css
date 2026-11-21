@@ -1,6 +1,9 @@
 /* Industries (Revision 83): Deep Water ground; the tiles come from Services.module.css.
    This file only sets the ground, the heading, the mirrored grid and the Deep Water notch. */
-/* Revision 87 (Jasper): the page's one red section. Signal Red with a deeper red pooled
+/* REVERT POINT (saved 2026-11-21): this Revision 87 red ground is the section's background.
+   Revision 102 puts a ShaderGradient test over it (IndustriesShader, GROUND in Industries.tsx);
+   set GROUND = "red" to go back. This CSS stays as first paint and the no-WebGL fallback.
+   Revision 87 (Jasper): the page's one red section. Signal Red with a deeper red pooled
    in the corners so it reads rich, not flat. All text on it is white (4.9:1 or better). */
 .section {
   position: relative;
@@ -106,12 +109,14 @@
   --c: color-mix(in srgb, var(--shell) 44%, var(--deep-water));
 }
 
+/* Revision 99 (Jasper): no darkened scrim. The tile's own flat colour, solid at the bottom,
+   carries the text (set per industry at the end of this file). */
 .bento > li:has(img)::after {
-  background: linear-gradient( /* taste-skill-ignore: scrim over the photo, in the tile's own colour */
+  background: linear-gradient( /* taste-skill-ignore: the tile's own flat colour under the text */
     to top,
-    color-mix(in srgb, var(--c) 30%, #051a2d) 0%,
-    color-mix(in srgb, color-mix(in srgb, var(--c) 40%, #051a2d) 80%, transparent) 42%,
-    transparent 78%
+    var(--c) 0%,
+    color-mix(in srgb, var(--c) 85%, transparent) 26%,
+    transparent 52%
   );
 }
 
@@ -120,8 +125,10 @@
   --c: color-mix(in srgb, var(--seafoam) 42%, var(--deep-water));
 }
 
-/* Two lines at most on every card (Jasper). */
+/* Exactly two lines on every card (Jasper): one measure for all tiles, and each line is
+   written at 45-53 characters so it always wraps once. */
 .bento > li p {
+  max-width: 30ch;
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -129,8 +136,9 @@
   line-clamp: 2;
 }
 
-/* Mirrored from Services: the hero holds the right half, Food runs wide across the top
-   left, and three tiles close the grid with Professional services under the hero. */
+/* Revision 101 (Jasper: "section is very long, 2-3 rows only, still bento"): three short rows on
+   desktop. Trades is the tall lead tile (5 cols, 2 rows); the rest split 4/3, 3/4 and 4/3/5
+   so no two rows match. Every subject sits on the right of its photo, so nothing is cut. */
 .bento > li[data-slot="f"] {
   grid-area: f;
 }
@@ -143,18 +151,120 @@
   .bento.bento {
     grid-template-areas:
       "hero hero"
-      "wide wide"
-      "a b"
-      "d e"
-      "f c";
+      "wide a"
+      "b d"
+      "e f"
+      "c c";
   }
 }
 
 @media (min-width: 1024px) {
   .bento.bento {
+    grid-template-rows: repeat(3, clamp(230px, 17.5vw, 260px));
     grid-template-areas:
-      "wide wide wide wide wide wide hero hero hero hero hero hero"
-      "a a a b b b hero hero hero hero hero hero"
-      "d d d e e e f f f c c c";
+      "hero hero hero hero hero wide wide wide wide a a a"
+      "hero hero hero hero hero b b b d d d d"
+      "e e e e f f f c c c c c";
+  }
+}
+
+/* ---- Revision 99 (Jasper): black-and-white photos under one flat, bright colour per tile,
+   the reference's duotone. The photo's luminosity sits on the tile colour at partial strength,
+   so the colour leads and the photo shows through. On hover the real photo still fades in.
+   Palette built against the Signal Red ground with colour theory:
+     analogous (red's own family, so they belong): wine, blush, peach;
+     complementary (opposite red, so they pop): Aqua on the hero, a deep teal;
+     neutrals to rest the eye: cream, amber, Deep Water.
+   Nothing sits near red's own hue (coral vanished there in R87). Light tiles take Deep Water
+   text, deep tiles take white. ---- */
+.bento.bento > li[data-industry] > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.15) brightness(1.05);
+  mix-blend-mode: luminosity;
+  opacity: 0.6;
+}
+
+.bento > li[data-industry="trades"] { --c: #3ccfc3; --ink: var(--deep-water); }       /* complement: brand Aqua */
+.bento > li[data-industry="medspa"] { --c: #ffb3c4; --ink: var(--deep-water); }       /* analogous: blush */
+.bento > li[data-industry="entertainment"] { --c: #6b0f2b; --ink: var(--white); }     /* analogous: wine */
+.bento > li[data-industry="dental"] { --c: #fff1e0; --ink: var(--deep-water); }       /* neutral: warm cream */
+.bento > li[data-industry="food"] { --c: #ffb627; --ink: var(--deep-water); }         /* neutral warm: amber */
+.bento > li[data-industry="stores"] { --c: #0e6b67; --ink: var(--white); }            /* complement: deep teal */
+.bento > li[data-industry="auto"] { --c: var(--deep-water); --ink: var(--white); }    /* dark anchor */
+.bento > li[data-industry="professional"] { --c: #ffa07a; --ink: var(--deep-water); } /* analogous: peach */
+
+/* Light tiles: a lighter photo at lower strength, so the colour stays clean and not muddy. */
+.bento.bento > li:is([data-industry="medspa"], [data-industry="dental"], [data-industry="food"], [data-industry="trades"], [data-industry="professional"]) > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.1) brightness(1.25);
+  opacity: 0.5;
+}
+
+/* Glass icon: Deep Water glyph on the light tiles. */
+.bento > li:is([data-industry="medspa"], [data-industry="dental"], [data-industry="food"], [data-industry="trades"], [data-industry="professional"]) [aria-hidden="true"] {
+  color: var(--deep-water);
+}
+
+/* The two large tiles match heights; the six below are a touch taller than Services'. */
+/* Shorter tiles on phones and tablets too: the text block needs about 200px. */
+.bento > li[data-industry] {
+  min-height: 220px;
+}
+
+.bento > li[data-industry][data-slot="hero"] {
+  min-height: 300px;
+}
+
+@media (min-width: 1024px) {
+  .bento > li:is([data-slot="hero"], [data-slot="wide"]),
+  .bento > li:not([data-slot="hero"]):not([data-slot="wide"]) {
+    min-height: 0;
+  }
+}
+
+
+
+/* Dental's photo is very bright: keep more of it so the clinic reads on the cream. */
+.bento.bento > li[data-industry="dental"] > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.3) brightness(0.92);
+  opacity: 0.7;
+}
+
+/* Med spa: a stronger photo so the client on the treatment bed reads on the blush. */
+.bento.bento > li[data-industry="medspa"] > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.3) brightness(0.98);
+  opacity: 0.7;
+}
+
+/* Revision 100 (Jasper): no hover effect on these cards. No tilt (data-tilt removed), no
+   true-colour reveal (that image removed), and no photo zoom from Services' shared rule. */
+.bento.bento > li[data-industry]:hover > div:first-child > img {
+  transform: none;
+}
+
+/* ---- Revision 102: ShaderGradient ground (test). It sits behind everything, fades in over the
+   red, and a light wine scrim at the top keeps the heading and intro text on darker water. ---- */
+.shader {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shader::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(58 8 24 / 0.35) 0%, rgb(58 8 24 / 0) 35%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shader canvas {
+    animation: industries-shader-in 1.2s ease both;
+  }
+}
+
+@keyframes industries-shader-in {
+  from {
+    opacity: 0;
   }
 }

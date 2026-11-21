@@ -669,7 +669,11 @@ export const work = {
  * (webleta.com), two LinkedIn recommendations for Jasper and two Upwork client reviews for
  * Jasper, then (Revision 79, his ask) all of them: four LinkedIn recommendations and eight
  * Upwork reviews, transcribed from his screenshots (Upwork shows no reviewer names; the role
- * is the job title). Long quotes are clipped to one unbroken passage, never stitched. Photo: the reused card-market image, in duotone.
+ * is the job title). Long quotes are clipped to one unbroken passage, never stitched.
+ * Revision 80 (Graham's notes): new intro line, real desk footage from the team's Drive folder
+ * (IMG_1441) in place of the reused photo, and each review shows where it came from as a logo
+ * (Upwork, LinkedIn, or the company's symbol), shown in the avatar circle. Upwork hides reviewer
+ * names, so those bylines say "Hired Jasper on Upwork" with the job underneath.
  */
 export type Review = {
   id: string;
@@ -678,49 +682,54 @@ export type Review = {
   role: string;
   /** Where the review lives, and who it's about. */
   source: string;
+  /** The logo in the avatar circle: the platform the review is on, or the company's own logo in full
+   *  colour (fill: a square icon that fills the circle). Without one the circle shows the initials. */
+  via?: { kind: "upwork" | "linkedin" } | { kind: "client"; src: string; fill?: boolean };
   /** Short label for the picker tile. Webtec is named in Giuliano's recommendation. */
   org: string;
   initials?: string;
+  /** A phrase from the quote, word for word, shown with the Seafoam marker band. */
+  mark?: string;
 };
 export const reviews = {
   eyebrow: "Client reviews",
   title: { solid: "In their", outline: "own words." },
-  intro: "Webleta is Graham and Jasper. This is what clients and teammates have said about working with us.",
-  image: { base: "/images/card-market", alt: "" },
-  proof: { value: "100%", label: "Job Success on Upwork, across 15 jobs" },
+  intro: "Two minds. One big vision. This is what clients and teammates have said about working with us.",
+  video: { src: "/videos/reviews-desk.mp4?v=5", poster: "/images/reviews-desk-poster.webp?v=5" },
+  proof: { value: "100%", label: "Job Success on Upwork" },
   items: [
-    { id: "greg", org: "Ground Control Systems", initials: "GB", name: "Greg Bauer", role: "CEO, Ground Control Systems", source: "Client of Graham",
-      quote: "Graham was an exceptional partner on our WordPress project. He quickly identified and resolved performance issues, and his communication skills were outstanding." },
-    { id: "giuliano", org: "Webtec", initials: "GB", name: "Giuliano Barducci", role: "Head of Production, Design and QA", source: "LinkedIn, on Jasper",
-      quote: "I've seen his redesigns transform those situations, restoring client confidence and giving projects a much stronger direction." },
-    { id: "upwork-renovation", org: "Upwork", name: "Upwork client", role: "WordPress landing page", source: "Upwork, on Jasper",
-      quote: "Great experience with Jasper (Ted)! Quick turnaround good communication and willing to go the extra mile to complete the project successfully." },
-    { id: "olaf", org: "Rack n Road", initials: "OG", name: "Olaf Guerrero", role: "Marketing Director, Rack n Road", source: "Client of Graham",
-      quote: "With strong SEO knowledge and site optimization skills, he's reliable and ideal for long-term or short contracts." },
-    { id: "pontus", org: "Webtec", initials: "PL", name: "Pontus Lenell", role: "Building, investing and growing companies", source: "LinkedIn, on Jasper",
-      quote: "Throughout his time with us, Jasper demonstrated strong web design skills, attention to detail, and a commitment to delivering high-quality work." },
-    { id: "upwork-agency", org: "Upwork", name: "Agency client", role: "Elementor build", source: "Upwork, on Jasper",
-      quote: "Jasper combines two important attributes, talent and adaptability. He's a creative designer that explores different ways to generate beautiful design." },
-    { id: "daniel", org: "Endtimes Official", initials: "DC", name: "Daniel Clarke", role: "Owner, Endtimes Official", source: "Client of Graham",
-      quote: "Graham's expertise was appreciated, especially in how you guys followed exactly how I envisioned the final product, while offering and implementing some very helpful suggestions." },
-    { id: "ellaine", org: "LinkedIn", initials: "EG", name: "Ellaine Gabotero", role: "Web Designer, UI/UX Specialist", source: "LinkedIn, on Jasper",
-      quote: "His designs are consistently excellent, but he brings so much more to the table than just visuals." },
-    { id: "upwork-website", org: "Upwork", name: "Upwork client", role: "Professional WordPress website", source: "Upwork, on Jasper",
-      quote: "Jasper is responsive, reliable, and a hard worker. He jumped right in and took great care of the task. Will definitely use Jasper in the future!" },
-    { id: "eureka", org: "Adrenaline Solutions", initials: "EQ", name: "Eureka Quinto", role: "COO, Adrenaline Solutions", source: "Client of Graham",
-      quote: "Graham is a reliable WordPress Developer. We are pleased with his performance. We wholeheartedly recommend him." },
-    { id: "sam", org: "LinkedIn", initials: "SM", name: "Sam Medriano", role: "Director of Project Operations", source: "LinkedIn, on Jasper",
-      quote: "He has a keen eye for innovative and modern designs, and his proficiency in using Figma sets him apart in the field." },
-    { id: "upwork-help", org: "Upwork", name: "Upwork client", role: "Web design in WordPress", source: "Upwork, on Jasper",
-      quote: "Expectations of the deliverables were even exceeded and the quality of the project was superb." },
-    { id: "upwork-theme", org: "Upwork", name: "Theme client", role: "WordPress theme build", source: "Upwork, on Jasper",
-      quote: "Jasper did great! He is very knowledgeable in web development and meeting all our PSD to Wordpress requirements." },
-    { id: "upwork-divi", org: "Upwork", name: "Upwork client", role: "Divi shop pages", source: "Upwork, on Jasper",
-      quote: "He did a really great job in completing the work, helped me through the process step by step. I will hire him again if any more work is required." },
-    { id: "upwork-images", org: "Upwork", name: "Upwork client", role: "Website images", source: "Upwork, on Jasper",
-      quote: "Great worker. Fast correspondence; fast action. Very happy, thank u Jasper!" },
-    { id: "upwork-translation", org: "Upwork", name: "Upwork client", role: "WordPress translation", source: "Upwork, on Jasper",
-      quote: "Very happy with the results, good communication, always available I recommend, thanks" },
+    { id: "greg", org: "Ground Control Systems", initials: "GB", name: "Greg Bauer", role: "CEO, Ground Control Systems", source: "Client of Graham", via: { kind: "client", src: "/brands/clients/colour/groundcontrol.webp", fill: true },
+      quote: "Graham was an exceptional partner on our WordPress project. He quickly identified and resolved performance issues, and his communication skills were outstanding.", mark: "exceptional partner" },
+    { id: "giuliano", org: "Webtec", initials: "GB", name: "Giuliano Barducci", role: "Head of Production, Design and QA, Webtec", source: "on Jasper", via: { kind: "client", src: "/brands/clients/colour/webtec.webp", fill: true },
+      quote: "I've seen his redesigns transform those situations, restoring client confidence and giving projects a much stronger direction.", mark: "restoring client confidence" },
+    { id: "upwork-renovation", org: "Upwork", name: "Hired Jasper on Upwork", role: "WordPress landing page", source: "on Jasper", via: { kind: "upwork" },
+      quote: "Great experience with Jasper (Ted)! Quick turnaround, good communication and willing to go the extra mile to complete the project successfully.", mark: "go the extra mile" },
+    { id: "olaf", org: "Rack n Road", initials: "OG", name: "Olaf Guerrero", role: "Marketing Director, Rack n Road", source: "Client of Graham", via: { kind: "client", src: "/brands/clients/colour/racknroad.webp" },
+      quote: "With strong SEO knowledge and site optimization skills, he's reliable and ideal for long-term or short contracts.", mark: "strong SEO knowledge" },
+    { id: "pontus", org: "Webtec", initials: "PL", name: "Pontus Lenell", role: "Founder & CEO, Webtec", source: "on Jasper", via: { kind: "client", src: "/brands/clients/colour/webtec.webp", fill: true },
+      quote: "Throughout his time with us, Jasper demonstrated strong web design skills, attention to detail, and a commitment to delivering high-quality work.", mark: "high-quality work" },
+    { id: "upwork-agency", org: "Weblify", name: "Weblify", role: "Digital marketing agency, hired Jasper on Upwork", source: "on Jasper", via: { kind: "client", src: "/brands/clients/colour/weblify.webp", fill: true },
+      quote: "Jasper combines two important attributes; talent and adaptability. He's a creative designer that explores different ways to generate beautiful design.", mark: "talent and adaptability" },
+    { id: "daniel", org: "Endtimes Official", initials: "DC", name: "Daniel Clarke", role: "Owner, Endtimes Official", source: "Client of Graham", via: { kind: "client", src: "/brands/clients/colour/endtimes.webp", fill: true },
+      quote: "Graham's expertise was appreciated, especially in how you guys followed exactly how I envisioned the final product, while offering and implementing some very helpful suggestions.", mark: "followed exactly how I envisioned" },
+    { id: "ellaine", org: "Webtec", initials: "EG", name: "Ellaine Gabotero", role: "Senior Web Designer, Webtec", source: "on Jasper", via: { kind: "client", src: "/brands/clients/colour/webtec.webp", fill: true },
+      quote: "His designs are consistently excellent, but he brings so much more to the table than just visuals.", mark: "consistently excellent" },
+    { id: "upwork-website", org: "Upwork", name: "Hired Jasper on Upwork", role: "WordPress website", source: "on Jasper", via: { kind: "upwork" },
+      quote: "Jasper is responsive, reliable, and a hard worker. He jumped right in and took great care of the task. Will definitely use Jasper in the future!", mark: "responsive, reliable, and a hard worker" },
+    { id: "eureka", org: "Adrenaline Solutions", initials: "EQ", name: "Eureka Quinto", role: "COO, Adrenaline Solutions", source: "Client of Graham", via: { kind: "client", src: "/brands/clients/marks/adrenaline.png" },
+      quote: "Graham is a reliable WordPress Developer. We are pleased with his performance. We wholeheartedly recommend him.", mark: "wholeheartedly recommend him" },
+    { id: "sam", org: "Webtec", initials: "SM", name: "Sam Medriano", role: "Director of Operations, Webtec", source: "on Jasper", via: { kind: "client", src: "/brands/clients/colour/webtec.webp", fill: true },
+      quote: "He has a keen eye for innovative and modern designs, and his proficiency in using Figma sets him apart in the field.", mark: "keen eye for innovative and modern designs" },
+    { id: "upwork-help", org: "Upwork", name: "Hired Jasper on Upwork", role: "Web design in WordPress", source: "on Jasper", via: { kind: "upwork" },
+      quote: "Expectations of the deliverables were even exceeded and the quality of the project was superb.", mark: "even exceeded" },
+    { id: "upwork-theme", org: "Upwork", name: "Hired Jasper on Upwork", role: "WordPress theme build", source: "on Jasper", via: { kind: "upwork" },
+      quote: "Jasper did great! He is very knowledgeable in web development and meeting all our PSD to Wordpress requirements.", mark: "very knowledgeable in web development" },
+    { id: "upwork-divi", org: "Upwork", name: "Hired Jasper on Upwork", role: "Divi shop pages", source: "on Jasper", via: { kind: "upwork" },
+      quote: "He did a really great job in completing the work, helped me through the process step by step. I will hire him again if any more work is required.", mark: "really great job" },
+    { id: "upwork-images", org: "Upwork", name: "Hired Jasper on Upwork", role: "Website images", source: "on Jasper", via: { kind: "upwork" },
+      quote: "Great worker. Fast correspondence, fast action. Very happy, thank u Jasper", mark: "Very happy" },
+    { id: "upwork-translation", org: "Upwork", name: "Hired Jasper on Upwork", role: "WordPress translation", source: "on Jasper", via: { kind: "upwork" },
+      quote: "Very happy with the results, good communication, always available I recommend, thanks", mark: "Very happy with the results" },
   ] satisfies Review[],
 };
 
@@ -860,8 +869,12 @@ export const contact = {
  * colour tiles, duotone photos, the 24° notch. Photos are reused from Benefits and Services
  * for now (Jasper's call). Industries only, no project names: Work already shows the
  * projects.
+ * Revision 99: ordered by the target industries in Notion (Industry Priority Review, Nov 19):
+ * home services and trades, med spas and aesthetics, events and entertainment, dental. Food,
+ * online stores, automotive and professional services follow. Salons and health clinics are
+ * covered by med spas and dental. Photos are fal (nano-banana-2.1, 2026-11-21; originals in research/fal-originals/) except Events and Automotive.
  */
-export type IndustryIcon = "trades" | "food" | "salon" | "health" | "store" | "auto" | "law" | "music";
+export type IndustryIcon = "trades" | "food" | "salon" | "health" | "store" | "auto" | "law" | "music" | "spa" | "dental";
 export type Industry = {
   id: string;
   slot: "hero" | "wide" | "a" | "b" | "c" | "d" | "e" | "f";
@@ -878,30 +891,30 @@ export const industries = {
   intro: "Every industry wins customers differently. These are the ones we know best. If yours isn't here, ask us. We'll say honestly whether we're a fit before you spend anything.",
   more: { lead: "Not on the list?", label: "Ask us about your industry", href: "#contact" },
   items: [
-    { id: "trades", slot: "hero", colour: "aqua", icon: "trades", name: "Trades and construction",
+    { id: "trades", slot: "hero", colour: "aqua", icon: "trades", name: "Trades and home services",
       need: "Quote requests that arrive with the job details.",
-      photo: { src: "/images/benefit-quotes-800.webp", srcSet: "/images/benefit-quotes-480.webp 480w, /images/benefit-quotes-800.webp 800w", position: "50% 35%" } },
-    { id: "food", slot: "wide", colour: "harbour", icon: "food", name: "Food and hospitality",
-      need: "Menus that read well on a phone, and orders straight to you.",
-      photo: { src: "/images/benefit-found-800.webp", srcSet: "/images/benefit-found-480.webp 480w, /images/benefit-found-800.webp 800w", position: "50% 40%" } },
-    { id: "salons", slot: "a", colour: "ochre", icon: "salon", name: "Salons and studios",
-      need: "Clients book themselves, even at 10pm on a Sunday.",
-      photo: { src: "/images/benefit-bookings-800.webp", srcSet: "/images/benefit-bookings-480.webp 480w, /images/benefit-bookings-800.webp 800w", position: "50% 30%" } },
-    { id: "health", slot: "b", colour: "dusk", icon: "health", name: "Health clinics",
-      need: "Clear prices and real faces people trust.",
-      photo: { src: "/images/benefit-trust-800.webp", srcSet: "/images/benefit-trust-480.webp 480w, /images/benefit-trust-800.webp 800w", position: "50% 30%" } },
-    { id: "stores", slot: "d", colour: "harbour" /* R87: coral vanished on the red ground */, icon: "store", name: "Online stores",
-      need: "Product pages that lead straight to checkout.",
-      photo: { src: "/images/benefit-sales-800.webp", srcSet: "/images/benefit-sales-480.webp 480w, /images/benefit-sales-800.webp 800w", position: "50% 40%" } },
-    { id: "auto", slot: "e", colour: "kelp", icon: "auto", name: "Automotive",
-      need: "One tap from your site to a ringing phone.",
-      photo: { src: "/images/benefit-calls-800.webp", srcSet: "/images/benefit-calls-480.webp 480w, /images/benefit-calls-800.webp 800w", position: "50% 35%" } },
-    { id: "entertainment", slot: "f", colour: "seafoam", icon: "music", name: "Entertainment and events",
-      need: "Dates, a show reel and a booking form.",
-      photo: { src: "/images/industry-entertainment-800.webp", srcSet: "/images/industry-entertainment-480.webp 480w, /images/industry-entertainment-800.webp 800w", position: "50% 55%" } },
-    { id: "professional", slot: "c", colour: "shell", icon: "law", name: "Professional services", lightCorner: true,
-      need: "As careful online as you are in person.",
-      photo: { src: "/images/svc-wordpress-720.webp", srcSet: "/images/svc-wordpress-720.webp 720w, /images/svc-wordpress-1280.webp 1280w", position: "45% 40%" } },
+      photo: { src: "/images/industry-trades-800.webp", srcSet: "/images/industry-trades-480.webp 480w, /images/industry-trades-800.webp 800w, /images/industry-trades-1280.webp 1280w", position: "62% 40%" } },
+    { id: "medspa", slot: "wide", colour: "coral", icon: "spa", name: "Med spas and aesthetics",
+      need: "Clients see your prices and book a consult online.",
+      photo: { src: "/images/industry-medspa-800.webp", srcSet: "/images/industry-medspa-480.webp 480w, /images/industry-medspa-800.webp 800w, /images/industry-medspa-1280.webp 1280w", position: "85% 45%" } },
+    { id: "entertainment", slot: "a", colour: "dusk", icon: "music", name: "Events and entertainment",
+      need: "Show your next dates and take bookings on one page.",
+      photo: { src: "/images/industry-entertainment-800.webp", srcSet: "/images/industry-entertainment-480.webp 480w, /images/industry-entertainment-800.webp 800w", position: "60% 50%" } },
+    { id: "dental", slot: "b", colour: "shell", icon: "dental", name: "Dental clinics",
+      need: "New patients see the fees and book a first visit.",
+      photo: { src: "/images/industry-dental-800.webp", srcSet: "/images/industry-dental-480.webp 480w, /images/industry-dental-800.webp 800w, /images/industry-dental-1280.webp 1280w", position: "85% 50%" } },
+    { id: "food", slot: "d", colour: "ochre", icon: "food", name: "Food and hospitality",
+      need: "A menu that reads well on a phone, and online orders.",
+      photo: { src: "/images/industry-food-800.webp", srcSet: "/images/industry-food-480.webp 480w, /images/industry-food-800.webp 800w, /images/industry-food-1280.webp 1280w", position: "90% 35%" } },
+    { id: "stores", slot: "e", colour: "kelp", icon: "store", name: "Online stores",
+      need: "Product pages that lead straight to the checkout.",
+      photo: { src: "/images/industry-ecommerce-800.webp", srcSet: "/images/industry-ecommerce-480.webp 480w, /images/industry-ecommerce-800.webp 800w, /images/industry-ecommerce-1280.webp 1280w", position: "90% 55%" } },
+    { id: "auto", slot: "f", colour: "harbour", icon: "auto", name: "Automotive",
+      need: "One tap from your website to a ringing phone.",
+      photo: { src: "/images/benefit-calls-800.webp", srcSet: "/images/benefit-calls-480.webp 480w, /images/benefit-calls-800.webp 800w", position: "70% 40%" } },
+    { id: "professional", slot: "c", colour: "seafoam", icon: "law", name: "Professional services",
+      need: "As careful online as you are with your clients.",
+      photo: { src: "/images/industry-professional-800.webp", srcSet: "/images/industry-professional-480.webp 480w, /images/industry-professional-800.webp 800w, /images/industry-professional-1280.webp 1280w", position: "88% 55%" } },
   ] satisfies Industry[],
 };
 
