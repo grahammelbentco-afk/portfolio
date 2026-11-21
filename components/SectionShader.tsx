@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import styles from "./Industries.module.css";
+import type { ShaderConfig } from "./ShaderWave";
 
 // three.js and the shader load only in the browser, after the page is idle.
 const ShaderWave = dynamic(() => import("./ShaderWave"), { ssr: false });
@@ -25,13 +25,13 @@ function supportsWebGL() {
 }
 
 /**
- * The Industries shader ground (Revision 102 test). Same lifecycle as HeroShader: mounts after
+ * A section's ShaderGradient ground (Industries, Revision 102; After launch). Same lifecycle as HeroShader: mounts after
  * idle when WebGL exists and the section first comes near, then stays mounted and only renders
  * while near (so it never draws at the same time as the hero's, and resumes instead of
- * restarting). Holds a still frame with reduced motion. The section's red CSS ground stays
+ * restarting). Holds a still frame with reduced motion. The section's CSS ground stays
  * underneath as first paint and fallback.
  */
-export default function IndustriesShader() {
+export default function SectionShader({ className, config }: { className: string; config?: ShaderConfig }) {
   const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(REDUCED).matches, () => false);
   const [enabled, setEnabled] = useState(false);
   const [near, setNear] = useState(false);
@@ -69,8 +69,8 @@ export default function IndustriesShader() {
   }, []);
 
   return (
-    <div ref={ref} className={styles.shader} aria-hidden="true">
-      {enabled && seen && <ShaderWave playing={!reduced} running={near} />}
+    <div ref={ref} className={className} aria-hidden="true">
+      {enabled && seen && <ShaderWave playing={!reduced} running={near} config={config} />}
     </div>
   );
 }

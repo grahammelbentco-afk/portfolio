@@ -868,42 +868,149 @@ export type IndustryIcon = "trades" | "food" | "salon" | "health" | "store" | "a
 export type Industry = {
   id: string;
   slot: "hero" | "wide" | "a" | "b" | "c" | "d" | "e" | "f";
-  colour: "aqua" | "ochre" | "harbour" | "dusk" | "coral" | "kelp" | "shell" | "seafoam";
+  colour: "aqua" | "periwinkle" | "ochre" | "harbour" | "dusk" | "coral" | "kelp" | "shell" | "seafoam";
   icon: IndustryIcon;
   name: string;
   need: string;
   photo: { src: string; srcSet: string; position?: string };
   lightCorner?: boolean;
 };
+/**
+ * After launch (Graham's note, 2026-11-22): a short two-column section so clients know we also
+ * do social media branding and posting (not full social media management), alongside SEO with a
+ * weekly blog post. Sits between Pricing and FAQ. No prices yet (UNCONFIRMED).
+ * The examples belong to a made-up plumber, Harbour Plumbing.
+ */
+export const growth = {
+  eyebrow: "After launch",
+  title: { solid: "Keep them finding you.", outline: "Every week." },
+  cta: { label: "Add one to your project", href: "#contact" },
+  seo: {
+    word: "SEO",
+    line: "Rank first when they search nearby",
+    // The search loops: a query types, results load, and the client's result climbs to the top.
+    // Its sitelinks are the weekly blog posts that earn the ranking. Competitors are made up.
+    queries: ["plumber near me", "blocked drain plumber", "emergency plumber tonight"],
+    map: "/images/growth-map-light.webp",
+    place: { kind: "Plumber", status: "Open 24 hours", area: "Balmain" },
+    client: {
+      name: "Harbour Plumbing",
+      description: "Licensed local plumbers for blocked drains, burst pipes, leaking taps and hot water. Same-day callouts across the inner west, with fixed prices and 24/7 emergency help.",
+      pages: [
+        { title: "Blocked drains", note: "Fixed price, CCTV inspection included" },
+        { title: "How much does a blocked drain cost to fix?", note: "Blog · posted this week" },
+      ],
+      url: "harbourplumbing.com.au",
+      title: "Harbour Plumbing | Local plumbers, same-day callouts",
+    },
+    // Search Console-style report for the made-up client, labelled as an example (antislop R-17).
+    // One row per query in the search loop: the row being typed lights, and when the client climbs
+    // its position ticks down and its clicks count up.
+    report: {
+      // Jasper, 2026-11-22: no "Example report" label (overrides antislop R-17); Harbour Plumbing
+      // is a made-up demo client throughout this section.
+      // Plain words for business owners (Jasper): no "impressions", "CTR" or "position".
+      title: "How people find you on Google",
+      period: "Last 4 weeks",
+      columns: ["What they searched", "Saw you", "Visited", "Your spot"],
+      // 28-day figures for one suburb: clicks = impressions × CTR at that position. CTR from 2025
+      // studies (about 7.8% at position 4, 19-28% at position 1); impressions sized for local intent.
+      // Each search has its own 28-day story (day 1 is a Saturday, so every window ends on a weekday
+      // at its high). Shapes from the research: a fast step when on-page fixes land (Portent), a
+      // slower ramp while new blog posts get indexed (WebFX), and a non-linear jump from 2nd to 1st
+      // (Inc.). Emergency searches come in bursts. Weekends dip throughout (SEJ).
+      rows: [
+        { impressions: 620, before: { clicks: 48, position: 4.3 }, after: { clicks: 136, position: 1.2 },
+          scenario: "Jumped after page fixes",
+          days: {
+            before: [3, 3, 4, 5, 4, 5, 4, 3, 3, 5, 4, 5, 5, 4, 3, 3, 4, 6, 5, 6, 5, 3, 3, 5, 4, 5, 5, 6],
+            after: [3, 3, 4, 5, 4, 5, 4, 3, 3, 5, 4, 6, 5, 5, 4, 4, 9, 10, 9, 11, 10, 6, 6, 10, 11, 10, 12, 14],
+          } },
+        { impressions: 260, before: { clicks: 13, position: 5.1 }, after: { clicks: 52, position: 1.4 },
+          scenario: "Climbing as posts index",
+          days: {
+            before: [1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 2, 3],
+            after: [1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 3, 3, 3, 4, 2, 2, 4, 4, 5, 5, 7],
+          } },
+        { impressions: 90, before: { clicks: 3, position: 6.2 }, after: { clicks: 23, position: 1.1 },
+          scenario: "Spikes on emergencies",
+          days: {
+            before: [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            after: [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 2, 0, 1, 0, 1, 0, 2, 0, 1, 1, 0, 2, 1, 0, 1, 4],
+          } },
+      ],
+      previous: 58, // the 4 weeks before, for the growth chip
+      totals: { clicks: "Visits from Google", position: "Your usual spot" },
+    },
+  },
+  social: {
+    word: "Social",
+    line: "Branding + posting",
+    logo: "/images/growth-logo-harbour.webp",
+    // fal identity shots (nano-banana-pro/edit with the logo as reference), crossfaded as the pane's hero.
+    brand: [
+      { src: "/images/growth-brand-van.webp", alt: "A navy work van wrapped with the Harbour Plumbing logo, the plumber smiling from the driver's window." },
+      { src: "/images/growth-brand-flatlay.webp", alt: "Harbour Plumbing business cards, a cap, a folder, a sticker and a phone showing its branded social feed." },
+    ],
+    scope: "Ads and inbox management aren't included.",
+    // The posting week; platform = index into platforms. Lights with the platform pills.
+    schedule: [
+      { day: "Mon", platform: 2 },
+      { day: "Tue", platform: 3 },
+      { day: "Wed", platform: 1 },
+      { day: "Fri", platform: 4 },
+    ],
+    platforms: [
+      { name: "Meta", slug: "meta" },
+      { name: "Facebook", slug: "facebook" },
+      { name: "Instagram", slug: "instagram" },
+      { name: "YouTube", slug: "youtube" },
+      { name: "X", slug: "x" },
+    ],
+    // A week of posts in the client's brand, mixed formats. platform = index into platforms.
+    // fal (nano-banana-pro/edit, logo as reference). The meme post is held back: its caption has
+    // a typo ("the the"), awaiting a regenerate.
+    posts: [
+      { src: "/images/growth-post-instagram-logo.webp", platform: 2, shape: "portrait", alt: "Instagram post: a plumber at an open sink cabinet, 'Blocked drain? We can be there today.'" },
+      { src: "/images/growth-post-youtube.webp", platform: 3, shape: "wide", alt: "YouTube thumbnail: the plumber holding a clogged pipe, 'Why your sink blocks'." },
+      { src: "/images/growth-post-story-promo.webp", platform: 2, shape: "story", alt: "Instagram Story promo: 'Hot water service, $99 this month. Book online.'" },
+      { src: "/images/growth-post-facebook-logo.webp", platform: 1, shape: "portrait", alt: "Facebook post: a shower drain before and after, 'Same drain, 40 minutes later.'" },
+      { src: "/images/growth-post-x-logo.webp", platform: 4, shape: "portrait", alt: "Tip post for X: 'Keep fat and oil out of the kitchen sink.'" },
+    ],
+  },
+};
+
+// Card lines (Jasper, 2026-11-22): each speaks to what the owner wants most, 45-53 characters
+// so it always wraps to two lines.
 export const industries = {
   eyebrow: "Industries",
   title: { solid: "Sites that know", outline: "your industry." },
   intro: "Every industry wins customers differently. These are the ones we know best. If yours isn't here, ask us. We'll say honestly whether we're a fit before you spend anything.",
   more: { lead: "Not on the list?", label: "Ask us about your industry", href: "#contact" },
   items: [
-    { id: "trades", slot: "hero", colour: "aqua", icon: "trades", name: "Trades and home services",
-      need: "Quote requests that arrive with the job details.",
+    { id: "trades", slot: "hero", colour: "periwinkle", icon: "trades", name: "Trades and home services",
+      need: "Win the next job while you're still up a ladder.",
       photo: { src: "/images/industry-trades-800.webp", srcSet: "/images/industry-trades-480.webp 480w, /images/industry-trades-800.webp 800w, /images/industry-trades-1280.webp 1280w", position: "62% 40%" } },
     { id: "medspa", slot: "wide", colour: "coral", icon: "spa", name: "Med spas and aesthetics",
-      need: "Clients see your prices and book a consult online.",
+      need: "Nervous first-timers feel safe enough to book.",
       photo: { src: "/images/industry-medspa-800.webp", srcSet: "/images/industry-medspa-480.webp 480w, /images/industry-medspa-800.webp 800w, /images/industry-medspa-1280.webp 1280w", position: "85% 45%" } },
     { id: "entertainment", slot: "a", colour: "dusk", icon: "music", name: "Events and entertainment",
-      need: "Show your next dates and take bookings on one page.",
+      need: "Sell out the night before the doors even open.",
       photo: { src: "/images/industry-entertainment-800.webp", srcSet: "/images/industry-entertainment-480.webp 480w, /images/industry-entertainment-800.webp 800w", position: "60% 50%" } },
     { id: "dental", slot: "b", colour: "shell", icon: "dental", name: "Dental clinics",
-      need: "New patients see the fees and book a first visit.",
+      need: "Empty chairs on Tuesday become booked check-ups.",
       photo: { src: "/images/industry-dental-800.webp", srcSet: "/images/industry-dental-480.webp 480w, /images/industry-dental-800.webp 800w, /images/industry-dental-1280.webp 1280w", position: "85% 50%" } },
     { id: "food", slot: "d", colour: "ochre", icon: "food", name: "Food and hospitality",
-      need: "A menu that reads well on a phone, and online orders.",
+      need: "Hungry locals pick you from their phone tonight.",
       photo: { src: "/images/industry-food-800.webp", srcSet: "/images/industry-food-480.webp 480w, /images/industry-food-800.webp 800w, /images/industry-food-1280.webp 1280w", position: "90% 35%" } },
     { id: "stores", slot: "e", colour: "kelp", icon: "store", name: "Online stores",
-      need: "Product pages that lead straight to the checkout.",
+      need: "Wake up to orders that came in while you slept.",
       photo: { src: "/images/industry-ecommerce-800.webp", srcSet: "/images/industry-ecommerce-480.webp 480w, /images/industry-ecommerce-800.webp 800w, /images/industry-ecommerce-1280.webp 1280w", position: "90% 55%" } },
     { id: "auto", slot: "f", colour: "harbour", icon: "auto", name: "Automotive",
-      need: "One tap from your website to a ringing phone.",
+      need: "When the car won't start, they ring you first.",
       photo: { src: "/images/benefit-calls-800.webp", srcSet: "/images/benefit-calls-480.webp 480w, /images/benefit-calls-800.webp 800w", position: "70% 40%" } },
     { id: "professional", slot: "c", colour: "seafoam", icon: "law", name: "Professional services",
-      need: "As careful online as you are with your clients.",
+      need: "Referrals check you out and like what they find.",
       photo: { src: "/images/industry-professional-800.webp", srcSet: "/images/industry-professional-480.webp 480w, /images/industry-professional-800.webp 800w, /images/industry-professional-1280.webp 1280w", position: "88% 55%" } },
   ] satisfies Industry[],
 };
@@ -1032,6 +1139,13 @@ export const sections: PlaceholderSection[] = [
     intro: "Pick a package or ask for a quote. Either way, you see the price first.",
     needs: ["Packages, prices and terms from Graham (none confirmed)"],
     ground: "shallows",
+  },
+  {
+    id: "growth",
+    title: "After launch",
+    intro: "SEO with a weekly blog post, and social media branding and posting.",
+    needs: ["Prices for both add-ons", "Confirm scope with Graham: posting frequency for social"],
+    ground: "deep",
   },
   {
     id: "faq",

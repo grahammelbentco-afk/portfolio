@@ -1,6 +1,6 @@
 import { industries, type Industry, type IndustryIcon } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
-import IndustriesShader from "./IndustriesShader";
+import SectionShader from "./SectionShader";
 import tile from "./Services.module.css";
 import styles from "./Industries.module.css";
 
@@ -126,7 +126,7 @@ const GROUND: "shader" | "red" = "shader";
 export default function Industries() {
   return (
     <section id="industries" className={styles.section} data-ground="dark" data-industries aria-labelledby="industries-title" data-ground-style={GROUND}>
-      {GROUND === "shader" && <IndustriesShader />}
+      {GROUND === "shader" && <SectionShader className={styles.shader} />}
       <div className={`container ${styles.head}`}>
         <div>
           <span className={styles.eyebrowWrap}>

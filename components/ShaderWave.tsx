@@ -10,6 +10,8 @@ import { FrameCap, SubtleGrain } from "./ShaderHalo";
  * the middle and a warm coral light, so the tiles' palette (built against red) still fits
  * and white text stays readable. Same quiet grain and 30fps cap as the hero.
  */
+export type ShaderConfig = Record<string, string | number | boolean>;
+
 const WAVE = {
   type: "waterPlane",
   uAmplitude: 0,
@@ -46,17 +48,17 @@ const WAVE = {
   color3: "#1c0409",
 } as const;
 
-export default function ShaderWave({ playing, running }: { playing: boolean; running: boolean }) {
+export default function ShaderWave({ playing, running, config = WAVE }: { playing: boolean; running: boolean; config?: ShaderConfig }) {
   return (
     <ShaderGradientCanvas
       style={{ position: "absolute", inset: 0 }}
       pointerEvents="none"
       pixelDensity={1}
-      fov={WAVE.fov}
+      fov={Number(config.fov ?? 45)}
       lazyLoad={false} // defaults to true, which unmounts off screen and restarts the motion
       powerPreference="low-power"
     >
-      <ShaderGradient {...WAVE} control="props" animate={playing ? "on" : "off"} />
+      <ShaderGradient {...config} control="props" animate={playing ? "on" : "off"} />
       <SubtleGrain />
       <FrameCap running={running} />
     </ShaderGradientCanvas>
