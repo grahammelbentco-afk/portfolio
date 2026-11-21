@@ -52,7 +52,8 @@ export const site = {
   name: "Webleta",
   description:
     "Websites for local businesses and agencies, made to stand out and built to get booked.",
-  location: "Based in Australia",
+  // Jasper, 2026-11-22: Australia is the target market, not our base. Don't state a base on the site.
+  location: "Working with businesses across Australia",
 };
 
 export const navigation: Link[] = [
@@ -1052,23 +1053,102 @@ export const footer = {
   tagline: "We design and build websites for local businesses and agencies.",
   services: ["Website design and development", "Web applications", "SEO"],
   links: [
-    { label: "About", href: "#about" },
+    { label: "Services", href: "#services" },
     { label: "Work", href: "#work" },
+    { label: "Industries", href: "#industries" },
+    { label: "About", href: "#about" },
+    { label: "Reviews", href: "#reviews" },
+    { label: "Pricing", href: "#pricing" },
     { label: "FAQ", href: "#faq" },
   ],
+  // Graham: "add running logos of the tech we use". [name, Simple Icons slug, brand hex].
+  // Icon colours are the brand hue, darkened where needed to reach 3:1 on the Shallows chip.
+  // Two rows run in opposite directions. ChatGPT, JavaScript, Node.js, Three.js, PHP, Google and Search
+  // Console were added in the footer redesign (from package.json, WordPress and SEO work): UNCONFIRMED, prune freely.
   tools: [
-    ["Figma", "figma"],
-    ["Claude", "claude"],
-    ["WordPress", "wordpress"],
-    ["HTML", "html5"],
-    ["CSS", "css"],
-    ["TypeScript", "typescript"],
-    ["React", "react"],
-    ["Next.js", "nextdotjs"],
-    ["Astro", "astro"],
-    ["GSAP", "gsap"],
-    ["GitHub", "github"],
-    ["Cloudflare", "cloudflare"],
+    [
+      ["Figma", "figma", "#F24E1E"],
+      ["ChatGPT", "openai", "#07223B"],
+      ["Claude", "claude", "#B3542F"],
+      ["WordPress", "wordpress", "#21759B"],
+      ["HTML", "html5", "#E34F26"],
+      ["CSS", "css", "#663399"],
+      ["JavaScript", "javascript", "#8A6F00"],
+      ["TypeScript", "typescript", "#3178C6"],
+      ["PHP", "php", "#777BB4"],
+      ["React", "react", "#087EA4"],
+    ],
+    [
+      ["Next.js", "nextdotjs", "#07223B"],
+      ["Astro", "astro", "#BC52EE"],
+      ["GSAP", "gsap", "#08852F"],
+      ["Three.js", "threedotjs", "#07223B"],
+      ["Node.js", "nodedotjs", "#3E7A35"],
+      ["GitHub", "github", "#07223B"],
+      ["Cloudflare", "cloudflare", "#C2410C"],
+      ["Google", "google", "#4285F4"],
+      ["Search Console", "googlesearchconsole", "#2F6FD6"],
+    ],
+  ] as const,
+  legal: [
+    { label: "Privacy", href: "/privacy/" },
+    { label: "Terms", href: "/terms/" },
   ],
   top: "Back to top",
+};
+
+/**
+ * Privacy and terms pages. DRAFT (2026-11-22) for Jasper and Graham to approve before launch.
+ * Facts checked against the build: the request forms open the visitor's own email app (nothing is
+ * posted to a server), there are no cookies, analytics or third-party scripts, fonts are self-hosted,
+ * and the site is served by Cloudflare Pages. Update these pages if any of that changes.
+ * No business base or registration is stated (Jasper: internal).
+ */
+export const legal = {
+  updated: "22 November 2026",
+  privacy: {
+    title: "Privacy policy",
+    intro: "This page explains what we collect when you use webleta.com and what we do with it. The short version: very little, and only to reply to you.",
+    sections: [
+      { h: "What we collect", p: [
+        "Our request forms don't send anything to us by themselves. When you finish a form, the details you typed (your website or business name, your goal and your email address) are put into an email in your own email app. Nothing reaches us until you press send.",
+        "If you email us, we get what you send: your email address, your name if you include it, and your message.",
+      ] },
+      { h: "How we use it", p: [
+        "We use your details to reply to you, prepare the preview or quote you asked for, and run the project if you hire us. We don't sell your details, share them for marketing, or add you to a mailing list.",
+      ] },
+      { h: "Cookies and tracking", p: [
+        "This site doesn't set cookies or use analytics or advertising trackers. Fonts and images are served from our own domain.",
+        "The site is hosted by Cloudflare. Like any host, Cloudflare may keep short-lived technical logs, such as IP addresses and browser types, to keep the site secure and running.",
+      ] },
+      { h: "How long we keep it", p: [
+        "We keep emails for as long as we need them to work with you, and for project records after that. Ask us and we'll delete your details, unless we have to keep them for a finished project's records.",
+      ] },
+      { h: "Your choices", p: [
+        "You can ask to see the details we hold about you, correct them or have them deleted. Email us at hello@webleta.com.",
+      ] },
+    ],
+  },
+  terms: {
+    title: "Terms of use",
+    intro: "These terms cover your use of webleta.com. Work we do for you is covered by the written agreement we sign together.",
+    sections: [
+      { h: "Using this site", p: [
+        "You're welcome to browse, share links to this site and contact us through it. Please don't copy our designs, text or images for your own use without asking.",
+        "Client names, logos and trademarks shown here belong to their owners.",
+      ] },
+      { h: "Prices and projects", p: [
+        "Prices on this site are starting prices. Before any work begins, we agree the scope and the price with you in writing, and that agreement is what applies to your project.",
+      ] },
+      { h: "Accuracy and availability", p: [
+        "We keep this site accurate and up to date, but we can't promise it will always be available or error-free. Links to other sites are there for convenience, and we aren't responsible for their content.",
+      ] },
+      { h: "Changes", p: [
+        "We may update these terms. The date at the top shows when they last changed.",
+      ] },
+      { h: "Questions", p: [
+        "Email us at hello@webleta.com.",
+      ] },
+    ],
+  },
 };
