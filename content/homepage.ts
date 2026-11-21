@@ -12,8 +12,7 @@ export type Link = { label: string; href: string };
 export type HeroImage = { src: string; srcSet: string; width: number; height: number; alt: string };
 
 /** `video`: optional looping clip shown instead of the image (poster = its first frame). */
-/** `holdEnd`: while the slider is held, stay on the clip's last frame instead of replaying it. */
-export type HeroCard = { label: string; image: HeroImage; video?: { src: string; poster: string; holdEnd?: boolean } };
+export type HeroCard = { label: string; image: HeroImage; video?: { src: string; poster: string } };
 
 export type Audience = {
   id: string;
@@ -124,8 +123,9 @@ export const hero = {
   cards: [
     {
       label: "Design",
-      // IMG_1440.MOV is slowed to match the 12-second Reviews clip.
-      video: { src: "/videos/hero-design-real.mp4", poster: "/images/hero-design-real-poster.webp" },
+      // IMG_1441 / 1444 / 1446: seamless 6 s loops (last second crossfades into the first), real
+      // speed, natural colour. `#t=` staggers where each starts, so the three never loop in step.
+      video: { src: "/videos/hero-design-cine.mp4", poster: "/images/hero-design-cine-poster.webp" },
       image: {
         src: "/images/card-design-1280.webp",
         srcSet: "/images/card-design-720.webp 720w, /images/card-design-1280.webp 1280w",
@@ -136,7 +136,7 @@ export const hero = {
     },
     {
       label: "Market",
-      video: { src: "/videos/hero-market-real.mp4", poster: "/images/hero-market-real-poster.webp", holdEnd: true },
+      video: { src: "/videos/hero-market-cine.mp4#t=2", poster: "/images/hero-market-cine-poster.webp" },
       image: {
         src: "/images/card-market-1280.webp",
         srcSet: "/images/card-market-720.webp 720w, /images/card-market-1280.webp 1280w",
@@ -147,7 +147,7 @@ export const hero = {
     },
     {
       label: "Conversion",
-      video: { src: "/videos/hero-conversion-real.mp4", poster: "/images/hero-conversion-real-poster.webp", holdEnd: true },
+      video: { src: "/videos/hero-conversion-cine.mp4#t=4", poster: "/images/hero-conversion-cine-poster.webp" },
       image: {
         src: "/images/card-conversion-1280.webp",
         srcSet: "/images/card-conversion-720.webp 720w, /images/card-conversion-1280.webp 1280w",
@@ -326,6 +326,8 @@ export const benefits = {
       id: "quotes", tag: "Builders and suppliers", title: "More quote requests", mark: "quote requests",
       text: "The job details arrive up front, so you quote the work worth doing.",
       visual: "quote", colour: "ochre", note: "br",
+      // Revision 104 (Graham: "yung 1st and 2nd magkamukha", same mockup and angle as card 1): the
+      // full-length page in perspective, running off the bottom, instead of a flat window.
       project: { name: "Ground Control Systems", frame: "browser-bleed", screen: "/images/benefits/screen-groundcontrol.webp", w: 874, h: 1581,
         alt: "The Ground Control Systems homepage, a site we built: Design. Build. Install. over a night photo of bike racks." },
     },
@@ -379,7 +381,7 @@ export type DeviceStage = {
 };
 
 /** Tile colour: Aqua (core) for the hero, V1.6 supporting colours (p.14) for the rest. */
-export type TileColour = "aqua" | "ochre" | "harbour" | "dusk" | "coral" | "kelp" | "shell";
+export type TileColour = "aqua" | "ochre" | "harbour" | "dusk" | "coral" | "kelp" | "shell" | "ember" | "navy" | "seafoam";
 
 export type ServiceTile = {
   id: string;
@@ -398,6 +400,8 @@ export type ServiceTile = {
   ui?: "dashboard" | "app";
   logos: PlatformLogo[];
   /** The photo is light where the icon sits, so the icon is drawn dark. */
+  /** Or a coded scene instead of a photo: a real build in a browser with a photo print (R105). */
+  art?: "build";
   lightCorner?: boolean;
 };
 
@@ -426,60 +430,55 @@ const logo = {
  */
 export const services = {
   eyebrow: "What we do",
-  // Revision 98 (Graham's note via Jasper): "Website first then everything follows". Photo tiles use
-  // new full-colour fal photos (flux-pro v1.1-ultra, 2026-11-18, manifest-2026-11-16-work.csv).
+  // Revision 98 (Graham's note via Jasper): "Website first then everything follows".
+  // Revision 104 (Graham: "iwas tayo sa vector base... more on real image"): real-looking photos in
+  // the tile colour's duotone, as his reference. Jasper's own desk photo leads; the rest are the
+  // earlier flux-pro photos (2026-11-14/18 manifests). The svc3 illustrations are no longer used.
   title: { mark: "Website first.", rest: "Then everything follows." },
   intro: "We design and build your site first. Search, email, social and content then bring people to it. Pick one service or several.",
   tiles: [
     {
-      id: "websites", slot: "hero", lightCorner: true, colour: "aqua", icon: "web",
+      id: "websites", slot: "hero", colour: "seafoam", icon: "web",
       title: "Website design and", outline: "development",
-      text: "Your own design, built on the platform that suits the job: WordPress, Next.js or Astro.",
-      // Revision 98: one fal image, nano-banana-pro (request 01a1eece-6844-7172-95eb-49381c579e42), isometric, matching the other tiles.
-      photo: { base: "/images/svc3-websites", alt: "An illustration of a plumbing business homepage on desktop and phone, with an enquiries chart rising.", position: "80% 30%" },
+      text: "Designed for your business, on the setup that suits it.",
+      // A real build (Wazzas Pool) in a browser and a print of Jasper at work, as the Benefits cards.
+      art: "build",
       logos: [logo.wordpress, logo.next, logo.astro, logo.react],
     },
     {
-      id: "apps", slot: "wide", colour: "harbour", icon: "app",
+      id: "apps", slot: "wide", colour: "navy", icon: "app",
       title: "Web applications", text: "Booking systems and client portals, built around how your business runs.",
-      // Revision 98: one fal image, nano-banana-pro (request 01a1eec5-a219-76e3-b549-dc6e8da02c55).
-      photo: { base: "/images/svc3-apps", alt: "An illustration of a booking dashboard showing this week's quotes, bookings and invoices, with a calendar.", position: "80% 50%" },
+      photo: { base: "/images/svc-wordpress", alt: "A developer working on a laptop at her desk by a lamp in the evening.", position: "50% 40%" },
       logos: [],
     },
     {
-      id: "seo", slot: "a", lightCorner: true, colour: "ochre", icon: "search",
+      id: "seo", slot: "a", lightCorner: true, colour: "shell", icon: "search",
       title: "SEO", text: "Get found when people nearby search for what you do.",
-      // Revision 98: one fal image with the search results drawn in (nano-banana-pro, request
-      // 01a1eead-4fa5-7250-a432-33e227873abf): "plumber near me", Harlow Plumbing ranked #1.
-      photo: { base: "/images/svc3-seo", alt: "An illustration of search results for plumber near me, with Harlow Plumbing marked number one.", position: "50% 50%" },
+      photo: { base: "/images/svc-seo", alt: "A man looking up a local business on his phone against a sunlit wall.", position: "40% 50%" },
       logos: [logo.google],
     },
     {
-      id: "email", slot: "b", colour: "dusk", icon: "mail",
+      id: "email", slot: "b", colour: "harbour", icon: "mail",
       title: "Email marketing", text: "Newsletters that bring past customers back for another job.",
-      // Revision 98: one fal image, nano-banana-pro (request 01a1eec9-a2f6-77e1-9a83-239d773430af).
-      photo: { base: "/images/svc3-email", alt: "An illustration of an inbox with an opened email from Harlow Plumbing: Time for your yearly check-up?", position: "70% 30%" },
+      photo: { base: "/images/svc2-email", alt: "A laptop on a desk showing an email newsletter.", position: "50% 50%" },
       logos: [logo.gmail],
     },
     {
-      id: "social", slot: "d", lightCorner: true, colour: "kelp", icon: "social",
+      id: "social", slot: "d", colour: "kelp", icon: "social",
       title: "Social media marketing", text: "Posts and ads that send people from social media to your site.",
-      // Revision 98: one fal image, nano-banana-pro (request 01a1eeb5-4115-7132-9bd6-c1600a1ee55d).
-      photo: { base: "/images/svc3-social", alt: "An illustration of a florist's social post with 1.8K likes and a Visit website button.", position: "70% 50%" },
+      photo: { base: "/images/svc2-social", alt: "A florist filming a video for social media on a phone tripod among her plants.", position: "60% 40%" },
       logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin],
     },
     {
-      id: "content", slot: "e", lightCorner: true, colour: "shell", icon: "pen",
-      title: "Content marketing", text: "Articles and pages that answer what customers ask before they call.",
-      // Revision 98: one fal image, nano-banana-pro (request 01a1eebc-2777-7ea3-852a-c815605ecfc4).
-      photo: { base: "/images/svc3-content", alt: "An illustration of a guide titled How much does a blocked drain cost to fix?, with the answer highlighted.", position: "75% 30%" },
+      id: "content", slot: "e", lightCorner: true, colour: "ochre", icon: "pen",
+      title: "Content marketing", text: "Articles that answer what customers ask before they call.",
+      photo: { base: "/images/svc2-content", alt: "Hands typing an article on a laptop, seen from above, with flowers and a notebook.", position: "50% 50%" },
       logos: [],
     },
     {
-      id: "mobile", slot: "c", colour: "coral", icon: "phone",
-      title: "Mobile apps", text: "An app on your regulars' phones, for bookings and orders.",
-      // Revision 98: one fal image, nano-banana-pro (request 01a1eeca-147a-7102-bd5e-5d1ed3475be7).
-      photo: { base: "/images/svc3-mobile", alt: "An illustration of a booking app with a time slot picked and a Booked confirmation.", position: "75% 50%" },
+      id: "mobile", slot: "c", colour: "harbour", icon: "phone",
+      title: "Mobile apps", text: "Your own app, for regulars' bookings and orders.",
+      photo: { base: "/images/card-conversion", alt: "A hand holding a phone with a booking app open.", position: "50% 50%" },
       logos: [logo.apple, logo.android],
     },
   ] satisfies ServiceTile[],
@@ -684,7 +683,7 @@ export const reviews = {
   eyebrow: "Client reviews",
   title: { solid: "In their", outline: "own words." },
   intro: "Two minds. One big vision. This is what clients and teammates have said about working with us.",
-  video: { src: "/videos/reviews-desk.mp4?v=5", poster: "/images/reviews-desk-poster.webp?v=5" },
+  video: { src: "/videos/reviews-desk-graded.mp4", poster: "/images/reviews-desk-graded-poster.webp" },
   proof: { value: "100%", label: "Job Success on Upwork" },
   items: [
     { id: "greg", org: "Ground Control Systems", initials: "GB", name: "Greg Bauer", role: "CEO, Ground Control Systems", source: "Client of Graham", via: { kind: "client", src: "/brands/clients/colour/groundcontrol.webp", fill: true },
@@ -747,8 +746,7 @@ export const clients = {
 
 /**
  * Pricing (Graham: "Pricing/ setup"). The ways to work are from V1.6 p.5; V1.6 says
- * "Pricing is not part of this book". UNCONFIRMED: every price and term below is a
- * placeholder until Graham sets them.
+ * "Pricing is not part of this book". UNCONFIRMED: plan terms still need Graham's sign-off.
  */
 export type Plan = {
   id: string;
@@ -762,36 +760,38 @@ export type Plan = {
   image?: { base: string; w: number; h: number };
   action: string;
 };
+const localProjectPrice = "$1,600";
+const localSubscriptionPrice = "$700";
+
 export const pricing = {
   eyebrow: "Pricing",
-  title: { solid: "Pick a package,", outline: "or ask for a quote." },
-  intro: "Either way, you see the price before we start.",
-  // Promises every plan shares, said once instead of on each card (same as Contact's).
-  always: ["Your own design, built from scratch", "Scope and price agreed before we start", "A real person on email"],
-  preview: { lead: "Not sure yet?", label: "See a free preview first", href: "#steps" },
+  title: { solid: "Website builds", outline: "and support." },
+  intro: "Choose a one-off build, a monthly plan or help by the hour. You can also ask us for a quote.",
+  always: ["New sites designed from scratch", "We agree on the work and price upfront", "You can email us directly"],
+  preview: { lead: "Want to see what your site could look like?", label: "Get a free preview", href: "#steps" },
   audiences: [
     {
       id: "business", label: "For local businesses",
       plans: [
-        { id: "project", name: "Project", fit: "A new site with a clear start and finish.", price: "$2,400", unit: "from, one-off", action: "Start a project",
-          features: ["Up to six pages", "Mobile, speed and SEO basics", "Training so you can edit it", "30 days of fixes after launch"] },
-        { id: "subscription", name: "Subscription", fit: "Your site, updated and looked after every month.", price: "$190", unit: "per month", action: "Choose subscription", featured: true,
+        { id: "project", name: "Website project", fit: "A new site you can update yourself.", price: localProjectPrice, unit: "one-off starting price", action: "Ask about a website project",
+          features: ["Up to six pages", "Mobile-friendly pages, speed and SEO basics", "Training on how to update your site", "30 days of fixes after launch"] },
+        { id: "subscription", name: "Website subscription", fit: "We build your site and look after it each month.", price: localSubscriptionPrice, unit: "per month · starting rate", action: "Ask about a subscription", featured: true,
           image: { base: "/images/card-design", w: 1280, h: 720 },
-          features: ["A new custom site, paid monthly", "Monthly updates and changes", "Hosting, backups and security", "A named person to email", "Minimum term of 12 months"] },
-        { id: "adhoc", name: "Ad hoc", fit: "Help when it's needed.", price: "$95", unit: "per hour", action: "Book some time",
-          features: ["Edits, fixes and new pages", "Booked as it comes up", "Quoted before we start", "No contract"] },
+          features: ["A custom website", "Monthly updates", "Hosting, backups and security", "A named contact you can email", "12-month minimum term"] },
+        { id: "adhoc", name: "Hourly website help", fit: "Book a single job when you need a hand.", price: "$25", unit: "per hour · starting rate", action: "Ask for hourly help",
+          features: ["Edits, fixes and new pages", "A quote before each job", "No ongoing contract"] },
       ],
     },
     {
       id: "agency", label: "For agencies",
       plans: [
-        { id: "overflow", name: "Overflow support", fit: "Quick fixes and updates for your clients.", price: "$85", unit: "per hour", action: "Send a task",
-          features: ["Content updates and edits", "Bug fixes and maintenance", "Small development tasks", "Your name on the work"] },
-        { id: "projects", name: "Agency projects", fit: "Full builds and redesigns, white-labelled.", price: "$1,800", unit: "from, per site", action: "Send a brief",
-          features: ["Designed to your agency's standards", "Development and launch", "Speed and SEO basics", "Handover in your process"] },
-        { id: "dedicated", name: "Dedicated designer or developer", fit: "Someone from Webleta on your team.", price: "$3,200", unit: "per month", action: "Talk to us", featured: true,
+        { id: "overflow", name: "Overflow support", fit: "Send us the smaller client jobs your team needs help with.", price: "$15", unit: "per hour", action: "Send us a task",
+          features: ["Content edits", "Bug fixes and maintenance", "Small development tasks", "Work delivered under your agency's name"] },
+        { id: "projects", name: "Agency website projects", fit: "We build or redesign sites under your agency's name.", price: "$1,600", unit: "per site · starting price", action: "Send us a brief",
+          features: ["Design to your agency's standards", "Development and launch", "Speed and SEO basics", "Handover through your usual process"] },
+        { id: "dedicated", name: "Dedicated designer or developer", fit: "A designer or developer from Webleta works with your team.", price: "$1,900", unit: "per month", action: "Talk to us about your team", featured: true,
           image: { base: "/images/service-design", w: 1280, h: 853 },
-          features: ["A named designer or developer", "Works in your tools and meetings", "Design, build and care", "Scale up or down each month"] },
+          features: ["A named person on your team", "Uses your tools and joins your meetings", "Design, development and maintenance", "Adjust the support you need each month"] },
       ],
     },
   ] satisfies { id: string; label: string; plans: Plan[] }[],
@@ -912,8 +912,8 @@ export const industries = {
  * question and full answer is in the HTML, and the same text feeds FAQPage JSON-LD, so
  * search engines and AI answer engines can quote it. Each answer opens with the direct
  * answer in its first sentence and names Webleta where it helps a quote stand alone.
- * Answers repeat what the page already says. UNCONFIRMED: prices (Pricing's placeholders),
- * ownership, platforms and the Australia-wide service area need Graham's sign-off.
+ * Answers repeat what the page already says. UNCONFIRMED: plan terms, ownership,
+ * platforms and the Australia-wide service area need Graham's sign-off.
  */
 export type FaqItem = { id: string; q: string; a: string };
 export const faq = {
@@ -927,8 +927,8 @@ export const faq = {
     {
       id: "cost", title: "Cost",
       items: [
-        { id: "cost", q: "How much does a website cost?", a: "A new Webleta website starts from $2,400, paid once. You can also pay $190 a month on a subscription that includes updates and hosting. Either way, you see the full price before any work starts." },
-        { id: "monthly", q: "Can I pay monthly?", a: "Yes. The subscription is $190 a month for a new custom site, monthly updates, hosting, backups and a named person to email, with a minimum term of 12 months." },
+        { id: "cost", q: "How much does a website cost?", a: `A new Webleta website starts at ${localProjectPrice}, paid once. A subscription starts at ${localSubscriptionPrice} a month and includes updates and hosting. Either way, you see the full price before any work starts.` },
+        { id: "monthly", q: "Can I pay in instalments?", a: `Ask us about instalments for a one-off website project. If you’d prefer to pay monthly, subscriptions start at ${localSubscriptionPrice} a month and include a custom website, updates, hosting and backups. The minimum term is 12 months.` },
         { id: "preview", q: "What is the free preview?", a: "The free preview is a real design of your new homepage, made before you pay anything. Send us your website, and if you like the preview we build the rest. If not, you owe us nothing." },
       ],
     },
@@ -941,11 +941,13 @@ export const faq = {
       ],
     },
     {
-      id: "ownership", title: "Ownership and tech",
+      id: "ownership", title: "Ownership and services",
       items: [
-        { id: "own", q: "Will I own my website?", a: "Yes. Your domain, your accounts and your files stay in your name." },
+        { id: "own", q: "Will I own my website?", a: "Yes. If you’re on a subscription, you’ll own your website once you complete the 12-month contract. Your domain and accounts stay in your name." },
         { id: "platform", q: "What platform do you build websites on?", a: "Webleta builds on WordPress when you want to edit the site yourself, and on Next.js or Astro when speed matters most. We recommend one when we quote." },
         { id: "seo", q: "Do you do SEO?", a: "Yes. Every site is built with search basics: fast pages, clear structure and metadata. SEO is also a separate service, if you want ongoing work to rank higher." },
+        { id: "social-branding", q: "Do you offer social media branding?", a: "Yes. We can design profile graphics and post templates that match your brand." },
+        { id: "social-management", q: "Do you also offer social media management?", a: "Yes. You can add social media support to your website project. We can help with branding, creating posts and publishing them." },
       ],
     },
     {

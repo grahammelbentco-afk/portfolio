@@ -4,15 +4,19 @@
    Revision 102 puts a ShaderGradient test over it (IndustriesShader, GROUND in Industries.tsx);
    set GROUND = "red" to go back. This CSS stays as first paint and the no-WebGL fallback.
    Revision 87 (Jasper): the page's one red section. Signal Red with a deeper red pooled
-   in the corners so it reads rich, not flat. All text on it is white (4.9:1 or better). */
+   in the corners so it reads rich, not flat. All text on it is white (4.9:1 or better).
+   Revision 103 (Jasper): the ground is now a dark red as deep as the hero navy, matching the
+   shader's colours (ShaderWave.tsx), so there is no bright-red flash before it loads. The
+   Revision 87 values were: rgb(255 90 60 / 0.45) glow, var(--signal-red-deep) corner,
+   var(--signal-red) base. */
 .section {
   position: relative;
   isolation: isolate;
   padding-block: var(--section-y);
   background:
-    radial-gradient(120% 80% at 100% 0%, rgb(255 90 60 / 0.45), transparent 60%), /* taste-skill-ignore: tonal depth on the red ground */
-    radial-gradient(90% 70% at 0% 100%, var(--signal-red-deep), transparent 70%), /* taste-skill-ignore: tonal depth on the red ground */
-    var(--signal-red);
+    radial-gradient(120% 80% at 100% 0%, rgb(163 32 47 / 0.55), transparent 60%), /* taste-skill-ignore: tonal depth on the red ground */
+    radial-gradient(90% 70% at 0% 100%, #1c0409, transparent 70%), /* taste-skill-ignore: tonal depth on the red ground */
+    #4a0a18;
   color: var(--white);
 }
 
@@ -170,7 +174,7 @@
 
 /* ---- Revision 99 (Jasper): black-and-white photos under one flat, bright colour per tile,
    the reference's duotone. The photo's luminosity sits on the tile colour at partial strength,
-   so the colour leads and the photo shows through. On hover the real photo still fades in.
+   so the colour leads and the photo shows through.
    Palette built against the Signal Red ground with colour theory:
      analogous (red's own family, so they belong): wine, blush, peach;
      complementary (opposite red, so they pop): Aqua on the hero, a deep teal;
@@ -232,12 +236,6 @@
 .bento.bento > li[data-industry="medspa"] > div:first-child > img:first-child {
   filter: grayscale(1) contrast(1.3) brightness(0.98);
   opacity: 0.7;
-}
-
-/* Revision 100 (Jasper): no hover effect on these cards. No tilt (data-tilt removed), no
-   true-colour reveal (that image removed), and no photo zoom from Services' shared rule. */
-.bento.bento > li[data-industry]:hover > div:first-child > img {
-  transform: none;
 }
 
 /* ---- Revision 102: ShaderGradient ground (test). It sits behind everything, fades in over the

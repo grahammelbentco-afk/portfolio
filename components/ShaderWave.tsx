@@ -19,7 +19,7 @@ const WAVE = {
   uStrength: 3.2,
   uTime: 4,
   axesHelper: "off",
-  brightness: 1.15,
+  brightness: 0.7, // the 3d light brightens the colours a lot; this keeps the ground navy-dark
   cAzimuthAngle: 180,
   cDistance: 2.6,
   cPolarAngle: 80,
@@ -39,25 +39,26 @@ const WAVE = {
   rotationZ: 0,
   shader: "defaults",
   wireframe: false,
-  color1: "#ff9a74",
-  color2: "#7d1030",
-  color3: "#24050f",
+  // Dark red as deep as the hero's navy (#5c0d1c matches #10304a in luminance); the glow is a
+  // muted crimson instead of light coral, so the tiles stand out from the ground.
+  color1: "#a3202f",
+  color2: "#5c0d1c",
+  color3: "#1c0409",
 } as const;
 
-export default function ShaderWave({ playing }: { playing: boolean }) {
+export default function ShaderWave({ playing, running }: { playing: boolean; running: boolean }) {
   return (
     <ShaderGradientCanvas
       style={{ position: "absolute", inset: 0 }}
       pointerEvents="none"
       pixelDensity={1}
       fov={WAVE.fov}
-      lazyLoad
-      rootMargin="200px"
+      lazyLoad={false} // defaults to true, which unmounts off screen and restarts the motion
       powerPreference="low-power"
     >
       <ShaderGradient {...WAVE} control="props" animate={playing ? "on" : "off"} />
       <SubtleGrain />
-      <FrameCap />
+      <FrameCap running={running} />
     </ShaderGradientCanvas>
   );
 }

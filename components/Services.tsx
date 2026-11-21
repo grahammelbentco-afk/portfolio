@@ -9,7 +9,7 @@ import styles from "./Services.module.css";
  *
  *   Core services lead (Notion: web design/development first, then web apps and SEO):
  *   [ SEO, Ochre (5)          ][ Website design and development (hero, Aqua, 7) ]
- *   [ Web applications (5)    ][   rising enquiries chart, tech logos           ]
+ *   [ Web applications (5)    ][   real build scene, tech logos                 ]
  *   [ Email ][ Social ][ Content ][ Mobile ]   supporting services, shorter row
  *   [ Not sure where to start? (full-width Deep Water strip)                   ]
  *
@@ -48,7 +48,6 @@ function Stage({ stage, children }: { stage: DeviceStage; children: React.ReactN
           loading="lazy"
           decoding="async"
         />
-        <img className={styles.true} src={`${stage.base}-${wide ? 900 : 720}.webp`} alt="" width={stage.width} height={stage.height} loading="lazy" decoding="async" />
         <div
           className={styles.screen}
           style={{ left: `${s.left}%`, top: `${s.top}%`, width: `${s.width}%`, height: `${s.height}%`, borderRadius: s.radius }}
@@ -61,10 +60,80 @@ function Stage({ stage, children }: { stage: DeviceStage; children: React.ReactN
   );
 }
 
+/** The hero's scene (R105-R106), a design file in progress: a faint dot canvas and guides
+ *  (allowed to run to the edges), a selected headline frame with Graham's cursor, a Dev Mode
+ *  code panel with Jasper's, and two real photos from our own shoot. The prominent pieces stay
+ *  inside the tile's inner band, clear of the icon row and the copy. */
+function BuildArt() {
+  return (
+    <div className={styles.build} aria-hidden="true">
+      <svg className={styles.buildLines} viewBox="0 0 600 560" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id="svc-dots" width="14" height="14" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="#07223b" fillOpacity="0.18" />
+          </pattern>
+        </defs>
+        <rect width="600" height="560" fill="url(#svc-dots)" />
+        <path className={styles.buildGuide} d="M0 128H600M36 0V560" />
+      </svg>
+
+      <div className={styles.select}>
+        <span className={styles.selectLabel}>Headline · H1</span>
+        <i className={styles.selectBar} />
+        <i className={styles.selectBar} />
+        <b className={styles.handle} data-at="tl" />
+        <b className={styles.handle} data-at="tr" />
+        <b className={styles.handle} data-at="bl" />
+        <b className={styles.handle} data-at="br" />
+        <span className={styles.cursor} data-who="graham">
+          <svg viewBox="0 0 16 22">
+            <path d="M1 1v18l4.6-4.4 3.2 7.2 3.1-1.3-3.1-7.1H15z" />
+          </svg>
+          Graham
+        </span>
+      </div>
+
+      <div className={styles.code}>
+        <span className={styles.codeHead}>
+          <span className={styles.codeMark}>{"</>"}</span> Dev Mode
+        </span>
+        <code>
+          <span>
+            <i>.headline</i> {"{"}
+          </span>
+          <span>
+            {"  "}
+            <em>font-size</em>: 40px;
+          </span>
+          <span>
+            {"  "}
+            <em>color</em>: <b>#07223b</b>;
+          </span>
+          <span>{"}"}</span>
+        </code>
+        <span className={styles.cursor} data-who="jasper">
+          <svg viewBox="0 0 16 22">
+            <path d="M1 1v18l4.6-4.4 3.2 7.2 3.1-1.3-3.1-7.1H15z" />
+          </svg>
+          Jasper
+        </span>
+      </div>
+
+      <figure className={styles.buildShot}>
+        <img src="/images/services/photo-laptop.webp" width={1000} height={750} alt="" loading="lazy" decoding="async" />
+      </figure>
+      <figure className={styles.buildPrint}>
+        <img src="/images/services/photo-review.webp" width={600} height={600} alt="" loading="lazy" decoding="async" />
+        <figcaption>Homepage review</figcaption>
+      </figure>
+    </div>
+  );
+}
+
 function Tile({ t }: { t: ServiceTile }) {
   const Screen = t.ui ? SCREENS[t.ui] : null;
   return (
-    <li className={styles.tile} data-tilt data-colour={t.colour} data-slot={t.slot} data-service={t.id} data-light-corner={t.lightCorner ? "true" : undefined}>
+    <li className={styles.tile} data-colour={t.colour} data-slot={t.slot} data-service={t.id} data-light-corner={t.lightCorner ? "true" : undefined}>
       {t.photo && (
         <div className={styles.box}>
           <img
@@ -79,18 +148,9 @@ function Tile({ t }: { t: ServiceTile }) {
             decoding="async"
             style={t.photo.position ? { objectPosition: t.photo.position } : undefined}
           />
-          <img
-            className={styles.true}
-            src={`${t.photo.base}-720.webp`}
-            alt=""
-            width={720}
-            height={720}
-            loading="lazy"
-            decoding="async"
-            style={t.photo.position ? { objectPosition: t.photo.position } : undefined}
-          />
         </div>
       )}
+      {t.art === "build" && <BuildArt />}
       {t.stage && Screen && (
         <Stage stage={t.stage}>
           <Screen />

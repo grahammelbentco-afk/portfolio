@@ -25,25 +25,34 @@ function supportsWebGL() {
 }
 
 /**
- * Mounts the live Halo over the CSS gradient once the page is idle and WebGL exists, and
- * only while its section is near the screen (unmounted, it frees its WebGL context).
+ * Mounts the live Halo over the CSS gradient once the page is idle, WebGL exists and its
+ * section has first come near the screen. After that it stays mounted and only renders while
+ * the section is near, so scrolling back resumes the motion instead of restarting it.
  * The motion is slow and ambient; with reduced motion it renders as a still frame.
  */
 export default function HeroShader() {
   const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(REDUCED).matches, () => false);
   const [enabled, setEnabled] = useState(false);
   const [near, setNear] = useState(false);
+  const [seen, setSeen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Only keep a live scene while its section is on or near the screen. The hero and Contact
-  // both use this ground, so at most one WebGL scene runs; the CSS gradient shows otherwise.
+  // Render only while the section is on or near the screen. The hero and Contact both use this
+  // ground, so at most one of their scenes draws at a time.
   useEffect(() => {
     const el = ref.current?.closest<HTMLElement>("[data-bg]") ?? ref.current;
     if (!el || !("IntersectionObserver" in window)) {
       setNear(true);
+      setSeen(true);
       return;
     }
-    const io = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), { rootMargin: "200px 0px" });
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setNear(entry.isIntersecting);
+        if (entry.isIntersecting) setSeen(true);
+      },
+      { rootMargin: "200px 0px" },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -65,7 +74,7 @@ export default function HeroShader() {
 
   return (
     <div ref={ref} className={styles.shader}>
-      {enabled && near && <ShaderHalo playing={!reduced} />}
+      {enabled && seen && <ShaderHalo playing={!reduced} running={near} />}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import { setLenis } from "@/lib/smooth";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Site-wide motion (Revision 87). Three things, all off under reduced motion:
+ * Site-wide motion (Revision 87), disabled under reduced motion:
  *  1. Momentum scroll (Lenis): the page keeps gliding briefly after the wheel stops.
  *     Driven by GSAP's ticker so ScrollTrigger (hero parallax, Work's pin) stays in step.
  *     Touch keeps the phone's own native momentum.
@@ -18,7 +18,6 @@ gsap.registerPlugin(ScrollTrigger);
  *     animation (About's scroll fill, the logo marquee, Work's camera) are left alone.
  *     The reveal uses the `translate` property, never `transform`, so it can't fight a
  *     component's own hover transforms; the attribute is removed once the reveal ends.
- *  3. Hover tilt (Transitions.dev card tilt, eased to 7° for big tiles) on [data-tilt].
  */
 
 const TEXT = "h2, h3, p, blockquote, .eyebrow";
@@ -26,7 +25,6 @@ const BOX = "li, figure, form, details, dl, table, img, .btn, [data-reveal-box]"
 const SKIP = "#top, #work, [data-intro], [data-reveal-skip]";
 const STAGGER = 70; // ms between items that enter together
 const MAX_STEPS = 8;
-const TILT_MAX = 7; // degrees at the edges
 
 /** A horizontal scroller (carousel) or a running animation (marquee) above `el`, if any. */
 function carrier(el: HTMLElement, scope: Element) {
@@ -115,43 +113,6 @@ function initReveals() {
   };
 }
 
-function initTilt() {
-  if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return () => {};
-  const cards = [...document.querySelectorAll<HTMLElement>("[data-tilt]")];
-  const offs = cards.map((card) => {
-    const glare = document.createElement("span");
-    glare.className = "tilt-glare";
-    glare.setAttribute("aria-hidden", "true");
-    card.appendChild(glare);
-
-    const reset = () => {
-      card.classList.remove("is-hover", "is-tilting");
-      card.style.setProperty("--tilt-rx", "0deg");
-      card.style.setProperty("--tilt-ry", "0deg");
-    };
-    const track = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      const r = card.getBoundingClientRect();
-      const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
-      const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
-      card.classList.add("is-hover", "is-tilting");
-      card.style.setProperty("--tilt-ry", `${((px - 0.5) * TILT_MAX).toFixed(2)}deg`);
-      card.style.setProperty("--tilt-rx", `${((0.5 - py) * TILT_MAX).toFixed(2)}deg`);
-      card.style.setProperty("--tilt-gx", `${(px * 100).toFixed(1)}%`);
-      card.style.setProperty("--tilt-gy", `${(py * 100).toFixed(1)}%`);
-    };
-    card.addEventListener("pointermove", track);
-    card.addEventListener("pointerleave", reset);
-    return () => {
-      card.removeEventListener("pointermove", track);
-      card.removeEventListener("pointerleave", reset);
-      glare.remove();
-      reset();
-    };
-  });
-  return () => offs.forEach((off) => off());
-}
-
 function initLenis() {
   const lenis = new Lenis({
     lerp: 0.085, // lower = longer glide after the wheel stops
@@ -178,9 +139,7 @@ export default function SiteMotion() {
     if (!document.documentElement.classList.contains("motion")) return;
     const offLenis = initLenis();
     const offReveal = initReveals();
-    const offTilt = initTilt();
     return () => {
-      offTilt();
       offReveal();
       offLenis();
     };

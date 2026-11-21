@@ -349,13 +349,17 @@
   transform: rotate(-5deg);
 }
 
-/* Ground Control: straight window running off the right edge. */
+/* Ground Control (Revision 104, Graham: cards 1 and 2 looked alike): the full-length page
+   standing tall and leaning back in perspective, turned the other way from MEC's flat tilt,
+   running off the bottom so the scroll reads as a long page. */
 .bleedWin {
-  top: 21%;
-  left: 9%;
-  width: 104%;
-  height: 58%;
-  border-radius: 10px 0 0 10px;
+  top: 16%;
+  left: 22%;
+  width: 66%;
+  height: 100%;
+  transform-origin: 50% 0;
+  transform: perspective(1000px) rotateX(16deg) rotateY(-14deg) rotateZ(6deg);
+  box-shadow: -18px 24px 40px rgb(58 38 3 / 0.28);
 }
 
 /* A phone: dark frame, rounded screen, a small island. */
@@ -728,7 +732,7 @@
 /* Each object is placed for the composition: overlapping its mockup, turned against the
    mockup's own tilt, clear of each page's headline. */
 .card[data-benefit="bookings"] .overlay { right: 9%; bottom: 7%; transform: rotate(6deg); }
-.card[data-benefit="quotes"] .overlay { right: 8%; bottom: 4%; transform: rotate(-5deg); }
+.card[data-benefit="quotes"] .overlay { left: 5%; top: 64%; transform: rotate(-7deg); }
 .card[data-benefit="sales"] .overlay { top: 15%; left: 7%; width: 48%; transform: rotate(-4deg); }
 .card[data-benefit="trust"] .overlay { bottom: 7%; left: 8%; transform: rotate(-6deg); }
 .card[data-benefit="calls"] .overlay { top: 66%; right: 6%; transform: rotate(5deg); }
@@ -821,7 +825,8 @@
 }
 
 .decor[data-kind="wave"] { bottom: 9%; left: 6%; width: 34%; }
-.decor[data-kind="dimension"] { bottom: 9%; left: 6%; width: 32%; }
+/* R104: upright in the open strip left of the leaning page (the note now covers the foot). */
+.decor[data-kind="dimension"] { top: 38%; left: -8%; width: 32%; transform: rotate(-90deg); }
 .decor[data-kind="section"] { top: 4%; right: 6%; width: 22%; }
 .decor[data-kind="section"] text { fill: none; stroke: rgb(255 255 255 / 0.3); font-family: Georgia, "Times New Roman", serif; font-size: 120px; }
 .decor[data-kind="dial"] { top: 44%; left: 5%; width: 12%; }
@@ -1246,41 +1251,8 @@
   transition: transform 200ms linear;
 }
 
-/* ---- Motion ----
-   One response per card, on hover: real pages scroll through their frame like a visitor
-   reading them; illustrations shift slightly. The incoming call pulses and its handset
-   rings in short bursts, like a phone's incoming-call screen. */
+/* Incoming-call illustration */
 @media (prefers-reduced-motion: no-preference) {
-  .screen img,
-  .phoneScreen img {
-    transition: transform 700ms var(--ease-out);
-  }
-
-  .card:hover .screen img,
-  .card:hover .phoneScreen img {
-    transform: translateY(calc(-100% + 100cqh));
-    transition: transform var(--read, 5s) cubic-bezier(0.45, 0, 0.55, 1) 150ms;
-  }
-
-  .note,
-  .receiptWrap,
-  .seo,
-  .browser {
-    transition: transform 500ms var(--ease-out);
-  }
-
-  .card:hover .note {
-    translate: 0 -6px;
-  }
-
-  .card:hover .receiptWrap {
-    transform: rotate(3deg) translateY(-6px) scale(0.8);
-  }
-
-  .card:hover .seo {
-    transform: rotate(-1.5deg) translateY(-4px);
-  }
-
   .pulse {
     animation: pulse 2s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
   }

@@ -77,6 +77,7 @@ export default function Hero({ visual, id = "top" }: { visual?: React.ReactNode;
                 leave={DESCENDING.leave}
                 enter={DESCENDING.enter}
                 stage={slider.square}
+                every={6000}
                 name="Our work, in three pictures"
               />
             )}

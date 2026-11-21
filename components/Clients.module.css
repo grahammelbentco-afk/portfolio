@@ -1,7 +1,4 @@
-/* Clients (Revision 78): light ground, white, continuing Reviews as one proof block (Pricing
-   below is Shallows, so a Shallows band would merge with it). The logo
-   carousel runs the full browser width, fading out at both edges; the heading stays in the
-   container. Logos are masks in Deep Water. */
+/* The logo carousel runs full width, outside the heading's content grid. */
 .section {
   /* Reviews above ends with its own padding, so this band starts closer. */
   padding-block: calc(var(--section-y) * 0.5) var(--section-y);
@@ -90,11 +87,6 @@
   -webkit-mask: var(--logo) center / contain no-repeat;
   mask: var(--logo) center / contain no-repeat;
   opacity: 0.62;
-  transition: opacity var(--dur) var(--ease-out);
-}
-
-.item:hover .logo {
-  opacity: 1;
 }
 
 /* One full row's width per loop: the second copy lands where the first began. */

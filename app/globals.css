@@ -360,37 +360,6 @@ html.lenis {
     filter 700ms var(--ease-out) var(--rd, 0ms);
 }
 
-/* ---- Hover tilt (Transitions.dev card tilt) on big tiles and plans ---- */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  [data-tilt] {
-    transform: perspective(1000px) rotateX(var(--tilt-rx, 0deg)) rotateY(var(--tilt-ry, 0deg));
-    transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  [data-tilt].is-tilting {
-    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-}
-
-.tilt-glare {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  mix-blend-mode: screen;
-  background:
-    /* taste-skill-ignore: pointer light (Transitions.dev card tilt glare), hover only */
-    radial-gradient(circle 140px at var(--tilt-gx, 50%) var(--tilt-gy, 50%), rgb(255 255 255 / 0.45), rgb(255 255 255 / 0.05) 55%, transparent 85%), /* taste-skill-ignore: glare */
-    radial-gradient(circle 320px at var(--tilt-gx, 50%) var(--tilt-gy, 50%), rgb(255 255 255 / 0.14), transparent 85%); /* taste-skill-ignore: glare */
-  transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-[data-tilt].is-hover > .tilt-glare {
-  opacity: 0.32;
-}
-
 /* ---- Buttons: a light sheen sweeps across on hover ---- */
 .btn-primary,
 .btn-light {

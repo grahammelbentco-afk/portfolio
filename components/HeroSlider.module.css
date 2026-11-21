@@ -57,7 +57,6 @@
   height: 100%;
   object-fit: cover;
 }
-
 /* The caption sits 12px in from the bottom-left and keeps its size however the card is scaled:
    it is placed at the corner and counter-scaled by --cap, which transform-only slots set (other
    layouts fall back to a plain 12px inset). It glides on the same curve as the card. */
@@ -70,7 +69,7 @@
   transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
   padding: 5px 12px;
   border-radius: var(--r-pill);
-  background: var(--shallows);
+  background: var(--white);
   color: var(--deep-water);
   font-size: var(--fs-caption);
   font-weight: 700;

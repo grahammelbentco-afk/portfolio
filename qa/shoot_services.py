@@ -27,9 +27,6 @@ with sync_playwright() as p:
         if w == 1440:
             for sid in ("websites", "apps", "seo"):
                 page.locator(f"[data-service={sid}]").screenshot(path=os.path.join(OUT, f"tile-{sid}-1440.png"))
-            page.hover("[data-service=seo]")
-            page.wait_for_timeout(1300)
-            page.locator("[data-service=seo]").screenshot(path=os.path.join(OUT, "tile-seo-1440-hover.png"))
         print(w, "overflow" if page.evaluate("document.documentElement.scrollWidth > innerWidth") else "no overflow")
         page.close()
     browser.close()
