@@ -60,9 +60,11 @@ with sync_playwright() as p:
               const vw = document.documentElement.clientWidth;
               const bad = [];
               document.querySelectorAll('h1,h2,h3,p,li,a.btn').forEach(el => {
-                // Cards in a horizontal carousel run past the edge by design.
+                // Carousels keep their content inside a scroll viewport.
                 if (el.closest('[data-benefits-track], [data-work-track], [data-clients-track]')) return;
-                const r = el.getBoundingClientRect();
+                const track = el.closest('[data-footer-tools-track]');
+                const box = track && track.scrollWidth > track.clientWidth ? track : el;
+                const r = box.getBoundingClientRect();
                 if (r.width && (r.left < 15.5 || vw - r.right < 15.5)) bad.push(el.tagName + ':' + el.textContent.trim().slice(0,30));
               });
               return bad;
@@ -266,6 +268,8 @@ with sync_playwright() as p:
     check("reduced motion: no motion class", not page.evaluate("document.documentElement.classList.contains('motion')"))
     anims = page.evaluate(ANIMATIONS)
     check("reduced motion: CSS layers still", all(n == "none" for n in anims.split("|")), anims)
+    footer_track = page.locator("[data-footer-tools-track]")
+    check("footer: tool logos wrap with reduced motion", footer_track.evaluate("el => el.scrollWidth === el.clientWidth && el.querySelectorAll('li').length === 12"))
     page.wait_for_selector("#gradientCanvas", timeout=15000)
     page.wait_for_timeout(1500)
     a = bg_clip(page)

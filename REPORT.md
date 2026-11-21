@@ -10,6 +10,14 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
+## Milestone: Footer V2
+
+- **Approval** Jasper requested the push to staging on 2026-11-21.
+- **Changes** Kept the oversized fading wordmark and navy ground. Aligned the Studio, Services, Explore and Contact typography, removed the duplicate mark and Services link, and made “Start your project” a text link to the existing enquiry form. Added 12 locally hosted tool logos and a hairline divider. The logo row scrolls manually on narrow screens and wraps with reduced motion.
+- **References and tools** Jasper’s Webleta and Webtec screenshots, Studio PLATO via Awwwards, Simple Icons, frontend-design, design-taste-frontend, Humanizer, Ponytail and Playwright.
+- **QA** ESLint, TypeScript and the production build passed. Reviewed the footer at 320, 390, 768 and 1440px. Checked keyboard navigation, logo scrolling and reduced motion. The earlier homepage run passed 151 of 152 checks, with the existing Services photo-blend failure. Design lint flagged homepage-wide patterns including headline wrapping and shared button shadows.
+- **Design decision** The earlier filled logo band and orange CTA drew attention away from the wordmark. The quieter contact link and logo row keep the footer’s hierarchy clear.
+
 ## Milestone: Hero, Services, Benefits and shaders (Revisions 103–106)
 
 - **Approval:** Jasper said "approved" on the branch preview (2026-11-21). Provisional, staging only; Graham's feedback pending.

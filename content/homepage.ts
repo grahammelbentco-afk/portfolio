@@ -1048,9 +1048,27 @@ export const sections: PlaceholderSection[] = [
   },
 ];
 
-/** Footer (Revision 80): no call to action (Contact just asked); after Studio PLATO's footer. */
 export const footer = {
-  tagline: site.description,
-  services: ["Website design and development", "Web applications", "SEO", "Email marketing", "Social media marketing", "Content marketing", "Mobile apps"],
+  tagline: "We design and build websites for local businesses and agencies.",
+  services: ["Website design and development", "Web applications", "SEO"],
+  links: [
+    { label: "About", href: "#about" },
+    { label: "Work", href: "#work" },
+    { label: "FAQ", href: "#faq" },
+  ],
+  tools: [
+    ["Figma", "figma"],
+    ["Claude", "claude"],
+    ["WordPress", "wordpress"],
+    ["HTML", "html5"],
+    ["CSS", "css"],
+    ["TypeScript", "typescript"],
+    ["React", "react"],
+    ["Next.js", "nextdotjs"],
+    ["Astro", "astro"],
+    ["GSAP", "gsap"],
+    ["GitHub", "github"],
+    ["Cloudflare", "cloudflare"],
+  ],
   top: "Back to top",
 };
