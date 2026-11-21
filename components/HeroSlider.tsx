@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./HeroSlider.module.css";
 
-export type Card = { src: string; label: string; alt?: string; video?: { src: string; poster: string; holdEnd?: boolean } };
+export type Card = { src: string; label: string; alt?: string; video?: { src: string; poster: string } };
 type Slot = React.CSSProperties;
 
 /**
@@ -43,12 +43,6 @@ export function Track({
   const paused = useRef(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Revision 94: a card video plays once, from the start, only while its card is the front
-  // (first, largest) slot, and the slider waits for it to finish before stepping on. On the
-  // smaller slots it shows its first frame. Seeking or starting a video makes the browser decode
-  // it, which drops frames if it lands mid-glide, so videos are only paused at the step (cheap);
-  // the front one starts, and a copy that has left is rewound, once the 900ms glide is over
-  // (the leaving copy has faded out by then). Under reduced motion nothing plays or advances.
   // Tell the hero which card is in front (index into `cards`), so the rotating headline can
   // follow the slider (HeroRotator listens). Bubbles from the track, so each hero only hears
   // its own slider.
@@ -57,67 +51,35 @@ export function Track({
     trackRef.current?.dispatchEvent(new CustomEvent("hero:front", { bubbles: true, detail: front }));
   }, [active, n, cards.length]);
 
+  // Every on-stage card's video loops on its own, and the slider steps on a fixed timer, so a
+  // slow or stalled clip can never hold it up. Off-stage copies pause. Starting a video makes the
+  // browser decode it, which drops frames mid-glide, so a card that just came on stage starts
+  // once the 900ms glide is over. Under reduced motion nothing plays or advances.
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
     const figs = [...(trackRef.current?.querySelectorAll("figure") ?? [])];
-    const withVideo = figs
-      .map((fig) => ({ fig, v: fig.querySelector("video") }))
-      .filter((x): x is { fig: HTMLElement; v: HTMLVideoElement } => !!x.v);
-    const frontEntry = motion ? withVideo.find(({ fig }) => fig.hasAttribute("data-front")) : undefined;
-    withVideo.forEach(({ v }) => {
-      if (v !== frontEntry?.v) v.pause();
+    const onStage = (fig: Element) => fig.getAttribute("aria-hidden") !== "true";
+    figs.forEach((fig) => {
+      if (!motion || !onStage(fig)) fig.querySelector("video")?.pause();
     });
     if (!motion) return;
 
-    // Step on when the time is up (or the front video has ended) and the slider isn't hovered.
+    const settle = window.setTimeout(() => {
+      figs.forEach((fig) => {
+        if (onStage(fig)) fig.querySelector("video")?.play().catch(() => {});
+      });
+    }, 900);
+
+    // Step on when the time is up, unless the slider is hovered, focused or the tab is hidden.
     let timer = 0;
     const advance = () => {
       if (paused.current || document.hidden) timer = window.setTimeout(advance, 400);
       else setPos((s) => ({ active: s.active + 1, prev: s.active }));
     };
-
-    let cleanupVideo = () => {};
-    const settle = window.setTimeout(() => {
-      withVideo.forEach(({ fig, v }) => {
-        if (fig.getAttribute("aria-hidden") === "true" && v.currentTime > 0) v.currentTime = 0;
-      });
-      if (frontEntry) cleanupVideo = playFront(frontEntry.v);
-    }, 900);
-
-    const playFront = (video: HTMLVideoElement) => {
-      if (video.ended || video.currentTime > 0) video.currentTime = 0;
-      video.play().catch(() => {});
-      const held = () => paused.current || document.hidden;
-      // When the clip ends: step on, or, while the slider is held (hover, focus, hidden tab),
-      // replay it so the front card never sits frozen on its last frame.
-      const onEnded = () => {
-        if (held()) {
-          // A clip that ends on its payoff (data-hold-end) rests on its last frame; others replay.
-          if (video.hasAttribute("data-hold-end")) return;
-          video.currentTime = 0;
-          video.play().catch(() => {});
-          return;
-        }
-        window.clearTimeout(timer);
-        advance();
-      };
-      // Fallback in case the clip is stuck (decode error, blocked autoplay): step on if it isn't
-      // playing; while it plays, keep checking.
-      const ms = Number.isFinite(video.duration) && video.duration > 0 ? video.duration * 1000 : 6000;
-      const check = () => {
-        if (!video.paused || held()) timer = window.setTimeout(check, 1000);
-        else advance();
-      };
-      timer = window.setTimeout(check, Math.max(every, ms + 1500));
-      video.addEventListener("ended", onEnded);
-      return () => video.removeEventListener("ended", onEnded);
-    };
-
-    if (!frontEntry) timer = window.setTimeout(advance, every);
+    timer = window.setTimeout(advance, every);
     return () => {
       window.clearTimeout(settle);
       window.clearTimeout(timer);
-      cleanupVideo();
     };
   }, [active, every]);
 
@@ -154,14 +116,14 @@ export function Track({
               style={style}
             >
               {card.video ? (
-                // Only the front slot loads video. Preloading duplicate copies can stall playback.
+                // Only on-stage cards load video. Preloading the off-stage copies too can stall playback.
                 <video
                   src={card.video.src}
                   poster={card.video.poster}
                   muted
                   playsInline
-                  preload="none"
-                  data-hold-end={card.video.holdEnd ? "" : undefined}
+                  loop
+                  preload={typeof now === "number" ? "auto" : "none"}
                   aria-hidden="true"
                 />
               ) : (

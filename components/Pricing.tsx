@@ -8,7 +8,7 @@ import styles from "./Pricing.module.css";
 
 /**
  * Pricing (Revision 75). The same two audiences as the hero switch, as tabs. Plans are V1.6
- * p.5's ways to work; prices are placeholders (UNCONFIRMED in content/homepage.ts).
+ * p.5's ways to work.
  *   [ heading (solid, then outline)        ][ intro                          ]
  *   [ For local businesses | For agencies  ][ every plan includes: a, b, c  ]
  *   [ featured: duotone photo, 24° cut, big price ][ plan ]
@@ -66,7 +66,7 @@ export default function Pricing() {
             <span className={styles.thumb} style={{ transform: `translateX(${active * 100}%)` }} aria-hidden="true" />
           </div>
         <div className={styles.always}>
-          <p className={styles.alwaysLabel}>Every plan includes</p>
+          <p className={styles.alwaysLabel}>How we work</p>
           <ul>
             {pricing.always.map((t) => (
               <li key={t}>
@@ -89,7 +89,7 @@ export default function Pricing() {
           >
             <ul className={styles.plans}>
               {a.plans.map((p) => (
-                <li key={p.id} className={styles.plan} data-tilt data-featured={p.featured ? "true" : undefined} data-plan={p.id}>
+                <li key={p.id} className={styles.plan} data-featured={p.featured ? "true" : undefined} data-plan={p.id}>
                   {p.image && (
                     <div className={styles.photo} aria-hidden="true">
                       <img
@@ -107,7 +107,7 @@ export default function Pricing() {
                   <h3 className={styles.name}>{p.name}</h3>
                   <p className={styles.fit}>{p.fit}</p>
                   <p className={styles.price}>
-                    <span className={styles.amount}>{p.price}</span>
+                    <span className={styles.amount}>{p.price}</span>{" "}
                     <span className={styles.unit}>{p.unit}</span>
                   </p>
                   <ul className={styles.features}>

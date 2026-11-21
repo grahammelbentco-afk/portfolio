@@ -5,7 +5,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import { benefits, type Benefit, type BenefitVisual } from "@/content/homepage";
 import styles from "./Benefits.module.css";
@@ -223,10 +222,9 @@ function Phone({ children, className }: { children: React.ReactNode; className?:
 
 /** A real build in a device mockup. */
 function Project({ project }: { project: NonNullable<Benefit["project"]> }) {
-  const read = { "--read": `${readTime(project)}s` } as CSSProperties;
   if (project.frame === "phone")
     return (
-      <div className={styles.duo} style={read}>
+      <div className={styles.duo}>
         {project.back && (
           <Browser src={project.back.screen} w={project.back.w} h={project.back.h} alt="" className={styles.duoBack} />
         )}
@@ -236,16 +234,13 @@ function Project({ project }: { project: NonNullable<Benefit["project"]> }) {
       </div>
     );
   return (
-    <div style={read}>
-      <Browser
-        src={project.screen}
-        w={project.w}
-        h={project.h}
-        alt={project.alt}
-       
-        className={project.frame === "browser-bleed" ? styles.bleedWin : styles.tiltWin}
-      />
-    </div>
+    <Browser
+      src={project.screen}
+      w={project.w}
+      h={project.h}
+      alt={project.alt}
+      className={project.frame === "browser-bleed" ? styles.bleedWin : styles.tiltWin}
+    />
   );
 }
 
@@ -384,11 +379,6 @@ function Art({ kind }: { kind: BenefitVisual }) {
       </Phone>
     );
   return null;
-}
-
-/** Seconds to scroll a page through its frame on hover: longer pages read for longer. */
-function readTime({ w, h }: NonNullable<Benefit["project"]>) {
-  return Math.min(9, Math.max(3, 1.5 + (h / w) * 1.8)).toFixed(1);
 }
 
 function Title({ item }: { item: Benefit }) {

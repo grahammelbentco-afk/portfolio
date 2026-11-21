@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { ShaderGradient, ShaderGradientCanvas } from "@shadergradient/react";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -104,46 +104,50 @@ export function SubtleGrain() {
  * looks the same, but the full-screen scene plus the grain pass were taking most of the GPU and
  * made the hero slider's glide judder. The loop is switched to "never" and advanced by hand;
  * in that mode three's clock takes the timestamp in seconds.
+ * `running` false stops rendering (section off screen) without unmounting, and the clock it
+ * feeds counts only running time, so the gradient resumes where it stopped instead of jumping.
  */
-export function FrameCap({ fps = 30 }: { fps?: number }) {
+export function FrameCap({ fps = 30, running = true }: { fps?: number; running?: boolean }) {
   const setFrameloop = useThree((s) => s.setFrameloop);
   const advance = useThree((s) => s.advance);
+  const clock = useRef(0); // ms of running time, kept across pauses
 
   useEffect(() => {
     setFrameloop("never");
+    if (!running) return;
     const step = 1000 / fps;
     let raf = 0;
     let last = -Infinity;
     const loop = (t: number) => {
       raf = requestAnimationFrame(loop);
       if (t - last < step - 2) return;
+      // Cap one step's gap so a background tab or the pause itself never jumps the motion.
+      clock.current += last === -Infinity ? 0 : Math.min(t - last, 100);
       last = t;
-      advance(t / 1000);
+      advance(clock.current / 1000);
     };
     raf = requestAnimationFrame(loop);
-    return () => {
-      cancelAnimationFrame(raf);
-      setFrameloop("always");
-    };
-  }, [fps, setFrameloop, advance]);
+    return () => cancelAnimationFrame(raf);
+  }, [fps, running, setFrameloop, advance]);
+
+  useEffect(() => () => setFrameloop("always"), [setFrameloop]);
 
   return null;
 }
 
-export default function ShaderHalo({ playing }: { playing: boolean }) {
+export default function ShaderHalo({ playing, running }: { playing: boolean; running: boolean }) {
   return (
     <ShaderGradientCanvas
       style={{ position: "absolute", inset: 0 }}
       pointerEvents="none"
       pixelDensity={1}
       fov={HALO.fov}
-      lazyLoad
-      rootMargin="200px"
+      lazyLoad={false} // defaults to true, which unmounts off screen and restarts the motion
       powerPreference="low-power"
     >
       <ShaderGradient {...HALO} control="props" animate={playing ? "on" : "off"} />
       <SubtleGrain />
-      <FrameCap />
+      <FrameCap running={running} />
     </ShaderGradientCanvas>
   );
 }

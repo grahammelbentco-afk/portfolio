@@ -26,23 +26,32 @@ function supportsWebGL() {
 
 /**
  * The Industries shader ground (Revision 102 test). Same lifecycle as HeroShader: mounts after
- * idle when WebGL exists, only while the section is near the screen (so it never runs at the
- * same time as the hero's), and holds a still frame with reduced motion. The section's red
- * CSS ground stays underneath as first paint and fallback.
+ * idle when WebGL exists and the section first comes near, then stays mounted and only renders
+ * while near (so it never draws at the same time as the hero's, and resumes instead of
+ * restarting). Holds a still frame with reduced motion. The section's red CSS ground stays
+ * underneath as first paint and fallback.
  */
 export default function IndustriesShader() {
   const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(REDUCED).matches, () => false);
   const [enabled, setEnabled] = useState(false);
   const [near, setNear] = useState(false);
+  const [seen, setSeen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current?.parentElement;
     if (!el || !("IntersectionObserver" in window)) {
       setNear(true);
+      setSeen(true);
       return;
     }
-    const io = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), { rootMargin: "200px 0px" });
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setNear(entry.isIntersecting);
+        if (entry.isIntersecting) setSeen(true);
+      },
+      { rootMargin: "200px 0px" },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -61,7 +70,7 @@ export default function IndustriesShader() {
 
   return (
     <div ref={ref} className={styles.shader} aria-hidden="true">
-      {enabled && near && <ShaderWave playing={!reduced} />}
+      {enabled && seen && <ShaderWave playing={!reduced} running={near} />}
     </div>
   );
 }

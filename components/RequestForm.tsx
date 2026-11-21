@@ -50,6 +50,7 @@ export default function RequestForm({ copy: f, hook, className }: { copy: Reques
 
   useEffect(() => {
     const fromHero = new URLSearchParams(window.location.search).get("website");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the query parameter is read after hydration to preserve static-export behavior
     if (fromHero) setWebsite(fromHero);
     const onHero = (e: Event) => {
       const v = (e as CustomEvent<string>).detail;

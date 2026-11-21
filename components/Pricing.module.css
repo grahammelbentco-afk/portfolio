@@ -95,6 +95,12 @@
 
   .tab {
     padding-inline: 8px;
+    white-space: normal;
+  }
+
+  .plan > a {
+    text-align: center;
+    white-space: normal;
   }
 }
 
@@ -132,7 +138,11 @@
   flex: none;
   width: 9px;
   height: 14px;
-  fill: var(--aqua);
+  fill: var(--kelp);
+}
+
+.section :global(.eyebrow-spark) {
+  fill: var(--kelp);
 }
 
 /* ---- Plans ---- */
@@ -275,7 +285,8 @@
 
 .planBtn {
   margin-top: auto;
-  background: var(--shallows);
+  border-color: var(--deep-water);
+  background: transparent;
   color: var(--deep-water);
 }
 
@@ -335,6 +346,10 @@
 
 .plan[data-featured] .features {
   border-top: 0;
+}
+
+.plan[data-featured] .spark {
+  fill: var(--seafoam);
 }
 
 /* Wide screens: the featured plan's features run in two columns, so the panel (and the two

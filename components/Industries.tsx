@@ -6,8 +6,7 @@ import styles from "./Industries.module.css";
 
 /**
  * Industries (Revision 83): a bento in the Services ("What we do") style, sharing its tile
- * CSS: colour tiles, photos in duotone (the photo's luminosity over the tile colour, true
- * colour on hover), the Split Arc 24° notch and the glass icon. On Deep Water, so the
+ * CSS: colour tiles, duotone photos, the Split Arc 24° notch and the glass icon. On Deep Water, so the
  * notch is cut in Deep Water. The grid mirrors Services' (hero on the right).
  *   [ Food (wide)                ][ Trades (hero)        ]
  *   [ Salons ][ Health           ][                      ]
