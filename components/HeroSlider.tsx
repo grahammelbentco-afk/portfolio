@@ -59,6 +59,19 @@ export function Track({
     const motion = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
     const figs = [...(trackRef.current?.querySelectorAll("figure") ?? [])];
     const onStage = (fig: Element) => fig.getAttribute("aria-hidden") !== "true";
+    // After the first step, a clip must not resume from wherever its copy last paused (Jasper
+    // saw clips open on their ending). The new front card plays from the start; a card that
+    // just came on stage (its video still paused) starts mid-clip, so the two never loop in step.
+    if (motion && active > 0) {
+      figs.forEach((fig) => {
+        const v = fig.querySelector("video");
+        if (!v || !onStage(fig)) return;
+        if (fig.hasAttribute("data-front")) {
+          v.pause();
+          v.currentTime = 0;
+        } else if (v.paused) v.currentTime = 3;
+      });
+    }
     figs.forEach((fig) => {
       if (!motion || !onStage(fig)) fig.querySelector("video")?.pause();
     });
