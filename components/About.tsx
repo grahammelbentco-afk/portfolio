@@ -76,36 +76,46 @@ export default function About() {
           </span>
         </h2>
 
-        {/* V1.6 p.16 "arc crop": the photo clipped to the symbol's larger half, spark beside it. */}
-        <figure className={styles.figure} data-about-figure>
-          <svg className={styles.arc} viewBox="25.24 35.74 209.02 193.02" role="img" aria-label={about.image.alt}>
-            <defs>
-              <clipPath id="about-arc-crop">
-                <path d={ARC_BIG} transform="translate(-8 8)" />
-              </clipPath>
-            </defs>
-            <g clipPath="url(#about-arc-crop)">
-              {/* Placed for the two-person photo (4:5) so both faces sit inside the arc, left of
-                  the diagonal cut. Re-check these numbers if the photo changes. */}
-              <image
-                className={styles.photo}
-                href={about.image.src}
-                x="-14"
-                y="6"
-                width="194"
-                height="241"
-                preserveAspectRatio="xMidYMid slice"
-              />
-            </g>
-            <g transform="translate(12 -26)">
-              <path className={styles.spark} d={ARC_SPARK} data-about-spark />
-            </g>
-          </svg>
-          <figcaption className={styles.caption}>{about.caption}</figcaption>
-        </figure>
+        <div className={styles.visual}>
+          {/* V1.6 p.16 "arc crop": the photo clipped to the symbol's larger half, spark beside it. */}
+          <figure className={styles.figure} data-about-figure>
+            <svg className={styles.arc} viewBox="25.24 35.74 209.02 193.02" role="img" aria-label={about.image.alt}>
+              <defs>
+                <clipPath id="about-arc-crop">
+                  <path d={ARC_BIG} transform="translate(-8 8)" />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#about-arc-crop)">
+                {/* Frame both faces and the laptop inside the diagonal cut. */}
+                <image
+                  className={styles.photo}
+                  href={about.image.src}
+                  x="5"
+                  y="23"
+                  width="172"
+                  height="235"
+                  preserveAspectRatio="xMidYMid slice"
+                />
+              </g>
+              <g transform="translate(12 -26)">
+                <path className={styles.spark} d={ARC_SPARK} data-about-spark />
+              </g>
+            </svg>
+            <figcaption className={styles.caption}>{about.caption}</figcaption>
+          </figure>
+
+          <dl id="stats" className={styles.stats} aria-label="Webleta in numbers">
+            {about.stats.map(({ label, value }) => (
+              <div key={label} className={styles.stat}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
 
         <div className={styles.story}>
-          <p className={styles.storyTitle}>{about.story.title}</p>
+          <h3 className={styles.storyTitle}>{about.story.title}</h3>
           <p className={styles.storyText}>{about.story.text}</p>
 
           <ul className={styles.audiences}>

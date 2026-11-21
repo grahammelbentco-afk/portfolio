@@ -124,10 +124,8 @@ export const hero = {
   cards: [
     {
       label: "Design",
-      // Design V4 (2026-11-18): Seedance 2.5 Flash video edit, fal request 01a1ea67-f4ae-74d3-a443-de15e8833601.
-      // Approved by Jasper for staging (2026-11-18). Note: the Ground Control logo and small text on screen are
-      // AI-rendered (garbled up close); the headline "Design. Build. Install." is correct.
-      video: { src: "/videos/hero-design-v4.mp4", poster: "/images/hero-design-v4-poster.webp" },
+      // IMG_1440.MOV is slowed to match the 12-second Reviews clip.
+      video: { src: "/videos/hero-design-real.mp4", poster: "/images/hero-design-real-poster.webp" },
       image: {
         src: "/images/card-design-1280.webp",
         srcSet: "/images/card-design-720.webp 720w, /images/card-design-1280.webp 1280w",
@@ -138,11 +136,7 @@ export const hero = {
     },
     {
       label: "Market",
-      // Market "heart tap" (2026-11-18, supplied by Jasper: Downloads/heart-tap-video.mp4; master copy in
-      // Hero-Video-Production/Market/output/market-heart-tap.mp4). Same Willow & Petal story as V3: scroll, like,
-      // ends on the 1.8K / 236 badges (fictional demo values), so it holds that frame instead of replaying.
-      // Rollback: V3 at /videos/hero-market-v3.mp4 (+ poster), V2 at /videos/hero-market-v2.mp4 (+ poster).
-      video: { src: "/videos/hero-market-heart-tap.mp4", poster: "/images/hero-market-heart-tap-poster.webp", holdEnd: true },
+      video: { src: "/videos/hero-market-real.mp4", poster: "/images/hero-market-real-poster.webp", holdEnd: true },
       image: {
         src: "/images/card-market-1280.webp",
         srcSet: "/images/card-market-720.webp 720w, /images/card-market-1280.webp 1280w",
@@ -153,11 +147,7 @@ export const hero = {
     },
     {
       label: "Conversion",
-      // Conversion V1 (2026-11-18): Seedance 2.5 Flash reference-to-video from four storyboard keyframes
-      // (Serene Spa booking on a tablet; dates fixed to Wed 14 Apr 2027 with nano-banana-pro edit). Run by
-      // Jasper in the fal web UI; master copy Hero-Video-Production/Conversion/output/conversion-v1-seedance25flash-r2v.mp4.
-      // Ends on "Booking confirmed", so it holds that frame. The still below stays as the fallback.
-      video: { src: "/videos/hero-conversion-v1.mp4", poster: "/images/hero-conversion-v1-poster.webp", holdEnd: true },
+      video: { src: "/videos/hero-conversion-real.mp4", poster: "/images/hero-conversion-real-poster.webp", holdEnd: true },
       image: {
         src: "/images/card-conversion-1280.webp",
         srcSet: "/images/card-conversion-720.webp 720w, /images/card-conversion-1280.webp 1280w",
@@ -245,12 +235,18 @@ export const about = {
   mark: ["local businesses", "agencies"],
   story: {
     title: "Templates made websites easy to launch. They also made a lot of them look the same.",
-    text: "We're a design-led studio. We start from the business itself: who it serves, how it talks, what its customers notice first. Then we build the site around that, so it looks like you and works for you.",
+    text: "Before we design a page, we get to know your business. We listen to how you talk about your work and find out what your customers need from the site. Then we build it around what we learn.",
   },
+  stats: [
+    { value: "40+", label: "Projects delivered" },
+    { value: "15", label: "Clients supported" },
+    { value: "7+", label: "Years in web development" },
+    { value: "2k+", label: "Tasks completed" },
+  ],
   // V1.6 p.4. `lead` takes the one Ember spark.
   audiences: [
-    { lead: true, title: "For local businesses", text: "A site that looks like your business, that you can update yourself, and that's built to be found." },
-    { title: "For agencies", text: "Extra design and build capacity that fits your process and works under your name." },
+    { lead: true, title: "For local businesses", text: "We build a site that reflects your business and helps customers find you. You can update it yourself." },
+    { title: "For agencies", text: "When your team needs an extra hand, we can design and build sites under your agency's name, using the process you already have." },
   ] satisfies Hook[],
   // V1.6 p.5, Where and Care updated in Revision 88 (Jasper). UNCONFIRMED.
   facts: [
@@ -268,21 +264,14 @@ export const about = {
     { label: "Meet our technical head", href: "#contact", external: false },
     { label: "Meet our manager", href: "https://webleta.com/", external: true },
   ],
-  // Revision 88 (Jasper): an AI image of Jasper and Graham working together, made at his
-  // request from their own photos, in an office from Jasper's photo with its signage removed
-  // (fal nano-banana-pro edit, 2026-11-17; manifest:
-  // Webleta-AI-Generated-Images/manifest-2026-11-17-jasper.csv). The nursery photo it
-  // replaces is kept at /images/about-nursery-*.webp.
-  // Revision 89: back to the AI team image (Jasper preferred it over the poster photo, which
-  // stays at /images/about-office-733.webp), with both faces re-matched to the real photos and
-  // neutral, closed-mouth expressions (manifest: about-team-real-b).
+  // Team photo from IMG_1427.HEIC, with the wall logo removed using fal FLUX Fill.
   image: {
-    src: "/images/about-team-1200.webp",
-    width: 1200,
-    height: 1490,
-    alt: "Graham Orprecio at a laptop while Jasper Diaz leans in and points at the screen, in a bright office.",
+    src: "/images/about-team-photo-1056.webp",
+    width: 1056,
+    height: 1440,
+    alt: "Graham Orprecio works at a laptop while Jasper Diaz stands beside him.",
   },
-  caption: "Graham and Jasper, working through a client site.",
+  caption: "Graham and Jasper working together.",
 };
 
 /**

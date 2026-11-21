@@ -154,14 +154,13 @@ export function Track({
               style={style}
             >
               {card.video ? (
-                // Decorative clip; the caption names the card. Muted and inline; it plays once on
-                // the front slot and otherwise shows its first frame (see the effect above).
+                // Only the front slot loads video. Preloading duplicate copies can stall playback.
                 <video
                   src={card.video.src}
                   poster={card.video.poster}
                   muted
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   data-hold-end={card.video.holdEnd ? "" : undefined}
                   aria-hidden="true"
                 />
