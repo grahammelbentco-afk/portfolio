@@ -10,6 +10,24 @@ Work stops here for visual review. Services and the other sections haven't been 
 
 ---
 
+## Milestone: Hero, Services, Benefits and shaders (Revisions 103–106)
+
+- **Approval:** Jasper said "approved" on the branch preview (2026-11-21). Provisional, staging only; Graham's feedback pending.
+- **Branch and PR:** `jasper/hero-services-revisions`, PR #7 (`b31ea83`, then `58502d1` merging `main` in: `main` held the same content via squash merges #5 and #6, so the tree did not change). Preview: `https://jasper-hero-services-revisio.webleta-preview.pages.dev`. Merge commit SHA on `main`: _to record after merge_.
+- **Changes:**
+  - **Hero slider:** Jasper's Drive clips (IMG_1441, 1444, 1446) replace Codex's slowed, warm-graded encodes. Seamless 6 s loops (last second crossfades into the first), real speed, HLG tone-mapped to SDR, teal-orange grade (cool whites and shadows, warmth only on skin and warm objects, matte curve, vignette), about 1.5 MB for all three. Every on-stage card plays and loops, starts staggered (`#t=0/2/4`), the slider steps on a fixed 6 s timer (no more waiting on a clip, so a stalled download can't freeze it). Card labels white.
+  - **Reviews video:** re-graded to match the hero; the file was tagged HLG though it isn't, which made browsers show it bluer. Re-tagged BT.709.
+  - **Industries:** ground is a dark red as deep as the hero navy (`#5C0D1C` matches `#10304A` in luminance), in the shader and the CSS fallback.
+  - **Shaders (hero, Contact, Industries):** stay mounted once seen and pause off screen, with a running-time clock, so scrolling back resumes the motion instead of restarting it. `@shadergradient/react` `lazyLoad` defaults to true and had to be set false.
+  - **Services:** Graham's big-bento reference, in the brand palette: four columns from 1200px (two below), duotone real-looking photos, same heading and two-line subtext on every tile. The lead tile is the exact Seafoam of the title highlight: a design file in progress (dot canvas and guides, a selected headline frame with Graham's cursor, a Dev Mode code panel with Jasper's) and two real photos from the Drive shoot (IMG_1468, IMG_1431) that appear nowhere else. Social moved to Kelp.
+  - **Benefits:** the Builders card's site now stands tall in perspective with the note on the left, so cards 1 and 2 no longer match; its dimension line is visible again.
+- **References:** Graham's big-bento screenshot and his notes ("iwas tayo sa vector base", "1st and 2nd magkamukha"); Jasper's Drive footage folder.
+- **Skills and tools actually used:** Ponytail, Humanizer (lead tile subtext), ffmpeg 9.1 (installed with winget for this round), Playwright, Google Drive connector.
+- **QA:** `npx eslint .` clean, `tsc` clean. Every subtext measured at two lines and the lead tile's photos, frame, code panel and cursors measured clear of the copy, icon row and tile edges, at 390–1920px. `qa/qa.py` against the preview: 44 passed, 0 failed (mobile-390 17/17, tablet-768 17/17, desktop-1440 10 before stopping). The desktop full-page screenshot timed out at 30 s over the remote preview (long page, live shaders and three playing videos), so the remaining desktop checks did not run; desktop was checked by hand at 1200–1920px instead.
+- **What worked:** grading in the file rather than a CSS overlay; staggering loop starts with media fragments; measuring text rects rather than boxes for overlap.
+- **What didn't:** a CSS blend overlay as a grade (muddy), heavy blur on the background drawing (read as cheap), and replacing the Builders mockup with a photo (Graham meant the composition, not the medium).
+- **Lessons:** squash-merging these branches into `main` causes conflicts on the next PR; use a merge commit. Check source footage for HDR tags before encoding.
+
 ## Milestone: Work (Revisions 67–72), pushed to staging
 
 - **Approval:** Jasper said "push it" (2026-11-16). This is a provisional approval for staging only; Graham's feedback is pending.
