@@ -134,12 +134,32 @@ function initLenis() {
   };
 }
 
+/** Footer tool rows: hover eases the CSS loops down to a crawl and back, instead of a hard stop. */
+function initMarqueeHover() {
+  const band = document.querySelector<HTMLElement>("[data-footer-tools-track]");
+  if (!band) return () => {};
+  const anims = band.getAnimations({ subtree: true });
+  const to = (playbackRate: number, duration: number) =>
+    gsap.to(anims, { playbackRate, duration, ease: "power2.out", overwrite: true });
+  const slow = () => to(0.12, 0.6);
+  const resume = () => to(1, 0.8);
+  band.addEventListener("pointerenter", slow);
+  band.addEventListener("pointerleave", resume);
+  return () => {
+    band.removeEventListener("pointerenter", slow);
+    band.removeEventListener("pointerleave", resume);
+    gsap.killTweensOf(anims);
+  };
+}
+
 export default function SiteMotion() {
   useEffect(() => {
     if (!document.documentElement.classList.contains("motion")) return;
     const offLenis = initLenis();
     const offReveal = initReveals();
+    const offMarquee = initMarqueeHover();
     return () => {
+      offMarquee();
       offReveal();
       offLenis();
     };

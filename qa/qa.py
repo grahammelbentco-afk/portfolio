@@ -269,7 +269,7 @@ with sync_playwright() as p:
     anims = page.evaluate(ANIMATIONS)
     check("reduced motion: CSS layers still", all(n == "none" for n in anims.split("|")), anims)
     footer_track = page.locator("[data-footer-tools-track]")
-    check("footer: tool logos wrap with reduced motion", footer_track.evaluate("el => el.scrollWidth === el.clientWidth && el.querySelectorAll('li').length === 12"))
+    check("footer: tool logos wrap with reduced motion", footer_track.evaluate("el => el.scrollWidth === el.clientWidth && el.querySelectorAll('ul:not([aria-hidden]) li').length === 19"))
     page.wait_for_selector("#gradientCanvas", timeout=15000)
     page.wait_for_timeout(1500)
     a = bg_clip(page)

@@ -1,3 +1,6 @@
+/* Footer (after Graham's notes: more colour, running tech logos). The colour comes from the
+   tools in their own brand hues on Shallows chips and the Ember CTA. The wordmark stays as it was,
+   fading from Shallows into the ground (decorative; it carries an aria-label). */
 .footer {
   padding-top: clamp(24px, 16px + 2vw, 56px);
   background: #030f1c;
@@ -6,7 +9,7 @@
 
 .wordmark {
   aspect-ratio: 5.155;
-  background: linear-gradient(to bottom, var(--shallows) 45%, color-mix(in srgb, var(--seafoam) 16%, #030f1c));
+  background: linear-gradient(to bottom, var(--shallows) 45%, color-mix(in srgb, var(--seafoam) 16%, #030f1c)); /* taste-skill-ignore: the wordmark fades into the ground, as approved */
   mask: url("/logo/webleta-wordmark-shallows.svg") center / contain no-repeat;
 }
 
@@ -40,12 +43,28 @@
 
 @media (min-width: 960px) {
   .info {
-    grid-template-columns: minmax(0, 1.1fr) repeat(3, minmax(0, 1fr));
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-6);
   }
 }
 
 .about {
-  max-width: 35ch;
+  max-width: 28ch;
+}
+
+/* Seven links in two short columns, so Explore sits level with Services and Contact. */
+.navList {
+  column-gap: var(--s-4);
+}
+
+@media (min-width: 640px) {
+  .navList {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    grid-auto-flow: column;
+    justify-content: start;
+  }
 }
 
 .column {
@@ -84,10 +103,7 @@
   display: block;
   width: fit-content;
   max-width: 100%;
-}
-
-.contact .infoLink {
-  text-decoration-color: var(--seafoam);
+  overflow-wrap: anywhere;
 }
 
 @media (pointer: coarse) {
@@ -101,8 +117,36 @@
   text-decoration-color: var(--seafoam);
 }
 
+.cta {
+  margin: var(--s-1) 0 var(--s-2);
+}
+
+.social {
+  display: flex;
+  gap: var(--s-1);
+  margin-top: var(--s-1);
+}
+
+.socialItem {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgb(238 247 246 / 0.08);
+  color: var(--shallows);
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+a.socialItem:is(:hover, :focus-visible) {
+  background: var(--ember);
+  color: var(--abyss);
+}
+
+/* ---- Running tool logos: two rows, opposite directions (pattern from Clients).
+   Hover eases them to a crawl in SiteMotion (initMarqueeHover). ---- */
 .tools {
-  margin-top: clamp(32px, 4vw, 64px);
+  margin-top: clamp(40px, 5vw, 80px);
 }
 
 .toolsTitle {
@@ -110,40 +154,80 @@
   margin-bottom: var(--s-2);
 }
 
-.viewport {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--wet-slate) transparent;
+.marquee {
+  --gap: 12px;
+  display: grid;
+  gap: var(--gap);
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); /* taste-skill-ignore: edge fade on a looping row */
 }
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: footer-marquee 80s linear infinite; /* ~35px/s: half the track is two rows, ~2800px */
+}
+
+.track[data-reverse] {
+  animation-direction: reverse;
+  animation-duration: 82s; /* close to row one so the band reads as one calm surface, never in lockstep */
+}
+
 
 .logoSet {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--s-2) var(--s-3);
-  padding-bottom: var(--s-1);
+  flex: none;
+  gap: var(--gap);
+  padding-right: var(--gap);
 }
 
-.logoSet li {
+.chip {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  white-space: nowrap;
+  height: 48px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  background: var(--shallows);
+  color: var(--deep-water);
   font-size: var(--fs-small);
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.logoSet img {
+.glyph {
   flex: none;
-  filter: invert(1);
-  opacity: 0.82;
+  width: 22px;
+  height: 22px;
+  background: var(--c);
+  mask: var(--logo) center / contain no-repeat;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+/* One row's width per loop: the copy lands where the first began. */
+@keyframes footer-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    mask-image: none;
+  }
+
+  .track {
+    width: auto;
+    animation: none;
+  }
+
   .logoSet {
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    width: max-content;
-    min-width: 100%;
+    flex-wrap: wrap;
+    flex: 1;
+    padding-right: 0;
+  }
+
+  .logoSet[aria-hidden] {
+    display: none;
   }
 }
 
@@ -154,7 +238,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--s-1) var(--s-2);
-  margin-top: clamp(16px, 2.4vw, 40px);
+  margin-top: clamp(32px, 3.6vw, 64px);
   padding-block: var(--s-3);
   color: var(--haze);
   font-size: var(--fs-small);
@@ -191,7 +275,23 @@
 
 @media (prefers-reduced-motion: reduce) {
   .infoLink,
-  .toTop {
+  .toTop,
+  .socialItem {
     transition: none;
   }
+}
+
+.legal {
+  display: flex;
+  gap: var(--s-3);
+  margin-right: auto;
+  padding-left: var(--s-2);
+}
+
+.legal .infoLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  color: var(--cloud);
 }
