@@ -105,8 +105,8 @@
 }
 
 /* Aqua and Shell are too light for white text, so their duotone is taken a step deeper. */
-.bento > li[data-colour="aqua"] {
-  --c: color-mix(in srgb, var(--aqua) 62%, var(--deep-water));
+.bento > li[data-colour="periwinkle"] {
+  --c: color-mix(in srgb, #b8b0ff 62%, var(--deep-water));
 }
 
 .bento > li[data-colour="shell"] {
@@ -115,7 +115,7 @@
 
 /* Revision 99 (Jasper): no darkened scrim. The tile's own flat colour, solid at the bottom,
    carries the text (set per industry at the end of this file). */
-.bento > li:has(img)::after {
+.bento.bento > li[data-industry]:has(img)::after { /* beats Services' hero aqua wash (shared .tile class) */
   background: linear-gradient( /* taste-skill-ignore: the tile's own flat colour under the text */
     to top,
     var(--c) 0%,
@@ -177,7 +177,8 @@
    so the colour leads and the photo shows through.
    Palette built against the Signal Red ground with colour theory:
      analogous (red's own family, so they belong): wine, blush, peach;
-     complementary (opposite red, so they pop): Aqua on the hero, a deep teal;
+     complementary (opposite red, so they pop): a deep teal;
+     triadic (a third of the wheel from red): periwinkle on the hero, a light Dusk Violet;
      neutrals to rest the eye: cream, amber, Deep Water.
    Nothing sits near red's own hue (coral vanished there in R87). Light tiles take Deep Water
    text, deep tiles take white. ---- */
@@ -187,7 +188,7 @@
   opacity: 0.6;
 }
 
-.bento > li[data-industry="trades"] { --c: #3ccfc3; --ink: var(--deep-water); }       /* complement: brand Aqua */
+.bento > li[data-industry="trades"] { --c: #b8b0ff; --ink: var(--deep-water); }       /* triad: periwinkle, a light Dusk Violet (Jasper, 2026-11-22: Aqua repeated the stores teal) */
 .bento > li[data-industry="medspa"] { --c: #ffb3c4; --ink: var(--deep-water); }       /* analogous: blush */
 .bento > li[data-industry="entertainment"] { --c: #6b0f2b; --ink: var(--white); }     /* analogous: wine */
 .bento > li[data-industry="dental"] { --c: #fff1e0; --ink: var(--deep-water); }       /* neutral: warm cream */

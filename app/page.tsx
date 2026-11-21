@@ -10,6 +10,7 @@ import Reviews from "@/components/Reviews";
 import Clients from "@/components/Clients";
 import Industries from "@/components/Industries";
 import Pricing from "@/components/Pricing";
+import Growth from "@/components/Growth";
 import Faq from "@/components/Faq";
 import Contact from "@/components/Contact";
 import PlaceholderSection from "@/components/PlaceholderSection";
@@ -29,6 +30,7 @@ const built: Record<string, () => React.JSX.Element> = {
   clients: Clients,
   industries: Industries,
   pricing: Pricing,
+  growth: Growth,
   faq: Faq,
   contact: Contact,
 };

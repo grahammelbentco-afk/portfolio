@@ -1,0 +1,681 @@
+/* After launch: SEO and Social in two glass panes over a ShaderGradient silk.
+   One type system: Cabinet Grotesk for display, Instrument Sans for everything else. */
+.section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: var(--section-y);
+  background: var(--abyss);
+  color: var(--cloud);
+}
+
+.shader {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(40px, 1rem + 4vw, 72px);
+}
+
+.title {
+  max-width: none;
+  color: var(--white);
+}
+
+.grid {
+  display: grid;
+  gap: var(--s-2);
+}
+
+@media (min-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Glass: the water shows through, blurred, with a light edge on top like real glass. */
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  padding: clamp(28px, 1rem + 2.4vw, 56px);
+  border-radius: 32px;
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.03)); /* taste-skill-ignore: glass sheen */
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), inset 0 0 0 1px rgb(255 255 255 / 0.08); /* taste-skill-ignore: glass edge */
+}
+
+.seo {
+  --accent: #6ea8ff; /* Harbour, lifted for the dark ground */
+}
+
+.social {
+  --accent: var(--seafoam); /* the client's own mint, not amber (Jasper) */
+}
+
+.word {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 1.5rem + 6.5vw, 8.5rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.82;
+}
+
+.word::after {
+  display: inline-block;
+  width: 0.14em;
+  height: 0.14em;
+  margin-left: 0.04em;
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
+}
+
+.line {
+  margin-top: var(--s-2);
+  color: var(--shallows);
+  font-size: var(--fs-lead);
+}
+
+/* ---- SEO: a light results page (map pack, then web results); the client climbs in both ----
+   Competitors are skeleton rows: only the client's result carries detail. */
+.engine {
+  display: grid;
+  gap: 14px;
+  margin-top: var(--s-4);
+  padding: 14px 14px 18px;
+  border-radius: 24px;
+  background: #ffffff; /* Google's light results page */
+  color: #202124;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: #f1f3f4;
+  font-size: var(--fs-body);
+}
+
+.searchBox svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: #70757a;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.typed::after {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  background: #1a0dab;
+  vertical-align: -0.2em;
+  content: "";
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .typed::after {
+    animation: growth-caret 1s steps(1) infinite;
+  }
+}
+
+@keyframes growth-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.results {
+  display: grid;
+  gap: 14px;
+  padding: 0 6px;
+}
+
+.serpLabel {
+  color: #202124;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.pack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34%;
+  align-items: start;
+  gap: 12px;
+}
+
+.places,
+.web {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  border-radius: 12px;
+}
+
+.place {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+}
+
+.place + .place {
+  border-top: 1px solid #e8eaed;
+}
+
+.place strong {
+  display: block;
+  color: #202124;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.place small {
+  display: block;
+  color: #4d5156;
+  font-size: var(--fs-caption);
+}
+
+.place .open {
+  color: #188038;
+}
+
+.map {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+.web .row {
+  display: grid;
+  gap: 4px;
+  padding: 10px 8px;
+}
+
+.site {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-small);
+}
+
+.site small {
+  display: block;
+  color: #4d5156;
+  font-size: var(--fs-caption);
+}
+
+.favicon,
+.placeLogo {
+  flex: none;
+  border-radius: 50%;
+  background-color: var(--deep-water);
+  background-size: 330%;
+  background-position: 14.6% 49.7%;
+}
+
+.favicon {
+  width: 26px;
+  height: 26px;
+}
+
+.placeLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.resultTitle {
+  color: #1a0dab; /* Google link blue, 12:1 on white */
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.desc {
+  color: #4d5156;
+  font-size: var(--fs-small);
+  line-height: 1.45;
+}
+
+/* The site's pages under the result, as Google lists them. */
+.pages {
+  display: grid;
+  margin-top: 6px;
+}
+
+.pages span {
+  display: grid;
+  padding: 9px 0;
+  border-top: 1px solid #e8eaed;
+}
+
+.pages b {
+  color: #202124;
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.pages small {
+  color: #4d5156;
+  font-size: var(--fs-caption);
+}
+
+/* Skeleton rows: the shape of a competitor, no detail. */
+.skelThumb,
+.skelDot,
+.skelLines i {
+  display: block;
+  background: #e8eaed;
+}
+
+.skelThumb {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.skelDot {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+}
+
+.skelLines {
+  display: grid;
+  flex: 1;
+  gap: 7px;
+}
+
+.skelLines i {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.skelLines i:nth-child(2) {
+  width: 70%;
+}
+
+.skelLines i:nth-child(3) {
+  width: 45%;
+}
+
+.skelSite {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.skelSite .skelLines {
+  max-width: 40%;
+}
+
+.skelResult {
+  display: grid;
+  padding: 12px 8px;
+}
+
+/* The client's entries: a faint highlight once they reach the top. */
+.client {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.client[data-top="true"] {
+  background: #f3f6fc;
+}
+
+/* ---- Social: the brand, the platforms, then a deck of real posts ---- */
+.platforms {
+  display: flex;
+  gap: 10px;
+  gap: 8px;
+  margin-top: var(--s-2);
+}
+
+.platforms li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+  color: var(--shallows);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.platforms li[data-on] {
+  background: var(--seafoam);
+  color: var(--deep-water);
+}
+
+.icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}
+
+/* The identity shots fill the stage; the posts sit on them, pulled from the feed. */
+.stage {
+  position: relative;
+  display: grid;
+  flex: 1;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  min-height: 220px; /* fills what the SEO pane leaves, so both panes end level */
+  margin-top: var(--s-3);
+  border-radius: 22px;
+}
+
+.brandShot {
+  grid-area: 1 / 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  object-fit: cover;
+}
+
+/* The week's posts in a slow strip under the brand photo; mixed formats at one height. */
+.feed {
+  margin-top: var(--s-2);
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); /* taste-skill-ignore: edge fade on a looping row */
+}
+
+.feedTrack {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  padding: 6px 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .feedTrack {
+    animation: growth-feed 46s linear infinite;
+  }
+
+  .panel:hover .feedTrack {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes growth-feed {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.post {
+  position: relative;
+  flex: none;
+  height: 200px;
+  opacity: 0.55;
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.post[data-on] {
+  opacity: 1;
+  transform: translateY(-4px);
+}
+
+.post img {
+  display: block;
+  height: 100%;
+  width: auto;
+  border-radius: 12px;
+}
+
+/* The platform each post went to, as a small white badge. */
+.badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+.badge .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.scope {
+  margin-top: var(--s-3);
+  color: var(--cloud);
+  font-size: var(--fs-small);
+}
+
+.cta {
+  margin-top: clamp(40px, 4vw, 64px);
+}
+
+/* Rank badge on the client's result: Position 4, then Position 1 once it climbs. */
+/* ---- SEO report: one big number, a chart that clearly climbs, the spots in plain words ----
+   Glass card; the search above drives every number. */
+.report {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: end;
+  column-gap: 16px;
+  row-gap: 6px;
+  margin: 16px 0 0;
+  padding: 18px 20px 14px;
+  border-radius: 24px;
+  background: rgb(255 255 255 / 0.07);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14); /* taste-skill-ignore: glass edge */
+}
+
+.reportHead {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  display: grid;
+  color: var(--cloud);
+  font-size: var(--fs-small);
+}
+
+.tag {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-size: var(--fs-caption);
+}
+
+.big {
+  grid-column: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.totalClicks {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 1.8rem + 2vw, 3.75rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.delta {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgb(95 211 160 / 0.16);
+  color: #5fd3a0;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Middle column: the live keyword's rank on top, the rest as skeleton rows. */
+.mini {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: stretch;
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: 6px;
+}
+
+.mini li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.05);
+}
+
+.mini li:first-child {
+  background: rgb(95 211 160 / 0.16);
+}
+
+.miniRank {
+  color: #5fd3a0;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+.miniQuery {
+  overflow: hidden;
+  color: var(--white);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miniSkel {
+  display: block;
+  height: 7px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 0.14);
+}
+
+/* What this search's line is doing, in plain words, above its chart. */
+.scenario {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  color: var(--cloud);
+  font-size: var(--fs-caption);
+  text-align: right;
+}
+
+.spark {
+  display: block;
+  width: 100%;
+  grid-column: 3;
+  grid-row: 2;
+  align-self: stretch;
+  height: auto;
+  min-height: 84px;
+  overflow: visible;
+}
+
+.sparkFill {
+  stroke: none;
+}
+
+.sparkLine {
+  fill: none;
+  stroke: #5fd3a0;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+
+/* ---- Social posting week, following the deck ---- */
+.schedule {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: auto;
+  padding-top: var(--s-3);
+}
+
+.schedule li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 10px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.08);
+  color: var(--cloud);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.schedule strong {
+  color: var(--white);
+  font-weight: 700;
+}
+
+.schedule li[data-on] {
+  background: var(--seafoam);
+  color: var(--deep-water);
+}
+
+.schedule li[data-on] strong {
+  color: var(--deep-water);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .schedule li,
+  .post {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .platforms li,
+  .client {
+    transition: none;
+  }
+}
+

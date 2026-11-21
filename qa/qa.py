@@ -61,7 +61,7 @@ with sync_playwright() as p:
               const bad = [];
               document.querySelectorAll('h1,h2,h3,p,li,a.btn').forEach(el => {
                 // Carousels keep their content inside a scroll viewport.
-                if (el.closest('[data-benefits-track], [data-work-track], [data-clients-track]')) return;
+                if (el.closest('[data-benefits-track], [data-work-track], [data-clients-track], [data-growth-art]')) return; // tilted paper art
                 const track = el.closest('[data-footer-tools-track]');
                 const box = track && track.scrollWidth > track.clientWidth ? track : el;
                 const r = box.getBoundingClientRect();
