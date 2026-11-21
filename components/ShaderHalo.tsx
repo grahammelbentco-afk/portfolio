@@ -61,7 +61,7 @@ const HALO = {
 } as const;
 
 /** ShaderGradient's grain pass (HalftonePass, preset parameters), at GRAIN_STRENGTH. */
-function SubtleGrain() {
+export function SubtleGrain() {
   const { gl, scene, camera, size } = useThree();
 
   const composer = useMemo(() => {
@@ -105,7 +105,7 @@ function SubtleGrain() {
  * made the hero slider's glide judder. The loop is switched to "never" and advanced by hand;
  * in that mode three's clock takes the timestamp in seconds.
  */
-function FrameCap({ fps = 30 }: { fps?: number }) {
+export function FrameCap({ fps = 30 }: { fps?: number }) {
   const setFrameloop = useThree((s) => s.setFrameloop);
   const advance = useThree((s) => s.advance);
 

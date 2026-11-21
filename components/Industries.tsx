@@ -1,5 +1,6 @@
 import { industries, type Industry, type IndustryIcon } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
+import IndustriesShader from "./IndustriesShader";
 import tile from "./Services.module.css";
 import styles from "./Industries.module.css";
 
@@ -60,13 +61,22 @@ const ICONS: Record<IndustryIcon, React.ReactNode> = {
       <path d="M12 4v16M7 20h10M5 8h14M7.5 8L5 14a2.5 2.5 0 005 0zM16.5 8L14 14a2.5 2.5 0 005 0z" />
     </>
   ),
+  spa: (
+    <>
+      <path d="M11 3l1.6 4.4L17 9l-4.4 1.6L11 15l-1.6-4.4L5 9l4.4-1.6zM18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z" />
+    </>
+  ),
+  dental: (
+    <>
+      <path d="M8 4c-2.5 0-4 2-4 4.5 0 2 1 3.5 1.5 5.5L7 20c.3 1 1.7 1 2-.1l1-4.4c.3-1.3 1.7-1.3 2 0l1 4.4c.3 1.1 1.7 1.1 2 .1l1.5-6c.5-2 1.5-3.5 1.5-5.5C20 6 18.5 4 16 4c-1.6 0-2.6 1-4 1S9.6 4 8 4z" />
+    </>
+  ),
 };
 
 function Tile({ t }: { t: Industry }) {
   return (
     <li
       className={tile.tile}
-      data-tilt
       data-colour={t.colour}
       data-slot={t.slot}
       data-industry={t.id}
@@ -82,16 +92,6 @@ function Tile({ t }: { t: Industry }) {
             width={800}
             height={800}
             alt=""
-            loading="lazy"
-            decoding="async"
-            style={t.photo.position ? { objectPosition: t.photo.position } : undefined}
-          />
-          <img
-            className={tile.true}
-            src={t.photo.src}
-            alt=""
-            width={800}
-            height={800}
             loading="lazy"
             decoding="async"
             style={t.photo.position ? { objectPosition: t.photo.position } : undefined}
@@ -117,9 +117,17 @@ function Tile({ t }: { t: Industry }) {
   );
 }
 
+/**
+ * Section ground (Revision 102). "shader" = ShaderGradient waterPlane test over the red CSS
+ * ground; "red" = the Revision 87 Signal Red ground only (to revert, set this to "red"; the
+ * red CSS in Industries.module.css .section is unchanged either way).
+ */
+const GROUND: "shader" | "red" = "shader";
+
 export default function Industries() {
   return (
-    <section id="industries" className={styles.section} data-ground="dark" data-industries aria-labelledby="industries-title">
+    <section id="industries" className={styles.section} data-ground="dark" data-industries aria-labelledby="industries-title" data-ground-style={GROUND}>
+      {GROUND === "shader" && <IndustriesShader />}
       <div className={`container ${styles.head}`}>
         <div>
           <span className={styles.eyebrowWrap}>
