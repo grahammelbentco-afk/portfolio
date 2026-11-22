@@ -129,12 +129,12 @@ export const hero = {
       // Colour grade (2026-11-22): the three clips shot under different light (Design warm,
       // Market dark and saturated, Conversion cool and contrasty). Each gets a CSS filter plus a
       // soft-light tint, solved by sampling frames so all three land on one neutral-cool look
-      // (mean RGB about 114/115/117, contrast SD 74, saturation 0.40; revised for more pop). Conversion is
-      // mostly a white screen, so its saturation is capped at 1.4x to avoid a cast. See .grade in HeroSlider.module.css.
+      // (mean RGB about 114/115/117, contrast SD 74, saturation 0.35; a step down from 0.40, which read too saturated). Conversion is
+      // mostly a white screen, so its saturation is held at 1.2x to avoid a cast. See .grade in HeroSlider.module.css.
       video: {
         src: "/videos/hero-design-vid.mp4",
         poster: "/images/hero-design-cine-poster.webp",
-        grade: { filter: "brightness(1.05) contrast(1.15) saturate(1.14)", tint: "rgb(92 124 164)" },
+        grade: { filter: "brightness(1.04) contrast(1.15) saturate(0.92)", tint: "rgb(102 128 160)" },
       },
       image: {
         src: "/images/card-design-1280.webp",
@@ -149,7 +149,7 @@ export const hero = {
       video: {
         src: "/videos/hero-market-cine.mp4#t=2",
         poster: "/images/hero-market-cine-poster.webp",
-        grade: { filter: "brightness(1.12) contrast(1.17) saturate(1.06)", tint: "rgb(114 140 150)" },
+        grade: { filter: "brightness(1.11) contrast(1.19) saturate(0.82)", tint: "rgb(120 142 152)" },
       },
       image: {
         src: "/images/card-market-1280.webp",
@@ -164,7 +164,7 @@ export const hero = {
       video: {
         src: "/videos/hero-conversion-cine.mp4#t=4",
         poster: "/images/hero-conversion-cine-poster.webp",
-        grade: { filter: "brightness(0.92) contrast(1.02) saturate(1.4)", tint: "rgb(128 104 120)" },
+        grade: { filter: "brightness(0.92) contrast(1.02) saturate(1.2)", tint: "rgb(126 106 118)" },
       },
       image: {
         src: "/images/card-conversion-1280.webp",
