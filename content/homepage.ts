@@ -454,6 +454,8 @@ export const services = {
   // earlier flux-pro photos (2026-11-14/18 manifests). The svc3 illustrations are no longer used.
   title: { mark: "Website first.", rest: "Then everything follows." },
   intro: "We design and build your site first. Search, email, social and content then bring people to it. Pick one service or several.",
+  // 2026-11-22 (Graham): every tile its own colour, matched to the Benefits cards' gradients so the
+  // two sections look uniform. See the end of Services.module.css.
   tiles: [
     {
       id: "websites", slot: "hero", colour: "seafoam", icon: "web",
@@ -464,13 +466,13 @@ export const services = {
       logos: [logo.wordpress, logo.next, logo.astro, logo.react],
     },
     {
-      id: "apps", slot: "wide", colour: "navy", icon: "app",
+      id: "apps", slot: "wide", colour: "dusk", icon: "app",
       title: "Web applications", text: "Booking systems and client portals, built around how your business runs.",
       photo: { base: "/images/svc-wordpress", alt: "A developer working on a laptop at her desk by a lamp in the evening.", position: "50% 40%" },
       logos: [],
     },
     {
-      id: "seo", slot: "a", lightCorner: true, colour: "shell", icon: "search",
+      id: "seo", slot: "a", lightCorner: true, colour: "ochre", icon: "search",
       title: "SEO", text: "Get found when people nearby search for what you do.",
       photo: { base: "/images/svc-seo", alt: "A man looking up a local business on his phone against a sunlit wall.", position: "40% 50%" },
       logos: [logo.google],
@@ -488,13 +490,13 @@ export const services = {
       logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin],
     },
     {
-      id: "content", slot: "e", lightCorner: true, colour: "ochre", icon: "pen",
+      id: "content", slot: "e", colour: "navy", icon: "pen",
       title: "Content marketing", text: "Articles that answer what customers ask before they call.",
       photo: { base: "/images/svc2-content", alt: "Hands typing an article on a laptop, seen from above, with flowers and a notebook.", position: "50% 50%" },
       logos: [],
     },
     {
-      id: "mobile", slot: "c", colour: "harbour", icon: "phone",
+      id: "mobile", slot: "c", colour: "coral", icon: "phone",
       title: "Mobile apps", text: "Your own app, for regulars' bookings and orders.",
       photo: { base: "/images/card-conversion", alt: "A hand holding a phone with a booking app open.", position: "50% 50%" },
       logos: [logo.apple, logo.android],
@@ -701,7 +703,15 @@ export const reviews = {
   eyebrow: "Client reviews",
   title: { solid: "In their", outline: "own words." },
   intro: "Two minds. One big vision. This is what clients and teammates have said about working with us.",
-  video: { src: "/videos/reviews-desk-graded.mp4", poster: "/images/reviews-desk-graded-poster.webp" },
+  // 2026-11-22 (Graham): a still photo replaces the desk video (review-media.jpg, WebP 900/1440),
+  // with a coded review overlay on top (quote mark, 5-star bubble, arrow, sparks). See Reviews.tsx.
+  image: {
+    src: "/images/reviews-team-coffee-1440.webp",
+    srcSet: "/images/reviews-team-coffee-900.webp 900w, /images/reviews-team-coffee-1440.webp 1440w",
+    width: 1440,
+    height: 1098,
+    alt: "A Webleta team member in glasses smiles at the camera, holding a floral takeaway coffee cup in late-afternoon sun.",
+  },
   proof: { value: "100%", label: "Job Success on Upwork" },
   items: [
     { id: "greg", org: "Ground Control Systems", initials: "GB", name: "Greg Bauer", role: "CEO, Ground Control Systems", source: "Client of Graham", via: { kind: "client", src: "/brands/clients/colour/groundcontrol.webp", fill: true },

@@ -1382,3 +1382,80 @@
     transform: translate(0.5px, 0) rotate(0.5deg);
   }
 }
+
+/* Sales card: the Paid stamp turns slowly on a loop, from its resting 14deg tilt. */
+@media (prefers-reduced-motion: no-preference) {
+  .stamp {
+    animation: stamp-spin 12s linear infinite;
+  }
+
+  .card:hover .stamp {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes stamp-spin {
+  from {
+    transform: rotate(14deg);
+  }
+  to {
+    transform: rotate(374deg);
+  }
+}
+
+/* Found-first card: the #1 map pin hops like it just dropped on you, the rosette sways from
+   its top as if pinned up, and the faint compass behind turns slowly. The individual
+   `translate`/`rotate` properties stack on each piece's existing transform. */
+@media (prefers-reduced-motion: no-preference) {
+  .mapPin[data-first] {
+    animation: pin-hop 2.8s cubic-bezier(0.3, 0, 0.3, 1) infinite;
+  }
+
+  .rosette {
+    transform-origin: 50% 0;
+    animation: rosette-sway 4.5s ease-in-out infinite;
+  }
+
+  .decor[data-kind="compass"] {
+    animation: compass-turn 40s linear infinite;
+  }
+
+  .card:hover .mapPin[data-first],
+  .card:hover .rosette,
+  .card:hover .decor[data-kind="compass"] {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes pin-hop {
+  0%,
+  50%,
+  100% {
+    translate: 0 0;
+  }
+  20% {
+    translate: 0 -9px;
+  }
+  35% {
+    translate: 0 0;
+  }
+  42% {
+    translate: 0 -3px;
+  }
+}
+
+@keyframes rosette-sway {
+  0%,
+  100% {
+    rotate: -5deg;
+  }
+  50% {
+    rotate: 5deg;
+  }
+}
+
+@keyframes compass-turn {
+  to {
+    rotate: 360deg;
+  }
+}

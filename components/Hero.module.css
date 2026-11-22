@@ -261,8 +261,12 @@ a.socialItem:hover {
 /* Revision 89: three short lines ("Your business / deserves a / digital presence."), so the
    type is set big again, like Jasper's reference; 13cqi keeps "digital presence." inside the
    copy column. */
+/* 2026-11-22 (Graham: "make the font size bigger"): about 15% larger. The widest phrase,
+   "digital presence.", is 6.52em, so 14.8cqi (6.52 x 14.8 = 96.5% of the column) is the
+   most the column holds on one line; the cap is lifted past --fs-display (7.25rem) so wide
+   screens grow too. Was min(var(--fs-display), 13cqi). */
 .title {
-  font-size: min(var(--fs-display), 13cqi);
+  font-size: min(clamp(3.25rem, 2.4rem + 5vw, 8.5rem), 14.8cqi);
 }
 
 .lineWrap {

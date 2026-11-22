@@ -86,12 +86,14 @@ export default function About() {
                 </clipPath>
               </defs>
               <g clipPath="url(#about-arc-crop)">
-                {/* Frame both faces and the laptop inside the diagonal cut. */}
+                {/* Frame both faces and the laptop inside the diagonal cut. y=37 (was 23) drops
+                    the photo so the standing person's head clears the arc's top (y 44 after the
+                    clip's translate); keep y <= 44 or a gap shows above the photo. */}
                 <image
                   className={styles.photo}
                   href={about.image.src}
                   x="5"
-                  y="23"
+                  y="37"
                   width="172"
                   height="235"
                   preserveAspectRatio="xMidYMid slice"

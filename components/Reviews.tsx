@@ -50,8 +50,52 @@ function Avatar({ r }: { r: Review }) {
   );
 }
 
+/** A five-point star, 24-unit box. */
+const STAR = "M12 2.2l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z";
+
 /**
- * Reviews (Revision 80: real desk footage, source logos). Real reviews for Graham and Jasper, one at a time, rotating:
+ * The review overlay on the photo (2026-11-22, Graham: "a vector/svg overlay ... relevant and
+ * creative"). Decorative, all coded: a big outlined quote mark in the dark top corner, a review
+ * bubble in the sunlit patch of wall whose five stars light one by one, a hand-drawn arrow from
+ * the bubble to the person, and two brand sparks that twinkle. Motion is CSS only and stops
+ * under reduced motion.
+ */
+function ReviewArt() {
+  return (
+    <div className={styles.art} aria-hidden="true">
+      <svg className={styles.bigQuote} viewBox="0 0 120 96">
+        <path d="M50 8C26 14 8 32 8 58c0 17 10 30 26 30 13 0 22-9 22-21 0-11-8-20-19-20-3 0-5 0-7 1 3-13 13-24 26-29zM110 8C86 14 68 32 68 58c0 17 10 30 26 30 13 0 22-9 22-21 0-11-8-20-19-20-3 0-5 0-7 1 3-13 13-24 26-29z" />
+      </svg>
+
+      <div className={styles.bubble}>
+        <span className={styles.stars}>
+          {[0, 1, 2, 3, 4].map((i) => (
+            <svg key={i} viewBox="0 0 24 24" style={{ "--i": i } as React.CSSProperties}>
+              <path d={STAR} />
+            </svg>
+          ))}
+        </span>
+        <span className={styles.bubbleRow}>
+          <b>5.0</b>
+          <span>Would hire again</span>
+        </span>
+        <i className={styles.bubbleLine} />
+        <i className={styles.bubbleLine} />
+      </div>
+
+      <svg className={styles.pointer} viewBox="0 0 120 90">
+        <path className={styles.arrowLine} d="M6 10c30-6 62 2 78 22s16 34 12 46" pathLength={100} />
+        <path className={styles.arrowHead} d="M86 70l10 10 9-13" pathLength={100} />
+      </svg>
+
+      <Spark className={`${styles.twinkle} ${styles.twinkleA}`} />
+      <Spark className={`${styles.twinkle} ${styles.twinkleB}`} />
+    </div>
+  );
+}
+
+/**
+ * Reviews (Revision 80: real desk footage, source logos; 2026-11-22: a still photo with a coded overlay). Real reviews for Graham and Jasper, one at a time, rotating:
  *   [ duotone photo, 24° cut, Upwork proof chip ][ the quote, large, with its byline       ]
  *                                                [ ‹ ›  4 / 16  gauge filling for 8s      ]
  * It moves on by itself every 8 seconds and pauses while hovered, focused or off screen; with
@@ -64,9 +108,7 @@ export default function Reviews() {
   const [paused, setPaused] = useState(false);
   const [onScreen, setOnScreen] = useState(false);
   const [still, setStill] = useState(false);
-  const [videoOff, setVideoOff] = useState(false);
   const root = useRef<HTMLElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
   const r = items[active];
   const running = !paused && onScreen && !still;
 
@@ -92,15 +134,6 @@ export default function Reviews() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, active]);
 
-  // The clip plays only while the section is on screen, motion is allowed and nobody paused it.
-  const playing = onScreen && !still && !videoOff;
-  useEffect(() => {
-    const v = video.current;
-    if (!v) return;
-    if (playing) v.play().catch(() => {});
-    else v.pause();
-  }, [playing]);
-
   const onKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") step(1);
     if (e.key === "ArrowLeft") step(-1);
@@ -118,29 +151,18 @@ export default function Reviews() {
 
       <div className={`container ${styles.layout}`}>
         <figure className={styles.photo}>
-          {/* Decorative: the team at work. Muted and looped; never plays with reduced motion. */}
-          <video
-            ref={video}
-            src={reviews.video.src}
-            poster={reviews.video.poster}
-            muted
-            loop
-            playsInline
-            preload="none"
-            aria-hidden="true"
+          <img
+            className={styles.shot}
+            src={reviews.image.src}
+            srcSet={reviews.image.srcSet}
+            sizes="(min-width: 960px) 42vw, 100vw"
+            width={reviews.image.width}
+            height={reviews.image.height}
+            alt={reviews.image.alt}
+            loading="lazy"
+            decoding="async"
           />
-          {!still && (
-            <button
-              type="button"
-              className={styles.playToggle}
-              onClick={() => setVideoOff((o) => !o)}
-              aria-label={videoOff ? "Play background video" : "Pause background video"}
-            >
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                {videoOff ? <path d="M5 3.5v9l7-4.5z" /> : <path d="M5.5 3.5v9M10.5 3.5v9" />}
-              </svg>
-            </button>
-          )}
+          <ReviewArt />
           <figcaption className={styles.proof}>
             <span className={styles.proofValue}>
               <strong>{reviews.proof.value}</strong>

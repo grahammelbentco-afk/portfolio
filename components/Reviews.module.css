@@ -59,13 +59,13 @@
   background: var(--deep-water);
 }
 
-.photo video {
+.shot {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 40%;
+  object-position: 70% 45%;
 }
 
 /* Real proof from Jasper's Upwork profile, on a flat Seafoam chip. */
@@ -392,5 +392,227 @@
 @media (max-width: 959px) {
   .photo {
     min-height: 380px;
+  }
+}
+
+/* ---- Review overlay on the photo (2026-11-22). Placed against the photo's own features:
+   the quote mark in the dark top-left, the bubble in the big patch of sun on the wall, the
+   arrow from the bubble down to the person's cup. ---- */
+.art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bigQuote {
+  position: absolute;
+  top: 7%;
+  left: 5%;
+  width: clamp(52px, 11%, 92px);
+  fill: none;
+  stroke: var(--seafoam);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+
+.bubble {
+  position: absolute;
+  top: 29%;
+  left: 31%;
+  display: grid;
+  gap: 6px;
+  width: clamp(150px, 26%, 200px);
+  padding: 12px 14px 14px;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--white);
+  color: var(--deep-water);
+  box-shadow: 0 18px 36px -16px rgb(5 26 45 / 0.6); /* taste-skill-ignore: a card standing off the photo */
+  rotate: -4deg;
+}
+
+.stars {
+  display: flex;
+  gap: 3px;
+}
+
+.stars svg {
+  width: 18px;
+  height: 18px;
+  fill: #f5b72a;
+}
+
+.bubbleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--wet-slate);
+}
+
+.bubbleRow b {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--deep-water);
+}
+
+.bubbleLine {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: #e6edf0;
+}
+
+.bubbleLine + .bubbleLine {
+  width: 62%;
+}
+
+.pointer {
+  position: absolute;
+  top: 47%;
+  left: 42%;
+  width: clamp(60px, 12%, 100px);
+  fill: none;
+  stroke: var(--seafoam);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.twinkle {
+  position: absolute;
+  width: 14px;
+  fill: var(--seafoam);
+}
+
+.twinkleA {
+  top: 24%;
+  left: 57%;
+}
+
+.twinkleB {
+  top: 9%;
+  right: 9%;
+  width: 18px;
+}
+
+@media (max-width: 959px) {
+  .bigQuote,
+  .pointer {
+    display: none;
+  }
+
+  .bubble {
+    top: 6%;
+    left: 5%;
+  }
+
+  .twinkleA {
+    top: 5%;
+    left: 52%;
+  }
+}
+
+/* Motion: the bubble floats, its stars light one after another and reset, the arrow draws
+   itself in, the sparks twinkle. All still under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .bubble {
+    animation: bubble-float 5s ease-in-out infinite;
+  }
+
+  .stars svg {
+    animation: star-on 4s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.18s);
+  }
+
+  .arrowLine,
+  .arrowHead {
+    stroke-dasharray: 100;
+    animation: arrow-draw 4s ease-in-out infinite;
+  }
+
+  .arrowHead {
+    animation-name: arrow-head;
+  }
+
+  .twinkle {
+    animation: twinkle 2.6s ease-in-out infinite;
+  }
+
+  .twinkleB {
+    animation-delay: 1.3s;
+  }
+}
+
+@keyframes bubble-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+@keyframes star-on {
+  0% {
+    fill: #dfe6ea;
+    scale: 0.7;
+  }
+  12% {
+    fill: #f5b72a;
+    scale: 1.2;
+  }
+  20%,
+  85% {
+    fill: #f5b72a;
+    scale: 1;
+  }
+  100% {
+    fill: #dfe6ea;
+    scale: 1;
+  }
+}
+
+@keyframes arrow-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  35%,
+  85% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+}
+
+@keyframes arrow-head {
+  0%,
+  30% {
+    stroke-dashoffset: 100;
+  }
+  45%,
+  85% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    scale: 0.8;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.15;
   }
 }

@@ -41,11 +41,11 @@ const WAVE = {
   rotationZ: 0,
   shader: "defaults",
   wireframe: false,
-  // Dark red as deep as the hero's navy (#5c0d1c matches #10304a in luminance); the glow is a
-  // muted crimson instead of light coral, so the tiles stand out from the ground.
-  color1: "#a3202f",
-  color2: "#5c0d1c",
-  color3: "#1c0409",
+  // 2026-11-22 (Graham: "less dark, more red"): a true red ground. A bright red glow, Signal
+  // Red body, a deep red for depth. Was #a3202f / #5c0d1c / #1c0409 (Revision 103, near-black wine).
+  color1: "#ef3b3f",
+  color2: "#c4182c",
+  color3: "#6e0b1b",
 } as const;
 
 export default function ShaderWave({ playing, running, config = WAVE }: { playing: boolean; running: boolean; config?: ShaderConfig }) {
