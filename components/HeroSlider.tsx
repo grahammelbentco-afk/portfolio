@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./HeroSlider.module.css";
 
-export type Card = { src: string; label: string; alt?: string; video?: { src: string; poster: string } };
+export type Card = { src: string; label: string; alt?: string; video?: { src: string; poster: string; grade?: { filter: string; tint: string } } };
 type Slot = React.CSSProperties;
 
 /**
@@ -138,9 +138,13 @@ export function Track({
                   loop
                   preload={typeof now === "number" ? "auto" : "none"}
                   aria-hidden="true"
+                  style={card.video.grade ? { filter: card.video.grade.filter } : undefined}
                 />
               ) : (
                 <img src={card.src} alt={typeof now === "number" ? (card.alt ?? "") : ""} decoding="async" />
+              )}
+              {card.video?.grade && (
+                <span className={styles.grade} style={{ background: card.video.grade.tint }} aria-hidden="true" />
               )}
               <figcaption>{card.label}</figcaption>
             </figure>

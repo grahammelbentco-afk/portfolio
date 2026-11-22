@@ -12,7 +12,7 @@ export type Link = { label: string; href: string };
 export type HeroImage = { src: string; srcSet: string; width: number; height: number; alt: string };
 
 /** `video`: optional looping clip shown instead of the image (poster = its first frame). */
-export type HeroCard = { label: string; image: HeroImage; video?: { src: string; poster: string } };
+export type HeroCard = { label: string; image: HeroImage; video?: { src: string; poster: string; grade?: { filter: string; tint: string } } };
 
 export type Audience = {
   id: string;
@@ -126,7 +126,16 @@ export const hero = {
       label: "Design",
       // IMG_1441 / 1444 / 1446: seamless 6 s loops (last second crossfades into the first), real
       // speed, natural colour. `#t=` staggers where each starts, so the three never loop in step.
-      video: { src: "/videos/hero-design-cine.mp4", poster: "/images/hero-design-cine-poster.webp" },
+      // Colour grade (2026-11-22): the three clips shot under different light (Design warm,
+      // Market dark and saturated, Conversion cool and contrasty). Each gets a CSS filter plus a
+      // soft-light tint, solved by sampling frames so all three land on one neutral-cool look
+      // (mean RGB about 114/115/117, contrast SD 74, saturation 0.40; revised for more pop). Conversion is
+      // mostly a white screen, so its saturation is capped at 1.4x to avoid a cast. See .grade in HeroSlider.module.css.
+      video: {
+        src: "/videos/hero-design-vid.mp4",
+        poster: "/images/hero-design-cine-poster.webp",
+        grade: { filter: "brightness(1.05) contrast(1.15) saturate(1.14)", tint: "rgb(92 124 164)" },
+      },
       image: {
         src: "/images/card-design-1280.webp",
         srcSet: "/images/card-design-720.webp 720w, /images/card-design-1280.webp 1280w",
@@ -137,7 +146,11 @@ export const hero = {
     },
     {
       label: "Market",
-      video: { src: "/videos/hero-market-cine.mp4#t=2", poster: "/images/hero-market-cine-poster.webp" },
+      video: {
+        src: "/videos/hero-market-cine.mp4#t=2",
+        poster: "/images/hero-market-cine-poster.webp",
+        grade: { filter: "brightness(1.12) contrast(1.17) saturate(1.06)", tint: "rgb(114 140 150)" },
+      },
       image: {
         src: "/images/card-market-1280.webp",
         srcSet: "/images/card-market-720.webp 720w, /images/card-market-1280.webp 1280w",
@@ -148,7 +161,11 @@ export const hero = {
     },
     {
       label: "Conversion",
-      video: { src: "/videos/hero-conversion-cine.mp4#t=4", poster: "/images/hero-conversion-cine-poster.webp" },
+      video: {
+        src: "/videos/hero-conversion-cine.mp4#t=4",
+        poster: "/images/hero-conversion-cine-poster.webp",
+        grade: { filter: "brightness(0.92) contrast(1.02) saturate(1.4)", tint: "rgb(128 104 120)" },
+      },
       image: {
         src: "/images/card-conversion-1280.webp",
         srcSet: "/images/card-conversion-720.webp 720w, /images/card-conversion-1280.webp 1280w",
@@ -265,12 +282,12 @@ export const about = {
     { label: "Meet our technical head", href: "#contact", external: false },
     { label: "Meet our manager", href: "https://webleta.com/", external: true },
   ],
-  // Team photo from IMG_1427.HEIC, with the wall logo removed using fal FLUX Fill.
+  // Team photo from about-image.jpg (2026-11-22), resized to 1056x1440 WebP with sharp.
   image: {
-    src: "/images/about-team-photo-1056.webp",
+    src: "/images/about-graham-jasper-office-1056.webp",
     width: 1056,
     height: 1440,
-    alt: "Graham Orprecio works at a laptop while Jasper Diaz stands beside him.",
+    alt: "Graham Orprecio types on a laptop at a white desk while Jasper Diaz stands beside him and points at the screen, in an office with wood-slat walls and plants.",
   },
   caption: "Graham and Jasper working together.",
 };

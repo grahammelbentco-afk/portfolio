@@ -57,6 +57,15 @@
   height: 100%;
   object-fit: cover;
 }
+/* Colour grade: a soft-light tint over the video (its filter is set inline), so the three
+   clips read as one shoot. Values per clip live in content/homepage.ts. */
+.grade {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
 /* The caption sits 12px in from the bottom-left and keeps its size however the card is scaled:
    it is placed at the corner and counter-scaled by --cap, which transform-only slots set (other
    layouts fall back to a plain 12px inset). It glides on the same curve as the card. */

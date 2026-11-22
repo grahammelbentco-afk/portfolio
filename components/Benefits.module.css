@@ -1306,3 +1306,79 @@
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
+
+/* Real builds preview themselves: the page scrolls down in its window, rests, scrolls back.
+   The screen is a size container, so 100cqh is the window's height and the image travels
+   exactly its own length minus one window. Hovering a card pauses it. Each card starts at a
+   different point so the three never move in step. */
+@media (prefers-reduced-motion: no-preference) {
+  .autoScroll {
+    animation: site-preview 16s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .card:nth-child(2) .autoScroll {
+    animation-delay: -5s;
+  }
+
+  .card:nth-child(3) .autoScroll {
+    animation-delay: -10s;
+  }
+
+  .card:hover .autoScroll {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes site-preview {
+  0%,
+  12% {
+    transform: translateY(0);
+  }
+  50%,
+  62% {
+    transform: translateY(calc(-100% + 100cqh));
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Quotes card: the site-plan note gives a quick shake every few seconds, like a new quote
+   just landed, then rests. The tilt lives on .overlay, so the shake rides on top of it. */
+@media (prefers-reduced-motion: no-preference) {
+  .blueprint {
+    animation: note-shake 4s ease-in-out infinite;
+    animation-delay: 1.5s;
+  }
+
+  .card:hover .blueprint {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes note-shake {
+  0%,
+  18%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+  2% {
+    transform: translate(-2px, -1px) rotate(-3deg);
+  }
+  5% {
+    transform: translate(2px, 1px) rotate(3deg);
+  }
+  8% {
+    transform: translate(-2px, 0) rotate(-2.5deg);
+  }
+  11% {
+    transform: translate(1.5px, 0) rotate(2deg);
+  }
+  14% {
+    transform: translate(-1px, 0) rotate(-1deg);
+  }
+  16% {
+    transform: translate(0.5px, 0) rotate(0.5deg);
+  }
+}

@@ -192,7 +192,7 @@ function Decor({ kind }: { kind: BenefitVisual }) {
 }
 
 /** A compact browser window: traffic-light bar, the page's top in view. No URL (Jasper). */
-function Browser({ src, w, h, alt, className }: { src: string; w: number; h: number; alt: string; className?: string }) {
+function Browser({ src, w, h, alt, className, scroll }: { src: string; w: number; h: number; alt: string; className?: string; scroll?: boolean }) {
   return (
     <div className={`${styles.browser} ${className ?? ""}`}>
       <div className={styles.bar} aria-hidden="true">
@@ -203,7 +203,7 @@ function Browser({ src, w, h, alt, className }: { src: string; w: number; h: num
         </span>
       </div>
       <div className={styles.screen}>
-        <img src={src} width={w} height={h} alt={alt} loading="lazy" decoding="async" />
+        <img src={src} width={w} height={h} alt={alt} loading="lazy" decoding="async" className={scroll ? styles.autoScroll : undefined} />
       </div>
     </div>
   );
@@ -220,7 +220,7 @@ function Phone({ children, className }: { children: React.ReactNode; className?:
 }
 
 
-/** A real build in a device mockup. */
+/** A real build in a device mockup. Its page scrolls itself down and back up as a preview. */
 function Project({ project }: { project: NonNullable<Benefit["project"]> }) {
   if (project.frame === "phone")
     return (
@@ -229,7 +229,7 @@ function Project({ project }: { project: NonNullable<Benefit["project"]> }) {
           <Browser src={project.back.screen} w={project.back.w} h={project.back.h} alt="" className={styles.duoBack} />
         )}
         <Phone className={styles.duoPhone}>
-          <img src={project.screen} width={project.w} height={project.h} alt={project.alt} loading="lazy" decoding="async" />
+          <img src={project.screen} width={project.w} height={project.h} alt={project.alt} loading="lazy" decoding="async" className={styles.autoScroll} />
         </Phone>
       </div>
     );
@@ -240,6 +240,7 @@ function Project({ project }: { project: NonNullable<Benefit["project"]> }) {
       h={project.h}
       alt={project.alt}
       className={project.frame === "browser-bleed" ? styles.bleedWin : styles.tiltWin}
+      scroll
     />
   );
 }
