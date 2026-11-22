@@ -156,7 +156,7 @@ with sync_playwright() as p:
     for _ in range(13):
         page.keyboard.press("Tab")
         order.append(page.evaluate("(() => { const e = document.activeElement; return (e.getAttribute('aria-label') || (e.labels && e.labels[0] && e.labels[0].textContent) || e.textContent).trim().slice(0, 30); })()"))
-    check("keyboard: tab order header -> hero CTAs", order[:12] == ["Webleta, back to top", "Services", "Work", "Reviews", "Pricing", "Contact", "Chat with us on WhatsApp, +61 ", "Book a call", "View my new site, for free", "Your business website", "Get my free design", "see the work"], " | ".join(order))
+    check("keyboard: tab order header -> hero CTAs", order[:12] == ["Webleta, back to top", "Services", "Work", "Reviews", "Pricing", "Contact", "Chat with us on WhatsApp, +63 ", "Book a call", "View my new site, for free", "Your business website", "Get my free design", "see the work"], " | ".join(order))
     outline = page.evaluate("getComputedStyle(document.activeElement).outlineStyle")
     page.screenshot(path=str(SHOTS / "desktop-1440-focus-hero.png"))
     check("keyboard: focus outline visible", outline != "none", outline)

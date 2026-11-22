@@ -67,15 +67,15 @@ export const navigation: Link[] = [
 export const headerCta: Link = { label: "Book a call", href: "#contact" };
 
 /**
- * WhatsApp chat in the header. UNCONFIRMED: no business number yet. Set `number` in
- * international format without "+" or spaces (for example "61400000000") and the
- * button opens a wa.me chat; while null it goes to the contact section.
+ * WhatsApp chat in the header (desktop and the mobile menu). `number` is international
+ * format without "+" or spaces; the button opens a wa.me chat in a new tab with `message`
+ * pre-filled. Set to null to send the button to the contact section instead.
  */
 export const whatsapp = {
-  // Shown on the button. DUMMY: 0491 570 156 is reserved by ACMA for fiction, so it can
-  // never reach a real person. Replace with Webleta's real number before launch.
-  display: "+61 491 570 156",
-  number: null as string | null,
+  // Webleta's WhatsApp (Graham, 2026-11-22), a Philippine mobile. Replaces the ACMA fiction
+  // placeholder +61 491 570 156.
+  display: "+63 955 622 9968",
+  number: "639556229968" as string | null,
   message: "Hi Webleta, I'd like to talk about a website.",
 };
 
@@ -112,11 +112,12 @@ export const hero = {
   // UNCONFIRMED: no profile URLs yet. href null renders the icon without a link.
   social: [
     // Revision 88: Facebook, Instagram, Upwork and email (Gmail icon), per the hero notes.
-    // UNCONFIRMED: hello@webleta.com is not a confirmed inbox yet.
-    { platform: "facebook", label: "Webleta on Facebook", href: null },
+    // Links from Graham, 2026-11-22. UNCONFIRMED: no Instagram profile yet (href null shows the
+    // icon without a link).
+    { platform: "facebook", label: "Webleta on Facebook", href: "https://www.facebook.com/webleta" },
     { platform: "instagram", label: "Webleta on Instagram", href: null },
-    { platform: "upwork", label: "Webleta on Upwork", href: null },
-    { platform: "gmail", label: "Email Webleta", href: "mailto:hello@webleta.com" },
+    { platform: "upwork", label: "Webleta on Upwork", href: "https://www.upwork.com/agencies/1876595244121294267/" },
+    { platform: "gmail", label: "Email Webleta", href: "mailto:graham.orprecio12@gmail.com" },
   ] satisfies SocialLink[],
   // Graham's outline: three staggered cards, Design / Market / Conversion.
   // Photos generated for these cards (fal flux-pro v1.1-ultra, 16:9, 2026-11-13); illustrations,
@@ -829,7 +830,7 @@ export const pricing = {
  * Contact (Graham's reference: "Tell us your win"). Revision 76: the same three-step request
  * as Steps (shared RequestForm), worded for a project, on the hero's live gradient, with the
  * reused cta-shop photo. No form service yet: sending opens the visitor's email app,
- * addressed to `email` (UNCONFIRMED: hello@webleta.com appears only in older notes).
+ * addressed to `email` (Graham's Gmail, 2026-11-22; replaced the unconfirmed hello@webleta.com).
  */
 export const contact = {
   eyebrow: "Contact",
@@ -839,7 +840,7 @@ export const contact = {
     "A clear scope and price, agreed before we start",
     "A reply from a person, usually within one working day",
   ],
-  email: "hello@webleta.com",
+  email: "graham.orprecio12@gmail.com",
   // Revision 87 (Jasper): "we should have our face anywhere on the site, even just once."
   // Real photos only, never AI faces. Jasper's from his IMG_0452.HEIC (shirt changed to a
   // plain black tee with fal Nano Banana Pro edit, face untouched, at his request); Graham's from
@@ -1266,7 +1267,7 @@ export const legal = {
         "We keep emails for as long as we need them to work with you, and for project records after that. Ask us and we'll delete your details, unless we have to keep them for a finished project's records.",
       ] },
       { h: "Your choices", p: [
-        "You can ask to see the details we hold about you, correct them or have them deleted. Email us at hello@webleta.com.",
+        "You can ask to see the details we hold about you, correct them or have them deleted. Email us at graham.orprecio12@gmail.com.",
       ] },
     ],
   },
@@ -1288,7 +1289,7 @@ export const legal = {
         "We may update these terms. The date at the top shows when they last changed.",
       ] },
       { h: "Questions", p: [
-        "Email us at hello@webleta.com.",
+        "Email us at graham.orprecio12@gmail.com.",
       ] },
     ],
   },
