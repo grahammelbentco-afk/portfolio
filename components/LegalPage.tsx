@@ -7,7 +7,7 @@ type Doc = (typeof legal)["privacy" | "terms"];
 /** Privacy and terms: one plain reading page on the dark ground, linked from the footer. */
 export default function LegalPage({ doc }: { doc: Doc }) {
   return (
-    <main className={styles.page} data-ground="dark">
+    <main id="main" tabIndex={-1} className={styles.page} data-ground="dark">
       <div className={`container ${styles.inner}`}>
         <Link className={styles.home} href="/">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3.5M7.5 4l-4 4 4 4" /></svg>
