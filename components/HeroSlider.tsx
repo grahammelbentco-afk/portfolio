@@ -137,8 +137,10 @@ export function Track({
                   playsInline
                   loop
                   preload={typeof now === "number" ? "auto" : "none"}
-                  aria-hidden="true"
-                  style={card.video.grade ? { filter: card.video.grade.filter } : undefined}
+                  // Silent decorative loop: on stage it's described like an image; off stage it's hidden.
+                  role={typeof now === "number" && card.alt ? "img" : undefined}
+                  aria-label={typeof now === "number" && card.alt ? card.alt : undefined}
+                  aria-hidden={typeof now === "number" && card.alt ? undefined : true}                  style={card.video.grade ? { filter: card.video.grade.filter } : undefined}
                 />
               ) : (
                 <img src={card.src} alt={typeof now === "number" ? (card.alt ?? "") : ""} decoding="async" />

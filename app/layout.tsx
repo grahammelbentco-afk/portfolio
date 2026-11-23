@@ -35,9 +35,29 @@ const instrumentSerif = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Webleta: websites made to stand out",
+  metadataBase: new URL(site.url),
+  title: { default: site.title, template: `%s | ${site.name}` },
   description: site.description,
-  robots: { index: false, follow: false }, // preview build, not for indexing
+  applicationName: site.name,
+  alternates: { canonical: "/" },
+  // Staging stays out of search until launch: flip `site.indexable` in content/homepage.ts.
+  robots: site.indexable ? { index: true, follow: true } : { index: false, follow: false },
+  openGraph: {
+    type: "website",
+    locale: "en_AU",
+    url: "/",
+    siteName: site.name,
+    title: site.title,
+    description: site.shareDescription,
+    images: [{ url: site.shareImage.src, width: site.shareImage.width, height: site.shareImage.height, alt: site.shareImage.alt }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.shareDescription,
+    images: [site.shareImage.src],
+  },
+  category: "Web design",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "48x48" },

@@ -38,7 +38,7 @@ function Avatar({ r }: { r: Review }) {
     // The company's own logo, in its real colours.
     return (
       <span className={styles.avatar} data-logo="client" data-fill={via.fill ? "" : undefined}>
-        <img className={styles.avatarImg} src={via.src} alt={r.org} width={52} height={52} loading="lazy" decoding="async" />
+        <img className={styles.avatarImg} src={via.src} alt={`${r.org} logo`}width={52} height={52} loading="lazy" decoding="async" />
       </span>
     );
   }

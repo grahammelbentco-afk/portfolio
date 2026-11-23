@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { headerCta, navigation, whatsapp, whatsappHref } from "@/content/homepage";
+import { headerCta, linkProps, navigation, whatsapp, whatsappHref } from "@/content/homepage";
 import WhatsAppIcon from "./WhatsAppIcon";
 import HeaderLogo from "./HeaderLogo";
 import styles from "./Header.module.css";
@@ -115,7 +115,7 @@ export default function Header() {
               </span>
               <span className={styles.waNumber}>{whatsapp.display}</span>
             </a>
-            <a href={headerCta.href} className={`btn btn-light ${styles.cta}`}>
+            <a href={headerCta.href} {...linkProps(headerCta.href)} className={`btn btn-light ${styles.cta}`}>
               {headerCta.label}
             </a>
           </div>
@@ -163,7 +163,7 @@ export default function Header() {
             </span>
             <span className={styles.waNumber}>{whatsapp.display}</span>
           </a>
-          <a href={headerCta.href} className={`btn btn-light ${styles.panelCta}`} onClick={() => close(false)}>
+          <a href={headerCta.href} {...linkProps(headerCta.href)} className={`btn btn-light ${styles.panelCta}`} onClick={() => close(false)}>
             {headerCta.label}
           </a>
         </nav>

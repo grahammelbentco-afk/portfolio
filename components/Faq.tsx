@@ -1,4 +1,4 @@
-import { contact, faq } from "@/content/homepage";
+import { faq, linkProps } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import FaqTopics from "./FaqTopics";
 import Spark from "./Spark";
@@ -52,7 +52,7 @@ export default function Faq() {
             </span>
             <p>
               <span className={styles.who}>{faq.signature.name}</span>
-              {faq.more.lead} <a href={`mailto:${contact.email}`}>{faq.more.label}</a>
+              {faq.more.lead} <a href={faq.more.href} {...linkProps(faq.more.href)}>{faq.more.label}</a>
             </p>
           </div>
         </aside>

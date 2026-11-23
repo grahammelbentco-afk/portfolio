@@ -2,7 +2,7 @@
 
 import { useRef, useState, type KeyboardEvent } from "react";
 import Eyebrow from "./Eyebrow";
-import { pricing } from "@/content/homepage";
+import { linkProps, pricing } from "@/content/homepage";
 import Spark from "./Spark";
 import styles from "./Pricing.module.css";
 
@@ -129,7 +129,7 @@ export default function Pricing() {
 
         <p className={styles.preview}>
           {pricing.preview.lead}{" "}
-          <a href={pricing.preview.href} className={styles.previewLink}>
+          <a href={pricing.preview.href} {...linkProps(pricing.preview.href)} className={styles.previewLink}>
             {pricing.preview.label}
           </a>
         </p>

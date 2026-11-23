@@ -1,4 +1,4 @@
-import { services, type DeviceStage, type PlatformLogo, type ServiceTile } from "@/content/homepage";
+import { linkProps, services, type DeviceStage, type PlatformLogo, type ServiceTile } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import ServiceIcon from "./ServiceIcon";
 import { BookingApp, Dashboard, Mark } from "./ServiceScreens";
@@ -202,7 +202,7 @@ export default function Services() {
       <div className="container">
         <p className={styles.more}>
           <span className={styles.moreTitle}>{services.more.title}</span> {services.more.text}{" "}
-          <a href={services.more.action.href} className={styles.moreLink}>
+          <a href={services.more.action.href} {...linkProps(services.more.action.href)} className={styles.moreLink}>
             {services.more.action.label}
           </a>
         </p>

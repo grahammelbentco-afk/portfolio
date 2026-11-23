@@ -48,12 +48,29 @@ export type PlaceholderSection = {
   ground: "shallows" | "white" | "mist" | "deep";
 };
 
+/**
+ * SEO pass (2026-11-23). Audience: businesses with an outdated website or none, and digital
+ * marketing agencies that need an extra hand. Title kept under 60 characters and the
+ * description under 160 so Google shows them whole.
+ */
 export const site = {
   name: "Webleta",
+  url: "https://webleta.com",
+  title: "Website Design & Digital Marketing Agency | Webleta",
   description:
-    "Websites for local businesses and agencies, made to stand out and built to get booked.",
-  // Jasper, 2026-11-22: Australia is the target market, not our base. Don't state a base on the site.
-  location: "Working with businesses across Australia",
+    "Outdated website, or none at all? Webleta builds fast, modern websites with SEO and marketing that bring businesses more enquiries and sales.",
+  /** Longer line for social shares, where there's room to name agencies too. */
+  shareDescription:
+    "Webleta redesigns outdated websites, builds new ones and runs SEO and digital marketing for businesses worldwide, plus white-label web design and development for agencies.",
+  shareImage: { src: "/og-image.jpg", width: 1200, height: 630, alt: "Graham and Jasper of Webleta working on a website together at a laptop." },
+  /**
+   * False while this is the staging preview: adds noindex and a disallow-all robots.txt.
+   * At launch on webleta.com, set to true AND delete the X-Robots-Tag line in public/_headers.
+   */
+  indexable: false,
+  // Jasper, 2026-11-22: don't state a base on the site. Graham, 2026-11-23: we serve clients
+  // worldwide; Australia is the priority market (close timezone), shown as a strength, not a limit.
+  location: "Working with businesses worldwide, on hours that suit Australia and Asia-Pacific",
 };
 
 export const navigation: Link[] = [
@@ -64,7 +81,20 @@ export const navigation: Link[] = [
   { label: "Contact", href: "#contact" },
 ];
 
-export const headerCta: Link = { label: "Book a call", href: "#contact" };
+/**
+ * The only actions outside the hero (Graham, 2026-11-23): the WhatsApp call button, a booked
+ * call (Graham's Google Calendar booking page) and the contact form. No mailto links.
+ */
+export const booking = "https://calendar.app.google/35FghpXvG7Jb4nJ29";
+export const bookCall: Link = { label: "Book a call", href: booking };
+export const startProject: Link = { label: "Start your project", href: "#contact" };
+
+/** Opens off-site links (the booking page) in a new tab. */
+export function linkProps(href: string) {
+  return href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {};
+}
+
+export const headerCta: Link = bookCall;
 
 /**
  * WhatsApp chat in the header (desktop and the mobile menu). `number` is international
@@ -105,8 +135,10 @@ export const hero = {
     ],
     spoken: "Your business deserves a digital presence, to stand out, and to get more leads.",
   },
-  // Graham's note as written; only "tailored to" is replaced (Jasper, 2026-11-17).
-  lede: "We help businesses build a strong online presence with websites designed around their goals, their needs, and the way they want to grow.",
+  // SEO pass (2026-11-23): a visible line above the H1 carries the main search terms, since the
+  // headline itself is brand copy. The lede leads with the problem, then the outcome.
+  eyebrow: "Website design and digital marketing for growing businesses",
+  lede: "Outdated website, or no website at all? We design fast, modern websites, then use SEO and digital marketing to turn them into a steady source of calls, bookings and sales.",
   secondaryCta: { label: "See the work", href: "#work" },
   // Graham's outline: social icons under the buttons.
   // UNCONFIRMED: no profile URLs yet. href null renders the icon without a link.
@@ -117,7 +149,6 @@ export const hero = {
     { platform: "facebook", label: "Webleta on Facebook", href: "https://www.facebook.com/webleta" },
     { platform: "instagram", label: "Webleta on Instagram", href: null },
     { platform: "upwork", label: "Webleta on Upwork", href: "https://www.upwork.com/agencies/1876595244121294267/" },
-    { platform: "gmail", label: "Email Webleta", href: "mailto:graham.orprecio12@gmail.com" },
   ] satisfies SocialLink[],
   // Graham's outline: three staggered cards, Design / Market / Conversion.
   // Photos generated for these cards (fal flux-pro v1.1-ultra, 16:9, 2026-11-13); illustrations,
@@ -142,7 +173,8 @@ export const hero = {
         srcSet: "/images/card-design-720.webp 720w, /images/card-design-1280.webp 1280w",
         width: 1280,
         height: 720,
-        alt: "A designer sketching at a studio desk in front of a navy wall, with colour swatches beside the keyboard.",
+        // Alts describe the videos, which are what's on screen (2026-11-23).
+        alt: "A Webleta developer at a widescreen monitor working on the Ground Control Systems website we designed and built.",
       },
     },
     {
@@ -157,7 +189,7 @@ export const hero = {
         srcSet: "/images/card-market-720.webp 720w, /images/card-market-1280.webp 1280w",
         width: 1280,
         height: 720,
-        alt: "A florist photographing her flowers with a phone while a customer browses the shop.",
+        alt: "A phone showing Melbourne Entertainment Company's Instagram profile in front of the website we built for them on a laptop.",
       },
     },
     {
@@ -172,7 +204,7 @@ export const hero = {
         srcSet: "/images/card-conversion-720.webp 720w, /images/card-conversion-1280.webp 1280w",
         width: 1280,
         height: 720,
-        alt: "A customer at a café table about to tap the orange booking button on a phone.",
+        alt: "A customer filling in the quote request form on a Melbourne entertainment company's website, turning a visit into an enquiry.",
       },
     },
   ] satisfies HeroCard[],
@@ -199,7 +231,7 @@ export const hero = {
       label: "I need a digital marketing team",
       action: "Schedule me a meeting",
       href: "#contact",
-      note: "Design, SEO, social and email from one small team.",
+      note: "For businesses and agencies: design, development, SEO and social from one team.",
     },
   ] satisfies Audience[],
 };
@@ -218,25 +250,24 @@ export const hooks: Hook[] = [
 ];
 
 /**
- * Review platforms in the trust band, shown with their official logos
- * (files from Trustindex's platform CDN; see REPORT.md).
- * UNCONFIRMED: no Webleta profiles exist yet, so no links, ratings or review counts
- * are shown. Add `href` when a real public profile exists.
+ * Profiles in the trust band (Graham, 2026-11-23): Upwork and Facebook, the two real public
+ * profiles we have. Google Reviews and Trustindex were removed because no profiles exist yet;
+ * add Google back (icon /brands/google-g.svg) once the Google Business Profile has reviews.
+ * Marks are Simple Icons paths in each brand's colour.
  */
 export const trust = {
   title: "Find us on",
   platforms: [
     {
-      name: "Google Reviews",
-      // Google's "G" mark, standard four-colour paths.
-      icon: { src: "/brands/google-g.svg", width: 48, height: 48 },
-      href: null,
+      // Same figure as reviews.proof, from the Upwork agency profile.
+      name: "Upwork · 100% Job Success",
+      icon: { src: "/brands/upwork-mark.svg", width: 24, height: 24 },
+      href: "https://www.upwork.com/agencies/1876595244121294267/",
     },
     {
-      name: "Trustindex",
-      // Trustindex's own icon, from its platform CDN.
-      icon: { src: "/brands/trustindex-icon.svg", width: 48, height: 48 },
-      href: null,
+      name: "Facebook",
+      icon: { src: "/brands/facebook-mark.svg", width: 24, height: 24 },
+      href: "https://www.facebook.com/webleta",
     },
   ] satisfies TrustPlatform[],
 };
@@ -250,7 +281,7 @@ export const trust = {
 export const about = {
   eyebrow: "About Webleta",
   // `mark` phrases get the Seafoam marker. They must appear in `statement` exactly once.
-  statement: "Webleta designs and builds websites for local businesses, and for the agencies that serve them.",
+  statement: "Webleta designs, builds and markets websites for local businesses, and for the agencies that serve them.",
   mark: ["local businesses", "agencies"],
   story: {
     title: "Templates made websites easy to launch. They also made a lot of them look the same.",
@@ -264,8 +295,8 @@ export const about = {
   ],
   // V1.6 p.4. `lead` takes the one Ember spark.
   audiences: [
-    { lead: true, title: "For local businesses", text: "We build a site that reflects your business and helps customers find you. You can update it yourself." },
-    { title: "For agencies", text: "When your team needs an extra hand, we can design and build sites under your agency's name, using the process you already have." },
+    { lead: true, title: "For local businesses", text: "Outdated site, or no site yet? We build one that reflects your business, helps customers find you on Google and turns visits into enquiries. You can update it yourself." },
+    { title: "For agencies", text: "When your team is at capacity, we design, build and maintain sites under your agency's name, using the process you already have." },
   ] satisfies Hook[],
   // V1.6 p.5, Where and Care updated in Revision 88 (Jasper). UNCONFIRMED.
   facts: [
@@ -330,8 +361,8 @@ export type Benefit = {
 
 export const benefits = {
   eyebrow: "Why it pays off",
-  title: "A good website brings work in.",
-  titleMark: "work in", // Seafoam highlighter, as in About
+  title: "How a better website brings in more work.",
+  titleMark: "more work", // Seafoam highlighter, as in About
   intro: "A shop counts orders. A builder counts the right jobs. We find out what a win is for you, then build the site to bring it in.",
   items: [
     {
@@ -374,6 +405,42 @@ export const benefits = {
       visual: "search", colour: "coral", note: "br",
     },
   ] satisfies Benefit[],
+};
+
+/**
+ * Problems we solve (2026-11-23, Graham's "sell solutions, not just services" table). Each row
+ * is a pain point in the owner's own words, then what Webleta does about it and which service
+ * that is, so visitors see the purpose of each service before they reach the Services grid.
+ * UNCONFIRMED: copy for Graham and Jasper to approve.
+ */
+export type Problem = { id: string; pain: string; fix: string; text: string; service: string };
+export const problems = {
+  eyebrow: "Problems we solve",
+  title: { solid: "Website problems that", outline: "cost you sales." },
+  intro: "A website is only the tool. What you want is more calls, bookings and sales. Here's what usually gets in the way, and how we fix it.",
+  painLabel: "The problem",
+  fixLabel: "How we fix it",
+  items: [
+    { id: "outdated", pain: "Your website looks outdated", fix: "A modern redesign that matches your brand",
+      text: "We redesign your site so it looks as good as the work you do, on every screen.", service: "Website redesign" },
+    { id: "none", pain: "You don't have a website yet", fix: "A professional website, built from scratch",
+      text: "We plan the pages, shape the words with you and launch a site customers can find and trust.", service: "Website design and development" },
+    { id: "enquiries", pain: "Visitors look, but don't get in touch", fix: "Clear messaging and calls to action",
+      text: "We rewrite your pages around what customers need, and put calling, booking or quoting one tap away.", service: "Conversion-focused design" },
+    { id: "slow", pain: "Your site is slow on mobile", fix: "Fast, mobile-first performance",
+      text: "We optimise images, code and hosting so pages load quickly on the phones most customers use.", service: "Speed optimisation" },
+    { id: "google", pain: "Customers can't find you on Google", fix: "Technical SEO and content structure",
+      text: "We fix the technical basics, structure every page around real searches and add local SEO so nearby customers find you first.", service: "SEO and local SEO" },
+    { id: "credible", pain: "Competitors look more credible", fix: "A stronger identity and trust signals",
+      text: "Real photos, reviews, clear services and a consistent brand help people choose you before they call.", service: "Branding and web design" },
+    { id: "update", pain: "Your site is hard to update", fix: "Content you can edit yourself",
+      text: "We build on a platform that suits you and show you how to change text, photos and prices without a developer.", service: "WordPress and CMS builds" },
+    { id: "cost", pain: "Maintenance keeps costing you", fix: "An efficient site that's easy to look after",
+      text: "Clean, maintainable builds, with hosting, backups and updates in one predictable monthly plan.", service: "Website care plans" },
+    { id: "agency", pain: "Your agency team is at capacity", fix: "White-label design and development",
+      text: "We take on builds, fixes and overflow work under your agency's name, inside the process you already run.", service: "Agency support" },
+  ] satisfies Problem[],
+  cta: { lead: "Recognise your business here?", ...bookCall },
 };
 
 /* ------------------------------------------------------------------------------------------
@@ -448,62 +515,62 @@ const logo = {
  * fal illustrations (see the 2026-11-14 manifests); Harlow Joinery is the fictional concept.
  */
 export const services = {
-  eyebrow: "What we do",
+  eyebrow: "Web design and digital marketing services",
   // Revision 98 (Graham's note via Jasper): "Website first then everything follows".
   // Revision 104 (Graham: "iwas tayo sa vector base... more on real image"): real-looking photos in
   // the tile colour's duotone, as his reference. Jasper's own desk photo leads; the rest are the
   // earlier flux-pro photos (2026-11-14/18 manifests). The svc3 illustrations are no longer used.
-  title: { mark: "Website first.", rest: "Then everything follows." },
-  intro: "We design and build your site first. Search, email, social and content then bring people to it. Pick one service or several.",
+  title: { mark: "A website that sells.", rest: "Then we bring you customers." },
+  intro: "Every service fixes a specific problem. We start with a website that turns visitors into enquiries, then use SEO, email, social and content to bring the right people to it. Pick one, or several.",
   // 2026-11-22 (Graham): every tile its own colour, matched to the Benefits cards' gradients so the
   // two sections look uniform. See the end of Services.module.css.
   tiles: [
     {
       id: "websites", slot: "hero", colour: "seafoam", icon: "web",
       title: "Website design and", outline: "development",
-      text: "Designed for your business, on the setup that suits it.",
+      text: "Outdated site, or none at all? A fast, modern website designed to turn visitors into enquiries.",
       // A real build (Wazzas Pool) in a browser and a print of Jasper at work, as the Benefits cards.
       art: "build",
       logos: [logo.wordpress, logo.next, logo.astro, logo.react],
     },
     {
       id: "apps", slot: "wide", colour: "dusk", icon: "app",
-      title: "Web applications", text: "Booking systems and client portals, built around how your business runs.",
+      title: "Web applications", text: "Still booking by phone and spreadsheet? Booking systems and client portals that handle the admin for you.",
       photo: { base: "/images/svc-wordpress", alt: "A developer working on a laptop at her desk by a lamp in the evening.", position: "50% 40%" },
       logos: [],
     },
     {
       id: "seo", slot: "a", lightCorner: true, colour: "ochre", icon: "search",
-      title: "SEO", text: "Get found when people nearby search for what you do.",
+      title: "SEO", text: "Invisible on Google? Local SEO that puts you in front of people searching nearby.",
       photo: { base: "/images/svc-seo", alt: "A man looking up a local business on his phone against a sunlit wall.", position: "40% 50%" },
       logos: [logo.google],
     },
     {
       id: "email", slot: "b", colour: "harbour", icon: "mail",
-      title: "Email marketing", text: "Newsletters that bring past customers back for another job.",
+      title: "Email marketing", text: "Past customers forget you. Newsletters that bring them back for the next job.",
       photo: { base: "/images/svc2-email", alt: "A laptop on a desk showing an email newsletter.", position: "50% 50%" },
       logos: [logo.gmail],
     },
     {
       id: "social", slot: "d", colour: "kelp", icon: "social",
-      title: "Social media marketing", text: "Posts and ads that send people from social media to your site.",
+      title: "Social media marketing", text: "Quiet social pages? Branded posts that send followers to your website.",
       photo: { base: "/images/svc2-social", alt: "A florist filming a video for social media on a phone tripod among her plants.", position: "60% 40%" },
       logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin],
     },
     {
       id: "content", slot: "e", colour: "navy", icon: "pen",
-      title: "Content marketing", text: "Articles that answer what customers ask before they call.",
+      title: "Content marketing", text: "Same questions every day? Articles that answer them and help you rank on Google.",
       photo: { base: "/images/svc2-content", alt: "Hands typing an article on a laptop, seen from above, with flowers and a notebook.", position: "50% 50%" },
       logos: [],
     },
     {
       id: "mobile", slot: "c", colour: "coral", icon: "phone",
-      title: "Mobile apps", text: "Your own app, for regulars' bookings and orders.",
+      title: "Mobile apps", text: "Regulars want it easier. Your own app for repeat bookings and orders.",
       photo: { base: "/images/card-conversion", alt: "A hand holding a phone with a booking app open.", position: "50% 50%" },
       logos: [logo.apple, logo.android],
     },
   ] satisfies ServiceTile[],
-  more: { title: "Not sure where to start?", text: "Tell us what you'd like more of, and we'll suggest where to begin.", action: { label: "Book a call", href: "#contact" } },
+  more: { title: "Not sure where to start?", text: "Tell us what you'd like more of, and we'll suggest where to begin.", action: bookCall },
 };
 
 /** CTA banner (Graham: "cta banner"). The outlined word reuses the hero's outline device. UNCONFIRMED copy. */
@@ -512,10 +579,10 @@ export const ctaBanner = {
   // the hero's gradient phrase on line one and outline word on line two. UNCONFIRMED copy;
   // "30-minute call" assumes the booking length Graham uses.
   eyebrow: "For local businesses and agencies",
-  title: { first: "Need a web partner", highlight: "web partner", outline: "who", rest: "actually ships?" },
-  text: "Book a 30-minute call. Tell us about your business or your agency's workload, and we'll come back with a plan and a price.",
-  primary: { label: "Book a 30-minute call", href: "#contact" },
-  secondary: { label: "See pricing", href: "#pricing" },
+  title: { first: "Need a web design partner", highlight: "web design partner", outline: "who", rest: "actually delivers?" },
+  text: "Book a call, or send us your project. Tell us about your business or your agency's workload, and we'll come back with a plan and a price.",
+  primary: bookCall,
+  secondary: startProject,
   stack: ["wordpress", "nextdotjs", "astro", "react", "google"],
   // Revision 47: a full-resolution overhead studio desk (fal flux-pro ultra, 21:9), no people,
   // screens off; wireframe lettering inpainted. Decorative, so alt is empty.
@@ -546,7 +613,7 @@ export type RequestFormCopy = {
 
 export const steps = {
   eyebrow: "How it works",
-  title: { solid: "See it before", outline: "you pay for it." },
+  title: { solid: "Free preview", outline: "before you pay." },
   intro: "Send us your website. We design a real preview of your new homepage, before you pay anything. If you like it, we build the rest. If not, you've lost nothing.",
   // Revision 51: each step says what it costs. UNCONFIRMED: Graham to confirm the free preview offer.
   items: [
@@ -648,8 +715,8 @@ export type Project = {
 
 export const work = {
   eyebrow: "Our work",
-  title: { solid: ["Built by us,", "for businesses"], outline: "like yours." },
-  cta: { lead: "Yours could be the next one.", label: "Get my free preview", href: "#steps" },
+  title: { solid: ["Real projects,"], outline: "Real clients." },
+  cta: { lead: "Yours could be the next one.", ...startProject },
   items: [
     { id: "pyper", name: "Pay the Pyper", sector: "Team payments app",
       image: { base: "/images/work/pyper", w: 1000, h: 1602, alt: "Pay the Pyper: two dark homepage layouts with green headlines and phone screens, on a green presentation board." } },
@@ -701,8 +768,8 @@ export type Review = {
   mark?: string;
 };
 export const reviews = {
-  eyebrow: "Client reviews",
-  title: { solid: "In their", outline: "own words." },
+  eyebrow: "What clients say",
+  title: { solid: "Client reviews", outline: "and testimonials." },
   intro: "Two minds. One big vision. This is what clients and teammates have said about working with us.",
   // 2026-11-22 (Graham): a still photo replaces the desk video (review-media.jpg, WebP 900/1440),
   // with a coded review overlay on top (quote mark, 5-star bubble, arrow, sparks). See Reviews.tsx.
@@ -760,7 +827,7 @@ export const reviews = {
 export type ClientLogo = { id: string; name: string; ar: number; scale?: number };
 export const clients = {
   eyebrow: "Who we've worked with",
-  title: { solid: "Companies we've", outline: "worked with." },
+  title: { solid: "Businesses", outline: "we've worked with." },
   logos: [
     { id: "groundcontrol", name: "Ground Control Systems", ar: 4.966 },
     { id: "racknroad", name: "Rack n Road", ar: 5.943 },
@@ -770,7 +837,7 @@ export const clients = {
     { id: "cmc", name: "Creative Marketing Concepts", ar: 6.851 },
     { id: "entertainmentco", name: "Entertainment Co", ar: 6.727 },
   ] satisfies ClientLogo[],
-  next: { lead: "Yours could be next", label: "Get my free preview", href: "#steps" },
+  next: { lead: "Yours could be next", ...startProject },
 };
 
 /**
@@ -794,31 +861,31 @@ const localSubscriptionPrice = "$700";
 
 export const pricing = {
   eyebrow: "Pricing",
-  title: { solid: "Website builds", outline: "and support." },
+  title: { solid: "Website design pricing", outline: "and plans." },
   intro: "Choose a one-off build, a monthly plan or help by the hour. You can also ask us for a quote.",
   always: ["New sites designed from scratch", "We agree on the work and price upfront", "You can email us directly"],
-  preview: { lead: "Want to see what your site could look like?", label: "Get a free preview", href: "#steps" },
+  preview: { lead: "Not sure which plan fits?", ...bookCall },
   audiences: [
     {
       id: "business", label: "For local businesses",
       plans: [
-        { id: "project", name: "Website project", fit: "A new site you can update yourself.", price: localProjectPrice, unit: "one-off starting price", action: "Ask about a website project",
+        { id: "project", name: "Website project", fit: "A new site you can update yourself.", price: localProjectPrice, unit: "one-off starting price", action: startProject.label,
           features: ["Up to six pages", "Mobile-friendly pages, speed and SEO basics", "Training on how to update your site", "30 days of fixes after launch"] },
-        { id: "subscription", name: "Website subscription", fit: "We build your site and look after it each month.", price: localSubscriptionPrice, unit: "per month · starting rate", action: "Ask about a subscription", featured: true,
+        { id: "subscription", name: "Website subscription", fit: "We build your site and look after it each month.", price: localSubscriptionPrice, unit: "per month · starting rate", action: startProject.label, featured: true,
           image: { base: "/images/card-design", w: 1280, h: 720 },
           features: ["A custom website", "Monthly updates", "Hosting, backups and security", "A named contact you can email", "12-month minimum term"] },
-        { id: "adhoc", name: "Hourly website help", fit: "Book a single job when you need a hand.", price: "$25", unit: "per hour · starting rate", action: "Ask for hourly help",
+        { id: "adhoc", name: "Hourly website help", fit: "Book a single job when you need a hand.", price: "$25", unit: "per hour · starting rate", action: startProject.label,
           features: ["Edits, fixes and new pages", "A quote before each job", "No ongoing contract"] },
       ],
     },
     {
       id: "agency", label: "For agencies",
       plans: [
-        { id: "overflow", name: "Overflow support", fit: "Send us the smaller client jobs your team needs help with.", price: "$15", unit: "per hour", action: "Send us a task",
+        { id: "overflow", name: "Overflow support", fit: "Send us the smaller client jobs your team needs help with.", price: "$15", unit: "per hour", action: startProject.label,
           features: ["Content edits", "Bug fixes and maintenance", "Small development tasks", "Work delivered under your agency's name"] },
-        { id: "projects", name: "Agency website projects", fit: "We build or redesign sites under your agency's name.", price: "$1,600", unit: "per site · starting price", action: "Send us a brief",
+        { id: "projects", name: "Agency website projects", fit: "We build or redesign sites under your agency's name.", price: "$1,600", unit: "per site · starting price", action: startProject.label,
           features: ["Design to your agency's standards", "Development and launch", "Speed and SEO basics", "Handover through your usual process"] },
-        { id: "dedicated", name: "Dedicated designer or developer", fit: "A designer or developer from Webleta works with your team.", price: "$1,900", unit: "per month", action: "Talk to us about your team", featured: true,
+        { id: "dedicated", name: "Dedicated designer or developer", fit: "A designer or developer from Webleta works with your team.", price: "$1,900", unit: "per month", action: startProject.label, featured: true,
           image: { base: "/images/service-design", w: 1280, h: 853 },
           features: ["A named person on your team", "Uses your tools and joins your meetings", "Design, development and maintenance", "Adjust the support you need each month"] },
       ],
@@ -834,7 +901,7 @@ export const pricing = {
  */
 export const contact = {
   eyebrow: "Contact",
-  title: { solid: "Tell us what a win looks like.", outline: "We'll bring the plan." },
+  title: { solid: "Start your website project.", outline: "Get a plan and a price." },
   promises: [
     "A site that's yours, never a theme with your logo on it",
     "A clear scope and price, agreed before we start",
@@ -910,9 +977,9 @@ export type Industry = {
  * The examples belong to a made-up plumber, Harbour Plumbing.
  */
 export const growth = {
-  eyebrow: "After launch",
-  title: { solid: "Keep them finding you.", outline: "Every week." },
-  cta: { label: "Add one to your project", href: "#contact" },
+  eyebrow: "After launch: SEO and social media",
+  title: { solid: "Keep new customers finding you.", outline: "Every week." },
+  cta: startProject,
   seo: {
     word: "SEO",
     line: "Rank first when they search nearby",
@@ -1012,9 +1079,9 @@ export const growth = {
 // so it always wraps to two lines.
 export const industries = {
   eyebrow: "Industries",
-  title: { solid: "Sites that know", outline: "your industry." },
+  title: { solid: "Websites for", outline: "your industry." },
   intro: "Every industry wins customers differently. These are the ones we know best. If yours isn't here, ask us. We'll say honestly whether we're a fit before you spend anything.",
-  more: { lead: "Not on the list?", label: "Ask us about your industry", href: "#contact" },
+  more: { lead: "Not on the list?", ...bookCall },
   items: [
     { id: "trades", slot: "hero", colour: "periwinkle", icon: "trades", name: "Trades and home services",
       need: "Win the next job while you're still up a ladder.",
@@ -1049,14 +1116,14 @@ export const industries = {
  * search engines and AI answer engines can quote it. Each answer opens with the direct
  * answer in its first sentence and names Webleta where it helps a quote stand alone.
  * Answers repeat what the page already says. UNCONFIRMED: plan terms, ownership,
- * platforms and the Australia-wide service area need Graham's sign-off.
+ * platforms and the worldwide service area need Graham's sign-off.
  */
 export type FaqItem = { id: string; q: string; a: string };
 export const faq = {
   eyebrow: "FAQ",
-  title: { solid: "Questions,", outline: "answered." },
+  title: { solid: "Your questions,", outline: "answered." },
   intro: "Straight answers about price, process and what you own. If yours isn't here, ask us.",
-  more: { lead: "Something else on your mind?", label: "Ask us directly" },
+  more: { lead: "Something else on your mind?", ...bookCall },
   // Personal names appear only in Reviews (Jasper, 2026-11-16).
   signature: { name: "The Webleta team", role: "Webleta" },
   groups: [
@@ -1072,6 +1139,8 @@ export const faq = {
       id: "process", title: "Process",
       items: [
         { id: "time", q: "How long does a new website take?", a: "It depends on how many pages you need. You get a launch date with your quote, and the free preview usually comes first." },
+        { id: "redesign", q: "Can you redesign my outdated website?", a: "Yes. Webleta redesigns outdated websites, keeping the content that works and fixing what holds you back: an old look, slow pages, weak calls to action or poor Google visibility. Start with a free preview of your new homepage." },
+        { id: "nosite", q: "I don't have a website. Where do I start?", a: "Send us your business name and what you want more of, such as calls, bookings or sales. We design a free preview of your homepage, then plan the pages and the price with you." },
         { id: "start", q: "What do you need from me to start?", a: "Three things: your current website or business name, what you want the new site to win you, and an email to reply to. We plan the rest with you." },
         { id: "edit", q: "Can I edit the website myself?", a: "Yes. Every project includes training so you can change text, photos and prices yourself. If you'd rather not, we can make changes for you." },
       ],
@@ -1081,7 +1150,7 @@ export const faq = {
       items: [
         { id: "own", q: "Will I own my website?", a: "Yes. If you’re on a subscription, you’ll own your website once you complete the 12-month contract. Your domain and accounts stay in your name." },
         { id: "platform", q: "What platform do you build websites on?", a: "Webleta builds on WordPress when you want to edit the site yourself, and on Next.js or Astro when speed matters most. We recommend one when we quote." },
-        { id: "seo", q: "Do you do SEO?", a: "Yes. Every site is built with search basics: fast pages, clear structure and metadata. SEO is also a separate service, if you want ongoing work to rank higher." },
+        { id: "seo", q: "Do you do SEO?", a: "Yes. Every Webleta site is built with search basics: fast pages, clear structure and metadata. Local SEO is also a separate service, with a weekly blog post, if you want ongoing work to rank higher in your area." },
         { id: "social-branding", q: "Do you offer social media branding?", a: "Yes. We can design profile graphics and post templates that match your brand." },
         { id: "social-management", q: "Do you also offer social media management?", a: "Yes. You can add social media support to your website project. We can help with branding, creating posts and publishing them." },
       ],
@@ -1089,14 +1158,20 @@ export const faq = {
     {
       id: "agencies", title: "Agencies",
       items: [
-        { id: "agencies", q: "Do you work with agencies?", a: "Yes. Webleta designs and builds websites for agencies, from overflow tasks to full projects, inside your own process and tools." },
+        { id: "agencies", q: "Do you work with digital marketing agencies?", a: "Yes. Webleta is the extra hand for digital marketing agencies, from overflow tasks and fixes to full website builds and a dedicated designer or developer, inside your own process and tools." },
         { id: "whitelabel", q: "Is agency work white-labelled?", a: "Yes. Your clients see your agency's name on the work, never ours." },
       ],
     },
   ] satisfies { id: string; title: string; items: FaqItem[] }[],
 };
 
-/** Sections after the hero, in the order of Graham's outline. Placeholders for Phase 2+. */
+/**
+ * Sections after the hero, in page order. SEO pass (2026-11-23): who we are, the problem, the
+ * solution (services), outcomes and real builds, how it works, reviews and client logos, fit
+ * (industries), price, add-ons, then the ask (FAQ, contact). About and client logos stay in their
+ * original places (Graham, 2026-11-23); the CTA banner goes back after Services.
+ * Dark and light grounds still alternate. Any id without a component renders as a placeholder.
+ */
 export const sections: PlaceholderSection[] = [
   {
     id: "about",
@@ -1106,11 +1181,11 @@ export const sections: PlaceholderSection[] = [
     ground: "white",
   },
   {
-    id: "benefits",
-    title: "Why a website pays off",
-    intro: "Customers look you up before they call. Give them a reason to pick up the phone.",
-    needs: ["Confirmed benefit points", "Any statistic must have a named source"],
-    ground: "shallows",
+    id: "problems",
+    title: "Problems we solve",
+    intro: "The website problems that cost you sales, and how we fix them.",
+    needs: [],
+    ground: "deep",
   },
   {
     id: "services",
@@ -1127,10 +1202,10 @@ export const sections: PlaceholderSection[] = [
     ground: "deep",
   },
   {
-    id: "steps",
-    title: "See it before you pay for it",
-    intro: "A free preview of your new homepage, then the plan, then the build.",
-    needs: ["Graham to confirm the free preview offer"],
+    id: "benefits",
+    title: "Why a website pays off",
+    intro: "Customers look you up before they call. Give them a reason to pick up the phone.",
+    needs: ["Confirmed benefit points", "Any statistic must have a named source"],
     ground: "shallows",
   },
   {
@@ -1138,6 +1213,13 @@ export const sections: PlaceholderSection[] = [
     title: "Selected work",
     intro: "Sites for businesses that didn't want to look like everyone else.",
     needs: ["Verified client projects with permission to publish", "Real screenshots or photos"],
+    ground: "shallows",
+  },
+  {
+    id: "steps",
+    title: "See it before you pay for it",
+    intro: "A free preview of your new homepage, then the plan, then the build.",
+    needs: ["Graham to confirm the free preview offer"],
     ground: "shallows",
   },
   {
@@ -1150,7 +1232,7 @@ export const sections: PlaceholderSection[] = [
   {
     id: "clients",
     title: "Clients we've worked with",
-    intro: "Local businesses and agencies across Australia.",
+    intro: "Local businesses and agencies, in Australia and worldwide.",
     needs: ["Verified client list", "Permission to show each logo", "Logo files"],
     ground: "mist",
   },
@@ -1192,8 +1274,8 @@ export const sections: PlaceholderSection[] = [
 ];
 
 export const footer = {
-  tagline: "We design and build websites for local businesses and agencies.",
-  services: ["Website design and development", "Web applications", "SEO"],
+  tagline: "Website design, development and digital marketing for businesses worldwide, and white-label support for agencies.",
+  services: ["Website design and development", "Website redesign", "SEO and local SEO", "Social media marketing", "Agency white-label support"],
   links: [
     { label: "Services", href: "#services" },
     { label: "Work", href: "#work" },

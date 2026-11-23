@@ -13,7 +13,7 @@ import styles from "./options.module.css";
  * later). Not linked from the homepage; noindex like the rest of the preview.
  */
 export const metadata: Metadata = {
-  title: "Hero options | Webleta",
+  title: "Hero options",
   robots: { index: false, follow: false },
 };
 

@@ -2,7 +2,7 @@ import Eyebrow from "./Eyebrow";
 import HeroGradient from "./HeroGradient";
 import RequestForm from "./RequestForm";
 import Spark from "./Spark";
-import { contact } from "@/content/homepage";
+import { bookCall, contact, linkProps } from "@/content/homepage";
 import styles from "./Contact.module.css";
 
 /**
@@ -35,7 +35,7 @@ export default function Contact() {
           <figure className={styles.people} data-reveal-box>
             <div className={styles.faces}>
               {contact.people.members.map((m) => (
-                <img key={m.name} className={styles.face} src={m.photo} alt={m.name} width={128} height={128} loading="lazy" decoding="async" />
+                <img key={m.name} className={styles.face} src={m.photo} alt={`${m.name}, ${m.role} at Webleta`}width={128} height={128} loading="lazy" decoding="async" />
               ))}
             </div>
             <figcaption>
@@ -50,7 +50,7 @@ export default function Contact() {
             </figcaption>
           </figure>
           <p className={styles.direct}>
-            Prefer email? <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            Prefer to talk first? <a href={bookCall.href} {...linkProps(bookCall.href)}>{bookCall.label}</a>
           </p>
         </div>
 

@@ -1,4 +1,4 @@
-import { industries, type Industry, type IndustryIcon } from "@/content/homepage";
+import { industries, linkProps, type Industry, type IndustryIcon } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import SectionShader from "./SectionShader";
 import tile from "./Services.module.css";
@@ -149,7 +149,7 @@ export default function Industries() {
       <div className="container">
         <p className={styles.more}>
           {industries.more.lead}{" "}
-          <a href={industries.more.href}>{industries.more.label}</a>
+          <a href={industries.more.href} {...linkProps(industries.more.href)}>{industries.more.label}</a>
         </p>
       </div>
     </section>

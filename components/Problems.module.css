@@ -1,0 +1,178 @@
+/* Problems we solve (2026-11-23): Deep Water ground, pain point -> fix rows. */
+.section {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--section-y);
+  background:
+    radial-gradient(70% 60% at 100% 0%, rgb(25 227 210 / 0.12), transparent 70%),
+    var(--deep-water);
+  color: var(--white);
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(32px, 1rem + 3vw, 64px);
+}
+
+.head > div {
+  display: grid;
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > div {
+    grid-column: 1 / span 7;
+  }
+
+  .head > :last-child {
+    grid-column: 9 / -1;
+  }
+}
+
+.labels {
+  display: none;
+}
+
+.list {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.row {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border: 1px solid var(--line-on-dark);
+  border-radius: var(--r-lg);
+  background: rgb(255 255 255 / 0.03);
+}
+
+.pain {
+  color: var(--cloud);
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+
+.pain::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--ember);
+  vertical-align: 0.1em;
+}
+
+.arrow {
+  display: none;
+  color: var(--aqua);
+}
+
+.fix {
+  display: grid;
+  gap: 6px;
+}
+
+.fixTitle {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.fixText {
+  color: var(--cloud);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+}
+
+.service {
+  justify-self: start;
+  padding: 4px 12px;
+  border: 1px solid rgb(25 227 210 / 0.4);
+  border-radius: var(--r-pill);
+  color: var(--seafoam);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (min-width: 960px) {
+  .labels {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) 40px minmax(0, 6fr) minmax(0, 2fr);
+    gap: var(--s-3);
+    padding: 0 var(--s-3) var(--s-2);
+    color: var(--haze);
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .labels span:last-child {
+    grid-column: 3;
+  }
+
+  .list {
+    gap: 0;
+    border-top: 1px solid var(--line-on-dark);
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 4fr) 40px minmax(0, 6fr) minmax(0, 2fr);
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3);
+    border: 0;
+    border-bottom: 1px solid var(--line-on-dark);
+    border-radius: 0;
+    background: none;
+    transition: background-color var(--dur) var(--ease-out);
+  }
+
+  .row:hover {
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .pain {
+    font-size: var(--fs-lead);
+  }
+
+  .arrow {
+    display: block;
+  }
+
+  .service {
+    justify-self: end;
+  }
+}
+
+.more {
+  margin-top: var(--s-6);
+  color: var(--cloud);
+  font-size: var(--fs-lead);
+}
+
+.more a {
+  color: var(--white);
+  font-weight: 600;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.more a:hover {
+  color: var(--seafoam);
+}
+
+.section :focus-visible {
+  outline-color: var(--aqua);
+}

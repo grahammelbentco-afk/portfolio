@@ -1,4 +1,4 @@
-import { ctaBanner } from "@/content/homepage";
+import { ctaBanner, linkProps } from "@/content/homepage";
 import Eyebrow from "./Eyebrow";
 import styles from "./CtaBanner.module.css";
 
@@ -48,10 +48,10 @@ export default function CtaBanner() {
             </h2>
             <p className={styles.text}>{ctaBanner.text}</p>
             <div className={styles.actions}>
-              <a href={ctaBanner.primary.href} className="btn btn-lg btn-primary">
+              <a href={ctaBanner.primary.href} {...linkProps(ctaBanner.primary.href)} className="btn btn-lg btn-primary">
                 {ctaBanner.primary.label}
               </a>
-              <a href={ctaBanner.secondary.href} className="btn btn-lg btn-ghost-dark">
+              <a href={ctaBanner.secondary.href} {...linkProps(ctaBanner.secondary.href)} className="btn btn-lg btn-ghost-dark">
                 {ctaBanner.secondary.label}
               </a>
             </div>

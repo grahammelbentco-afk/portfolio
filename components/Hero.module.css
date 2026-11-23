@@ -328,3 +328,9 @@ a.socialItem:hover {
     padding-inline: 48px;
   }
 }
+
+/* SEO pass (2026-11-23): the keyword line above the H1. Dark ground colours come from globals. */
+.eyebrow {
+  margin-bottom: var(--s-3);
+  text-wrap: balance;
+}

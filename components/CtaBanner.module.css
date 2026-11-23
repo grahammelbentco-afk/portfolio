@@ -56,7 +56,7 @@
   display: grid;
   justify-items: center;
   gap: var(--s-3);
-  max-width: 56rem;
+  max-width: 84rem; /* 2026-11-23: wider so the longer heading sits on two lines */
   padding: clamp(56px, 6vw, 112px) clamp(20px, 4vw, 64px);
 }
 
@@ -67,7 +67,7 @@
 
 /* The hero's headline device at section scale. */
 .title {
-  font-size: clamp(2.5rem, 1.2rem + 4.6vw, 6rem);
+  font-size: clamp(2.25rem, 1rem + 4vw, 5.25rem);
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 1;

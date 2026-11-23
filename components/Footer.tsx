@@ -49,7 +49,7 @@ export default function Footer() {
           <div className={`${styles.column} ${styles.contact}`}>
             <h2 className={styles.label}>Contact</h2>
             <a className={`btn btn-primary ${styles.cta}`} href="#contact">{contact.form.title}</a>
-            <a className={styles.infoLink} href={`mailto:${contact.email}`}>{contact.email}</a>
+            <span className={styles.infoLink}>{contact.email}</span>
             {/* Facebook and Instagram only: no Upwork (Jasper, 2026-11-22). Unlinked until URLs exist. */}
             <ul className={styles.social} role="list" aria-label="Follow Webleta">
               {hero.social.filter((s) => s.platform === "facebook" || s.platform === "instagram").map((s) => (
