@@ -734,6 +734,11 @@ export const work = {
       image: { base: "/images/work/fort", w: 1000, h: 1069, alt: "The Fort: air conditioning repair, cleaning and installation pages in light blue, on a pale blue board." } },
     { id: "racknroad", name: "Rack n Road", sector: "Vehicle racks, online store",
       image: { base: "/images/work/racknroad", w: 1000, h: 809, alt: "Rack n Road: a car with bikes on the roof under the headline We fit for adventure, on a red board." } },
+    // 2026-11-23 (Graham): two more boards from the Projects folder, resized only.
+    { id: "johntraveller", name: "John the Traveller", sector: "Travel blog",
+      image: { base: "/images/work/johntraveller", w: 1000, h: 1280, alt: "John the Traveller: a travel blog with a world map, latest trips and a photo gallery, on a dark teal board." } },
+    { id: "portside", name: "Portside Marketing", sector: "Digital marketing agency",
+      image: { base: "/images/work/portside", w: 1000, h: 2040, alt: "Portside Marketing: blue pages for website design, branding, SEO and conversion marketing, on a blue board." } },
   ] satisfies Project[],
 };
 
