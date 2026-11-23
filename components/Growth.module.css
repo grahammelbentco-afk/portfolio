@@ -679,3 +679,46 @@
   }
 }
 
+
+/* QA 2026-11-23, phones: the three-column report crowded the rank row into the
+   "jumped after page fixes" note, and the platform names ran out of the day chips.
+   The report goes two columns with the rank row full width; the chips keep the day and
+   icon, and the platform name stays for screen readers. */
+@media (max-width: 559px) {
+  .report {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .reportHead { grid-column: 1; grid-row: 1; }
+  .scenario { grid-column: 2; grid-row: 1; }
+  .big { grid-column: 1; grid-row: 2; }
+  .spark { grid-column: 2; grid-row: 2; }
+
+  .mini {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 10px;
+  }
+}
+
+/* The day chips: day and icon always; the platform name only when each chip has room for it
+   (the card, not the screen, decides). The name stays for screen readers. */
+.schedule {
+  container-type: inline-size;
+}
+
+@container (max-width: 639px) {
+  .schedule li {
+    justify-content: center;
+    padding-inline: 6px;
+  }
+
+  .dayName {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

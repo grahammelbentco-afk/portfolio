@@ -363,7 +363,7 @@ export default function Growth() {
                   <li key={d.day} data-on={d.platform === activePlatform || undefined}>
                     <strong>{d.day}</strong>
                     <span className={styles.icon} style={{ maskImage: `url(/brands/si/${p.slug}.svg)` }} />
-                    {p.name}
+                    <span className={styles.dayName}>{p.name}</span>
                   </li>
                 );
               })}

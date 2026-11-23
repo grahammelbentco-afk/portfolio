@@ -129,15 +129,21 @@
   line-height: 1.4;
 }
 
+/* QA 2026-11-23: a wrapping row, so a long name (Upwork · 100% Job Success) drops the next
+   platform to its own line on phones instead of running under it. */
 .platforms {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+}
+
+/* Each item keeps its full width, so the row wraps rather than squeezing a name under the next icon. */
+.platforms > li {
+  flex: none;
 }
 
 @media (min-width: 1100px) {
   .platforms {
-    grid-template-columns: repeat(2, auto);
     gap: var(--s-4);
   }
 }
