@@ -135,9 +135,7 @@ export const hero = {
     ],
     spoken: "Your business deserves a digital presence, to stand out, and to get more leads.",
   },
-  // SEO pass (2026-11-23): a visible line above the H1 carries the main search terms, since the
-  // headline itself is brand copy. The lede leads with the problem, then the outcome.
-  eyebrow: "Website design and digital marketing for growing businesses",
+  // The lede leads with the problem, then the outcome.
   lede: "Outdated website, or no website at all? We design fast, modern websites, then use SEO and digital marketing to turn them into a steady source of calls, bookings and sales.",
   secondaryCta: { label: "See the work", href: "#work" },
   // Graham's outline: social icons under the buttons.
@@ -536,37 +534,37 @@ export const services = {
     {
       id: "apps", slot: "wide", colour: "dusk", icon: "app",
       title: "Web applications", text: "Still booking by phone and spreadsheet? Booking systems and client portals that handle the admin for you.",
-      photo: { base: "/images/svc-wordpress", alt: "A developer working on a laptop at her desk by a lamp in the evening.", position: "50% 40%" },
+      photo: { base: "/images/services/svc-apps", alt: "Close-up of code in a code editor while a web application is being built.", position: "50% 50%" },
       logos: [],
     },
     {
       id: "seo", slot: "a", lightCorner: true, colour: "ochre", icon: "search",
       title: "SEO", text: "Invisible on Google? Local SEO that puts you in front of people searching nearby.",
-      photo: { base: "/images/svc-seo", alt: "A man looking up a local business on his phone against a sunlit wall.", position: "40% 50%" },
+      photo: { base: "/images/services/svc-seo", alt: "A phone open on the Google search page, with the Google logo on a screen behind it.", position: "50% 50%" },
       logos: [logo.google],
     },
     {
       id: "email", slot: "b", colour: "harbour", icon: "mail",
       title: "Email marketing", text: "Past customers forget you. Newsletters that bring them back for the next job.",
-      photo: { base: "/images/svc2-email", alt: "A laptop on a desk showing an email newsletter.", position: "50% 50%" },
+      photo: { base: "/images/services/svc-email", alt: "Close-up of a phone screen showing the Google and Calendar app icons.", position: "50% 50%" },
       logos: [logo.gmail],
     },
     {
       id: "social", slot: "d", colour: "kelp", icon: "social",
       title: "Social media marketing", text: "Quiet social pages? Branded posts that send followers to your website.",
-      photo: { base: "/images/svc2-social", alt: "A florist filming a video for social media on a phone tripod among her plants.", position: "60% 40%" },
+      photo: { base: "/images/services/svc-social", alt: "A phone with a Social folder of Facebook, Instagram, WhatsApp and YouTube apps.", position: "50% 50%" },
       logos: [logo.instagram, logo.facebook, logo.tiktok, logo.linkedin],
     },
     {
       id: "content", slot: "e", colour: "navy", icon: "pen",
       title: "Content marketing", text: "Same questions every day? Articles that answer them and help you rank on Google.",
-      photo: { base: "/images/svc2-content", alt: "Hands typing an article on a laptop, seen from above, with flowers and a notebook.", position: "50% 50%" },
+      photo: { base: "/images/services/svc-content", alt: "Hands on a laptop designing content for a blog and social posts in Canva.", position: "50% 50%" },
       logos: [],
     },
     {
       id: "mobile", slot: "c", colour: "coral", icon: "phone",
       title: "Mobile apps", text: "Regulars want it easier. Your own app for repeat bookings and orders.",
-      photo: { base: "/images/card-conversion", alt: "A hand holding a phone with a booking app open.", position: "50% 50%" },
+      photo: { base: "/images/services/svc-mobile", alt: "A hand holding a phone with app icons in front of a website on a monitor.", position: "50% 50%" },
       logos: [logo.apple, logo.android],
     },
   ] satisfies ServiceTile[],
@@ -967,7 +965,7 @@ export type Industry = {
   icon: IndustryIcon;
   name: string;
   need: string;
-  photo: { src: string; srcSet: string; position?: string };
+  photo: { src: string; srcSet: string; position?: string; alt: string };
   lightCorner?: boolean;
 };
 /**
@@ -1085,28 +1083,28 @@ export const industries = {
   items: [
     { id: "trades", slot: "hero", colour: "periwinkle", icon: "trades", name: "Trades and home services",
       need: "Win the next job while you're still up a ladder.",
-      photo: { src: "/images/industry-trades-800.webp", srcSet: "/images/industry-trades-480.webp 480w, /images/industry-trades-800.webp 800w, /images/industry-trades-1280.webp 1280w", position: "62% 40%" } },
+      photo: { src: "/images/industries/industry-trades-800.webp", srcSet: "/images/industries/industry-trades-480.webp 480w, /images/industries/industry-trades-800.webp 800w, /images/industries/industry-trades-1280.webp 1280w", position: "55% 40%", alt: "A tradesman in a cap working on a house roof against a blue sky." } },
     { id: "medspa", slot: "wide", colour: "coral", icon: "spa", name: "Med spas and aesthetics",
       need: "Nervous first-timers feel safe enough to book.",
-      photo: { src: "/images/industry-medspa-800.webp", srcSet: "/images/industry-medspa-480.webp 480w, /images/industry-medspa-800.webp 800w, /images/industry-medspa-1280.webp 1280w", position: "85% 45%" } },
+      photo: { src: "/images/industries/industry-medspa-800.webp", srcSet: "/images/industries/industry-medspa-480.webp 480w, /images/industries/industry-medspa-800.webp 800w, /images/industries/industry-medspa-1280.webp 1280w", position: "50% 50%", alt: "A bright, modern med spa treatment room with a treatment bed and equipment." } },
     { id: "entertainment", slot: "a", colour: "dusk", icon: "music", name: "Events and entertainment",
       need: "Sell out the night before the doors even open.",
-      photo: { src: "/images/industry-entertainment-800.webp", srcSet: "/images/industry-entertainment-480.webp 480w, /images/industry-entertainment-800.webp 800w", position: "60% 50%" } },
+      photo: { src: "/images/industries/industry-entertainment-800.webp", srcSet: "/images/industries/industry-entertainment-480.webp 480w, /images/industries/industry-entertainment-800.webp 800w, /images/industries/industry-entertainment-1280.webp 1280w", position: "50% 50%", alt: "A crowd at a night concert with flame jets and lasers over the stage." } },
     { id: "dental", slot: "b", colour: "shell", icon: "dental", name: "Dental clinics",
       need: "Empty chairs on Tuesday become booked check-ups.",
-      photo: { src: "/images/industry-dental-800.webp", srcSet: "/images/industry-dental-480.webp 480w, /images/industry-dental-800.webp 800w, /images/industry-dental-1280.webp 1280w", position: "85% 50%" } },
+      photo: { src: "/images/industries/industry-dental-800.webp", srcSet: "/images/industries/industry-dental-480.webp 480w, /images/industries/industry-dental-800.webp 800w, /images/industries/industry-dental-1280.webp 1280w", position: "50% 50%", alt: "A patient relaxing in a dental chair under the clinic lamp and instruments." } },
     { id: "food", slot: "d", colour: "ochre", icon: "food", name: "Food and hospitality",
       need: "Hungry locals pick you from their phone tonight.",
-      photo: { src: "/images/industry-food-800.webp", srcSet: "/images/industry-food-480.webp 480w, /images/industry-food-800.webp 800w, /images/industry-food-1280.webp 1280w", position: "90% 35%" } },
+      photo: { src: "/images/industries/industry-food-800.webp", srcSet: "/images/industries/industry-food-480.webp 480w, /images/industries/industry-food-800.webp 800w, /images/industries/industry-food-1280.webp 1280w", position: "60% 0%", alt: "A guest being served a plate of food at a hot buffet station." } },
     { id: "stores", slot: "e", colour: "kelp", icon: "store", name: "Online stores",
       need: "Wake up to orders that came in while you slept.",
-      photo: { src: "/images/industry-ecommerce-800.webp", srcSet: "/images/industry-ecommerce-480.webp 480w, /images/industry-ecommerce-800.webp 800w, /images/industry-ecommerce-1280.webp 1280w", position: "90% 55%" } },
+      photo: { src: "/images/industry-ecommerce-800.webp", srcSet: "/images/industry-ecommerce-480.webp 480w, /images/industry-ecommerce-800.webp 800w, /images/industry-ecommerce-1280.webp 1280w", position: "90% 55%", alt: "An online clothing store on a desktop screen, next to a rack of clothes." } },
     { id: "auto", slot: "f", colour: "harbour", icon: "auto", name: "Automotive",
       need: "When the car won't start, they ring you first.",
-      photo: { src: "/images/benefit-calls-800.webp", srcSet: "/images/benefit-calls-480.webp 480w, /images/benefit-calls-800.webp 800w", position: "70% 40%" } },
+      photo: { src: "/images/industries/industry-auto-800.webp", srcSet: "/images/industries/industry-auto-480.webp 480w, /images/industries/industry-auto-800.webp 800w, /images/industries/industry-auto-1280.webp 1280w", position: "50% 50%", alt: "A mechanic working under a car raised on a lift in an auto repair workshop." } },
     { id: "professional", slot: "c", colour: "seafoam", icon: "law", name: "Professional services",
       need: "Referrals check you out and like what they find.",
-      photo: { src: "/images/industry-professional-800.webp", srcSet: "/images/industry-professional-480.webp 480w, /images/industry-professional-800.webp 800w, /images/industry-professional-1280.webp 1280w", position: "88% 55%" } },
+      photo: { src: "/images/industries/industry-professional-800.webp", srcSet: "/images/industries/industry-professional-480.webp 480w, /images/industries/industry-professional-800.webp 800w, /images/industries/industry-professional-1280.webp 1280w", position: "50% 50%", alt: "A professional signing a document at a desk beside a judge's gavel." } },
   ] satisfies Industry[],
 };
 

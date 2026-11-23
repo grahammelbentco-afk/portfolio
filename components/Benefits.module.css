@@ -28,7 +28,7 @@
   align-items: center;
   gap: 10px;
   color: var(--wet-slate);
-  font-size: var(--fs-small);
+  font-size: var(--fs-lead);
   font-weight: 600;
   letter-spacing: 0.02em;
 }

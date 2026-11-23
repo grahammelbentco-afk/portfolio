@@ -285,7 +285,7 @@ video {
   gap: 10px;
   margin-bottom: var(--s-3);
   color: var(--wet-slate);
-  font-size: var(--fs-small);
+  font-size: var(--fs-lead);
   font-weight: 600;
   letter-spacing: 0.02em;
 }

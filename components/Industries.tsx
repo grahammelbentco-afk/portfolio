@@ -90,7 +90,7 @@ function Tile({ t }: { t: Industry }) {
             sizes="(min-width: 1024px) 40vw, 100vw"
             width={800}
             height={800}
-            alt=""
+            alt={t.photo.alt}
             loading="lazy"
             decoding="async"
             style={t.photo.position ? { objectPosition: t.photo.position } : undefined}

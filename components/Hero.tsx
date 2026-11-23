@@ -2,7 +2,6 @@ import { hero } from "@/content/homepage";
 import HeroMotion from "./HeroMotion";
 import HeroGradient from "./HeroGradient";
 import SocialIcon from "./SocialIcon";
-import Eyebrow from "./Eyebrow";
 import StatsRail from "./StatsRail";
 import { Track } from "./HeroSlider";
 import { DESCENDING } from "./heroSliderLayouts";
@@ -25,9 +24,6 @@ export default function Hero({ visual, id = "top" }: { visual?: React.ReactNode;
 
       <div className={`container ${styles.layout}`}>
         <div className={styles.copy}>
-          <div data-intro="fade">
-            <Eyebrow className={styles.eyebrow}>{hero.eyebrow}</Eyebrow>
-          </div>
           <h1 id={titleId} className={styles.title}>
             <span className="sr-only">{headline.spoken}</span>
             <span aria-hidden="true">
