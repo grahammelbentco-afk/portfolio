@@ -1,0 +1,1304 @@
+/* Steps (Revision 65): the free preview offer as one full-bleed Seafoam band, so the page
+   steps white > Seafoam > Deep Water with no pale in-between strip. The band's top-right
+   corner is cut at the Split Arc's 24 degrees (dx = tan 24 x dy), letting the white CTA
+   ground above run into it. Ember is used only on the primary button. */
+.section {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  padding-block: var(--section-y);
+  /* White behind the cut, matching the CTA ground above; the Seafoam fill is ::after. */
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+.section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background: var(--seafoam);
+}
+
+.panel {
+  position: relative;
+}
+
+/* Faint channel lines in the lower glow, V1.6 p.16. */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: repeating-linear-gradient(114deg, transparent 0 46px, rgb(7 34 59 / 0.05) 46px 47px); /* taste-skill-ignore: V1.6 channel lines, a brand device */
+  -webkit-mask-image: radial-gradient(70% 60% at 100% 100%, #000, transparent); /* taste-skill-ignore */
+  mask-image: radial-gradient(70% 60% at 100% 100%, #000, transparent); /* taste-skill-ignore */
+}
+
+/* ---- Head ---- */
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(32px, 1rem + 3vw, 56px);
+}
+
+.title {
+  max-width: 12ch;
+  font-size: clamp(2.5rem, 1.2rem + 4.4vw, 6rem);
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.intro {
+  max-width: 34rem;
+  color: var(--deep-water);
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .title {
+    grid-column: 1 / span 7;
+  }
+
+  .intro {
+    grid-column: 8 / -1;
+  }
+}
+
+/* ---- Body: compare | request ---- */
+.body {
+  display: grid;
+  gap: var(--s-6);
+}
+
+@media (min-width: 1024px) {
+  .body {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+  }
+}
+
+/* ---- Compare ---- */
+.compare {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 40px;
+  padding-inline: 14px;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--white);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(7 34 59 / 0.18);
+}
+
+.url {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 320px;
+  margin-inline: auto;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: var(--shallows);
+  color: var(--wet-slate);
+  font-size: 0.8125rem;
+}
+
+.url svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* Both mock sites are sized in container units, so each scales like a screenshot. */
+.stage {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+/* Each mock site is its own stacking context, so the preview's layers never rise above Today. */
+.site {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* ---- Today: the dated template most local sites share ---- */
+.before {
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  background: #f4f5f6;
+  color: #5f6b77;
+  font-family: Arial, Helvetica, sans-serif;
+  clip-path: inset(0 calc(100% - var(--split)) 0 0);
+}
+
+.bTop {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7cqw 4cqw;
+  background: #4a525b;
+  color: #e3e7eb;
+  font-size: 1.15cqw;
+}
+
+.bNav {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  height: 7.5cqw;
+  padding-inline: 4cqw;
+  background: #fff;
+  border-bottom: 0.15cqw solid #dfe3e7;
+}
+
+.bLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.8cqw;
+  color: #2f5f8c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.7cqw;
+  font-weight: 700;
+}
+
+.bLogo i {
+  width: 2.6cqw;
+  height: 2.6cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #8db3d6, #3d6f9e); /* taste-skill-ignore: dated template logo */
+}
+
+.bLinks {
+  display: flex;
+  gap: 1.8cqw;
+  margin-left: auto;
+  font-size: 1.25cqw;
+}
+
+.bLinks [data-on] {
+  color: #2f5f8c;
+  text-decoration: underline;
+}
+
+.bBook {
+  padding: 0.8cqw 1.6cqw;
+  background: #3d6f9e;
+  color: #fff;
+  font-size: 1.2cqw;
+  font-weight: 700;
+}
+
+.bBanner {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  height: 21cqw;
+  padding-inline: 2cqw;
+  background:
+    linear-gradient(rgb(40 50 60 / 0.35), rgb(40 50 60 / 0.35)), /* taste-skill-ignore: dated template banner */
+    linear-gradient(120deg, #9aa6b2, #c4ccd4 55%, #a9b3bd); /* taste-skill-ignore */
+}
+
+.bTitle {
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 3.1cqw;
+  text-align: center;
+  text-shadow: 0 0.2cqw 0.6cqw rgb(0 0 0 / 0.35); /* taste-skill-ignore: dated template */
+}
+
+.bArrow {
+  display: grid;
+  place-items: center;
+  width: 3.4cqw;
+  height: 3.4cqw;
+  background: rgb(0 0 0 / 0.3);
+}
+
+.bArrow svg {
+  width: 1.6cqw;
+  max-width: none;
+  height: 1.6cqw;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.6;
+}
+
+.bDots {
+  position: absolute;
+  bottom: 1.6cqw;
+  left: 50%;
+  display: flex;
+  gap: 0.8cqw;
+  transform: translateX(-50%);
+}
+
+.bDots i {
+  width: 0.9cqw;
+  height: 0.9cqw;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.5);
+}
+
+.bDots [data-on] {
+  background: #fff;
+}
+
+.bServices {
+  display: grid;
+  align-content: start;
+  gap: 1.8cqw;
+  padding: 2.6cqw 4cqw 0;
+}
+
+.bHeading {
+  color: #4a525b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.1cqw;
+  text-align: center;
+}
+
+.bCols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4cqw;
+}
+
+.bCol {
+  display: grid;
+  justify-items: center;
+  gap: 0.9cqw;
+  padding: 1.8cqw 1.4cqw;
+  border: 0.15cqw solid #dfe3e7;
+  background: #fff;
+  font-size: 1.2cqw;
+}
+
+.bCol i {
+  width: 3.6cqw;
+  height: 3.6cqw;
+  background: #c9d3dd;
+}
+
+.bCol b {
+  color: #4a525b;
+  font-size: 1.4cqw;
+}
+
+.bCol u {
+  color: #2f5f8c;
+}
+
+.bLine {
+  width: 100%;
+  height: 0.7cqw;
+  border-radius: 0.35cqw;
+  background: #e1e5e9;
+}
+
+.bLine[data-short] {
+  width: 70%;
+}
+
+.bFoot {
+  padding: 1cqw 4cqw;
+  background: #4a525b;
+  color: #d0d6dc;
+  font-size: 1.05cqw;
+  text-align: center;
+}
+
+/* ---- The preview: Tidewell Physio, a fictional client with its own brand ----
+   Blush ground, eucalyptus ink and band, sage accents, Google gold for the stars. */
+.after {
+  --t-ground: #ecdcd2;
+  --t-ink: #1c3730;
+  --t-soft: #45574f;
+  --t-sage: #9db59f;
+  --t-mist: #f7efe9;
+  --t-gold: #e3a21a;
+  --t-sun: #f0c766; /* accent: butter, for the sun, the slot and the band arrows */
+  --t-open: #3f7a5c;
+  background: var(--t-ground);
+  color: var(--t-ink);
+  font-family: var(--font-body);
+}
+
+/* Fine paper grain over the blush, so the ground reads as printed stock, not flat screen. */
+.after::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .2 0 0 0 0 .18 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+.pAnnounce {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3.2cqw;
+  display: grid;
+  place-items: center;
+  background: var(--t-ink);
+  color: var(--t-mist);
+  font-size: 1.15cqw;
+  letter-spacing: 0.01em;
+}
+
+.pNav {
+  position: absolute;
+  top: 3.2cqw;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  height: 7.6cqw;
+  padding-inline: 4cqw;
+  font-size: 1.4cqw;
+}
+
+.pLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.7cqw;
+  font-family: var(--font-demo-serif), Georgia, serif;
+  font-size: 2.6cqw;
+  letter-spacing: -0.01em;
+}
+
+.pLogo svg {
+  width: 2.3cqw;
+  max-width: none;
+  height: 2.3cqw;
+}
+
+.pLinks {
+  display: flex;
+  gap: 2.4cqw;
+  margin-left: 2cqw;
+}
+
+.pPhone {
+  margin-left: auto;
+  color: var(--t-soft);
+}
+
+/* Tidewell's buttons: square-cornered and set in the sans, deliberately unlike Webleta's
+   pills. The nav button is a butter block. */
+.pBook {
+  padding: 0.85cqw 1.7cqw;
+  border-radius: 0.3cqw;
+  background: var(--t-sun);
+  color: var(--t-ink);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+/* The morning sun: one flat disc, half risen behind the arch. */
+.pSun {
+  position: absolute;
+  top: 11cqw;
+  left: 15cqw;
+  z-index: 0;
+  width: 18cqw;
+  height: 18cqw;
+  border-radius: 50%;
+  background: var(--t-sun);
+}
+
+/* The knee-assessment wireframe fills the empty right of the hero, kept quiet. */
+.pMesh {
+  position: absolute;
+  top: 26cqw; /* sits just above the proof line at 44cqw */
+  right: 2.5cqw;
+  z-index: 0;
+  width: 20.5cqw;
+  max-width: none;
+  height: auto;
+  opacity: 0.6;
+}
+
+.pArch {
+  position: absolute;
+  top: 12.5cqw;
+  left: 4cqw;
+  z-index: 1;
+  width: 26cqw;
+  height: 37cqw;
+  overflow: hidden;
+  border-radius: 13cqw 13cqw 1cqw 1cqw;
+  background: var(--t-sage);
+}
+
+.pArch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 46% 50%;
+}
+
+/* Today's open times on a eucalyptus strip across the arch's foot: label, then three
+   slots, the first filled with the accent. */
+.pSlot {
+  position: absolute;
+  top: 43.5cqw;
+  left: 6cqw;
+  z-index: 3;
+  display: grid;
+  gap: 0.7cqw;
+  padding: 1.1cqw 1.2cqw 1.2cqw;
+  border-radius: 1.2cqw;
+  background: var(--t-ink);
+  color: var(--t-mist);
+}
+
+.pSlotLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.6cqw;
+  font-size: 1.1cqw;
+  font-weight: 600;
+}
+
+.pSlotLabel i {
+  width: 0.75cqw;
+  height: 0.75cqw;
+  border-radius: 50%;
+  background: #7fd1a0;
+}
+
+.pTimes {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5cqw;
+}
+
+.pTimes span {
+  padding: 0.45cqw 0.9cqw;
+  border-radius: 0.3cqw;
+  background: rgb(247 239 233 / 0.12);
+  font-size: 1.35cqw;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.pTimes [data-first] {
+  background: var(--t-sun);
+  color: var(--t-ink);
+}
+
+.pTimes em {
+  margin-left: 0.2cqw;
+  color: var(--t-sage);
+  font-size: 1.1cqw;
+  font-style: normal;
+}
+
+.pHero {
+  position: absolute;
+  top: 13.5cqw;
+  right: 4cqw;
+  left: 36cqw;
+  z-index: 2;
+  display: grid;
+  justify-items: start;
+}
+
+/* The headline overlaps the arch: the type leads, the photo sits behind it. */
+.pTitle {
+  display: grid;
+  margin-left: -9cqw;
+  font-family: var(--font-demo-serif), Georgia, serif;
+  font-size: 7.8cqw;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+}
+
+.pTitle span:last-child {
+  padding-left: 9cqw;
+}
+
+.pSub {
+  max-width: 38cqw;
+  margin-top: 2cqw;
+  color: var(--t-soft);
+  font-size: 1.7cqw;
+  line-height: 1.45;
+}
+
+.pActions {
+  display: flex;
+  align-items: center;
+  gap: 2.2cqw;
+  margin-top: 2cqw;
+  font-size: 1.55cqw;
+  font-weight: 600;
+}
+
+/* The main CTA is split: eucalyptus label block, then a butter cap holding a calendar. */
+.pCta {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: 0.3cqw;
+  overflow: hidden;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.pCta > span {
+  display: grid;
+  place-items: center;
+  padding: 1.25cqw 2.2cqw;
+  background: var(--t-ink);
+  color: var(--t-mist);
+}
+
+.pCta i {
+  display: grid;
+  place-items: center;
+  width: 4.6cqw;
+  background: var(--t-sun);
+}
+
+.pCta svg,
+.pLink svg {
+  width: 2cqw;
+  max-width: none;
+  height: 2cqw;
+  fill: none;
+  stroke: var(--t-ink);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Secondary: a map pin and the label, underlined. */
+.pLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6cqw;
+  padding-bottom: 0.25cqw;
+  border-bottom: 0.15cqw solid currentColor;
+  font-weight: 700;
+}
+
+/* Proof row: real platform marks, the way Australian clinics show them. */
+.pProof {
+  display: flex;
+  align-items: center;
+  gap: 1.8cqw;
+  margin-top: 2.4cqw;
+  padding-top: 1.6cqw;
+  border-top: 0.12cqw solid rgb(28 55 48 / 0.18);
+  color: var(--t-soft);
+  font-size: 1.25cqw;
+}
+
+.pProofItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6cqw;
+  white-space: nowrap;
+}
+
+.pProofItem + .pProofItem {
+  padding-left: 1.8cqw;
+  border-left: 0.12cqw solid rgb(28 55 48 / 0.18);
+}
+
+.pProofItem img {
+  width: 1.9cqw;
+  max-width: none;
+  height: 1.9cqw;
+}
+
+.pProofItem b {
+  color: var(--t-ink);
+  font-size: 1.5cqw;
+}
+
+.pStars {
+  display: flex;
+  gap: 0.15cqw;
+  fill: var(--t-gold);
+}
+
+.pStars svg {
+  width: 1.25cqw;
+  max-width: none;
+  height: 1.25cqw;
+}
+
+.pCard {
+  width: 1.9cqw;
+  max-width: none;
+  height: 1.9cqw;
+  fill: none;
+  stroke: var(--t-ink);
+  stroke-width: 1.6;
+}
+
+/* Three clinics with today's hours, on a eucalyptus band across the foot. */
+.pClinics {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 10.5cqw;
+  padding-inline: 4cqw;
+  background: var(--t-ink);
+  color: var(--t-mist);
+}
+
+.pClinics > span {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 0.4cqw;
+  padding-inline: 2cqw;
+  font-size: 1.3cqw;
+}
+
+.pClinics > span:first-child {
+  padding-left: 0;
+}
+
+.pClinics > span + span {
+  border-left: 0.12cqw solid rgb(247 239 233 / 0.2);
+}
+
+.pClinics b {
+  font-family: var(--font-demo-serif), Georgia, serif;
+  font-size: 2.4cqw;
+  font-weight: 400;
+}
+
+.pClinics span span {
+  color: var(--t-sage);
+}
+
+.pClinics svg {
+  position: absolute;
+  top: 50%;
+  right: 2cqw;
+  width: 3.2cqw;
+  max-width: none;
+  height: 3.2cqw;
+  padding: 0.85cqw;
+  border-radius: 0.3cqw;
+  background: var(--t-sun);
+  fill: none;
+  stroke: var(--t-ink);
+  stroke-width: 1.8;
+  transform: translateY(-50%);
+}
+
+/* ---- Slider ---- */
+.handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split);
+  z-index: 2;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--white);
+  pointer-events: none;
+}
+
+.handle svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  max-width: none;
+  height: 44px;
+  padding: 10px;
+  border-radius: 50%;
+  background: var(--deep-water);
+  color: var(--white);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 8px 20px rgb(7 34 59 / 0.3); /* taste-skill-ignore: the handle floats over the stage */
+}
+
+.range {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  z-index: 4;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.compare:has(.range:focus-visible) .handle svg {
+  outline: 3px solid var(--deep-water);
+  outline-offset: 3px;
+}
+
+.caption {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: 12px;
+}
+
+.tagBefore,
+.tagAfter {
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tagBefore {
+  background: rgb(7 34 59 / 0.1);
+  color: var(--deep-water);
+}
+
+.tagAfter {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+/* Wet Slate is 4.4:1 on Seafoam, so the caption uses Deep Water at reduced weight instead. */
+.hint {
+  color: #2c4a5e;
+  font-size: var(--fs-small);
+  text-align: center;
+}
+
+@media (max-width: 639px) {
+  .caption {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
+
+  .hint {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}
+
+/* ---- Request: three steps on a white card ----
+   Light, so it sits with the page; it still leads because it is the only white field on
+   Seafoam, its title is the largest type after the heading, and Ember appears only here.
+   Surfaces step in tone (field, hover, chosen); focus is the one ring. */
+.form {
+  --f-1: var(--shallows); /* field and tile */
+  --f-2: #e0efec; /* hover */
+  --f-ink-2: #3d566a; /* secondary text, 7:1 on white */
+  display: grid;
+  gap: var(--s-4);
+  padding: clamp(28px, 1rem + 2vw, 44px);
+  border-radius: 28px;
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+.formHead {
+  display: grid;
+  gap: 6px;
+}
+
+.formTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 1.4rem + 1.1vw, 2.5rem);
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.formReply {
+  color: var(--f-ink-2);
+  font-size: var(--fs-small);
+}
+
+/* Progress: three named segments; the current one is bright. */
+.progress {
+  margin: 0;
+}
+
+.progressBar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.progressBar li {
+  display: grid;
+  gap: 10px;
+  color: #6b8091;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.progressBar li::before {
+  content: "";
+  height: 3px;
+  border-radius: 2px;
+  background: var(--f-2);
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.progressBar [data-done] {
+  color: var(--f-ink-2);
+}
+
+.progressBar [data-done]::before {
+  background: var(--aqua);
+}
+
+.progressBar [data-now] {
+  color: var(--deep-water);
+}
+
+.progressBar [data-now]::before {
+  background: var(--deep-water);
+}
+
+.stepBody {
+  display: grid;
+  align-content: start;
+  gap: var(--s-3);
+  animation: step-in 420ms var(--ease-out);
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+
+.q {
+  display: grid;
+  gap: 6px;
+}
+
+.qTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.1rem + 0.7vw, 1.75rem);
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.qTitle:focus {
+  outline: none;
+}
+
+.qTitle:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.qHint {
+  color: var(--f-ink-2);
+  font-size: var(--fs-small);
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.field > span {
+  color: var(--f-ink-2);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  min-height: 60px;
+  padding: 16px 18px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--f-1);
+  color: var(--deep-water);
+  font: inherit;
+  font-size: 1.125rem;
+  caret-color: var(--deep-water);
+  transition: background-color var(--dur-fast) ease;
+}
+
+/* Placeholder at about 4.9:1 on the field tone. */
+.field input::placeholder {
+  color: #5c7183;
+}
+
+.field input:hover {
+  background: var(--f-2);
+}
+
+.field input:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 2px;
+  background: var(--white);
+}
+
+.field input[aria-invalid="true"] {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+}
+
+.field input::selection {
+  background: var(--seafoam);
+}
+
+.pair {
+  display: grid;
+  gap: var(--s-3);
+}
+
+/* Goals: four tonal tiles; the chosen one fills teal and shows a tick. */
+.goals {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.goalGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.goal {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  row-gap: 2px;
+  align-items: center;
+  padding: 16px 40px 16px 16px;
+  border-radius: 16px;
+  background: var(--f-1);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease;
+}
+
+.goal input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.goal svg:not(.tick svg) {
+  grid-row: span 2;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--deep-water);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.goal b {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.goal span {
+  color: var(--f-ink-2);
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.tick {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--aqua);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity var(--dur-fast) ease, transform var(--dur) var(--ease-out);
+}
+
+.tick svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: var(--deep-water);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.goal:hover {
+  background: var(--f-2);
+}
+
+.goal:has(input:checked) {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+.goal:has(input:checked) span {
+  color: var(--cloud);
+}
+
+.goal:has(input:checked) svg:not(.tick svg) {
+  stroke: var(--aqua);
+}
+
+.goal:has(input:checked) .tick {
+  opacity: 1;
+  transform: none;
+}
+
+.goal:has(input:focus-visible) {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 2px;
+}
+
+.error:empty {
+  display: none;
+}
+
+.error {
+  color: #b3401a;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 56px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--f-1);
+  color: var(--deep-water);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) ease;
+}
+
+.back svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.back:hover {
+  background: var(--f-2);
+}
+
+.back:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 2px;
+}
+
+.submit {
+  flex: 1;
+}
+
+.trust {
+  color: var(--f-ink-2);
+  font-size: var(--fs-small);
+  text-align: center;
+}
+
+.status:empty {
+  display: none;
+}
+
+.status {
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  background: var(--f-1);
+  font-size: var(--fs-small);
+}
+
+@media (max-width: 479px) {
+  .goalGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Steps: three equal columns under both columns ----
+   Each column is [number slot | copy]; the arrow sits centred in the gap, at number height. */
+.steps {
+  --gap: clamp(32px, 1rem + 3vw, 72px);
+  display: grid;
+  gap: var(--s-6);
+  margin: clamp(56px, 2rem + 4vw, 96px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+}
+
+.step {
+  position: relative;
+  display: grid;
+  /* The number slot fits its digit (Revision 66): a fixed slot left the narrow 1 floating. */
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: clamp(14px, 0.5rem + 0.8vw, 22px);
+  align-items: start;
+}
+
+.num {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 2.5rem + 2.6vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.8;
+  color: var(--deep-water);
+  font-variant-numeric: tabular-nums;
+}
+
+.next {
+  display: none;
+}
+
+@media (min-width: 760px) {
+  .next {
+    position: absolute;
+    top: clamp(14px, 0.6rem + 0.9vw, 26px);
+    right: calc(var(--gap) / -2);
+    display: block;
+    width: 28px;
+    max-width: none;
+    height: 14px;
+    fill: none;
+    stroke: rgb(7 34 59 / 0.5);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform: translateX(50%);
+  }
+}
+
+.stepCopy {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.stepTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.15rem + 0.6vw, 1.75rem);
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.stepText {
+  /* Fill the column so each step ends where its arrow starts (Revision 66). */
+  max-width: none;
+  color: #2c4a5e;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+/* Pay tags: Free on white, the paid step on Deep Water. */
+.pay {
+  margin-top: 4px;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: var(--white);
+  color: var(--deep-water);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.pay[data-paid] {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .stepBody {
+    animation: none;
+  }
+
+  .progressBar li,
+  .progressBar li::before,
+  .tick,
+  .goal,
+  .field input,
+  .back {
+    transition: none;
+  }
+}

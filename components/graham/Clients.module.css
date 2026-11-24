@@ -1,0 +1,124 @@
+/* The logo carousel runs full width, outside the heading's content grid. */
+.section {
+  /* White Testimonials follows on this page, so the band ends closer too. */
+  padding-block: calc(var(--section-y) * 0.5);
+  background: var(--white);
+  color: var(--deep-water);
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-6);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 64px);
+}
+
+.head > div {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.title {
+  max-width: none;
+}
+
+.next {
+  color: var(--wet-slate);
+  font-size: var(--fs-body);
+  text-decoration: none;
+}
+
+.next span {
+  color: var(--deep-water);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.next:hover span {
+  text-decoration-color: var(--deep-water);
+}
+
+/* ---- The carousel ---- */
+.marquee {
+  --gap: clamp(56px, 3rem + 3vw, 112px);
+  --h: clamp(26px, 1.2rem + 1vw, 40px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); /* taste-skill-ignore: edge fade on a looping row */
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); /* taste-skill-ignore: edge fade on a looping row */
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+.row {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--gap);
+  margin: 0;
+  padding: 0 calc(var(--gap) / 2);
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  place-items: center;
+  height: calc(var(--h) * 1.8);
+}
+
+.logo {
+  display: block;
+  width: calc(var(--h) * var(--ar) * var(--s, 1));
+  aspect-ratio: var(--ar);
+  background: var(--deep-water);
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+  opacity: 0.62;
+}
+
+/* One full row's width per loop: the second copy lands where the first began. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .track {
+    width: auto;
+    animation: none;
+  }
+
+  .row {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: var(--s-3);
+    width: 100%;
+  }
+
+  .row[aria-hidden] {
+    display: none;
+  }
+
+  .logo {
+    transition: none;
+  }
+}

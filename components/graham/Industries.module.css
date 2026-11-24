@@ -1,0 +1,382 @@
+/* Industries (Revision 83): Deep Water ground; the tiles come from Services.module.css.
+   This file only sets the ground, the heading, the mirrored grid and the Deep Water notch. */
+/* REVERT POINT (saved 2026-11-21): this Revision 87 red ground is the section's background.
+   Revision 102 puts a ShaderGradient test over it (IndustriesShader, GROUND in Industries.tsx);
+   set GROUND = "red" to go back. This CSS stays as first paint and the no-WebGL fallback.
+   Revision 87 (Jasper): the page's one red section. Signal Red with a deeper red pooled
+   in the corners so it reads rich, not flat. All text on it is white (4.9:1 or better).
+   Revision 103 (Jasper): the ground is now a dark red as deep as the hero navy, matching the
+   shader's colours (ShaderWave.tsx), so there is no bright-red flash before it loads. The
+   Revision 87 values were: rgb(255 90 60 / 0.45) glow, var(--signal-red-deep) corner,
+   var(--signal-red) base. */
+.section {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--section-y);
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgb(239 59 63 / 0.6), transparent 60%), /* taste-skill-ignore: tonal depth on the red ground */
+    radial-gradient(90% 70% at 0% 100%, #6e0b1b, transparent 70%), /* taste-skill-ignore: tonal depth on the red ground */
+    #c4182c; /* 2026-11-22: a true red, matching the shader (was #4a0a18 wine) */
+  color: var(--white);
+}
+
+.section :global(.sec-intro),
+.section :global(.eyebrow) {
+  color: rgb(255 255 255 / 0.92);
+}
+
+.section :global(.eyebrow-spark) {
+  fill: var(--white);
+}
+
+.section :focus-visible {
+  outline-color: var(--white);
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(32px, 1rem + 3vw, 64px);
+}
+
+.head > div {
+  display: grid;
+  gap: var(--s-3);
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > div {
+    grid-column: 1 / span 7;
+  }
+
+  .head > :last-child {
+    grid-column: 9 / -1;
+  }
+}
+
+.eyebrowWrap {
+  display: block;
+}
+
+.line {
+  display: block;
+}
+
+/* The notch is cut in the section's own ground. */
+.notch.notch {
+  fill: var(--deep-water);
+}
+
+.more {
+  margin-top: clamp(24px, 2vw, 40px);
+  color: rgb(255 255 255 / 0.92);
+}
+
+.more a {
+  color: var(--white);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgb(255 255 255 / 0.55);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.more a:hover {
+  text-decoration-color: var(--white);
+}
+
+/* ---- Tiles: duotone that matches its gradient, and readable text ---- */
+/* The photo box isolates its own blending (container-type), so it needs the tile colour
+   itself for the luminosity blend to tint the photo. */
+.bento > li > div:first-child {
+  background: var(--c);
+}
+
+/* White text everywhere, on a scrim that deepens the tile's own colour toward the text
+   (Aqua and Shell were dark-on-light over busy photos). */
+.bento > li[data-colour] {
+  --ink: var(--white);
+}
+
+/* Aqua and Shell are too light for white text, so their duotone is taken a step deeper. */
+.bento > li[data-colour="periwinkle"] {
+  --c: color-mix(in srgb, #b8b0ff 62%, var(--deep-water));
+}
+
+.bento > li[data-colour="shell"] {
+  --c: color-mix(in srgb, var(--shell) 44%, var(--deep-water));
+}
+
+/* Revision 99 (Jasper): no darkened scrim. The tile's own flat colour, solid at the bottom,
+   carries the text (set per industry at the end of this file). */
+.bento.bento > li[data-industry]:has(img)::after { /* beats Services' hero aqua wash (shared .tile class) */
+  background: linear-gradient( /* taste-skill-ignore: the tile's own flat colour under the text */
+    to top,
+    var(--c) 0%,
+    color-mix(in srgb, var(--c) 85%, transparent) 26%,
+    transparent 52%
+  );
+}
+
+/* Entertainment: Seafoam taken deep enough for white text, like Aqua and Shell. */
+.bento > li[data-colour="seafoam"] {
+  --c: color-mix(in srgb, var(--seafoam) 42%, var(--deep-water));
+}
+
+/* Exactly two lines on every card (Jasper): one measure for all tiles, and each line is
+   written at 45-53 characters so it always wraps once. */
+.bento > li p {
+  max-width: 30ch;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Revision 101 (Jasper: "section is very long, 2-3 rows only, still bento"): three short rows on
+   desktop. Trades is the tall lead tile (5 cols, 2 rows); the rest split 4/3, 3/4 and 4/3/5
+   so no two rows match. Every subject sits on the right of its photo, so nothing is cut. */
+.bento > li[data-slot="f"] {
+  grid-area: f;
+}
+
+.bento.bento {
+  grid-template-areas: "hero" "wide" "a" "b" "d" "e" "f" "c";
+}
+
+@media (min-width: 640px) {
+  .bento.bento {
+    grid-template-areas:
+      "hero hero"
+      "wide a"
+      "b d"
+      "e f"
+      "c c";
+  }
+}
+
+@media (min-width: 1024px) {
+  .bento.bento {
+    grid-template-rows: repeat(3, clamp(230px, 17.5vw, 260px));
+    grid-template-areas:
+      "hero hero hero hero hero wide wide wide wide a a a"
+      "hero hero hero hero hero b b b d d d d"
+      "e e e e f f f c c c c c";
+  }
+}
+
+/* ---- Revision 99 (Jasper): black-and-white photos under one flat, bright colour per tile,
+   the reference's duotone. The photo's luminosity sits on the tile colour at partial strength,
+   so the colour leads and the photo shows through.
+   Palette built against the Signal Red ground with colour theory:
+     analogous (red's own family, so they belong): wine, blush, peach;
+     complementary (opposite red, so they pop): a deep teal;
+     triadic (a third of the wheel from red): periwinkle on the hero, a light Dusk Violet;
+     neutrals to rest the eye: cream, amber, Deep Water.
+   Nothing sits near red's own hue (coral vanished there in R87). Light tiles take Deep Water
+   text, deep tiles take white. ---- */
+.bento.bento > li[data-industry] > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.15) brightness(1.05);
+  mix-blend-mode: luminosity;
+  opacity: 0.6;
+}
+
+.bento > li[data-industry="trades"] { --c: #b8b0ff; --ink: var(--deep-water); }       /* triad: periwinkle, a light Dusk Violet (Jasper, 2026-11-22: Aqua repeated the stores teal) */
+.bento > li[data-industry="medspa"] { --c: #ffb3c4; --ink: var(--deep-water); }       /* analogous: blush */
+.bento > li[data-industry="entertainment"] { --c: #6b0f2b; --ink: var(--white); }     /* analogous: wine */
+.bento > li[data-industry="dental"] { --c: #fff1e0; --ink: var(--deep-water); }       /* neutral: warm cream */
+.bento > li[data-industry="food"] { --c: #ffb627; --ink: var(--deep-water); }         /* neutral warm: amber */
+.bento > li[data-industry="stores"] { --c: #0e6b67; --ink: var(--white); }            /* complement: deep teal */
+.bento > li[data-industry="auto"] { --c: var(--deep-water); --ink: var(--white); }    /* dark anchor */
+.bento > li[data-industry="professional"] { --c: #ffa07a; --ink: var(--deep-water); } /* analogous: peach */
+
+/* Light tiles: a lighter photo at lower strength, so the colour stays clean and not muddy. */
+.bento.bento > li:is([data-industry="medspa"], [data-industry="dental"], [data-industry="food"], [data-industry="trades"], [data-industry="professional"]) > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.1) brightness(1.25);
+  opacity: 0.5;
+}
+
+/* Glass icon: Deep Water glyph on the light tiles. */
+.bento > li:is([data-industry="medspa"], [data-industry="dental"], [data-industry="food"], [data-industry="trades"], [data-industry="professional"]) [aria-hidden="true"] {
+  color: var(--deep-water);
+}
+
+/* The two large tiles match heights; the six below are a touch taller than Services'. */
+/* Shorter tiles on phones and tablets too: the text block needs about 200px. */
+.bento > li[data-industry] {
+  min-height: 220px;
+}
+
+.bento > li[data-industry][data-slot="hero"] {
+  min-height: 300px;
+}
+
+@media (min-width: 1024px) {
+  .bento > li:is([data-slot="hero"], [data-slot="wide"]),
+  .bento > li:not([data-slot="hero"]):not([data-slot="wide"]) {
+    min-height: 0;
+  }
+}
+
+
+
+/* Dental's photo is very bright: keep more of it so the clinic reads on the cream. */
+.bento.bento > li[data-industry="dental"] > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.3) brightness(0.92);
+  opacity: 0.7;
+}
+
+/* Med spa: a stronger photo so the client on the treatment bed reads on the blush. */
+.bento.bento > li[data-industry="medspa"] > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.3) brightness(0.98);
+  opacity: 0.7;
+}
+
+/* ---- Revision 102: ShaderGradient ground (test). It sits behind everything, fades in over the
+   red, and a light wine scrim at the top keeps the heading and intro text on darker water. ---- */
+.shader {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shader::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(110 11 27 / 0.3) 0%, rgb(110 11 27 / 0) 35%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shader canvas {
+    animation: industries-shader-in 1.2s ease both;
+  }
+}
+
+@keyframes industries-shader-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- 2026-11-22 (Graham: the tiles in "the same color vibe" as Services). Each tile takes
+   one of the Benefits cards' gradient fields (keep in step with Benefits.module.css and the end
+   of Services.module.css), --c set to the gradient's deep end for the text fade. On the red
+   ground, red-family fields are kept to one tile (Events, Coral, whose top is ember). The
+   eighth tile uses a deep Seafoam field to echo the Services hero. Light fields (Ochre,
+   Seafoam) take Deep Water text; the rest white. These rules override the R99 flat palette
+   above. ---- */
+.bento.bento > li[data-industry="trades"] {
+  --g: radial-gradient(85% 65% at 90% 5%, var(--shell) 0%, transparent 70%), /* taste-skill-ignore: Benefits card gradient */
+    linear-gradient(170deg, color-mix(in srgb, var(--dusk-violet) 70%, var(--shell)) 0%, var(--dusk-violet) 50%, color-mix(in srgb, var(--dusk-violet) 55%, var(--deep-water)) 100%); /* taste-skill-ignore: Benefits card gradient */
+  --c: color-mix(in srgb, var(--dusk-violet) 55%, var(--deep-water));
+  --ink: var(--white);
+}
+
+.bento.bento > li[data-industry="medspa"] {
+  --g: radial-gradient(80% 60% at 85% 8%, color-mix(in srgb, var(--shell) 70%, transparent) 0%, transparent 70%), /* taste-skill-ignore: Benefits card gradient */
+    linear-gradient(165deg, #3a3437 0%, #1d1b1d 60%, #0f0e10 100%); /* taste-skill-ignore: Benefits card gradient */
+  --c: #1d1b1d;
+  --ink: var(--white);
+}
+
+.bento.bento > li[data-industry="entertainment"] {
+  --g: radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--ember) 85%, white) 0%, transparent 70%), /* taste-skill-ignore: Benefits card gradient */
+    linear-gradient(165deg, var(--ember) 0%, var(--coral-clay) 52%, var(--signal-red-deep) 100%); /* taste-skill-ignore: Benefits card gradient */
+  --c: var(--signal-red-deep);
+  --ink: var(--white);
+}
+
+.bento.bento > li[data-industry="dental"] {
+  --g: radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--aqua) 70%, var(--harbour)) 0%, transparent 72%), /* taste-skill-ignore: Benefits card gradient */
+    linear-gradient(165deg, var(--harbour) 0%, color-mix(in srgb, var(--harbour) 60%, var(--deep-water)) 55%, var(--deep-water) 100%); /* taste-skill-ignore: Benefits card gradient */
+  --c: var(--deep-water);
+  --ink: var(--white);
+}
+
+.bento.bento > li[data-industry="food"] {
+  --g: radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--ochre) 45%, white) 0%, transparent 70%), /* taste-skill-ignore: Benefits card gradient */
+    linear-gradient(165deg, #f7c548 0%, #f0a81c 45%, color-mix(in srgb, var(--ember) 75%, var(--coral-clay)) 100%); /* taste-skill-ignore: Benefits card gradient */
+  --c: #f0a81c;
+  --ink: var(--deep-water);
+}
+
+.bento.bento > li[data-industry="stores"] {
+  --g: radial-gradient(110% 75% at 12% 0%, #2c6b52 0%, transparent 62%), /* taste-skill-ignore: Benefits card gradient */
+    radial-gradient(90% 70% at 100% 100%, #0e4245 0%, transparent 68%), /* taste-skill-ignore: Benefits card gradient */
+    linear-gradient(165deg, #173a2e 0%, #0c211a 55%, #06120e 100%); /* taste-skill-ignore: Benefits card gradient */
+  --c: #0c211a;
+  --ink: var(--white);
+}
+
+.bento.bento > li[data-industry="auto"] {
+  --g: radial-gradient(75% 55% at 15% 4%, color-mix(in srgb, var(--ochre) 55%, transparent) 0%, transparent 70%), /* taste-skill-ignore: Benefits card gradient */
+    linear-gradient(170deg, color-mix(in srgb, var(--harbour) 35%, var(--deep-water)) 0%, var(--deep-water) 50%, var(--abyss) 100%); /* taste-skill-ignore: Benefits card gradient */
+  --c: var(--abyss);
+  --ink: var(--white);
+}
+
+.bento.bento > li[data-industry="professional"] {
+  --g: radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--seafoam) 60%, white) 0%, transparent 70%), /* taste-skill-ignore: a Seafoam field in the Benefits style */
+    linear-gradient(165deg, var(--seafoam) 0%, color-mix(in srgb, var(--seafoam) 70%, var(--aqua)) 50%, color-mix(in srgb, var(--aqua) 70%, var(--deep-water)) 100%); /* taste-skill-ignore: a Seafoam field in the Benefits style */
+  --c: color-mix(in srgb, var(--seafoam) 80%, var(--aqua));
+  --ink: var(--deep-water);
+}
+
+.bento.bento > li[data-industry],
+.bento.bento > li[data-industry] > div:first-child {
+  background: var(--g, var(--c));
+}
+
+/* One photo treatment for every tile: faint luminosity over the field, as on Services. */
+.bento.bento > li[data-industry] > div:first-child > img:first-child {
+  filter: grayscale(1) contrast(1.2) brightness(1.05);
+  opacity: 0.4;
+}
+
+.bento.bento > li[data-industry]:has(img)::after {
+  background: linear-gradient( /* taste-skill-ignore: the field's deep end under the text */
+    to top,
+    color-mix(in srgb, var(--c) 85%, transparent) 0%,
+    color-mix(in srgb, var(--c) 50%, transparent) 30%,
+    transparent 58%
+  );
+}
+
+/* Glass icon glyph follows the text colour (Deep Water on Ochre and Seafoam, white elsewhere). */
+.bento.bento > li[data-industry] [aria-hidden="true"] {
+  color: var(--ink);
+}
+
+/* Film grain, as on the Benefits cards. */
+.bento.bento > li[data-industry] > div:first-child::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.bento.bento > li[data-industry] {
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .bento.bento > li[data-industry]:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 26px 48px -20px rgb(40 4 10 / 0.7);
+  }
+}

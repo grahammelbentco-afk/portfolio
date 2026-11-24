@@ -1,0 +1,618 @@
+/* Reviews (Revision 73): white ground after the dark Work flight. Flat surfaces separated by
+   tone steps (Jasper: no outlines or glows), Seafoam as the one accent, the Split Arc's 24°
+   cut on the photo. */
+.section {
+  padding-block: var(--section-y);
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+/* ---- Head ---- */
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 72px);
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: end;
+  }
+
+  .head > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .head > h2 {
+    grid-column: 1 / span 7;
+  }
+
+  .head > :last-child {
+    grid-column: 9 / -1;
+  }
+}
+
+/* ---- Layout: photo | quote and picker ---- */
+.layout {
+  display: grid;
+  gap: clamp(32px, 4vw, 64px);
+}
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: stretch;
+  }
+}
+
+/* The team footage, shown in full colour. Its cinematic grade (Deep Water shadows, warm skin,
+   lifted blacks, vignette) is baked into the file, so no CSS overlay sits on top. */
+.photo {
+  position: relative;
+  isolation: isolate;
+  min-height: 500px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--deep-water);
+}
+
+.shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 45%;
+}
+
+/* Real proof from Jasper's Upwork profile, on a flat Seafoam chip. */
+.proof {
+  position: absolute;
+  z-index: 1;
+  bottom: clamp(16px, 2vw, 28px);
+  left: clamp(16px, 2vw, 28px);
+  display: grid;
+  gap: 2px;
+  max-width: 15rem;
+  padding: 16px 20px;
+  border-radius: var(--r-md);
+  background: var(--seafoam);
+  color: var(--deep-water);
+}
+
+.proof strong {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 1.6vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.proof span {
+  font-size: var(--fs-small);
+  line-height: 1.4;
+}
+
+/* The Upwork mark beside the figure, in Deep Water so it sits flat on the Seafoam chip. */
+.proofValue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.proofMark {
+  width: 26px;
+  height: 26px;
+  background: var(--deep-water);
+  -webkit-mask: url(/brands/si/upwork.svg) center / contain no-repeat;
+  mask: url(/brands/si/upwork.svg) center / contain no-repeat;
+}
+
+/* ---- The quote ---- */
+.stage {
+  display: grid;
+  align-content: space-between;
+  gap: clamp(32px, 3vw, 48px);
+}
+
+/* The quote area keeps the height of a long quote, so the controls don't jump. */
+.panel {
+  min-height: 15.5rem;
+}
+
+.current {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  animation: quote-in 360ms var(--ease-out) both;
+}
+
+.quote {
+  margin: 0;
+}
+
+.quote p {
+  max-width: 34ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.05rem + 1.3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+  text-wrap: pretty;
+}
+
+/* An opening mark in Aqua, hung in the margin so the text keeps its left edge. */
+.quote p::before {
+  content: "\201C";
+  padding-right: 0.05em;
+  color: var(--aqua);
+}
+
+/* Hung in the margin on wide screens only; on phones it would touch the screen edge. */
+@media (min-width: 960px) {
+  .quote p::before {
+    margin-left: -0.45em;
+  }
+}
+
+.quote p::after {
+  content: "\201D";
+}
+
+/* Seafoam marker band behind the strongest phrase, low on the line like a highlighter (same as
+   About and Benefits). */
+.mark {
+  background: linear-gradient(to top, var(--seafoam) 0.34em, transparent 0.34em) no-repeat;
+  color: inherit;
+  padding-inline: 0.04em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--deep-water);
+  color: var(--seafoam);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.avatarSpark {
+  width: 14px;
+  height: 22px;
+  fill: var(--aqua);
+}
+
+.who {
+  display: block;
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+
+.role {
+  display: block;
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+}
+
+/* A logo in the circle, on no background: the mark in its own colour (Upwork green, LinkedIn
+   blue) or a company's symbol in Deep Water. */
+.avatar[data-logo] {
+  background: none;
+}
+
+.avatarMark {
+  width: 40px;
+  height: 40px;
+  background: var(--deep-water);
+  -webkit-mask: var(--src) center / contain no-repeat;
+  mask: var(--src) center / contain no-repeat;
+}
+
+/* A company's own logo, full colour. A square site icon fills the circle; a shaped mark
+   (Rack n Road's shield) sits whole inside it. */
+.avatarImg {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.avatar[data-fill] {
+  overflow: hidden;
+}
+
+.avatar[data-fill] .avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar[data-logo="upwork"] .avatarMark {
+  width: 44px;
+  background: #14a800;
+}
+
+.avatar[data-logo="linkedin"] .avatarMark {
+  width: 36px;
+  height: 36px;
+  background: #0a66c2;
+}
+
+/* Pause control for the footage (moving content longer than 5 seconds needs one). */
+.playToggle {
+  position: absolute;
+  z-index: 1;
+  right: clamp(16px, 2vw, 28px);
+  bottom: clamp(16px, 2vw, 28px);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.16);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.playToggle:hover {
+  background: rgb(255 255 255 / 0.28);
+}
+
+.playToggle:focus-visible {
+  outline: 2px solid var(--seafoam);
+  outline-offset: 3px;
+}
+
+.playToggle svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- Controls: arrows, count and the Split Arc gauge ---- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--shallows);
+  color: var(--deep-water);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.arrow:hover {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 3px;
+}
+
+.arrow svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.count {
+  margin-left: var(--s-2);
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.count b {
+  color: var(--deep-water);
+}
+
+.gauge {
+  width: 40px;
+  height: 22px;
+  margin-left: 4px;
+  overflow: visible;
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.gaugeTrack {
+  stroke: var(--mist);
+}
+
+.gaugeFill {
+  stroke: var(--aqua);
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.gaugeFill[data-running] {
+  animation: gauge-fill linear both;
+}
+
+@keyframes gauge-fill {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes quote-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .current {
+    animation: none;
+  }
+
+  .arrow,
+  .playToggle {
+    transition: none;
+  }
+}
+
+@media (max-width: 959px) {
+  .photo {
+    min-height: 380px;
+  }
+}
+
+/* ---- Review overlay on the photo (2026-11-22). Placed against the photo's own features:
+   the quote mark in the dark top-left, the bubble in the big patch of sun on the wall, the
+   arrow from the bubble down to the person's cup. ---- */
+.art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bigQuote {
+  position: absolute;
+  top: 7%;
+  left: 5%;
+  width: clamp(52px, 11%, 92px);
+  fill: none;
+  stroke: var(--seafoam);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+
+.bubble {
+  position: absolute;
+  top: 29%;
+  left: 31%;
+  display: grid;
+  gap: 6px;
+  width: clamp(150px, 26%, 200px);
+  padding: 12px 14px 14px;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--white);
+  color: var(--deep-water);
+  box-shadow: 0 18px 36px -16px rgb(5 26 45 / 0.6); /* taste-skill-ignore: a card standing off the photo */
+  rotate: -4deg;
+}
+
+.stars {
+  display: flex;
+  gap: 3px;
+}
+
+.stars svg {
+  width: 18px;
+  height: 18px;
+  fill: #f5b72a;
+}
+
+.bubbleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--wet-slate);
+}
+
+.bubbleRow b {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--deep-water);
+}
+
+.bubbleLine {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: #e6edf0;
+}
+
+.bubbleLine + .bubbleLine {
+  width: 62%;
+}
+
+.pointer {
+  position: absolute;
+  top: 47%;
+  left: 42%;
+  width: clamp(60px, 12%, 100px);
+  fill: none;
+  stroke: var(--seafoam);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.twinkle {
+  position: absolute;
+  width: 14px;
+  fill: var(--seafoam);
+}
+
+.twinkleA {
+  top: 24%;
+  left: 57%;
+}
+
+.twinkleB {
+  top: 9%;
+  right: 9%;
+  width: 18px;
+}
+
+@media (max-width: 959px) {
+  .bigQuote,
+  .pointer {
+    display: none;
+  }
+
+  .bubble {
+    top: 6%;
+    left: 5%;
+  }
+
+  .twinkleA {
+    top: 5%;
+    left: 52%;
+  }
+}
+
+/* Motion: the bubble floats, its stars light one after another and reset, the arrow draws
+   itself in, the sparks twinkle. All still under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .bubble {
+    animation: bubble-float 5s ease-in-out infinite;
+  }
+
+  .stars svg {
+    animation: star-on 4s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.18s);
+  }
+
+  .arrowLine,
+  .arrowHead {
+    stroke-dasharray: 100;
+    animation: arrow-draw 4s ease-in-out infinite;
+  }
+
+  .arrowHead {
+    animation-name: arrow-head;
+  }
+
+  .twinkle {
+    animation: twinkle 2.6s ease-in-out infinite;
+  }
+
+  .twinkleB {
+    animation-delay: 1.3s;
+  }
+}
+
+@keyframes bubble-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+@keyframes star-on {
+  0% {
+    fill: #dfe6ea;
+    scale: 0.7;
+  }
+  12% {
+    fill: #f5b72a;
+    scale: 1.2;
+  }
+  20%,
+  85% {
+    fill: #f5b72a;
+    scale: 1;
+  }
+  100% {
+    fill: #dfe6ea;
+    scale: 1;
+  }
+}
+
+@keyframes arrow-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  35%,
+  85% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+}
+
+@keyframes arrow-head {
+  0%,
+  30% {
+    stroke-dashoffset: 100;
+  }
+  45%,
+  85% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    scale: 0.8;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.15;
+  }
+}

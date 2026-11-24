@@ -1,0 +1,335 @@
+/* FAQ (Revision 85): white ground. A sticky side column (heading, topic index, the people
+   who answer) beside grouped questions. Closed questions are flat Shallows rows; an open one
+   becomes a Deep Water card, cut at the Split Arc's 24°: the question keeps its size and the answer sits
+   under it as smaller body text. Seafoam is the one accent. No outlines. */
+.section {
+  padding-block: var(--section-y);
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+.layout {
+  display: grid;
+  gap: clamp(40px, 4vw, 72px);
+}
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    align-items: start;
+  }
+
+  .side {
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+  }
+}
+
+/* ---- Side column ---- */
+.side {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.line {
+  display: block;
+}
+
+.intro {
+  max-width: 30ch;
+  color: var(--wet-slate);
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+}
+
+/* ---- Topic bar: sticky above the questions, marks the group in view ---- */
+.sentinel {
+  display: block;
+  height: 0;
+}
+
+/* Flush under the header, so no question shows above it; the white runs out a little on
+   each side so passing cards slide cleanly under it. */
+.topics {
+  position: sticky;
+  z-index: 2;
+  top: var(--header-h);
+  margin: -12px -12px 4px;
+  padding: 12px;
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+  background: var(--white);
+  transition: box-shadow var(--dur) var(--ease-out);
+}
+
+/* Stuck: a subtle shadow, so the bar reads as floating over the list. */
+.topics[data-stuck] {
+  box-shadow: 0 12px 24px -16px rgb(7 34 59 / 0.28); /* taste-skill-ignore: sticky bar over content, a real overlay */
+}
+
+.topics ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topics a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 10px 8px 16px;
+  border-radius: var(--r-pill);
+  background: var(--shallows);
+  color: var(--deep-water);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.topics a:hover {
+  background: var(--mist);
+}
+
+.topics a[aria-current] {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+.topics a:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 2px;
+}
+
+.count {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding-inline: 6px;
+  border-radius: var(--r-pill);
+  background: var(--white);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.topics a[aria-current] .count {
+  background: var(--seafoam);
+  color: var(--deep-water);
+}
+
+.ask {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: var(--s-3);
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  line-height: 1.45;
+}
+
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--deep-water);
+}
+
+.spark {
+  width: 12px;
+  height: 19px;
+  fill: var(--seafoam);
+}
+
+.who {
+  display: block;
+  color: var(--deep-water);
+  font-weight: 700;
+  font-size: var(--fs-body);
+}
+
+.ask a {
+  color: var(--deep-water);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.ask a:hover {
+  text-decoration-color: var(--deep-water);
+}
+
+/* ---- Groups ---- */
+.groups {
+  display: grid;
+  gap: clamp(28px, 2.6vw, 40px);
+}
+
+.group {
+  display: grid;
+  gap: 12px;
+  /* Lands below the header and the sticky topic bar. */
+  scroll-margin-top: calc(var(--header-h) + 80px);
+}
+
+.groupTitle {
+  padding-left: 4px;
+  color: var(--wet-slate);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+/* ---- Question ---- */
+.item {
+  border-radius: var(--r-lg);
+  background: var(--shallows);
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+  interpolate-size: allow-keywords;
+}
+
+.item:not([open]):hover {
+  background: var(--mist);
+}
+
+.item[open] {
+  background: var(--deep-water);
+  color: var(--white);
+}
+
+/* The answer's height animates where ::details-content is supported. */
+.item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size var(--dur) var(--ease-out), content-visibility var(--dur) allow-discrete;
+}
+
+.item[open]::details-content {
+  block-size: auto;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: 20px 24px;
+  border-radius: inherit;
+  list-style: none;
+  cursor: pointer;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:focus-visible {
+  outline: 2px solid var(--deep-water);
+  outline-offset: 3px;
+}
+
+.item[open] .summary {
+  padding-bottom: 10px;
+}
+
+
+
+.item[open] .summary:focus-visible {
+  outline-color: var(--seafoam);
+}
+
+.q {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+/* Plus to minus. The open card's icon moves left of the cut corner. */
+.icon {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--white);
+}
+
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  margin: -1px 0 0 -6px;
+  border-radius: 2px;
+  background: var(--deep-water);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.icon::after {
+  transform: rotate(90deg);
+}
+
+.item[open] .icon {
+  background: var(--seafoam);
+}
+
+.item[open] .icon::after {
+  transform: rotate(0deg);
+}
+
+/* The answer: body text under the question, so the question stays the heading. */
+/* Wide enough to use the card, short enough to read: about 80% of it, capped at 76ch. */
+.a {
+  max-width: min(76ch, 82%);
+  padding: 4px 24px 26px;
+  color: var(--cloud);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+@media (max-width: 639px) {
+
+
+  .summary {
+    padding: 18px 18px;
+  }
+
+  .a {
+    padding: 4px 18px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .item::details-content,
+  .icon::before,
+  .icon::after,
+  .topics,
+  .topics a,
+  .count {
+    transition: none;
+  }
+}

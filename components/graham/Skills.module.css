@@ -1,0 +1,149 @@
+/* Skills & Tools on Deep Water: a large title, then an index of categories, each a row of
+   app-icon tiles in the tools' own colours. The tiles are the only colour in the section. */
+.section {
+  padding-block: var(--section-y);
+  background: var(--deep-water);
+  color: var(--shallows);
+}
+
+.head {
+  display: grid;
+  gap: var(--s-3);
+  /* Same as the other section heads (Services). */
+  margin-bottom: clamp(32px, 1rem + 3vw, 64px);
+}
+
+@media (min-width: 960px) {
+  .head {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s-6);
+    align-items: end;
+  }
+}
+
+/* ---- Index rows ---- */
+.rows {
+  border-bottom: 1px solid var(--line-on-dark);
+}
+
+.row {
+  display: grid;
+  gap: var(--s-3);
+  padding-block: var(--s-4);
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.rowTitle {
+  color: var(--cloud);
+  font-family: var(--font-body);
+  font-size: var(--fs-lead);
+  font-weight: 600;
+}
+
+@media (min-width: 960px) {
+  .row {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    align-items: center;
+    padding-block: var(--s-3);
+  }
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) clamp(16px, 2vw, 36px);
+}
+
+/* ---- One tool ---- */
+.tool {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  /* At least the slot width; a long name (WooCommerce) widens its own slot, never overlaps. */
+  min-width: clamp(72px, 6vw, 96px);
+  color: var(--cloud);
+  text-decoration: none;
+  outline-offset: 6px;
+}
+
+.name {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  transition: color var(--dur-fast) ease;
+}
+
+/* App-icon tile: a soft-cornered square in the brand colour, a hair of light on top. */
+.tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 4.6vw, 72px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 28%;
+  background: var(--bg);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 10px 24px -12px rgb(0 0 0 / 0.6);
+  transition: transform var(--dur-fast) ease;
+}
+
+/* Simple Icons glyph, drawn in the tile's foreground colour. */
+.tile i {
+  width: calc(var(--size) * 100%);
+  height: calc(var(--size) * 100%);
+  background: var(--fg);
+  mask: var(--logo) center / contain no-repeat;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* "& More": an outlined tile in Aqua. */
+.tile[data-kind="more"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--aqua);
+  color: var(--aqua);
+}
+
+.tile[data-kind="more"] svg {
+  width: 40%;
+  height: 40%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Hover or focus answers with a small lift; the name brightens. */
+.tool:hover .tile,
+.tool:focus-visible .tile {
+  transform: translateY(-4px);
+}
+
+.tool:hover .name,
+.tool:focus-visible .name {
+  color: var(--white);
+}
+
+/* Links (Upwork, Online Jobs PH) say so with a small arrow after the name. */
+a.tool .name::after {
+  content: " ↗";
+  color: var(--aqua);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: none;
+  }
+
+  .tool:hover .tile,
+  .tool:focus-visible .tile {
+    transform: none;
+  }
+}

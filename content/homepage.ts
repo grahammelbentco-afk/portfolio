@@ -67,7 +67,7 @@ export const site = {
    * False while this is the staging preview: adds noindex and a disallow-all robots.txt.
    * At launch on webleta.com, set to true AND delete the X-Robots-Tag line in public/_headers.
    */
-  indexable: false,
+  indexable: true, // Live on webleta.com (GitHub Pages) from 2026-11-24.
   // Jasper, 2026-11-22: don't state a base on the site. Graham, 2026-11-23: we serve clients
   // worldwide; Australia is the priority market (close timezone), shown as a strength, not a limit.
   location: "Working with businesses worldwide, on hours that suit Australia and Asia-Pacific",

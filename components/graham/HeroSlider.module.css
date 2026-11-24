@@ -1,0 +1,192 @@
+/* Hero slider (Revision 90). See HeroSlider.tsx. */
+
+/* ---- Slider ---- */
+.track {
+  position: relative;
+  width: 100%;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+}
+
+.wide {
+  aspect-ratio: 16 / 11;
+}
+
+.tall {
+  aspect-ratio: 5 / 6;
+  max-width: 460px;
+  margin-inline: auto;
+}
+
+.square {
+  aspect-ratio: 6 / 5;
+}
+
+/* Every card glides between slots on the Transitions.dev smooth-out curve. A spare jumping
+   between the two off-stage positions moves with no transition. Layouts on /hero-options still
+   use left/top/width/height and this transition list (plus their own inline transform);
+   transform-only slots (heroSliderLayouts.ts) set their own transform and transition inline. */
+.card {
+  position: absolute;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--abyss);
+  box-shadow: 0 0 0 1px rgb(238 247 246 / 0.12);
+  transition:
+    left 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    top 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card[data-jump],
+.card[data-jump] figcaption {
+  transition: none !important; /* beats the inline transition of transform-only slots */
+}
+
+.card img,
+.card video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Colour grade: a soft-light tint over the video (its filter is set inline), so the three
+   clips read as one shoot. Values per clip live in content/homepage.ts. */
+.grade {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* The caption sits 12px in from the bottom-left and keeps its size however the card is scaled:
+   it is placed at the corner and counter-scaled by --cap, which transform-only slots set (other
+   layouts fall back to a plain 12px inset). It glides on the same curve as the card. */
+.card figcaption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform-origin: 0 100%;
+  transform: var(--cap, translate(12px, -12px));
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: var(--white);
+  color: var(--deep-water);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card figcaption {
+    transition: none !important;
+  }
+}
+
+/* ---- Navigation: quiet, low-contrast arrows that fade in on hover or focus
+   (Transitions.dev tooltip timing). Always faintly visible on touch screens. ---- */
+.nav {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgb(238 247 246 / 0.14);
+  border-radius: var(--r-pill);
+  background: rgb(5 26 45 / 0.35);
+  color: rgb(238 247 246 / 0.6);
+  cursor: pointer;
+  translate: 0 -50%;
+  opacity: 0;
+  scale: 0.96;
+  transition:
+    opacity 150ms ease-out,
+    scale 150ms ease-out,
+    color 150ms ease-out,
+    border-color 150ms ease-out;
+}
+
+.nav svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.prev {
+  left: -4px;
+}
+
+.next {
+  right: -4px;
+}
+
+.track:hover > .nav,
+.track:focus-within > .nav {
+  opacity: 1;
+  scale: 1;
+}
+
+.nav:hover,
+.nav:focus-visible {
+  color: var(--white);
+  border-color: rgb(238 247 246 / 0.4);
+}
+
+@media (hover: none) {
+  .nav {
+    opacity: 0.7;
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}
+
+/* Leaving cards slide out behind the stage's left edge instead of across the copy beside
+   it. Top, bottom and right stay open so 3D turns and the entering card aren't cut. */
+.stage {
+  clip-path: inset(-30% -60% -30% 0);
+}
+
+/* Revision 92: on desktop the arrows sit outside the cards with a clear 12px gap (the hero
+   column leaves 48px each side). On phones there's no room outside, so they sit just
+   inside the stage edges. */
+@media (min-width: 960px) {
+  .prev {
+    left: auto;
+    right: calc(100% + 12px);
+  }
+
+  .next {
+    right: auto;
+    left: calc(100% + 12px);
+  }
+}
+
+@media (max-width: 959px) {
+  .prev {
+    left: 8px;
+  }
+
+  .next {
+    right: 8px;
+  }
+}

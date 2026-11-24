@@ -1,0 +1,232 @@
+/* Coded screens for the Services bento. Sizes are cqw of the screen box (the parent sets
+   container-type: inline-size), so each UI scales with its photo. */
+
+.mark {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: var(--brand);
+  -webkit-mask: var(--src) center / contain no-repeat;
+  mask: var(--src) center / contain no-repeat;
+}
+
+/* ---------- Job dashboard (laptop) ---------- */
+.dash {
+  display: grid;
+  grid-template-columns: 9cqw 1fr;
+  height: 100%;
+  background: #f5f7f9;
+  color: #1f2a37;
+  font-family: var(--font-body);
+}
+
+.dashNav {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 3cqw;
+  padding-top: 2.6cqw;
+  background: #2d6aa0;
+}
+
+.dashLogo {
+  display: grid;
+  place-items: center;
+  width: 5.4cqw;
+  height: 5.4cqw;
+  margin-bottom: 1cqw;
+  border-radius: 1.4cqw;
+  background: #fff;
+  color: #2d6aa0;
+  font-size: 2.8cqw;
+  font-weight: 800;
+}
+
+.dashNav i {
+  width: 3.4cqw;
+  height: 3.4cqw;
+  border-radius: 1cqw;
+  background: rgb(255 255 255 / 0.28);
+}
+
+.dashNav i[data-on] {
+  background: #fff;
+}
+
+.dashMain {
+  display: grid;
+  align-content: start;
+  gap: 2.6cqw;
+  padding: 3cqw 4cqw;
+}
+
+.dashTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 3.4cqw;
+}
+
+.dashBtn {
+  padding: 1cqw 2.4cqw;
+  border-radius: 1cqw;
+  background: #2d6aa0;
+  color: #fff;
+  font-size: 2.1cqw;
+  font-weight: 600;
+}
+
+.dashStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2cqw;
+}
+
+.dashStats span {
+  display: grid;
+  gap: 0.6cqw;
+  padding: 2cqw;
+  border-radius: 1.4cqw;
+  background: #fff;
+  box-shadow: 0 0.3cqw 1cqw rgb(31 42 55 / 0.08);
+}
+
+.dashStats small {
+  color: #6b7785;
+  font-size: 1.9cqw;
+}
+
+.dashStats b {
+  font-size: 4.6cqw;
+  letter-spacing: -0.03em;
+}
+
+.dashJobs {
+  display: grid;
+  border-radius: 1.4cqw;
+  background: #fff;
+  box-shadow: 0 0.3cqw 1cqw rgb(31 42 55 / 0.08);
+}
+
+.dashJobs li {
+  display: grid;
+  grid-template-columns: 9cqw 1fr 12cqw 9cqw;
+  align-items: center;
+  gap: 1.6cqw;
+  padding: 1.6cqw 2.4cqw;
+  border-top: 0.25cqw solid #eef1f4;
+  font-size: 2cqw;
+}
+
+.dashJobs li:first-child {
+  border-top: 0;
+}
+
+.dashJobs li > span {
+  color: #6b7785;
+}
+
+.dashJobs em {
+  justify-self: start;
+  padding: 0.5cqw 1.4cqw;
+  border-radius: 99cqw;
+  background: #d1deea;
+  color: #1f4b73;
+  font-size: 1.8cqw;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.dashJobs em[data-new] {
+  background: #f3e9d4;
+  color: #7a5a17;
+}
+
+/* ---------- Booking app (phone) ---------- */
+.app {
+  display: grid;
+  align-content: start;
+  gap: 6cqw;
+  height: 100%;
+  padding: 16cqw 7cqw 7cqw;
+  background: #f4f1ec;
+  color: #333;
+  font-family: var(--font-body);
+}
+
+.appHead {
+  display: flex;
+  align-items: center;
+  gap: 4cqw;
+}
+
+.appHead small,
+.appHead b {
+  display: block;
+}
+
+.appHead small {
+  color: #8b7355;
+  font-size: 4.2cqw;
+  font-weight: 600;
+}
+
+.appHead b {
+  font-size: 6.4cqw;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.appLogo {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 12cqw;
+  height: 12cqw;
+  border-radius: 3.5cqw;
+  background: #8b7355;
+  color: #fff;
+  font-size: 6cqw;
+  font-weight: 700;
+}
+
+.appDays {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4cqw;
+}
+
+.appDays span,
+.appSlots span {
+  display: grid;
+  place-items: center;
+  padding: 3cqw 0;
+  border-radius: 3cqw;
+  background: #fff;
+  font-size: 4.2cqw;
+  font-weight: 600;
+}
+
+.appDays span[data-on],
+.appSlots span[data-on] {
+  background: #c4614b;
+  color: #fff;
+}
+
+.appSlots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4cqw;
+}
+
+.appCta {
+  display: grid;
+  place-items: center;
+  margin-top: 4cqw;
+  padding: 4.4cqw 0;
+  border-radius: 99cqw;
+  background: #333;
+  color: #fff;
+  font-size: 4.4cqw;
+  font-weight: 600;
+}

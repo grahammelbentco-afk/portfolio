@@ -1,0 +1,551 @@
+/* Work (Revision 69): a warp through space, after Concept F's "What we design for".
+   Every board is shown whole (no crop, nothing moving inside it). Base styles cover phones
+   (swipe row) and reduced motion (masonry). When GSAP runs (data-motion="on", wide screens)
+   the stage pins and the boards sit in depth. GSAP owns the camera's transform and the
+   boards' opacity, so no CSS transitions touch either. */
+.section {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--section-y);
+  background: var(--abyss);
+  color: var(--white);
+  overflow: clip;
+}
+
+/* The sky: one viewport-sized layer that sticks behind the whole section, from its first
+   pixel to its last (top padding, pinned stage and outro alike), so the background never
+   shows an edge. Its negative margin keeps it out of the layout. */
+.sky {
+  position: sticky;
+  top: 0;
+  z-index: -1;
+  height: 100vh; /* taste-skill-ignore: fallback for browsers without svh */
+  height: 100svh;
+  margin-top: calc(var(--section-y) * -1);
+  /* Hand the section's top padding back to the content that follows. */
+  margin-bottom: calc(var(--section-y) - 100vh); /* taste-skill-ignore: fallback for browsers without svh */
+  margin-bottom: calc(var(--section-y) - 100svh);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* The warp: one fal image (Flux Pro Ultra, 2026-11-16, 1920x1080) of fine star streaks
+   radiating from a centre point, made only of hairlines and pinpoints so it stays crisp at
+   full width. A quiet layer on the solid Abyss ground: desaturated, low opacity, centred on
+   the boards' vanishing point and faded out radially toward the edges. */
+.sky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/work/warp-1920.webp") 50% 47% / cover no-repeat;
+  filter: grayscale(1);
+  opacity: 0.32;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 62% 66% at 50% 47%, #000 0%, rgb(0 0 0 / 0.55) 50%, transparent 100%); /* taste-skill-ignore: image falloff, Jasper's brief */
+  mask-image: radial-gradient(ellipse 62% 66% at 50% 47%, #000 0%, rgb(0 0 0 / 0.55) 50%, transparent 100%); /* taste-skill-ignore: image falloff, Jasper's brief */
+}
+
+@media (max-width: 959px) {
+  .sky::before {
+    background-image: url("/images/work/warp-1280.webp");
+  }
+}
+
+/* The starfield fills the sky. */
+.space {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.stage {
+  position: relative;
+  isolation: isolate;
+}
+
+/* ---- Head: eyebrow and title only, so the boards own the rest of the frame ---- */
+.head {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: clamp(40px, 1.5rem + 3vw, 64px);
+}
+
+/* Set lines: solid first, the outlined phrase last (Jasper's rule for outline headings). */
+.line {
+  display: block;
+}
+
+/* ---- Boards (base: swipe row on phones) ---- */
+.cam {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0 var(--gutter) var(--s-2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.cam::-webkit-scrollbar {
+  display: none;
+}
+
+.study {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.figure {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+/* Whole board at its own aspect: fixed height in the row, width follows. */
+.board {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: min(58svh, 460px);
+  border-radius: var(--r-lg);
+  background: var(--abyss);
+}
+
+.caption {
+  display: grid;
+  gap: 2px;
+  max-width: 30ch;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
+  letter-spacing: -0.02em;
+}
+
+.sector {
+  color: var(--cloud);
+  font-size: var(--fs-small);
+}
+
+/* Reduced motion on wide screens: masonry, every board whole. */
+@media (min-width: 960px) {
+  .cam {
+    display: block;
+    columns: 3;
+    column-gap: var(--s-6);
+    padding-bottom: 0;
+    overflow: visible;
+  }
+
+  .study {
+    break-inside: avoid;
+    margin-bottom: var(--s-6);
+  }
+
+  .board {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* ---- Outro ---- */
+.outro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-top: clamp(40px, 1.5rem + 3vw, 72px);
+}
+
+.outroAct {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+
+/* Seafoam button on the dark frame (Jasper's call): Deep Water text, a lighter step on hover.
+   The background change is a colour swap, so it keeps the shared button transition. */
+.cta {
+  background: var(--seafoam);
+  color: var(--deep-water);
+}
+
+.cta:hover {
+  background: var(--shallows);
+}
+
+.outroLead {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 800; /* R88: headings one step bolder (Jasper) */
+}
+
+/* ---- The fly-through (wide screens, motion allowed, GSAP running) ---- */
+.section[data-motion="on"] .stage {
+  position: relative;
+  height: 100vh; /* taste-skill-ignore: fallback for browsers without svh */
+  height: 100svh;
+  overflow: hidden;
+}
+
+.section[data-motion="on"] .head {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--header-h) + 5svh);
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+/* The veil: Abyss fading out down the top of the frame, above the boards and below the
+   title, which stays readable as boards pass behind it. */
+.veil {
+  display: none;
+}
+
+.section[data-motion="on"] .veil {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  /* Darkest behind the title block, gone well before the box edge, so it never shows a line. */
+  background: radial-gradient(ellipse 52% 62% at 0% 12%, var(--abyss) 30%, rgb(5 26 45 / 0.75) 55%, rgb(5 26 45 / 0) 100%); /* taste-skill-ignore: neutral scrim over the boards, for the title */
+  pointer-events: none;
+}
+
+/* The gauge: shown beside the button while the frame is pinned. */
+.meter {
+  display: none;
+}
+
+/* The pinned frame ends the section: no band below it. */
+.section[data-motion="on"] {
+  padding-bottom: 0;
+}
+
+/* The CTA as the flight's last beat, along the bottom of the frame. */
+.section[data-motion="on"] .outro {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: clamp(24px, 5svh, 48px);
+  left: 0;
+  margin: 0 auto;
+}
+
+.section[data-motion="on"] .meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meterArc {
+  width: 44px;
+  height: 24px;
+  overflow: visible;
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.meterTrack {
+  stroke: rgb(238 247 246 / 0.16);
+}
+
+.meterFill {
+  stroke: var(--aqua);
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.meterText {
+  color: var(--haze);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.meterText span {
+  color: var(--white);
+  font-weight: 700;
+}
+
+.section[data-motion="on"] .view {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  perspective-origin: 50% 47%;
+}
+
+.section[data-motion="on"] .cam {
+  position: absolute;
+  inset: 0;
+  display: block;
+  columns: auto;
+  padding: 0;
+  overflow: visible;
+  /* No will-change here: Chrome would rasterise the boards once and stretch them. */
+  transform-style: preserve-3d;
+}
+
+/* Each board sits at its own depth, alternating either side of the centre line. Its width
+   fits the board's aspect inside the frame, so tall and wide boards are both whole. */
+.section[data-motion="on"] .study {
+  --dx: 16vw;
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  width: min(40vw, calc(60svh * var(--ar)));
+  margin: 0;
+  transform: translate(-50%, -50%) translateX(var(--dx)) translateZ(calc(var(--i) * -700px));
+  will-change: opacity;
+}
+
+.section[data-motion="on"] .study:nth-child(2n) {
+  --dx: -16vw;
+}
+
+.section[data-motion="on"] .board {
+  width: 100%;
+  height: auto;
+}
+
+/* Boards are clickable in the fly-through: clicking one flies to it. */
+.section[data-motion="on"] .study {
+  cursor: pointer;
+}
+
+.section[data-motion="on"] .study:focus-visible {
+  outline: none;
+}
+
+.section[data-motion="on"] .study:focus-visible .board {
+  outline: 3px solid var(--seafoam);
+  outline-offset: 4px;
+}
+
+/* The camera layer spans the frame and sits in front of the boards in depth, so it must
+   not catch clicks; each board sets its own pointer-events from its depth (Work.tsx). */
+.section[data-motion="on"] .view,
+.section[data-motion="on"] .cam {
+  pointer-events: none;
+}
+
+/* ---- Hover and focus on a board (fly-through only, Revision 87) ----
+   Subtle: the page lifts 2.5% toward you, its name turns Seafoam and a small arrow slides
+   in. Transform and colour only, on the page and caption (GSAP owns the board's own
+   opacity and filter), so nothing fights the scroll animation. */
+.go {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.35em;
+  vertical-align: 0.05em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: translateX(-6px);
+}
+
+.section[data-motion="on"] .board {
+  transition: transform 520ms var(--ease-out);
+}
+
+.section[data-motion="on"] .name {
+  transition: color 320ms var(--ease-out);
+}
+
+.section[data-motion="on"] .go {
+  transition: opacity 320ms var(--ease-out), transform 420ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .section[data-motion="on"] .study:hover .board {
+    transform: scale(1.025);
+  }
+
+  .section[data-motion="on"] .study:hover .name {
+    color: var(--seafoam);
+  }
+
+  .section[data-motion="on"] .study:hover .go {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.section[data-motion="on"] .study:focus-visible .name {
+  color: var(--seafoam);
+}
+
+.section[data-motion="on"] .study:focus-visible .go {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section[data-motion="on"] .board,
+  .section[data-motion="on"] .go {
+    transition: none;
+  }
+}
+
+/* ---- Navigation in the fly-through (Revision 87): arrows and the timeline ---- */
+.arrows,
+.timeline {
+  display: none;
+}
+
+.section[data-motion="on"] .arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(238 247 246 / 0.1);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.arrow:hover:not(:disabled) {
+  background: var(--seafoam);
+  color: var(--deep-water);
+}
+
+.arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--seafoam);
+  outline-offset: 3px;
+}
+
+.arrow svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The timeline: a quiet vertical rail of points on the right edge. */
+.section[data-motion="on"] .timeline {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: clamp(16px, 2vw, 32px);
+  display: block;
+  transform: translateY(-50%);
+}
+
+.timeline ol {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each point is a 28px target holding a short bar; the current bar is Seafoam and longer. */
+.point {
+  position: relative;
+  display: grid;
+  place-items: center end;
+  width: 32px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.point::after {
+  content: "";
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgb(238 247 246 / 0.35);
+  transition: width var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out);
+}
+
+.point:hover::after {
+  width: 18px;
+  background: var(--white);
+}
+
+.point[aria-current]::after {
+  width: 26px;
+  background: var(--seafoam);
+}
+
+.point:focus-visible {
+  outline: 2px solid var(--seafoam);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* The name appears to the left of a point on hover or focus. */
+.pointName {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 10px);
+  padding: 4px 10px;
+  border-radius: var(--r-sm);
+  background: rgb(5 26 45 / 0.85);
+  color: var(--white);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(6px, -50%);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.point:hover .pointName,
+.point:focus-visible .pointName {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow,
+  .point::after,
+  .pointName {
+    transition: none;
+  }
+}
+
+/* Old webleta.com intro in the bottom row: a longer line than the agency's, so it takes a
+   reading measure and body weight, and the buttons stay beside it. */
+.outroLead {
+  flex: 1 1 22rem;
+  max-width: 36rem;
+  color: var(--cloud);
+  font-family: var(--font-body);
+  font-size: var(--fs-lead);
+  font-weight: 500;
+  line-height: 1.45;
+}

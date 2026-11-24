@@ -1,0 +1,309 @@
+/* About on white, quiet and editorial (after LPAS): the statement in the site's title type, then a
+   label/content grid (labels in the first columns of 12) for the paragraph and the figures. */
+.section {
+  /* Same section padding as the homepage About. */
+  padding-block: clamp(80px, 40px + 7vw, 168px);
+  background: var(--white);
+  color: var(--deep-water);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--s-3);
+}
+
+/* ---- Statement ---- */
+.statement {
+  max-width: 15ch;
+  margin-bottom: clamp(32px, 1rem + 3vw, 72px);
+  /* Same size as the homepage About statement. */
+  font-size: clamp(2.125rem, 1rem + 3.6vw, 5.25rem);
+  font-weight: 800; /* same as .sec-title and the hero */
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  /* One timeline for the whole statement, so the letters fill in reading order. */
+  view-timeline-name: --about-statement;
+}
+
+.word {
+  display: inline;
+  white-space: nowrap;
+}
+
+/* ---- Fan: three homepages in browser windows, after the V5.2.1 Facebook cover ----
+   The cover's values, scaled by the fan's width (--u = 1 cover px): one plane in
+   perspective(2400px) rotateY(-16deg) rotateX(4deg); windows 400/420/400 wide with a 28px
+   bar, 12px corners and the cover's shadow. Each window overlaps the one to its left, as there. */
+.fan {
+  --u: calc(100cqw / 870);
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 870 / 600;
+  margin-bottom: var(--s-4);
+}
+
+.fanPlane {
+  position: absolute;
+  inset: 0;
+  transform: perspective(calc(var(--u) * 2400)) rotateY(-16deg) rotateX(4deg);
+  transform-origin: 50% 50%;
+}
+
+.window {
+  position: absolute;
+  margin: 0;
+  overflow: hidden;
+  border-radius: calc(var(--u) * 12);
+  background: var(--white);
+  box-shadow:
+    0 calc(var(--u) * 30) calc(var(--u) * 70) rgb(1 10 20 / 0.28),
+    0 0 0 1px rgb(7 34 59 / 0.14);
+}
+
+.window[data-i="0"] { left: 0; top: calc(var(--u) * 74); width: calc(var(--u) * 400); height: calc(var(--u) * 470); }
+.window[data-i="1"] { left: calc(var(--u) * 230); top: 0; width: calc(var(--u) * 420); height: calc(var(--u) * 520); }
+.window[data-i="2"] { left: calc(var(--u) * 470); top: calc(var(--u) * 104); width: calc(var(--u) * 400); height: calc(var(--u) * 470); }
+
+/* Browser bar: a grey address pill on a hairline. */
+.chrome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--u) * 28);
+  border-bottom: 1px solid rgb(7 34 59 / 0.08);
+}
+
+.chrome i {
+  width: 42%;
+  height: calc(var(--u) * 13);
+  border-radius: var(--r-pill);
+  background: var(--mist);
+}
+
+.window img {
+  display: block;
+  width: 100%;
+  height: calc(100% - var(--u) * 28);
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+
+/* Seafoam highlighter low on the line, as on the agency site. */
+.mark {
+  background: linear-gradient(to top, var(--seafoam) 0.3em, transparent 0.3em) no-repeat;
+  background-size: 100% 100%;
+  padding-inline: 0.04em;
+}
+
+/* ---- Body: label left, paragraph and action right ---- */
+.label {
+  color: var(--deep-water);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+}
+
+.story {
+  display: grid;
+  justify-items: start;
+  gap: var(--s-4);
+}
+
+.storyText {
+  max-width: 44rem;
+  color: var(--deep-water);
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  line-height: 1.55;
+}
+
+/* Text link with an underline, then a small round arrow button. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--deep-water);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.linkText {
+  padding-bottom: 4px;
+  border-bottom: 1px solid currentColor;
+}
+
+.linkIcon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--shallows);
+  transition: background-color var(--dur-fast) ease;
+}
+
+.linkIcon svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.link:hover .linkIcon,
+.link:focus-visible .linkIcon {
+  background: var(--aqua);
+}
+
+/* ---- Figures: one row per group on the same label/content grid ---- */
+.ledger {
+  display: grid;
+  margin-top: clamp(40px, 1rem + 4vw, 96px);
+  border-bottom: 1px solid var(--line-on-light);
+}
+
+.group {
+  display: grid;
+  gap: var(--s-3);
+  padding-block: var(--s-4);
+  border-top: 1px solid var(--line-on-light);
+}
+
+.groupTitle {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-4) var(--s-3);
+  margin: 0;
+}
+
+/* Figure on top (column-reverse; flex-end is the top here), so figures share one line. */
+.figureItem {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.figureItem dd {
+  margin: 0;
+  font-family: var(--font-display);
+  /* Same size as the homepage About's lead stat. */
+  font-size: clamp(2.5rem, 2rem + 1.6vw, 3.75rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.figureItem dt {
+  max-width: 12rem;
+  color: var(--wet-slate);
+  font-size: var(--fs-small);
+  line-height: 1.35;
+}
+
+/* ---- Desktop: 12 columns, labels in the first 3, content from column 5 ---- */
+@media (min-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+  }
+
+  /* The eyebrow and the statement share the statement's old cell. */
+  .intro {
+    grid-column: 1 / span 7;
+    grid-row: 1;
+  }
+
+  .fan {
+    grid-column: 7 / -1;
+    grid-row: 1 / span 2;
+    align-self: start;
+    margin: 0;
+  }
+
+  .label {
+    grid-row: 3;
+  }
+
+  .story {
+    grid-row: 3;
+  }
+
+  .label {
+    grid-column: 1 / span 3;
+  }
+
+  .story {
+    grid-column: 5 / span 7;
+  }
+
+  .ledger {
+    grid-column: 1 / -1;
+  }
+
+  .group {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-4);
+    align-items: start;
+  }
+
+  .groupTitle {
+    grid-column: 1 / span 3;
+  }
+
+  .figures {
+    grid-column: 5 / -1;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---- Scroll motion: CSS scroll timelines only. Without support (or with reduced motion)
+   the statement simply shows in its final state. Each letter fills over a short window that
+   starts later the further it sits in the sentence (--p, 0 to 1). ---- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .letter {
+      animation: fill linear both;
+      animation-timeline: --about-statement;
+      animation-range-start: cover calc(16% + var(--p) * 30%);
+      animation-range-end: cover calc(20% + var(--p) * 30%);
+    }
+
+    /* The marker draws in left to right just behind the fill (--ps / --pe: where the phrase
+       starts and ends in the sentence). */
+    .mark {
+      animation: mark-draw linear both;
+      animation-timeline: --about-statement;
+      animation-range-start: cover calc(18% + var(--ps) * 30%);
+      animation-range-end: cover calc(24% + var(--pe) * 30%);
+    }
+  }
+}
+
+@keyframes mark-draw {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes fill {
+  from {
+    color: var(--cloud);
+  }
+  to {
+    color: var(--deep-water);
+  }
+}

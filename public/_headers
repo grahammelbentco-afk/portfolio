@@ -1,3 +1,2 @@
-# Cloudflare Pages: staging preview, keep it out of search engines.
-/*
-  X-Robots-Tag: noindex, nofollow
+# Cloudflare Pages headers (unused on GitHub Pages, which serves webleta.com).
+# The staging X-Robots-Tag noindex line was removed at launch, 2026-11-24.
