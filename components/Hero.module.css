@@ -329,3 +329,11 @@ a.socialItem:hover {
   }
 }
 
+
+/* Phones only (Graham, 2026-11-24): the three videos open the hero, above the heading.
+   Tablets and desktop keep the copy first. */
+@media (max-width: 767px) {
+  .visual {
+    order: -1;
+  }
+}
