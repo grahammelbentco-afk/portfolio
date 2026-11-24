@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { headerCta, linkProps, navigation, whatsapp, whatsappHref } from "@/content/graham/homepage";
 import WhatsAppIcon from "./WhatsAppIcon";
 import HeaderLogo from "./HeaderLogo";
@@ -77,10 +78,10 @@ export default function Header() {
   return (
     <header ref={headerRef} className={styles.header} data-scrolled={scrolled || open} data-over={overLight ? "light" : "dark"} data-open={open} data-ground="dark">
       <div className={`container ${styles.bar}`}>
-        <a href="#top" className={styles.logo} aria-label="Webleta, back to top" data-intro="header">
+        <Link href="/" className={styles.logo} aria-label="Webleta home" data-intro="header">
           {/* Exact Logo Kit V2 lockup paths, inlined for the hover motion: never retype the wordmark. */}
           <HeaderLogo className={styles.logoSvg} bigClass={styles.logoBig} sparkClass={styles.logoSpark} />
-        </a>
+        </Link>
 
         <nav aria-label="Main" className={styles.nav} data-intro="header">
           <ul className={styles.navList}>

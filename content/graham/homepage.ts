@@ -79,7 +79,7 @@ export const site = {
 
 // Old webleta.com navigation (Graham's portfolio), same labels and anchors.
 export const navigation: Link[] = [
-  { label: "Home", href: "#top" },
+  { label: "Home", href: "/" }, // the Webleta homepage, not the top of /graham (Graham, 2026-11-24)
   { label: "Services", href: "#services" },
   { label: "Skills", href: "#tools" },
   { label: "Projects", href: "#projects" },
