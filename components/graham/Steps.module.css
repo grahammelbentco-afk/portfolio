@@ -1227,6 +1227,14 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Stacked steps (Graham, 2026-11-26): one number width for all three, so the narrow 1
+   doesn't pull its copy left of steps 2 and 3. "2" and "3" are about 0.57em wide. */
+@media (max-width: 759px) {
+  .num {
+    min-width: 0.6em;
+  }
+}
+
 .next {
   display: none;
 }

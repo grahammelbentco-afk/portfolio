@@ -112,6 +112,11 @@
 }
 
 .note {
+  /* Graham, 2026-11-26: one line when the copy column has room (it may run past the 36rem
+     switch), otherwise two even lines instead of a short orphan "Or see the work.". */
+  width: max-content;
+  max-width: 100cqi;
+  text-wrap: balance;
   color: var(--cloud);
   font-size: var(--fs-small);
 }

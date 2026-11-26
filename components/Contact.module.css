@@ -168,3 +168,19 @@
   color: var(--haze);
   font-size: var(--fs-caption);
 }
+
+/* Phones (Graham, 2026-11-26): side by side was cramped, so the faces sit on top and the
+   line and names run full width below. */
+@media (max-width: 559px) {
+  .people {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+    padding: 16px 20px 20px;
+    border-radius: 28px;
+  }
+
+  .people figcaption {
+    gap: 12px;
+  }
+}

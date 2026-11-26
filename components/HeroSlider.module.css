@@ -91,6 +91,15 @@
   }
 }
 
+/* Phones only (Graham, 2026-11-26): the back cards are narrower than a fixed-size tag there
+   ("Conversion" is 95px on a 72px card), so each tag scales with its card instead of
+   counter-scaling. The front card keeps the normal size; the smaller cards get smaller tags. */
+@media (max-width: 767px) {
+  .card figcaption {
+    transform: translate(12px, -12px);
+  }
+}
+
 /* ---- Navigation: quiet, low-contrast arrows that fade in on hover or focus
    (Transitions.dev tooltip timing). Always faintly visible on touch screens. ---- */
 .nav {

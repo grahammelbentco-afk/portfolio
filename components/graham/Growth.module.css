@@ -353,7 +353,7 @@
 /* ---- Social: the brand, the platforms, then a deck of real posts ---- */
 .platforms {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap; /* Graham, 2026-11-26: five pills run past the card on phones */
   gap: 8px;
   margin-top: var(--s-2);
 }
