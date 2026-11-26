@@ -306,11 +306,10 @@ export const about = {
   // Revision 88 (Jasper): quiet text links to our own sites, here instead of the footer.
   // Both always show (Jasper, Revision 89). UNCONFIRMED: Jasper has no personal site yet, so
   // his link goes to the contact section; set `href` to his site when it exists (`external`
-  // true). Graham's portfolio is webleta.com today; once this site replaces it there, this
-  // link needs a new target.
+  // true). Graham's portfolio lives at /graham on this site (2026-11-26), same tab.
   people: [
     { label: "Meet our technical head", href: "#contact", external: false },
-    { label: "Meet our manager", href: "https://webleta.com/", external: true },
+    { label: "Meet our manager", href: "/graham/", external: false },
   ],
   // Team photo from about-image.jpg (2026-11-22), resized to 1056x1440 WebP with sharp.
   image: {
